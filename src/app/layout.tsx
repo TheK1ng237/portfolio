@@ -3,18 +3,10 @@ import { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'KingTang',
-  description: 'Portfolio',
+  title: 'KingTang | Creative Developer & UX Architect',
+  description: 'Portfolio Afro-Futuriste',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return children;
 }

@@ -14,11 +14,11 @@ export default function Hero() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
+  const mouseXSpring = useSpring(x, { damping: 25, stiffness: 200 });
+  const mouseYSpring = useSpring(y, { damping: 25, stiffness: 200 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["18deg", "-18deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-18deg", "18deg"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -41,62 +41,58 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[92vh] w-full flex flex-col justify-center items-center overflow-hidden px-6 pt-24 pb-16">
-      {/* 1. AMBIENT BACKGROUND GLOW & GEOMETRIC GRID */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] rounded-full bg-gradient-to-tr from-[#E9B826]/20 via-[#E63946]/10 to-transparent blur-[140px] pointer-events-none animate-pulse-glow" />
-      <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#E9B826]/10 blur-[100px] pointer-events-none" />
-
-      {/* 2. HERO CONTENT GRID */}
+    <section className="relative min-h-[92vh] w-full flex flex-col justify-center items-center overflow-hidden px-6 pt-24 pb-16 bg-[#0B0D18]">
+      {/* HERO CONTENT GRID */}
       <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* LEFT COLUMN: HERO TEXT & BADGES */}
         <div className="lg:col-span-7 text-left space-y-8">
           {/* Status Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#E9B826]/30 bg-[#0A0A0F]/80 backdrop-blur-xl shadow-[0_0_20px_rgba(233,184,38,0.1)]"
+            className="inline-flex items-center gap-3 px-4.5 py-2 rounded-full border border-[#FFC82C] bg-[#121526] font-azurio shadow-[0_0_20px_rgba(255,200,44,0.2)]"
           >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]" />
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-85" />
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#10B981]" />
             </span>
-            <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-gray-200">
+            <span className="text-xs font-mono tracking-[0.25em] uppercase text-white font-bold">
               {t("badge")}
             </span>
           </motion.div>
 
-          {/* Main Title */}
+          {/* Main Title - Achiko for main headings */}
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="space-y-2"
+            className="space-y-3"
           >
-            <span className="block text-xs font-mono text-[#E9B826] tracking-[0.4em] uppercase">
+            <span className="block text-xs font-azurio text-[#FFC82C] tracking-[0.45em] uppercase font-bold">
               CREATIVE DEVELOPER & UX ARCHITECT
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.92] text-white">
+            <h1 className="font-achiko text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.92] text-white">
               {t("title_top")}{" "}
-              <span className="block text-gold-shimmer font-serif italic mt-1">
+              <span className="block text-[#FFC82C] mt-1 drop-shadow-[0_0_25px_rgba(255,200,44,0.3)]">
                 {t("title_highlight")}
               </span>
             </h1>
           </motion.div>
 
-          {/* Subtitle / Description */}
+          {/* Subtitle / Description - Azurio for body */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-base md:text-lg text-gray-300 max-w-xl leading-relaxed border-l-2 border-[#E63946] pl-6 font-light"
+            className="font-azurio text-base md:text-xl text-gray-200 max-w-xl leading-relaxed border-l-3 border-[#FF3B56] pl-6 font-light"
           >
             {t.rich("description", {
               culture: (chunks) => (
-                <span className="text-[#E9B826] font-semibold">{chunks}</span>
+                <span className="text-[#FFC82C] font-bold">{chunks}</span>
               ),
               tech: (chunks) => (
-                <span className="text-white font-semibold">{chunks}</span>
+                <span className="text-white font-bold">{chunks}</span>
               ),
             })}
           </motion.p>
@@ -108,21 +104,24 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="flex flex-wrap items-center gap-4 pt-2"
           >
-            <Link
-              href="#projets"
-              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-[#E9B826] text-black font-bold text-xs font-mono tracking-widest uppercase rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(233,184,38,0.5)] active:scale-95"
-            >
-              <span className="relative z-10">{t("cta_projects")}</span>
-              <i className="pi pi-arrow-right relative z-10 group-hover:translate-x-1 transition-transform" />
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            </Link>
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="#projets"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm tracking-widest uppercase rounded-xl shadow-[0_0_25px_rgba(255,200,44,0.4)] transition-all duration-300"
+              >
+                <span className="relative z-10">{t("cta_projects")}</span>
+                <i className="pi pi-arrow-right relative z-10 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
 
-            <Link
-              href="#contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#0A0A0F]/70 border border-white/20 hover:border-[#E9B826] text-white font-bold text-xs font-mono tracking-widest uppercase rounded-lg backdrop-blur-md transition-all duration-300 hover:bg-white/5 active:scale-95"
-            >
-              {t("cta_contact")}
-            </Link>
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="#contact"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#121526] border border-white/30 hover:border-[#FFC82C] text-white font-achiko font-bold text-sm tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-white/10"
+              >
+                {t("cta_contact")}
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Live Key Performance Metrics Bar */}
@@ -130,32 +129,32 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg"
+            className="pt-6 grid grid-cols-3 gap-4 border-t border-white/20 max-w-lg font-azurio"
           >
-            <div>
-              <span className="block text-2xl md:text-3xl font-black text-[#E9B826] font-mono">
+            <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
+              <span className="block text-2xl md:text-3xl font-achiko font-black text-[#FFC82C]">
                 05+
               </span>
-              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest">
+              <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
                 Expérience (Ans)
               </span>
-            </div>
-            <div>
-              <span className="block text-2xl md:text-3xl font-black text-white font-mono">
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
+              <span className="block text-2xl md:text-3xl font-achiko font-black text-white">
                 25+
               </span>
-              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest">
+              <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
                 Projets Livrés
               </span>
-            </div>
-            <div>
-              <span className="block text-2xl md:text-3xl font-black text-[#E63946] font-mono">
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
+              <span className="block text-2xl md:text-3xl font-achiko font-black text-[#FF3B56]">
                 100%
               </span>
-              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest">
+              <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
                 Satisfaction UX
               </span>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -173,37 +172,36 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="relative w-80 h-96 md:w-96 md:h-[30rem] glass-card rounded-2xl p-4 cursor-pointer group"
+            className="relative w-80 h-96 md:w-96 md:h-[30rem] glass-card rounded-3xl p-4 cursor-pointer group shadow-[0_20px_50px_rgba(255,200,44,0.2)]"
           >
-            {/* Holographic Frame Corner Accents */}
-            <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-[#E9B826]" />
-            <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-[#E9B826]" />
-            <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#E63946]" />
-            <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#E63946]" />
+            {/* Luminous Frame Accents */}
+            <div className="absolute top-2 left-2 w-7 h-7 border-t-2 border-l-2 border-[#FFC82C]" />
+            <div className="absolute top-2 right-2 w-7 h-7 border-t-2 border-r-2 border-[#FFC82C]" />
+            <div className="absolute bottom-2 left-2 w-7 h-7 border-b-2 border-l-2 border-[#FF3B56]" />
+            <div className="absolute bottom-2 right-2 w-7 h-7 border-b-2 border-r-2 border-[#FF3B56]" />
 
             {/* Inner Image Wrapper */}
-            <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#0A0A0F] border border-white/10">
+            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0B0D18] border border-white/20">
               <Image
                 src="/mascote.png"
                 alt={t("alt_portrait")}
                 fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-transparent opacity-80" />
 
-              {/* Dynamic HUD Overlay Tag */}
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-lg bg-[#050508]/80 backdrop-blur-md border border-[#E9B826]/20 flex justify-between items-center">
+              {/* Dynamic Overlay Tag */}
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-[#0B0D18] border border-[#FFC82C]/50 flex justify-between items-center shadow-lg font-azurio">
                 <div>
-                  <span className="block text-[8px] font-mono text-gray-400 uppercase tracking-widest">
+                  <span className="block text-[9px] font-mono text-gray-300 uppercase tracking-widest font-bold">
                     MASCOT_IDENT
                   </span>
-                  <span className="block text-xs font-black text-[#E9B826] tracking-wider">
+                  <span className="block text-xs font-achiko font-black text-[#FFC82C] tracking-wider">
                     KINGTANG // V2.6
                   </span>
                 </div>
-                <div className="w-8 h-8 rounded-full border border-[#E9B826]/40 flex items-center justify-center bg-[#E9B826]/10">
-                  <i className="pi pi-bolt text-xs text-[#E9B826] animate-pulse" />
+                <div className="w-9 h-9 rounded-full border border-[#FFC82C] flex items-center justify-center bg-[#FFC82C]/20 shadow-[0_0_15px_#FFC82C]">
+                  <i className="pi pi-bolt text-sm text-[#FFC82C]" />
                 </div>
               </div>
             </div>

@@ -81,49 +81,56 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#050508] text-[#F5F5DC]">
+    <div className="min-h-screen relative overflow-hidden bg-[#0B0D18] text-[#F8F9FA] font-azurio">
       {/* 1. HERO SECTION */}
       <Hero />
 
       {/* 2. CREATIVE TECH & COMPETENCE MATRIX */}
-      <section className="py-24 px-6 max-w-7xl mx-auto relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="font-mono text-xs text-[#E9B826] tracking-[0.4em] uppercase block">
+      <section className="py-28 px-6 max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-3xl mx-auto mb-16 space-y-4"
+        >
+          <span className="font-azurio text-xs text-[#FFC82C] tracking-[0.4em] uppercase block font-bold">
             {"// CAPABILITÉS_SYSTEME"}
           </span>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight uppercase">
-            ARCHITECTURE & <span className="text-gold-shimmer">COMPÉTENCES</span>
+          <h2 className="font-achiko text-4xl md:text-6xl font-black tracking-tight uppercase">
+            ARCHITECTURE & <span className="text-[#FFC82C]">COMPÉTENCES</span>
           </h2>
-          <p className="text-gray-400 text-sm md:text-base font-light leading-relaxed">
+          <p className="font-azurio text-gray-300 text-sm md:text-base font-light leading-relaxed">
             Combinaison de rigueur technique logicielle et d&apos;exploration créative pour concevoir des expériences numériques d&apos;exception.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {skillMatrix.map((skill, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="glass-card rounded-xl p-8 flex flex-col justify-between group hover:border-[#E9B826]/50"
+              className="glass-card rounded-2xl p-8 flex flex-col justify-between group hover:border-[#FFC82C] shadow-lg"
             >
               <div>
-                <div className="w-12 h-12 rounded-lg bg-[#E9B826]/10 border border-[#E9B826]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#E9B826] group-hover:text-black transition-all">
-                  <i className={`pi pi-${skill.icon} text-xl text-[#E9B826] group-hover:text-black`} />
+                <div className="w-14 h-14 rounded-xl bg-[#FFC82C]/15 border border-[#FFC82C]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#FFC82C] group-hover:text-black transition-all shadow-[0_0_20px_rgba(255,200,44,0.2)]">
+                  <i className={`pi pi-${skill.icon} text-2xl text-[#FFC82C] group-hover:text-black`} />
                 </div>
-                <h3 className="text-xl font-bold uppercase tracking-tight text-white mb-3 group-hover:text-[#E9B826] transition-colors">
+                <h3 className="font-achiko text-xl font-bold uppercase tracking-tight text-white mb-3 group-hover:text-[#FFC82C] transition-colors">
                   {skill.title}
                 </h3>
-                <p className="text-xs text-gray-400 font-light leading-relaxed mb-6">
+                <p className="font-azurio text-xs text-gray-300 font-light leading-relaxed mb-6">
                   {skill.desc}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/10">
+              <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/10 font-azurio">
                 {skill.techs.map((tech) => (
-                  <span key={tech} className="text-[9px] font-mono border border-white/10 px-2 py-1 rounded bg-white/5 text-gray-300">
+                  <span key={tech} className="text-[9.5px] border border-white/15 px-2.5 py-1 rounded-md bg-white/5 text-gray-200 font-bold">
                     {tech}
                   </span>
                 ))}
@@ -136,21 +143,22 @@ export default function Home() {
       {/* 3. PROJECTS SHOWCASE SECTION */}
       <section id="projets" className="py-28 px-6 max-w-7xl mx-auto relative z-10 border-t border-white/10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div>
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="font-mono text-xs tracking-[0.4em] text-[#E9B826] uppercase block mb-3"
-            >
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="font-azurio text-xs tracking-[0.4em] text-[#FFC82C] uppercase block mb-3 font-bold">
               {t("projects.label")}
-            </motion.span>
-            <h2 className="text-4xl md:text-7xl font-black tracking-tight uppercase">
-              {t("projects.title_part1")} <span className="text-[#E9B826]">{t("projects.title_part2")}</span>
+            </span>
+            <h2 className="font-achiko text-4xl md:text-7xl font-black tracking-tight uppercase">
+              {t("projects.title_part1")} <span className="text-[#FFC82C]">{t("projects.title_part2")}</span>
             </h2>
-          </div>
+          </motion.div>
 
           {/* Category Filter Tabs */}
-          <div className="flex flex-wrap gap-2 border border-white/15 p-1.5 rounded-lg bg-[#0A0A0F]/80 backdrop-blur-md">
+          <div className="flex flex-wrap gap-2 border border-white/20 p-1.5 rounded-xl bg-[#121526] shadow-md font-azurio">
             {[
               { id: "all", label: "TOUS" },
               { id: "web", label: "WEB_SYSTEMS" },
@@ -160,10 +168,10 @@ export default function Home() {
               <button
                 key={tab.id}
                 onClick={() => setActiveCategory(tab.id)}
-                className={`px-4 py-2 rounded-md text-[10px] font-mono tracking-widest transition-all ${
+                className={`px-4.5 py-2.5 rounded-lg text-[10.5px] tracking-widest transition-all font-bold ${
                   activeCategory === tab.id
-                    ? "bg-[#E9B826] text-black font-bold shadow-[0_0_15px_rgba(233,184,38,0.4)]"
-                    : "text-gray-400 hover:text-white"
+                    ? "bg-[#FFC82C] text-black shadow-[0_0_20px_rgba(255,200,44,0.4)]"
+                    : "text-gray-300 hover:text-white"
                 }`}
               >
                 {tab.label}
@@ -177,18 +185,19 @@ export default function Home() {
           {filteredProjects.map((projet, index) => (
             <motion.div
               key={projet.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.12 }}
+              whileHover={{ y: -6 }}
+              transition={{ delay: index * 0.12, duration: 0.5 }}
               viewport={{ once: true }}
-              className="glass-card rounded-2xl overflow-hidden flex flex-col group h-full border border-white/10 hover:border-[#E9B826]/60 transition-all duration-500"
+              className="glass-card rounded-2xl overflow-hidden flex flex-col group h-full border border-white/15 hover:border-[#FFC82C] transition-all duration-500 shadow-xl"
             >
               {/* Card Header Status */}
-              <div className="p-6 flex justify-between items-center z-10 border-b border-white/5 bg-[#0A0A0F]/50">
-                <span className="font-mono text-xs text-[#E9B826] font-bold">PROJET // {projet.id}</span>
-                <div className="flex items-center gap-2 px-2.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10">
+              <div className="p-6 flex justify-between items-center z-10 border-b border-white/10 bg-[#121526]">
+                <span className="font-azurio text-xs text-[#FFC82C] font-bold">PROJET // {projet.id}</span>
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 font-azurio">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="text-[9px] font-mono uppercase tracking-widest text-emerald-400">
+                  <span className="text-[9.5px] uppercase tracking-widest text-emerald-400 font-bold">
                     {projet.isCompleted ? t("projects.status_ready") : t("projects.status_progress")}
                   </span>
                 </div>
@@ -200,27 +209,26 @@ export default function Home() {
                   src={projet.image}
                   alt={t(`projects.items.${projet.titleKey}.title`)}
                   fill
-                  className="object-cover opacity-70 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                  className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-transparent opacity-90" />
               </div>
 
               {/* Card Content Body */}
               <div className="p-6 flex flex-col flex-grow justify-between space-y-6">
                 <div>
-                  <h3 className="text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#E9B826] transition-colors mb-2">
+                  <h3 className="font-achiko text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#FFC82C] transition-colors mb-2">
                     {t(`projects.items.${projet.titleKey}.title`)}
                   </h3>
-                  <p className="text-xs text-gray-400 font-mono leading-relaxed uppercase">
+                  <p className="font-azurio text-xs text-gray-300 leading-relaxed uppercase">
                     &rdquo;{t(`projects.items.${projet.titleKey}.description`)}&rdquo;
                   </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 font-azurio">
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1.5">
                     {projet.tags.map((tag) => (
-                      <span key={tag} className="text-[9px] font-mono border border-white/10 px-2 py-1 rounded bg-white/5 text-gray-300">
+                      <span key={tag} className="text-[9.5px] border border-white/15 px-2.5 py-1 rounded-md bg-white/5 text-gray-200 font-bold">
                         {tag}
                       </span>
                     ))}
@@ -232,7 +240,7 @@ export default function Home() {
                       href={projet.projectLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-[#E9B826] hover:gap-3 transition-all"
+                      className="inline-flex items-center gap-2 text-xs font-azurio font-bold tracking-widest uppercase text-[#FFC82C] hover:gap-3 transition-all"
                     >
                       {t("projects.access_grant")}
                       <i className="pi pi-arrow-right text-xs" />
@@ -240,7 +248,7 @@ export default function Home() {
 
                     <button
                       onClick={() => setSelectedProjectModal(projet)}
-                      className="p-2 rounded-lg border border-white/10 hover:border-[#E9B826] text-gray-400 hover:text-white transition-all"
+                      className="p-2.5 rounded-lg border border-white/15 hover:border-[#FFC82C] text-gray-300 hover:text-white transition-all bg-white/5"
                       title="Aperçu Rapide"
                     >
                       <i className="pi pi-eye text-sm" />
@@ -253,52 +261,58 @@ export default function Home() {
         </div>
 
         {/* View All Archive Link */}
-        <div className="mt-16 text-center">
+        <div className="mt-16 text-center font-azurio">
           <Link
             href="/PROJECT"
-            className="inline-flex items-center gap-4 text-xs font-mono tracking-[0.3em] uppercase text-white hover:text-[#E9B826] group transition-all"
+            className="inline-flex items-center gap-4 text-xs tracking-[0.3em] uppercase text-white hover:text-[#FFC82C] group transition-all font-bold"
           >
-            <span className="h-[1px] w-12 bg-gray-600 group-hover:w-20 group-hover:bg-[#E9B826] transition-all" />
+            <span className="h-[1.5px] w-12 bg-gray-500 group-hover:w-20 group-hover:bg-[#FFC82C] transition-all" />
             {t("projects.view_archive")}
           </Link>
         </div>
       </section>
 
       {/* 4. CULTURAL FUSION & AFRO-FUTURISTIC CORE */}
-      <section className="relative py-32 overflow-hidden border-y border-white/10 bg-gradient-to-b from-[#050508] via-[#0A0A0F] to-[#050508]">
+      <section className="relative py-32 overflow-hidden border-y border-white/10 bg-[#121526]">
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-          <span className="font-mono text-xs text-[#E63946] tracking-[0.4em] uppercase block mb-4">
+          <span className="font-azurio text-xs text-[#FF3B56] tracking-[0.4em] uppercase block mb-4 font-bold">
             {"// PHILOSOPHIE_ET_HERITAGE"}
           </span>
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 leading-tight">
+          <h2 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 leading-tight">
             {t("fusion.title")}
           </h2>
 
-          <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-16 font-light">
+          <p className="font-azurio text-base md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-16 font-light">
             {t("fusion.description")}
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 font-azurio">
             {[
               { label: "ORIGINE", val: t("fusion.stats.origin"), icon: "flag" },
               { label: "MÉDIUM", val: t("fusion.stats.medium"), icon: "palette" },
               { label: "HÉRITAGE", val: t("fusion.stats.legacy"), icon: "history" },
               { label: "VISION", val: t("fusion.stats.vision"), icon: "bolt" },
             ].map((item, i) => (
-              <div key={i} className="glass-card p-6 rounded-xl flex flex-col items-center group">
-                <i className={`pi pi-${item.icon} text-xl text-[#E9B826] mb-3 group-hover:scale-125 transition-transform`} />
-                <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest mb-1">{item.label}</span>
-                <span className="text-sm font-bold uppercase text-white tracking-wider">{item.val}</span>
-              </div>
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05 }}
+                className="glass-card p-6 rounded-2xl flex flex-col items-center group shadow-md"
+              >
+                <i className={`pi pi-${item.icon} text-2xl text-[#FFC82C] mb-3 group-hover:scale-125 transition-transform`} />
+                <span className="text-[9.5px] text-gray-300 uppercase tracking-widest mb-1 font-bold">{item.label}</span>
+                <span className="text-sm font-achiko font-bold uppercase text-white tracking-wider">{item.val}</span>
+              </motion.div>
             ))}
           </div>
 
-          <Link
-            href="/CULTURE"
-            className="px-10 py-4 bg-[#E9B826] text-black font-bold text-xs font-mono uppercase tracking-[0.2em] rounded-lg hover:shadow-[0_0_30px_rgba(233,184,38,0.5)] transition-all inline-block active:scale-95"
-          >
-            {t("fusion.cta")}
-          </Link>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block font-achiko">
+            <Link
+              href="/CULTURE"
+              className="px-10 py-4 bg-[#FFC82C] text-black font-bold text-sm tracking-[0.2em] rounded-xl shadow-[0_0_25px_rgba(255,200,44,0.4)] transition-all inline-block"
+            >
+              {t("fusion.cta")}
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -310,26 +324,26 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProjectModal(null)}
-            className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-xl flex items-center justify-center p-6"
+            className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-xl flex items-center justify-center p-6 font-azurio"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass-panel max-w-2xl w-full rounded-2xl overflow-hidden border border-[#E9B826]/40 p-8 space-y-6"
+              className="glass-panel max-w-2xl w-full rounded-3xl overflow-hidden border border-[#FFC82C] p-8 space-y-6 shadow-2xl"
             >
-              <div className="flex justify-between items-center border-b border-white/10 pb-4">
-                <span className="font-mono text-xs text-[#E9B826]">DÉTAILS_PROJET // {selectedProjectModal.id}</span>
+              <div className="flex justify-between items-center border-b border-white/15 pb-4">
+                <span className="font-azurio text-xs text-[#FFC82C] font-bold">DÉTAILS_PROJET // {selectedProjectModal.id}</span>
                 <button
                   onClick={() => setSelectedProjectModal(null)}
-                  className="text-gray-400 hover:text-white p-1"
+                  className="text-gray-300 hover:text-white p-1"
                 >
                   <i className="pi pi-times text-xl" />
                 </button>
               </div>
 
-              <div className="relative h-60 rounded-xl overflow-hidden border border-white/10">
+              <div className="relative h-60 rounded-2xl overflow-hidden border border-white/15">
                 <Image
                   src={selectedProjectModal.image}
                   alt={selectedProjectModal.id}
@@ -339,22 +353,22 @@ export default function Home() {
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-2xl font-black uppercase text-white">
+                <h3 className="font-achiko text-2xl font-black uppercase text-white">
                   {t(`projects.items.${selectedProjectModal.titleKey}.title`)}
                 </h3>
-                <p className="text-xs text-gray-300 leading-relaxed font-mono">
+                <p className="font-azurio text-xs text-gray-200 leading-relaxed">
                   {t(`projects.items.${selectedProjectModal.titleKey}.description`)}
                 </p>
 
-                <div className="p-4 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-[#E9B826]">
+                <div className="p-4 rounded-xl bg-white/10 border border-white/15 text-xs font-azurio text-[#FFC82C] font-bold">
                   ⚡ Metrics: {selectedProjectModal.metrics}
                 </div>
               </div>
 
-              <div className="flex justify-end gap-4 pt-4 border-t border-white/10">
+              <div className="flex justify-end gap-4 pt-4 border-t border-white/15">
                 <button
                   onClick={() => setSelectedProjectModal(null)}
-                  className="px-6 py-3 rounded-lg border border-white/20 text-xs font-mono uppercase hover:bg-white/5"
+                  className="px-6 py-3 rounded-xl border border-white/25 text-xs font-azurio uppercase hover:bg-white/10 text-white font-bold"
                 >
                   Fermer
                 </button>
@@ -362,7 +376,7 @@ export default function Home() {
                   href={selectedProjectModal.projectLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg bg-[#E9B826] text-black text-xs font-bold font-mono uppercase tracking-wider hover:shadow-[0_0_20px_rgba(233,184,38,0.4)]"
+                  className="px-6 py-3 rounded-xl bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]"
                 >
                   Accéder au Projet Live
                 </a>
