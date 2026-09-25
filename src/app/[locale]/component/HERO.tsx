@@ -1,146 +1,215 @@
-'use client'
-import React from 'react';
-import Image from 'next/image';
-import { Link } from '@/i18n/navigation'; 
-import { useTranslations } from 'next-intl';
+"use client";
 
-const colors = {
-  gold: '#E9B826',
-  red: '#BB141A',
-  green: '#2D5D2A',
-  dark: '#0A0A0A',
-  light: '#F5F5DC'
-};
+import React, { useRef } from "react";
+import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
-const Hero = () => {
-  const t = useTranslations('Hero');
+export default function Hero() {
+  const t = useTranslations("Hero");
+
+  // 3D Card Parallax Tilt Effect
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <section className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden px-6"
-             style={{ backgroundColor: colors.dark, color: colors.light }}>
-      
-      {/* --- 1. BACKGROUND ARCHITECTURE --- */}
-      <div className="absolute inset-0 z-0 opacity-10"
-           style={{ maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)' }}>
-        <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="grid-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke={colors.light} strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-        </svg>
-      </div>
+    <section className="relative min-h-[92vh] w-full flex flex-col justify-center items-center overflow-hidden px-6 pt-24 pb-16">
+      {/* 1. AMBIENT BACKGROUND GLOW & GEOMETRIC GRID */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] rounded-full bg-gradient-to-tr from-[#E9B826]/20 via-[#E63946]/10 to-transparent blur-[140px] pointer-events-none animate-pulse-glow" />
+      <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-[#E9B826]/10 blur-[100px] pointer-events-none" />
 
-      {/* Lueurs d'ambiance */}
-      <div className="absolute top-[-10%] left-[-5%] w-96 h-96 rounded-full blur-[120px] opacity-20 animate-pulse" 
-           style={{ backgroundColor: colors.gold }} />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-15 animate-float" 
-           style={{ backgroundColor: colors.red }} />
-
-      {/* --- 2. MAIN LAYOUT --- */}
-      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        
-        {/* COLONNE GAUCHE */}
-        <div className="text-left space-y-8">
-          
-          {/* Badge de disponibilité */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md animate-fade-in">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: colors.green }}></span>
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: colors.green }}></span>
+      {/* 2. HERO CONTENT GRID */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* LEFT COLUMN: HERO TEXT & BADGES */}
+        <div className="lg:col-span-7 text-left space-y-8">
+          {/* Status Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#E9B826]/30 bg-[#0A0A0F]/80 backdrop-blur-xl shadow-[0_0_20px_rgba(233,184,38,0.1)]"
+          >
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]" />
             </span>
-            <span className="text-xs font-mono tracking-widest uppercase opacity-80">
-              {t('badge')}
+            <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-gray-200">
+              {t("badge")}
             </span>
-          </div>
+          </motion.div>
 
-          {/* Titre Principal */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-fade-in-up">
-            {t('title_top')} <br />
-            <span style={{ 
-              backgroundImage: `linear-gradient(to right, ${colors.gold}, ${colors.light})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              {t('title_highlight')}
+          {/* Main Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="space-y-2"
+          >
+            <span className="block text-xs font-mono text-[#E9B826] tracking-[0.4em] uppercase">
+              CREATIVE DEVELOPER & UX ARCHITECT
             </span>
-          </h1>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.92] text-white">
+              {t("title_top")}{" "}
+              <span className="block text-gold-shimmer font-serif italic mt-1">
+                {t("title_highlight")}
+              </span>
+            </h1>
+          </motion.div>
 
-          {/* Description avec formatage riche */}
-          <p className="text-lg text-gray-400 max-w-lg leading-relaxed border-l-2 pl-6 animate-fade-in-up delay-100"
-             style={{ borderColor: colors.red }}>
-            {t.rich('description', {
-              culture: (chunks) => <span className="text-white font-medium">{chunks}</span>,
-              tech: (chunks) => <span className="text-white font-medium">{chunks}</span>
+          {/* Subtitle / Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-base md:text-lg text-gray-300 max-w-xl leading-relaxed border-l-2 border-[#E63946] pl-6 font-light"
+          >
+            {t.rich("description", {
+              culture: (chunks) => (
+                <span className="text-[#E9B826] font-semibold">{chunks}</span>
+              ),
+              tech: (chunks) => (
+                <span className="text-white font-semibold">{chunks}</span>
+              ),
             })}
-          </p>
+          </motion.p>
 
-          {/* Boutons d'action */}
-          <div className="flex flex-wrap gap-4 animate-fade-in-up delay-200">
-            <Link href="#projets" 
-               className="px-8 py-4 font-bold rounded-sm transition-all hover:-translate-y-1 active:scale-95 duration-200 flex items-center gap-2"
-               style={{ backgroundColor: colors.gold, color: colors.dark }}>
-              {t('cta_projects')} <i className="pi pi-arrow-right"></i>
+          {/* Action CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="flex flex-wrap items-center gap-4 pt-2"
+          >
+            <Link
+              href="#projets"
+              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-[#E9B826] text-black font-bold text-xs font-mono tracking-widest uppercase rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(233,184,38,0.5)] active:scale-95"
+            >
+              <span className="relative z-10">{t("cta_projects")}</span>
+              <i className="pi pi-arrow-right relative z-10 group-hover:translate-x-1 transition-transform" />
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </Link>
-            
-            <Link href="#contact" 
-               className="px-8 py-4 font-bold rounded-sm border hover:bg-white/5 transition-all hover:-translate-y-1 active:scale-95 duration-200"
-               style={{ borderColor: 'rgba(255,255,255,0.2)', color: colors.light }}>
-              {t('cta_contact')}
-            </Link>
-          </div>
-        </div>
 
-        {/* COLONNE DROITE */}
-        <div className="relative flex justify-center items-center lg:justify-end animate-fade-in delay-300">
-          <div className="relative w-80 h-96 md:w-[28rem] md:h-[34rem]">
-            <div className="absolute top-[-20px] right-[-20px] w-24 h-24 border-t-4 border-r-4"
-                 style={{ borderColor: colors.gold }} />
-            <div className="absolute bottom-[-20px] left-[-20px] w-24 h-24 border-b-4 border-l-4"
-                 style={{ borderColor: colors.red }} />
-            
-            <div className="relative w-full h-full bg-gray-900 overflow-hidden shadow-2xl group">
-              <Image 
-                src="/mascote.png"  
-                alt={t('alt_portrait')}
-                fill
-                className="object-cover transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+            <Link
+              href="#contact"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#0A0A0F]/70 border border-white/20 hover:border-[#E9B826] text-white font-bold text-xs font-mono tracking-widest uppercase rounded-lg backdrop-blur-md transition-all duration-300 hover:bg-white/5 active:scale-95"
+            >
+              {t("cta_contact")}
+            </Link>
+          </motion.div>
+
+          {/* Live Key Performance Metrics Bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg"
+          >
+            <div>
+              <span className="block text-2xl md:text-3xl font-black text-[#E9B826] font-mono">
+                05+
+              </span>
+              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest">
+                Expérience (Ans)
+              </span>
             </div>
-          </div>
+            <div>
+              <span className="block text-2xl md:text-3xl font-black text-white font-mono">
+                25+
+              </span>
+              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest">
+                Projets Livrés
+              </span>
+            </div>
+            <div>
+              <span className="block text-2xl md:text-3xl font-black text-[#E63946] font-mono">
+                100%
+              </span>
+              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest">
+                Satisfaction UX
+              </span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* RIGHT COLUMN: INTERACTIVE 3D TILT MASCOT CARD */}
+        <div className="lg:col-span-5 flex justify-center items-center">
+          <motion.div
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative w-80 h-96 md:w-96 md:h-[30rem] glass-card rounded-2xl p-4 cursor-pointer group"
+          >
+            {/* Holographic Frame Corner Accents */}
+            <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-[#E9B826]" />
+            <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-[#E9B826]" />
+            <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#E63946]" />
+            <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#E63946]" />
+
+            {/* Inner Image Wrapper */}
+            <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#0A0A0F] border border-white/10">
+              <Image
+                src="/mascote.png"
+                alt={t("alt_portrait")}
+                fill
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-transparent opacity-80" />
+
+              {/* Dynamic HUD Overlay Tag */}
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-lg bg-[#050508]/80 backdrop-blur-md border border-[#E9B826]/20 flex justify-between items-center">
+                <div>
+                  <span className="block text-[8px] font-mono text-gray-400 uppercase tracking-widest">
+                    MASCOT_IDENT
+                  </span>
+                  <span className="block text-xs font-black text-[#E9B826] tracking-wider">
+                    KINGTANG // V2.6
+                  </span>
+                </div>
+                <div className="w-8 h-8 rounded-full border border-[#E9B826]/40 flex items-center justify-center bg-[#E9B826]/10">
+                  <i className="pi pi-bolt text-xs text-[#E9B826] animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* --- SCROLL INDICATOR --- */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-fade-in delay-300">
-        <span className="text-[10px] font-mono uppercase tracking-[0.2em] opacity-50">{t('scroll')}</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white to-transparent opacity-30" />
-      </div>
-
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0); }
-          50% { transform: translate(10px, -20px); }
-        }
-        .animate-fade-in-up { animation: fade-in-up 1s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
-        .animate-fade-in { animation: fade-in 1.5s ease-out forwards; }
-        .animate-float { animation: float 10s ease-in-out infinite; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 400ms; }
-      `}</style>
     </section>
   );
-};
-
-export default Hero;
+}

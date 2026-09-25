@@ -1,78 +1,187 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050508;
+  --foreground: #F5F5DC;
+  --gold-primary: #E9B826;
+  --gold-accent: #FFD700;
+  --gold-dark: #B38600;
+  --gold-glow: rgba(233, 184, 38, 0.25);
+  --crimson-accent: #E63946;
+  --crimson-dark: #BB141A;
+  --emerald-accent: #10B981;
+  --surface-card: rgba(15, 15, 23, 0.75);
+  --surface-glass: rgba(10, 10, 15, 0.85);
+  --border-glass: rgba(233, 184, 38, 0.18);
 }
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* 🎨 Couleurs personnalisées */
-  --color-primary-red: #D32F2F;
-  --color-primary-gold: #FFC107;
-  --color-primary-black: #000000;
-  --color-primary-green: #4CAF50;
+  /* Couleurs Afro-Futuristes */
+  --color-gold-primary: #E9B826;
+  --color-gold-accent: #FFD700;
+  --color-crimson-accent: #E63946;
+  --color-emerald-accent: #10B981;
+  --color-surface-dark: #0A0A0F;
 
-  /* 🖋 Polices */
-  --font-sans: Arial, Helvetica, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  /* Polices de haute précision */
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Syne', 'Space Grotesk', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-serif: 'Cinzel', serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base resets & theme setting */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
-
 
 body {
-  @apply font-sans text-foreground bg-gradient-to-br from-primary-red to-primary-gold bg-[url('/images/pattern.jpg')] bg-[length:200px_200px] text-white;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  selection-background-color: var(--gold-primary);
+  selection-color: #000;
 }
 
+::selection {
+  background: var(--gold-primary);
+  color: #050508;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(13, 13, 20, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(233, 184, 38, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.85) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(233, 184, 38, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(233, 184, 38, 0.4);
+  box-shadow: 0 15px 35px rgba(233, 184, 38, 0.15), inset 0 0 20px rgba(233, 184, 38, 0.05);
+  transform: translateY(-4px);
+}
+
+/* Typography Gradient Effects */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFF6D6 0%, #E9B826 50%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-shimmer {
+  background: linear-gradient(90deg, #E9B826 0%, #FFF 50%, #E9B826 100%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+/* Glow Utilities */
+.glow-gold {
+  box-shadow: 0 0 25px rgba(233, 184, 38, 0.35);
+}
+
+.glow-crimson {
+  box-shadow: 0 0 25px rgba(230, 57, 70, 0.35);
+}
+
+.glow-text-gold {
+  text-shadow: 0 0 20px rgba(233, 184, 38, 0.5);
+}
+
+/* Geometric Patterns */
 .ndop-pattern {
-    background-image: radial-gradient(circle, #E9B826 1px, transparent 2px);
-    background-size: 20px 20px;
+  background-image: radial-gradient(circle, rgba(233, 184, 38, 0.25) 1px, transparent 1.5px);
+  background-size: 24px 24px;
 }
 
 .adinkra-pattern {
-    background-image:
-            linear-gradient(
-                    30deg,
-                    #BB141A33 25%,
-                    transparent 25%,
-                    transparent 75%,
-                    #BB141A33 75%,
-                    #BB141A33
-            ),
-            linear-gradient(
-                    30deg,
-                    #BB141A33 25%,
-                    transparent 25%,
-                    transparent 75%,
-                    #BB141A33 75%,
-                    #BB141A33
-            );
-    background-size: 30px 30px;
-    background-position: 0 0, 15px 15px;
+  background-image:
+    linear-gradient(45deg, rgba(230, 57, 70, 0.08) 25%, transparent 25%, transparent 75%, rgba(230, 57, 70, 0.08) 75%),
+    linear-gradient(45deg, rgba(230, 57, 70, 0.08) 25%, transparent 25%, transparent 75%, rgba(230, 57, 70, 0.08) 75%);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
 }
 
-.wax-pattern {
-    background-image:
-            linear-gradient(#8A5C2E33 1px, transparent 1px),
-            linear-gradient(90deg, #8A5C2E33 1px, transparent 1px);
-    background-size: 15px 15px;
+.cyber-grid {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(233, 184, 38, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(233, 184, 38, 0.05) 1px, transparent 1px);
 }
 
-/* Animation flottante */
+/* Animated Keyframes */
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
 }
 
-.group:hover .ndop-pattern {
-    animation: float 3s ease-in-out infinite;
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.08); }
 }
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.3) 51%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050508;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(233, 184, 38, 0.3);
+  border-radius: 4px;
+  border: 2px solid #050508;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(233, 184, 38, 0.7);
+}
+

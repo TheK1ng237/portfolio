@@ -3,36 +3,31 @@ import Script from 'next/script';
 import Footer from './component/FOOTER';
 import LogoIntro from './component/LogoIntro';
 import Navigation from './component/NAV';
+import BackgroundCanvas from './component/BackgroundCanvas';
+import CustomCursor from './component/CustomCursor';
 import '../globals.css';
-import { Roboto, Playfair_Display, Ubuntu } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import {notFound} from 'next/navigation';
-import {routing} from '@/i18n/routing';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 import { getMessages } from 'next-intl/server';
 
-// --- Configuration des Polices ---
-const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-roboto' });
-const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-playfair' });
-const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-ubuntu' });
-
-// --- Métadonnées SEO ---
 export const metadata: Metadata = {
   metadataBase: new URL('https://kingtang.vercel.app'),
   title: {
-    default: 'KingTang Portfolio | Full stack Developer & UX Designer',
+    default: 'KingTang Portfolio | Creative Developer & UX Architect',
     template: '%s | KingTang',
   },
-  description: "Portfolio de KingTang, développeur frontend spécialisé en React/Next.js et UX Designer. Découvrez mes projets innovants et mon approche de l'innovation culturelle.",
-  keywords: ['Full stack Developer', 'UX Designer', 'Next.js', 'React', 'Portfolio', 'KingTang', 'Innovation Culturelle', 'Web Design'],
+  description: "Portfolio Afro-Futuriste de KingTang, Creative Developer & UX Architect. Interfaces réactives, ingénierie logicielle et innovation culturelle.",
+  keywords: ['Creative Developer', 'UX Architect', 'Next.js', 'React', 'Portfolio', 'KingTang', 'Afro-Futurism', 'Web Design'],
   authors: [{ name: 'KingTang' }],
   creator: 'KingTang',
-  
+
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
     url: 'https://kingtang.vercel.app',
-    title: 'KingTang | Portfolio - Full stack & UX Design',
-    description: "Explorez l'univers numérique de KingTang. Développement moderne et design centré utilisateur.",
+    title: 'KingTang | Creative Developer & UX Architect',
+    description: "Interfaces immersives de haute précision, ingénierie web moderne et héritage culturel.",
     siteName: 'KingTang Portfolio',
     images: [
       {
@@ -46,9 +41,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'KingTang | Full stack Developer',
-    description: 'Full stack Developer & UX Designer passionné par l\'innovation.',
-    images: ['/mascote.png'], 
+    title: 'KingTang | Creative Developer',
+    description: 'Creative Developer & UX Architect passionné par l\'innovation immersive.',
+    images: ['/mascote.png'],
     creator: '@mfalme369',
   },
 
@@ -68,53 +63,55 @@ const jsonLd = {
   '@type': 'Person',
   name: 'KingTang',
   url: 'https://kingtang.vercel.app',
-  jobTitle: 'Full stack Developer & UX Designer',
-  description: 'Spécialiste en création d’interfaces modernes et innovateur culturel.',
+  jobTitle: 'Creative Developer & UX Architect',
+  description: 'Créateur d’expériences numériques immersives et innovateur culturel.',
   sameAs: [
-    'https://github.com/TangB5', 
-    'https://linkedin.com/in/ndoh-yannick-tang-5b004934a', 
+    'https://github.com/TangB5',
+    'https://linkedin.com/in/ndoh-yannick-tang-5b004934a',
     'https://instagram.com/kingtang337'
   ],
-  knowsAbout: ['React', 'Next.js', 'UX Design', 'Web Development', 'Tailwind CSS','full stack'],
+  knowsAbout: ['React', 'Next.js', 'UX Design', 'Creative Coding', 'Tailwind CSS', 'Fullstack Engineering'],
 };
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
+  params: Promise<{ locale: string }>;
 };
- 
 
-export default async function LocaleLayout({children, params}: Props) {
+export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
-  
+
   if (!routing.locales.includes(locale as "fr" | "en")) {
     notFound();
   }
 
-  const messages = await getMessages({locale});
+  const messages = await getMessages({ locale });
 
   return (
-    <>
-      <Script
-        id="structured-data"
-        type="application/ld+json"
-        strategy="afterInteractive"
-      >
-        {JSON.stringify(jsonLd)}
-      </Script>
-
-      <div className={`${roboto.variable} ${playfair.variable} ${ubuntu.variable} antialiased min-h-screen flex flex-col`} lang={locale}>
+    <html lang={locale} className="dark">
+      <head>
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
+          {JSON.stringify(jsonLd)}
+        </Script>
+      </head>
+      <body className="bg-[#050508] text-[#F5F5DC] antialiased min-h-screen flex flex-col selection:bg-[#E9B826] selection:text-black">
         <NextIntlClientProvider messages={messages} locale={locale}>
+          <CustomCursor />
+          <BackgroundCanvas />
           <Navigation />
           <LogoIntro />
-          
-          <main className="flex-grow">
+
+          <main className="flex-grow z-10 relative">
             {children}
           </main>
-        
+
           <Footer />
         </NextIntlClientProvider>
-      </div>
-    </>
+      </body>
+    </html>
   );
 }

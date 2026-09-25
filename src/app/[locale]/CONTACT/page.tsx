@@ -1,26 +1,19 @@
-'use client'
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslations } from 'next-intl';
-import 'primeicons/primeicons.css';
-import Plan from '../component/arrierplan';
+"use client";
 
-const colors = {
-  primary: '#E9B826',
-  secondary: '#BB141A',
-  tertiary: '#2D5D2A',
-  dark: '#0A0A0A',
-  light: '#F5F5DC',
-  border: 'rgba(245, 245, 220, 0.1)'
-};
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
+import "primeicons/primeicons.css";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
-  const t = useTranslations('ContactPage');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -32,174 +25,173 @@ export default function Contact() {
       setSubmitStatus("success");
       setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setSubmitStatus(null), 5000);
-    }, 2000);
+    }, 1500);
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(label);
+    setTimeout(() => setCopiedField(null), 2500);
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: colors.dark, color: colors.light }}>
-      
-      {/* --- BACKGROUND LAYER --- */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <Plan />
-      </div>
+    <div className="min-h-screen relative overflow-hidden bg-[#050508] text-[#F5F5DC] pt-28 pb-24">
+      {/* Background Decor */}
+      <div className="absolute inset-0 cyber-grid pointer-events-none opacity-40" />
+      <div className="absolute top-20 left-10 w-96 h-96 bg-[#E9B826]/10 blur-[170px] pointer-events-none rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-6 pt-32 pb-20 relative z-10">
-        
-        {/* --- HERO: BRIDGE PROTOCOL --- */}
-        <div className="mb-20">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="font-mono text-[10px] tracking-[0.5em] text-gray-500 mb-4 uppercase"
-          >
-           {t('hero.protocol')}
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-6"
-          >
-            {t('hero.title_main')} <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, #FFF)` }}>{t('hero.title_highlight')}</span>
-          </motion.h1>
-          <p className="max-w-xl text-gray-400 text-lg border-l-2 pl-6" style={{ borderColor: colors.secondary }}>
-            {t('hero.description')}
+      <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-16">
+        {/* HERO */}
+        <div className="space-y-4">
+          <span className="font-mono text-xs text-[#E9B826] tracking-[0.4em] uppercase block">
+            {"// INITIER_UN_CANAL_DE_COMMUNICATION"}
+          </span>
+          <h1 className="text-5xl md:text-8xl font-black tracking-tight uppercase text-white leading-[0.9]">
+            INITIALISER <span className="text-gold-shimmer font-serif italic">LE CONTACT</span>
+          </h1>
+          <p className="max-w-2xl text-base md:text-lg text-gray-300 font-light leading-relaxed border-l-2 border-[#E63946] pl-6">
+            Une idée de projet, une refonte UI/UX ou une opportunité de collaboration ? Envoyez un message ou utilisez nos canaux directs.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-1 px-1 bg-white/5 border border-white/10">
-          
-          {/* --- LEFT: THE TERMINAL (FORM) --- */}
-          <div className="bg-[#0A0A0A] p-8 md:p-12 border border-white/5">
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: colors.primary }} />
-              <span className="font-mono text-[10px] tracking-widest uppercase opacity-50">{t('form.section_title')}</span>
+        {/* MAIN GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* LEFT: FORM TERMINAL */}
+          <div className="lg:col-span-7 glass-card p-8 md:p-10 rounded-2xl border border-white/10">
+            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/10">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E9B826] animate-pulse" />
+              <span className="font-mono text-xs text-gray-300 uppercase tracking-widest font-bold">
+                TERMINAL_MESSAGERIE
+              </span>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="group relative">
-                <label className="text-[10px] font-mono text-gray-500 uppercase mb-2 block">{t('form.name_label')}</label>
-                <input 
-                  type="text" name="name" value={formData.name} onChange={handleChange} required
-                  placeholder={t('form.name_placeholder')}
-                  className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-primary transition-colors font-bold tracking-tight"
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-xs font-mono text-gray-400 uppercase tracking-wider block">
+                  VOTRE NOM // IDENTITÉ
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  placeholder="ex: Alexandre Dupont"
+                  className="w-full bg-[#0A0A0F] border border-white/15 rounded-lg px-4 py-3.5 text-xs font-mono text-white placeholder-gray-600 outline-none focus:border-[#E9B826] transition-colors"
                 />
               </div>
 
-              <div className="group relative">
-                <label className="text-[10px] font-mono text-gray-500 uppercase mb-2 block">{t('form.email_label')}</label>
-                <input 
-                  type="email" name="email" value={formData.email} onChange={handleChange} required
-                  placeholder={t('form.email_placeholder')}
-                  className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-primary transition-colors font-bold tracking-tight"
+              <div className="space-y-2">
+                <label className="text-xs font-mono text-gray-400 uppercase tracking-wider block">
+                  VOTRE EMAIL // CANAL DE RÉPONSE
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="ex: alexandre@entreprise.com"
+                  className="w-full bg-[#0A0A0F] border border-white/15 rounded-lg px-4 py-3.5 text-xs font-mono text-white placeholder-gray-600 outline-none focus:border-[#E9B826] transition-colors"
                 />
               </div>
 
-              <div className="group relative">
-                <label className="text-[10px] font-mono text-gray-500 uppercase mb-2 block">{t('form.message_label')}</label>
-                <textarea 
-                  name="message" value={formData.message} onChange={handleChange} required rows={4}
-                  placeholder={t('form.message_placeholder')}
-                  className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-primary transition-colors font-medium text-sm"
+              <div className="space-y-2">
+                <label className="text-xs font-mono text-gray-400 uppercase tracking-wider block">
+                  VOTRE MESSAGE // CAHIER DES CHARGES
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={5}
+                  placeholder="Décrivez votre projet, vos objectifs et délais souhaités..."
+                  className="w-full bg-[#0A0A0F] border border-white/15 rounded-lg px-4 py-3.5 text-xs font-mono text-white placeholder-gray-600 outline-none focus:border-[#E9B826] transition-colors"
                 />
               </div>
 
-              <div className="relative pt-4">
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  disabled={isSubmitting}
-                  className="w-full py-5 bg-white text-black font-black uppercase tracking-[0.2em] text-xs hover:bg-gold transition-all flex items-center justify-center gap-3"
-                  style={{ backgroundColor: colors.primary }}
-                >
-                  {isSubmitting ? <i className="pi pi-spin pi-spinner" /> : <><i className="pi pi-send" /> {t('form.submit_button')}</>}
-                </motion.button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-[#E9B826] text-black font-bold text-xs font-mono uppercase tracking-[0.2em] rounded-lg hover:shadow-[0_0_25px_rgba(233,184,38,0.5)] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <i className="pi pi-spin pi-spinner text-sm" /> TRANSMISSION...
+                  </>
+                ) : (
+                  <>
+                    TRANSMETTRE LE MESSAGE <i className="pi pi-send text-sm" />
+                  </>
+                )}
+              </button>
 
-                <AnimatePresence>
-                  {submitStatus === 'success' && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                      className="absolute -bottom-12 left-0 right-0 text-center text-[10px] font-mono text-green-500"
-                    >
-                      {t('form.success_message')}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              <AnimatePresence>
+                {submitStatus === "success" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono text-center"
+                  >
+                    ✓ MESSAGE REÇU AVEC SUCCÈS. NOUS REVIENDRONS VERS VOUS DANS LES 24H.
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </form>
           </div>
 
-          {/* --- RIGHT: COMMUNICATION NODES --- */}
-          <div className="bg-[#0F0F0F] p-8 md:p-12 border border-white/5 flex flex-col justify-between">
-            <div className="space-y-12">
-              <div>
-                <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase block mb-6">{t('contact_nodes.title')}</span>
-                <div className="space-y-6">
-                  {[
-                    { label: t('contact_nodes.email_label'), value: 'kingtang337@gmail.com', icon: 'pi-envelope', color: colors.primary },
-                    { label: t('contact_nodes.whatsapp_label'), value: '+237 653 53 91 02', icon: 'pi-whatsapp', color: '#25D366' },
-                    { label: t('contact_nodes.location_label'), value: 'Cameroun, Africa', icon: 'pi-map-marker', color: colors.secondary },
-                  ].map((node, i) => (
-                    <div key={i} className="flex items-start gap-4 group">
-                      <div className="w-10 h-10 border border-white/10 flex items-center justify-center group-hover:border-primary transition-colors">
-                        <i className={`pi ${node.icon} text-xs`} style={{ color: node.color }} />
-                      </div>
-                      <div>
-                        <div className="text-[9px] font-mono text-gray-500 tracking-tighter">{node.label}</div>
-                        <div className="text-sm font-bold uppercase tracking-tight">{node.value}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* RIGHT: DIRECT UPLINKS & COPIABLE DETAILS */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="glass-card p-8 rounded-2xl border border-white/10 space-y-6">
+              <h3 className="text-xl font-black uppercase text-white font-mono flex items-center gap-3">
+                <i className="pi pi-[#E9B826] pi-compass text-[#E9B826]" /> CANAUX DIRECTS
+              </h3>
 
-              <div>
-                <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase block mb-6">{t('social.title')}</span>
-                <div className="flex gap-4">
-                  {[
-                    
-                    { icon: 'linkedin', url: 'https://linkedin.com/in/ndoh-yannick-tang-5b004934a' },
-                    { icon: 'github', url: 'https://github.com/TangB5' },
-                    { icon: 'instagram', url: 'https://instagram.com/kingtang337' }
-                  ].map((social, i) => (
-                    <a key={i} href={social.url} target="_blank" className="w-12 h-12 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                      <i className={`pi pi-${social.icon}`} />
-                    </a>
-                  ))}
-                </div>
+              <div className="space-y-4">
+                {[
+                  { label: "EMAIL", val: "tangking237@gmail.com", icon: "envelope" },
+                  { label: "WHATSAPP", val: "+237 653 53 91 02", icon: "whatsapp" },
+                  { label: "GITHUB", val: "github.com/TangB5", icon: "github" },
+                  { label: "LINKEDIN", val: "linkedin.com/in/ndoh-yannick-tang-5b004934a", icon: "linkedin" },
+                ].map((channel) => (
+                  <div
+                    key={channel.label}
+                    onClick={() => copyToClipboard(channel.val, channel.label)}
+                    className="p-4 rounded-xl border border-white/10 bg-[#0A0A0F]/60 hover:border-[#E9B826]/40 transition-all cursor-pointer flex justify-between items-center group"
+                  >
+                    <div>
+                      <span className="block text-[8px] font-mono text-gray-500 uppercase tracking-widest">
+                        {channel.label}
+                      </span>
+                      <span className="block text-xs font-mono font-bold text-white group-hover:text-[#E9B826] transition-colors">
+                        {channel.val}
+                      </span>
+                    </div>
+
+                    <div className="text-xs font-mono text-[#E9B826] flex items-center gap-1.5">
+                      {copiedField === channel.label ? (
+                        <span className="text-emerald-400 font-bold">COPIÉ !</span>
+                      ) : (
+                        <i className="pi pi-copy text-gray-400 group-hover:text-[#E9B826]" />
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="mt-12 p-6 border border-white/5 bg-black/50">
-              <i className="pi pi-heart text-xs mb-3 block opacity-30" />
-              <p className="text-[11px] font-mono leading-relaxed opacity-60 uppercase tracking-tighter">
-                &rdquo;{t('quote.text')}&rdquo;
-              </p>
+            <div className="glass-panel p-6 rounded-2xl border border-[#E9B826]/20 text-center space-y-2">
+              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest block">
+                DISPONIBILITÉ PROCHAINES MISSIONS
+              </span>
+              <span className="text-sm font-bold font-mono text-[#10B981] uppercase block">
+                ● 100% DISPONIBLE POUR Q1/Q2 2026
+              </span>
             </div>
           </div>
         </div>
-
-        {/* --- FAQ: KNOWLEDGE BASE --- */}
-        <section className="mt-32">
-          <div className="flex items-center gap-4 mb-12">
-            <h2 className="text-2xl font-black uppercase tracking-widest">{t('faq.title')}</h2>
-            <div className="h-[1px] flex-grow bg-white/10" />
-            <span className="font-mono text-[10px] text-gray-500">{t('faq.subtitle')}</span>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-px bg-white/10 border border-white/10">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="bg-[#0A0A0A] p-8 hover:bg-white/[0.02] transition-colors">
-                <div className="flex gap-4">
-                  <span className="font-mono text-gold text-[10px] pt-1" style={{ color: colors.primary }}>0{i+1}.</span>
-                  <div>
-                    <h3 className="font-bold uppercase tracking-tight mb-3 text-sm">{t(`faq.items.${i}.q`)}</h3>
-                    <p className="text-xs text-gray-500 leading-relaxed font-mono">{t(`faq.items.${i}.a`)}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
       </div>
     </div>
   );
