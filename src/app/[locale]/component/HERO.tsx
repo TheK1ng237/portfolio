@@ -43,24 +43,10 @@ export default function Hero() {
   return (
     <section className="relative min-h-[92vh] w-full flex flex-col justify-center items-center overflow-hidden px-6 pt-24 pb-16 bg-[#0B0D18]">
       {/* HERO CONTENT GRID */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 max-w-7xl  w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* LEFT COLUMN: HERO TEXT & BADGES */}
         <div className="lg:col-span-7 text-left space-y-8">
-          {/* Status Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-3 px-4.5 py-2 rounded-full border border-[#FFC82C] bg-[#121526] font-azurio shadow-[0_0_20px_rgba(255,200,44,0.2)]"
-          >
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-85" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#10B981]" />
-            </span>
-            <span className="text-xs font-mono tracking-[0.25em] uppercase text-white font-bold">
-              {t("badge")}
-            </span>
-          </motion.div>
+
 
           {/* Main Title - Achiko for main headings */}
           <motion.div
@@ -70,7 +56,7 @@ export default function Hero() {
             className="space-y-3"
           >
             <span className="block text-xs font-azurio text-[#FFC82C] tracking-[0.45em] uppercase font-bold">
-              CREATIVE DEVELOPER & UX ARCHITECT
+              FULL-STACK DEVELOPER & CREATIVE ENGINEER
             </span>
             <h1 className="font-achiko text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.92] text-white">
               {t("title_top")}{" "}
@@ -158,54 +144,40 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* RIGHT COLUMN: INTERACTIVE 3D TILT MASCOT CARD */}
-        <div className="lg:col-span-5 flex justify-center items-center">
-          <motion.div
-            ref={cardRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+        {/* RIGHT COLUMN: INTERACTIVE 3D TILT MASCOT CARD WITH PATTERN AURA */}
+        <div className="lg:col-span-5 flex justify-center lg:justify-end items-center relative">
+          {/* Secondary Pattern (path2.svg) Rotating Golden Aura */}
+          <div
+            className="absolute w-[420px] h-[420px] md:w-[520px] md:h-[520px] pattern-gold-filter opacity-25 pointer-events-none rounded-full"
             style={{
-              rotateX,
-              rotateY,
-              transformStyle: "preserve-3d",
+              backgroundImage: "url('/patterns/path2.svg')",
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              animation: "patternRotateSlow 90s linear infinite",
+              filter: "drop-shadow(0 0 30px rgba(255,200,44,0.35))",
             }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="relative w-80 h-96 md:w-96 md:h-[30rem] glass-card rounded-3xl p-4 cursor-pointer group shadow-[0_20px_50px_rgba(255,200,44,0.2)]"
-          >
-            {/* Luminous Frame Accents */}
-            <div className="absolute top-2 left-2 w-7 h-7 border-t-2 border-l-2 border-[#FFC82C]" />
-            <div className="absolute top-2 right-2 w-7 h-7 border-t-2 border-r-2 border-[#FFC82C]" />
-            <div className="absolute bottom-2 left-2 w-7 h-7 border-b-2 border-l-2 border-[#FF3B56]" />
-            <div className="absolute bottom-2 right-2 w-7 h-7 border-b-2 border-r-2 border-[#FF3B56]" />
+          />
 
-            {/* Inner Image Wrapper */}
-            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0B0D18] border border-white/20">
-              <Image
-                src="/mascote.png"
-                alt={t("alt_portrait")}
-                fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                priority
-              />
+          {/* Primary Pattern (path1.svg) Subtle Radial Frame */}
+          <div
+            className="absolute w-[360px] h-[360px] md:w-[460px] md:h-[460px] pattern-crimson-filter opacity-20 pointer-events-none rounded-full"
+            style={{
+              backgroundImage: "url('/patterns/path1.svg')",
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              animation: "patternRotateSlow 120s linear infinite reverse",
+            }}
+          />
 
-              {/* Dynamic Overlay Tag */}
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-[#0B0D18] border border-[#FFC82C]/50 flex justify-between items-center shadow-lg font-azurio">
-                <div>
-                  <span className="block text-[9px] font-mono text-gray-300 uppercase tracking-widest font-bold">
-                    MASCOT_IDENT
-                  </span>
-                  <span className="block text-xs font-achiko font-black text-[#FFC82C] tracking-wider">
-                    KINGTANG // V2.6
-                  </span>
-                </div>
-                <div className="w-9 h-9 rounded-full border border-[#FFC82C] flex items-center justify-center bg-[#FFC82C]/20 shadow-[0_0_15px_#FFC82C]">
-                  <i className="pi pi-bolt text-sm text-[#FFC82C]" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          {/* Hero Portrait Container with Glassmorphism & Gold Border */}
+          
+          <img
+              src="/images/pixarMe.png"
+              alt={t("alt_portrait")}
+              className="object-cover w-full h-auto rounded-2xl relative z-10 transition-transform duration-500 group-hover:scale-105"
+            />
         </div>
       </div>
     </section>

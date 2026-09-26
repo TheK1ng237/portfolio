@@ -11,10 +11,18 @@ export default function Footer() {
   const t = useTranslations("Footer");
 
   const socialNetworks = [
-    { icon: "linkedin", url: "https://linkedin.com/in/ndoh-yannick-tang-5b004934a", label: "LinkedIn" },
+    {
+      icon: "linkedin",
+      url: "https://linkedin.com/in/ndoh-yannick-tang-5b004934a",
+      label: "LinkedIn",
+    },
     { icon: "github", url: "https://github.com/TangB5", label: "GitHub" },
     { icon: "whatsapp", url: "https://wa.me/237653539102", label: "WhatsApp" },
-    { icon: "instagram", url: "https://instagram.com/kingtang337", label: "Instagram" },
+    {
+      icon: "instagram",
+      url: "https://instagram.com/kingtang337",
+      label: "Instagram",
+    },
   ];
 
   const scrollToTop = () => {
@@ -23,24 +31,18 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className="relative pt-28 pb-12 overflow-hidden border-t border-[#FFC82C]/20 bg-[#0B0D18]"
+      className="relative pt-28 pb-12 overflow-hidden border-t border-[#FFC82C]/30 bg-[#0B0D18] font-azurio"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      {/* Background Decor Glows */}
-      <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] rounded-full bg-[#FFC82C]/10 blur-[180px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] rounded-full bg-[#FF3B56]/10 blur-[180px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-4 gap-12 mb-20">
           {/* BRAND SEAL */}
           <div className="lg:col-span-1 space-y-6">
             <div className="relative group inline-block">
-              <div className="absolute inset-0 bg-[#FFC82C]/30 blur-2xl rounded-full opacity-60 group-hover:opacity-100 transition-opacity" />
-
               <div className="relative flex items-center gap-3.5">
-                <div className="relative p-2 border border-[#FFC82C]/40 bg-[#121526] rounded-xl shadow-[0_0_20px_rgba(255,200,44,0.3)]">
+                <div className="relative p-2 border border-[#FFC82C] bg-[#121526] rounded-xl shadow-[0_0_20px_rgba(255,200,44,0.3)]">
                   <Image
                     src="/logojaune.png"
                     alt="KingTang Totem"
@@ -50,35 +52,35 @@ export default function Footer() {
                   />
                 </div>
                 <div>
-                  <span className="block text-[8.5px] font-mono tracking-[0.35em] text-gray-300 uppercase leading-none mb-1 font-bold">
+                  <span className="block text-[8.5px] font-azurio tracking-[0.35em] text-gray-300 uppercase leading-none mb-1 font-bold">
                     AUTHENTIC_NODE
                   </span>
-                  <span className="block text-xl font-black tracking-wider uppercase text-white font-mono">
+                  <span className="block text-xl font-achiko font-black tracking-wider uppercase text-white font-mono">
                     KING<span className="text-[#FFC82C]">.</span>
                   </span>
                 </div>
               </div>
             </div>
 
-            <p className="text-xs font-mono text-gray-300 leading-relaxed uppercase tracking-tight">
+            <p className="text-xs font-azurio text-gray-300 leading-relaxed uppercase tracking-tight">
               {t("brand.tagline")}
             </p>
 
             <Link
               href="/CONTACT"
-              className="group inline-flex items-center gap-3 text-xs font-mono tracking-widest text-[#FFC82C] uppercase transition-all font-bold"
+              className="group inline-flex items-center gap-3 text-xs font-achiko tracking-widest text-[#FFC82C] uppercase transition-all font-bold"
             >
-              <span className="h-[1.5px] w-8 bg-[#FFC82C]/50 group-hover:w-14 group-hover:bg-[#FFC82C] transition-all" />
+              <span className="h-[1.5px] w-8 bg-[#FFC82C] group-hover:w-14 transition-all" />
               {t("brand.open_channel")}
             </Link>
           </div>
 
           {/* SYSTEM MAP */}
           <div>
-            <h4 className="text-xs font-mono text-[#FFC82C] uppercase tracking-[0.3em] mb-8 font-bold">
+            <h4 className="text-xs font-achiko text-[#FFC82C] uppercase tracking-[0.3em] mb-8 font-bold">
               {t("system_map")}
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-4 font-azurio">
               {[
                 { path: "/ABOUT", key: 0 },
                 { path: "/PROJECT", key: 1 },
@@ -89,7 +91,7 @@ export default function Footer() {
                 <li key={index}>
                   <Link
                     href={item.path}
-                    className="text-xs font-mono text-gray-200 hover:text-[#FFC82C] tracking-wider uppercase transition-colors flex items-center gap-2.5 group font-bold"
+                    className="text-xs font-azurio text-gray-200 hover:text-[#FFC82C] tracking-wider uppercase transition-colors flex items-center gap-2.5 group font-bold"
                   >
                     <span className="text-[10px] text-gray-400 group-hover:text-[#FFC82C]">
                       0{index + 1}
@@ -103,22 +105,24 @@ export default function Footer() {
 
           {/* EXTERNAL LINKS */}
           <div>
-            <h4 className="text-xs font-mono text-gray-200 uppercase tracking-[0.3em] mb-8 font-bold">
+            <h4 className="text-xs font-achiko text-gray-200 uppercase tracking-[0.3em] mb-8 font-bold">
               {t("external_links")}
             </h4>
-            <div className="grid grid-cols-1 gap-2.5">
+            <div className="grid grid-cols-1 gap-2.5 font-azurio">
               {socialNetworks.map((social, index) => (
                 <a
                   key={index}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3.5 rounded-xl border border-white/15 bg-[#121526]/70 hover:bg-[#FFC82C]/15 hover:border-[#FFC82C] transition-all group"
+                  className="flex items-center justify-between p-3.5 rounded-xl border border-white/15 bg-[#121526] hover:bg-[#FFC82C]/15 hover:border-[#FFC82C] transition-all group"
                 >
-                  <span className="text-xs font-mono uppercase tracking-widest text-gray-200 group-hover:text-[#FFC82C] font-bold">
+                  <span className="text-xs font-azurio uppercase tracking-widest text-gray-200 group-hover:text-[#FFC82C] font-bold">
                     {social.label}
                   </span>
-                  <i className={`pi pi-${social.icon} text-sm text-gray-300 group-hover:text-[#FFC82C]`} />
+                  <i
+                    className={`pi pi-${social.icon} text-sm text-gray-300 group-hover:text-[#FFC82C]`}
+                  />
                 </a>
               ))}
             </div>
@@ -126,21 +130,21 @@ export default function Footer() {
 
           {/* NEWSLETTER */}
           <div>
-            <h4 className="text-xs font-mono text-gray-200 uppercase tracking-[0.3em] mb-8 font-bold">
+            <h4 className="text-xs font-achiko text-gray-200 uppercase tracking-[0.3em] mb-8 font-bold">
               {t("data_subscription")}
             </h4>
-            <div className="space-y-4">
+            <div className="space-y-4 font-azurio">
               <div className="relative">
                 <input
                   type="email"
                   placeholder={t("newsletter_placeholder")}
-                  className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-mono text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
+                  className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
                 />
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-3.5 bg-[#FFC82C] text-black text-xs font-bold font-mono uppercase tracking-widest rounded-xl hover:shadow-[0_0_25px_rgba(255,200,44,0.5)] transition-all"
+                className="w-full py-3.5 bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-widest rounded-xl hover:shadow-[0_0_25px_rgba(255,200,44,0.4)] transition-all"
               >
                 {t("newsletter_button")}
               </motion.button>
@@ -149,21 +153,21 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="pt-8 border-t border-white/15 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="pt-8 border-t border-white/15 flex flex-col md:flex-row justify-between items-center gap-6 font-azurio">
           <div className="flex flex-wrap items-center gap-8">
             <div className="flex flex-col">
-              <span className="text-[8px] font-mono text-gray-400 uppercase tracking-widest font-bold">
+              <span className="text-[8.5px] font-azurio text-gray-400 uppercase tracking-widest font-bold">
                 {t("metadata.protocol_year")}
               </span>
-              <span className="text-xs font-mono font-bold tracking-widest text-gray-200 uppercase">
+              <span className="text-xs font-azurio font-bold tracking-widest text-gray-200 uppercase">
                 © {currentYear} {t("metadata.global_registry")}
               </span>
             </div>
             <div className="flex flex-col border-l border-white/15 pl-8">
-              <span className="text-[8px] font-mono text-gray-400 uppercase tracking-widest font-bold">
+              <span className="text-[8.5px] font-azurio text-gray-400 uppercase tracking-widest font-bold">
                 {t("metadata.base_location")}
               </span>
-              <span className="text-xs font-mono font-bold tracking-widest text-[#FFC82C] uppercase">
+              <span className="text-xs font-azurio font-bold tracking-widest text-[#FFC82C] uppercase">
                 {t("metadata.location")}
               </span>
             </div>
@@ -173,7 +177,7 @@ export default function Footer() {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={scrollToTop}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#FFC82C]/40 bg-[#121526] hover:bg-[#FFC82C] text-[#FFC82C] hover:text-black transition-all text-xs font-mono tracking-widest uppercase font-bold group shadow-[0_0_15px_rgba(255,200,44,0.2)]"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#FFC82C] bg-[#121526] hover:bg-[#FFC82C] text-[#FFC82C] hover:text-black transition-all text-xs font-achiko tracking-widest uppercase font-bold group shadow-[0_0_15px_rgba(255,200,44,0.2)]"
           >
             <span>TOP</span>
             <i className="pi pi-arrow-up text-xs group-hover:-translate-y-0.5 transition-transform" />

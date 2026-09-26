@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'KingTang | Creative Developer & UX Architect',
+  title: 'KingTang | Full-Stack Developer',
   description: 'Portfolio Afro-Futuriste',
 };
 

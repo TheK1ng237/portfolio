@@ -6,14 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import AudioController from "./AudioController";
-import "primeicons/primeicons.css";
 
 const NAV_ITEMS = [
-  { id: "01", key: "about", path: "/ABOUT" },
-  { id: "02", key: "projects", path: "/PROJECT" },
-  { id: "03", key: "culture", path: "/CULTURE" },
-  { id: "04", key: "solution", path: "/SOLUTION" },
-  { id: "05", key: "contact", path: "/CONTACT" },
+  {  key: "about", path: "/ABOUT" },
+  {  key: "projects", path: "/PROJECT" },
+  {  key: "culture", path: "/CULTURE" },
+  {  key: "solution", path: "/SOLUTION" },
+  {  key: "contact", path: "/CONTACT" },
 ];
 
 export default function Navigation() {
@@ -104,18 +103,16 @@ export default function Navigation() {
 
           {/* DESKTOP NAVIGATION */}
           <nav className="hidden md:flex items-center gap-2">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.map((item,index) => {
               const isActive = pathname.toUpperCase() === item.path;
               return (
                 <Link
-                  key={item.id}
+                  key={index}
                   href={item.path}
                   className="relative px-4 py-2 group rounded-md"
                 >
                   <div className="flex flex-col items-center">
-                    <span className="text-[8px] font-azurio text-gray-400 mb-0.5 font-bold">
-                      {item.id}
-                    </span>
+                    
                     <span
                       className={`text-[12px] font-achiko tracking-[0.18em] uppercase transition-all duration-300 ${
                         isActive
@@ -191,7 +188,7 @@ export default function Navigation() {
             <div className="space-y-6">
               {NAV_ITEMS.map((item, i) => (
                 <motion.div
-                  key={item.id}
+                  key={1}
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.08 }}
@@ -202,7 +199,7 @@ export default function Navigation() {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <span className="font-azurio text-[#FFC82C] text-[10px] tracking-[0.4em] font-bold">
-                      MODULE_{item.id}
+                      MODULE_{i}
                     </span>
                     <span className="text-4xl font-achiko tracking-tight uppercase group-hover:text-[#FFC82C] transition-colors text-white">
                       {t(item.key)}

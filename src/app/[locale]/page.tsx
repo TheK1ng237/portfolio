@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import "primeicons/primeicons.css";
 import Hero from "./component/HERO";
 import { useTranslations } from "next-intl";
 
@@ -94,9 +93,7 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto mb-16 space-y-4"
         >
-          <span className="font-azurio text-xs text-[#FFC82C] tracking-[0.4em] uppercase block font-bold">
-            {"// CAPABILITÉS_SYSTEME"}
-          </span>
+          
           <h2 className="font-achiko text-4xl md:text-6xl font-black tracking-tight uppercase">
             ARCHITECTURE & <span className="text-[#FFC82C]">COMPÉTENCES</span>
           </h2>
@@ -275,9 +272,7 @@ export default function Home() {
       {/* 4. CULTURAL FUSION & AFRO-FUTURISTIC CORE */}
       <section className="relative py-32 overflow-hidden border-y border-white/10 bg-[#121526]">
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-          <span className="font-azurio text-xs text-[#FF3B56] tracking-[0.4em] uppercase block mb-4 font-bold">
-            {"// PHILOSOPHIE_ET_HERITAGE"}
-          </span>
+          
           <h2 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 leading-tight">
             {t("fusion.title")}
           </h2>

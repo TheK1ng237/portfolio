@@ -14,11 +14,11 @@ import { getMessages } from 'next-intl/server';
 export const metadata: Metadata = {
   metadataBase: new URL('https://kingtang.vercel.app'),
   title: {
-    default: 'KingTang Portfolio | Creative Developer & UX Architect',
+    default: 'KingTang Portfolio | Full-Stack Developer',
     template: '%s | KingTang',
   },
-  description: "Portfolio Afro-Futuriste de KingTang, Creative Developer & UX Architect. Interfaces réactives, ingénierie logicielle et innovation culturelle.",
-  keywords: ['Creative Developer', 'UX Architect', 'Next.js', 'React', 'Portfolio', 'KingTang', 'Afro-Futurism', 'Web Design'],
+  description: "Portfolio Afro-Futuriste de KingTang, développeur full-stack. Applications web, API, bases de données et expériences numériques immersives.",
+  keywords: ['Full-Stack Developer', 'Next.js', 'Angular', 'Node.js', 'Django', 'Portfolio', 'KingTang', 'Afro-Futurism'],
   authors: [{ name: 'KingTang' }],
   creator: 'KingTang',
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'fr_FR',
     url: 'https://kingtang.vercel.app',
-    title: 'KingTang | Creative Developer & UX Architect',
+    title: 'KingTang | Full-Stack Developer',
     description: "Interfaces immersives de haute précision, ingénierie web moderne et héritage culturel.",
     siteName: 'KingTang Portfolio',
     images: [
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'KingTang | Creative Developer',
-    description: 'Creative Developer & UX Architect passionné par l\'innovation immersive.',
+    title: 'KingTang | Full-Stack Developer',
+    description: 'Full-Stack Developer passionate about immersive digital experiences.',
     images: ['/mascote.png'],
     creator: '@mfalme369',
   },
@@ -63,7 +63,7 @@ const jsonLd = {
   '@type': 'Person',
   name: 'KingTang',
   url: 'https://kingtang.vercel.app',
-  jobTitle: 'Creative Developer & UX Architect',
+  jobTitle: 'Full-Stack Developer',
   description: 'Créateur d’expériences numériques immersives et innovateur culturel.',
   sameAs: [
     'https://github.com/TangB5',

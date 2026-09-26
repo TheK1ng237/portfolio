@@ -96,8 +96,32 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  isolation: isolate;
   selection-background-color: var(--gold-primary);
   selection-color: #000;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  mix-blend-mode: screen;
+}
+
+/* body::before {
+  background-image: url('/patterns/path1.svg');
+  opacity: 0.07;
+} */
+
+body::after {
+  background-image: url('/patterns/path2.svg');
+  opacity: 0.045;
 }
 
 .font-achiko {
