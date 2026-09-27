@@ -134,19 +134,23 @@ export default function Navigation() {
             })}
 
             {/* CONTROLS & HUD STATUS */}
-            <div className="ml-6 pl-6 border-l border-white/20 flex items-center gap-3.5">
+            <div className="ml-6 pl-6 border-l border-white/20 flex items-center gap-3">
+              <a
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#FFC82C]/50 bg-[#FFC82C]/10 hover:bg-[#FFC82C] hover:text-black text-[10px] font-azurio font-bold text-[#FFC82C] transition-all shadow-[0_0_12px_rgba(255,200,44,0.25)]"
+                title="Télécharger mon CV PDF"
+              >
+                <i className="pi pi-download text-xs" />
+                <span>CV PDF</span>
+              </a>
+
               <AudioController />
               <LanguageSwitcher />
 
-              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 font-azurio">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span className="text-[9px] font-azurio text-emerald-400 uppercase tracking-[0.2em] font-bold">
-                  CORE_ONLINE
-                </span>
-              </div>
+              
             </div>
           </nav>
 

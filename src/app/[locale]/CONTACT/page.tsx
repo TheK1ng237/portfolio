@@ -3,15 +3,20 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
+    null,
+  );
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -59,7 +64,8 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="font-azurio max-w-2xl text-base md:text-lg text-gray-200 font-light leading-relaxed border-l-3 border-[#FF3B56] pl-6"
           >
-            Une idée de projet, une refonte UI/UX ou une opportunité de collaboration ? Envoyez un message ou utilisez nos canaux directs.
+            Une idée de projet, une refonte UI/UX ou une opportunité de
+            collaboration ? Envoyez un message ou utilisez nos canaux directs.
           </motion.p>
         </div>
 
@@ -134,7 +140,8 @@ export default function Contact() {
               >
                 {isSubmitting ? (
                   <>
-                    <i className="pi pi-spin pi-spinner text-sm" /> TRANSMISSION...
+                    <i className="pi pi-spin pi-spinner text-sm" />{" "}
+                    TRANSMISSION...
                   </>
                 ) : (
                   <>
@@ -151,7 +158,8 @@ export default function Contact() {
                     exit={{ opacity: 0 }}
                     className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-azurio text-center font-bold"
                   >
-                    ✓ MESSAGE REÇU AVEC SUCCÈS. NOUS REVIENDRONS VERS VOUS DANS LES 24H.
+                    ✓ MESSAGE REÇU AVEC SUCCÈS. NOUS REVIENDRONS VERS VOUS DANS
+                    LES 24H.
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -172,10 +180,22 @@ export default function Contact() {
 
               <div className="space-y-4 font-azurio">
                 {[
-                  { label: "EMAIL", val: "tangking237@gmail.com", icon: "envelope" },
-                  { label: "WHATSAPP", val: "+237 653 53 91 02", icon: "whatsapp" },
+                  {
+                    label: "EMAIL",
+                    val: "tangking237@gmail.com",
+                    icon: "envelope",
+                  },
+                  {
+                    label: "WHATSAPP",
+                    val: "+237 653 53 91 02",
+                    icon: "whatsapp",
+                  },
                   { label: "GITHUB", val: "github.com/TangB5", icon: "github" },
-                  { label: "LINKEDIN", val: "linkedin.com/in/ndoh-yannick-tang-5b004934a", icon: "linkedin" },
+                  {
+                    label: "LINKEDIN",
+                    val: "linkedin.com/in/ndoh-yannick-tang-5b004934a",
+                    icon: "linkedin",
+                  },
                 ].map((channel) => (
                   <motion.div
                     key={channel.label}
@@ -195,7 +215,9 @@ export default function Contact() {
 
                     <div className="text-xs font-azurio text-[#FFC82C] flex items-center gap-1.5 font-bold">
                       {copiedField === channel.label ? (
-                        <span className="text-emerald-400 font-bold">COPIÉ !</span>
+                        <span className="text-emerald-400 font-bold">
+                          COPIÉ !
+                        </span>
                       ) : (
                         <i className="pi pi-copy text-gray-400 group-hover:text-[#FFC82C]" />
                       )}
@@ -203,6 +225,23 @@ export default function Contact() {
                   </motion.div>
                 ))}
               </div>
+            </div>
+
+            {/* OFFICIAL CV DOWNLOAD BANNER */}
+            <div className="glass-card p-6 rounded-3xl border border-[#FF3B56]/50 bg-[#FF3B56]/10 space-y-3 shadow-xl font-azurio">
+              <span className="text-[9.5px] font-mono text-gray-300 uppercase tracking-widest block font-bold">
+                DOCUMENTATION OFFICIELLE
+              </span>
+              <a
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3.5 px-5 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,59,86,0.3)] group cursor-pointer"
+              >
+                <i className="pi pi-file-pdf text-base group-hover:scale-110 transition-transform" />
+                TÉLÉCHARGER LE CV PDF COMPLET
+              </a>
             </div>
 
             <div className="glass-panel p-6 rounded-3xl border border-[#FFC82C] text-center space-y-2 shadow-lg font-azurio">
