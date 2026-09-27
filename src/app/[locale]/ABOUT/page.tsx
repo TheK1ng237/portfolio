@@ -162,6 +162,109 @@ const voletsData: VoletItem[] = [
   },
 ];
 
+const certificationsData = [
+  {
+    id: "nextjs",
+    title: "Next.js 15 & React - Le Guide Complet",
+    issuer: "Udemy",
+    category: "UDEMY",
+    pdf: "/certif/UdemyNextjs.pdf",
+    icon: "pi-desktop",
+    color: "#FFC82C",
+    skills: ["Next.js 15", "React 19", "Server Components", "SSR"],
+  },
+  {
+    id: "typescript",
+    title: "TypeScript: Masterclass Ingénierie & Typage Avancé",
+    issuer: "Udemy",
+    category: "UDEMY",
+    pdf: "/certif/UdemyTypescript.pdf",
+    icon: "pi-code",
+    color: "#3B82F6",
+    skills: ["TypeScript", "Generics", "Type Safety", "Interfaces"],
+  },
+  {
+    id: "angular",
+    title: "Développez des Applications Web avec Angular",
+    issuer: "OpenClassrooms",
+    category: "OPENCLASSROOMS",
+    pdf: "/certif/Openclassroomangular.pdf",
+    icon: "pi-shield",
+    color: "#FF3B56",
+    skills: ["Angular", "RxJS", "TypeScript", "Services"],
+  },
+  {
+    id: "javascript",
+    title: "Apprenez à Programmer avec JavaScript",
+    issuer: "OpenClassrooms",
+    category: "OPENCLASSROOMS",
+    pdf: "/certif/Openclassroomjavascript.pdf",
+    icon: "pi-bolt",
+    color: "#FFC82C",
+    skills: ["JavaScript ES6+", "DOM API", "Promises", "Async/Await"],
+  },
+  {
+    id: "html-css",
+    title: "Créez votre site web avec HTML5 et CSS3",
+    issuer: "OpenClassrooms",
+    category: "OPENCLASSROOMS",
+    pdf: "/certif/Openclassroomhtml-css.pdf",
+    icon: "pi-palette",
+    color: "#10B981",
+    skills: ["HTML5", "CSS3", "Flexbox", "Responsive Design"],
+  },
+  {
+    id: "tailwindcss",
+    title: "Tailwind CSS: Masterclass Design System & Utility-First",
+    issuer: "Udemy",
+    category: "UDEMY",
+    pdf: "/certif/UdemyTailwindcss.pdf",
+    icon: "pi-sliders-h",
+    color: "#06B6D4",
+    skills: ["Tailwind CSS", "Design Tokens", "UI Architecture"],
+  },
+  {
+    id: "java",
+    title: "Apprenez les Bases du Langage Java",
+    issuer: "OpenClassrooms",
+    category: "OPENCLASSROOMS",
+    pdf: "/certif/Openclassroomjava.pdf",
+    icon: "pi-server",
+    color: "#F97316",
+    skills: ["Java", "POO", "JVM", "Classes & Héritage"],
+  },
+  {
+    id: "dart",
+    title: "Dart: Masterclass Développement Mobile & Flutter",
+    issuer: "Udemy",
+    category: "UDEMY",
+    pdf: "/certif/UdemyDart.pdf",
+    icon: "pi-mobile",
+    color: "#02569B",
+    skills: ["Dart", "Mobile Dev", "Async", "Flutter SDK"],
+  },
+  {
+    id: "figma",
+    title: "Concevez des Maquettes et Prototypes avec Figma",
+    issuer: "OpenClassrooms",
+    category: "OPENCLASSROOMS",
+    pdf: "/certif/Openclassroomfigma.pdf",
+    icon: "pi-prime",
+    color: "#A855F7",
+    skills: ["Figma", "UI/UX Prototyping", "Wireframes", "Design Systems"],
+  },
+  {
+    id: "veille",
+    title: "Réaliser une Veille Technologique et Scientifique",
+    issuer: "OpenClassrooms",
+    category: "OPENCLASSROOMS",
+    pdf: "/certif/Openclassroomveilletechnique.pdf",
+    icon: "pi-compass",
+    color: "#10B981",
+    skills: ["Veille Techno", "R&D", "Innovation Web", "Feedly"],
+  },
+];
+
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 100 : -100,
@@ -184,6 +287,7 @@ export default function About() {
   const t = useTranslations("AboutPage");
   const [activeVoletIndex, setActiveVoletIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [certifCategoryFilter, setCertifCategoryFilter] = useState("ALL");
 
   const activeVolet = voletsData[activeVoletIndex];
 
@@ -234,7 +338,7 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-                INGÉNIERIE LOGICIELLE &amp; <span className="text-[#FFC82C]">VISION CREATIVE</span>
+                {t("header.title_main")} <span className="text-[#FFC82C]">{t("header.title_sub")}</span>
               </h1>
             </motion.div>
 
@@ -244,23 +348,42 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-azurio text-base md:text-lg text-gray-200 leading-relaxed font-light"
             >
-              Développeur full-stack, je conçois des applications web de bout en bout : interfaces soignées, API, bases de données et intégrations. J’allie architecture fiable, expérience utilisateur et expression culturelle.
+              {t("header.bio")}
             </motion.p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
               <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
-                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">FULL-STACK ENGINEERING</span>
+                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">{t("header.card1_title")}</span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  Next.js, Angular, Node.js, Express.js et Django, des interfaces aux API.
+                  {t("header.card1_desc")}
                 </p>
               </motion.div>
               <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
-                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">AFRO-FUTURISM UX</span>
+                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">{t("header.card2_title")}</span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  Design d’interface fondé sur les mathématiques des motifs africains ancestraux.
+                  {t("header.card2_desc")}
                 </p>
               </motion.div>
             </div>
+
+            {/* CV DOWNLOAD ACTION CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="pt-2"
+            >
+              <a
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs sm:text-sm uppercase tracking-[0.2em] rounded-2xl shadow-[0_0_25px_rgba(255,59,86,0.35)] transition-all group cursor-pointer"
+              >
+                <i className="pi pi-file-pdf text-lg group-hover:scale-110 transition-transform" />
+                {t("header.download_cv")}
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -276,16 +399,12 @@ export default function About() {
             viewport={{ once: true }}
             className="lg:col-span-6"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-[#FFC82C]/10 text-[#FFC82C] border border-[#FFC82C]/30 mb-4">
-              <i className="pi pi-compass text-xs" /> Swiper d&apos;Expertise en 2 Volets
-            </div>
-            
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              MON <span className="text-[#FFC82C]">EXPERTISE</span>
+              {t("expertise.title")}
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              Naviguez interactivement entre le <strong>Volet 1 : Mes Skills</strong> et le <strong>Volet 2 : Mes Outils</strong> via le Swiper ci-dessous.
+              {t("expertise.description")}
             </p>
           </motion.div>
 
@@ -561,6 +680,136 @@ export default function About() {
               />
             );
           })}
+        </div>
+
+      </section>
+
+      {/* CERTIFICATIONS & ACCRÉDITATIONS SECTION */}
+      <section className="py-24 px-6 max-w-7xl mx-auto z-10 relative border-t border-white/10 font-azurio">
+        
+        {/* SECTION HEADER */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
+              {t("certifications.title")}
+            </h2>
+
+            <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
+              {t("certifications.description")}
+            </p>
+          </motion.div>
+
+          {/* FILTER TABS */}
+          <div className="p-1.5 rounded-2xl glass-card border border-white/15 flex flex-wrap items-center gap-2 bg-[#121526] self-start md:self-auto">
+            {[
+              { id: "ALL", label: t("certifications.filter_all") },
+              { id: "OPENCLASSROOMS", label: t("certifications.filter_openclassrooms") },
+              { id: "UDEMY", label: t("certifications.filter_udemy") },
+            ].map((tab) => {
+              const isActive = certifCategoryFilter === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setCertifCategoryFilter(tab.id)}
+                  className={`px-4 py-2.5 rounded-xl font-achiko text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    isActive
+                      ? "bg-[#FFC82C] text-black shadow-[0_0_20px_rgba(255,200,44,0.4)] scale-105"
+                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* CERTIFICATIONS CARDS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {certificationsData
+            .filter(
+              (cert) =>
+                certifCategoryFilter === "ALL" || cert.category === certifCategoryFilter
+            )
+            .map((cert, idx) => (
+              <motion.div
+                key={cert.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                whileHover={{ y: -6, scale: 1.01 }}
+                className="glass-card rounded-3xl p-6 border border-white/15 hover:border-[#FFC82C] transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden bg-[#121526]/90"
+              >
+                {/* Ambient Subtle Glow */}
+                <div
+                  className="absolute -right-12 -top-12 w-32 h-32 rounded-full blur-2xl pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity"
+                  style={{ backgroundColor: cert.color }}
+                />
+
+                <div>
+                  {/* Card Header: Platform Tag + Icon */}
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                    <span
+                      className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border"
+                      style={{
+                        backgroundColor: `${cert.color}15`,
+                        borderColor: `${cert.color}40`,
+                        color: cert.color,
+                      }}
+                    >
+                      {cert.issuer}
+                    </span>
+
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-black font-bold shadow-md transition-transform group-hover:scale-110"
+                      style={{ backgroundColor: cert.color }}
+                    >
+                      <i className={`pi ${cert.icon} text-base`} />
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-achiko text-lg font-bold uppercase text-white tracking-tight leading-snug mb-3 group-hover:text-[#FFC82C] transition-colors">
+                    {cert.title}
+                  </h3>
+
+                  {/* Skills Tags */}
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {cert.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="text-[9.5px] font-mono px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-gray-300 font-bold"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* PDF Download Button */}
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-gray-400 font-bold uppercase">
+                    {t("certifications.pdf_format")}
+                  </span>
+
+                  <a
+                    href={cert.pdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#FFC82C] text-white hover:text-black font-achiko text-xs font-bold uppercase tracking-wider transition-all border border-white/15 hover:border-[#FFC82C] group/btn cursor-pointer"
+                  >
+                    <i className="pi pi-file-pdf text-sm" />
+                    <span>{t("certifications.view_pdf")}</span>
+                  </a>
+                </div>
+              </motion.div>
+            ))}
         </div>
 
       </section>

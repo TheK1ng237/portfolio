@@ -2,12 +2,20 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useTranslations } from "next-intl";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const t = useTranslations("ContactPage");
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
+    null
+  );
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleChange = (
@@ -43,7 +51,7 @@ export default function Contact() {
             animate={{ opacity: 1 }}
             className="font-azurio text-xs text-[#FFC82C] tracking-[0.4em] uppercase block font-bold"
           >
-            {"// INITIER_UN_CANAL_DE_COMMUNICATION"}
+            {t("badge")}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 25 }}
@@ -51,7 +59,7 @@ export default function Contact() {
             transition={{ duration: 0.8 }}
             className="font-achiko text-5xl md:text-8xl font-black tracking-tight uppercase text-white leading-[0.9]"
           >
-            INITIALISER <span className="text-[#FFC82C]">LE CONTACT</span>
+            {t("title_main")} <span className="text-[#FFC82C]">{t("title_sub")}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +67,7 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="font-azurio max-w-2xl text-base md:text-lg text-gray-200 font-light leading-relaxed border-l-3 border-[#FF3B56] pl-6"
           >
-            Une idée de projet, une refonte UI/UX ou une opportunité de collaboration ? Envoyez un message ou utilisez nos canaux directs.
+            {t("description")}
           </motion.p>
         </div>
 
@@ -75,14 +83,14 @@ export default function Contact() {
             <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/15">
               <span className="w-3 h-3 rounded-full bg-[#FFC82C] animate-pulse shadow-[0_0_10px_#FFC82C]" />
               <span className="font-azurio text-xs text-gray-200 uppercase tracking-widest font-bold">
-                TERMINAL_MESSAGERIE
+                {t("form.title")}
               </span>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6 font-azurio">
               <div className="space-y-2">
                 <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                  VOTRE NOM // IDENTITÉ
+                  {t("form.name_label")}
                 </label>
                 <input
                   type="text"
@@ -90,14 +98,14 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="ex: Alexandre Dupont"
+                  placeholder={t("form.name_placeholder")}
                   className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                  VOTRE EMAIL // CANAL DE RÉPONSE
+                  {t("form.email_label")}
                 </label>
                 <input
                   type="email"
@@ -105,14 +113,14 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="ex: alexandre@entreprise.com"
+                  placeholder={t("form.email_placeholder")}
                   className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                  VOTRE MESSAGE // CAHIER DES CHARGES
+                  {t("form.message_label")}
                 </label>
                 <textarea
                   name="message"
@@ -120,7 +128,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={5}
-                  placeholder="Décrivez votre projet, vos objectifs et délais souhaités..."
+                  placeholder={t("form.message_placeholder")}
                   className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
                 />
               </div>
@@ -134,11 +142,12 @@ export default function Contact() {
               >
                 {isSubmitting ? (
                   <>
-                    <i className="pi pi-spin pi-spinner text-sm" /> TRANSMISSION...
+                    <i className="pi pi-spin pi-spinner text-sm" />{" "}
+                    {t("form.submitting")}
                   </>
                 ) : (
                   <>
-                    TRANSMETTRE LE MESSAGE <i className="pi pi-send text-sm" />
+                    {t("form.submit")} <i className="pi pi-send text-sm" />
                   </>
                 )}
               </motion.button>
@@ -151,7 +160,7 @@ export default function Contact() {
                     exit={{ opacity: 0 }}
                     className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-azurio text-center font-bold"
                   >
-                    ✓ MESSAGE REÇU AVEC SUCCÈS. NOUS REVIENDRONS VERS VOUS DANS LES 24H.
+                    ✓ {t("form.success_msg")}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -167,15 +176,27 @@ export default function Contact() {
           >
             <div className="glass-card p-8 rounded-3xl border border-white/15 space-y-6 shadow-xl font-azurio">
               <h3 className="font-achiko text-xl font-black uppercase text-white flex items-center gap-3">
-                <i className="pi pi-compass text-[#FFC82C]" /> CANAUX DIRECTS
+                <i className="pi pi-compass text-[#FFC82C]" /> {t("channels.title")}
               </h3>
 
               <div className="space-y-4 font-azurio">
                 {[
-                  { label: "EMAIL", val: "tangking237@gmail.com", icon: "envelope" },
-                  { label: "WHATSAPP", val: "+237 653 53 91 02", icon: "whatsapp" },
-                  { label: "GITHUB", val: "github.com/TangB5", icon: "github" },
-                  { label: "LINKEDIN", val: "linkedin.com/in/ndoh-yannick-tang-5b004934a", icon: "linkedin" },
+                  {
+                    label: t("channels.email"),
+                    val: "tangking237@gmail.com",
+                    icon: "envelope",
+                  },
+                  {
+                    label: t("channels.whatsapp"),
+                    val: "+237 653 53 91 02",
+                    icon: "whatsapp",
+                  },
+                  { label: t("channels.github"), val: "github.com/TangB5", icon: "github" },
+                  {
+                    label: t("channels.linkedin"),
+                    val: "linkedin.com/in/ndoh-yannick-tang-5b004934a",
+                    icon: "linkedin",
+                  },
                 ].map((channel) => (
                   <motion.div
                     key={channel.label}
@@ -195,7 +216,9 @@ export default function Contact() {
 
                     <div className="text-xs font-azurio text-[#FFC82C] flex items-center gap-1.5 font-bold">
                       {copiedField === channel.label ? (
-                        <span className="text-emerald-400 font-bold">COPIÉ !</span>
+                        <span className="text-emerald-400 font-bold">
+                          {t("channels.copied")}
+                        </span>
                       ) : (
                         <i className="pi pi-copy text-gray-400 group-hover:text-[#FFC82C]" />
                       )}
@@ -205,12 +228,29 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* OFFICIAL CV DOWNLOAD BANNER */}
+            <div className="glass-card p-6 rounded-3xl border border-[#FF3B56]/50 bg-[#FF3B56]/10 space-y-3 shadow-xl font-azurio">
+              <span className="text-[9.5px] font-mono text-gray-300 uppercase tracking-widest block font-bold">
+                {t("cv.doc")}
+              </span>
+              <a
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3.5 px-5 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,59,86,0.3)] group cursor-pointer"
+              >
+                <i className="pi pi-file-pdf text-base group-hover:scale-110 transition-transform" />
+                {t("cv.download")}
+              </a>
+            </div>
+
             <div className="glass-panel p-6 rounded-3xl border border-[#FFC82C] text-center space-y-2 shadow-lg font-azurio">
               <span className="text-[9.5px] font-azurio text-gray-300 uppercase tracking-widest block font-bold">
-                DISPONIBILITÉ PROCHAINES MISSIONS
+                {t("stats.status")}
               </span>
               <span className="text-sm font-bold font-azurio text-[#10B981] uppercase block">
-                ● 100% DISPONIBLE POUR Q1/Q2 2026
+                ● {t("stats.status_val")}
               </span>
             </div>
           </motion.div>

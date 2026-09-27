@@ -88,12 +88,12 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-wrap items-center gap-4 pt-2"
+            className="flex flex-wrap items-center gap-4 pt-2 font-azurio"
           >
             <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="#projets"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm tracking-widest uppercase rounded-xl shadow-[0_0_25px_rgba(255,200,44,0.4)] transition-all duration-300"
+                className="group relative inline-flex items-center gap-3 px-7 py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm tracking-widest uppercase rounded-xl shadow-[0_0_25px_rgba(255,200,44,0.4)] transition-all duration-300"
               >
                 <span className="relative z-10">{t("cta_projects")}</span>
                 <i className="pi pi-arrow-right relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -101,9 +101,21 @@ export default function Hero() {
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <a
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-7 py-4 bg-[#FF3B56]/15 border border-[#FF3B56]/50 hover:border-[#FF3B56] hover:bg-[#FF3B56] text-white hover:text-white font-achiko font-bold text-sm tracking-widest uppercase rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(255,59,86,0.2)]"
+              >
+                <i className="pi pi-download text-base" /> TÉLÉCHARGER CV
+              </a>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="#contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#121526] border border-white/30 hover:border-[#FFC82C] text-white font-achiko font-bold text-sm tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-white/10"
+                className="inline-flex items-center gap-2 px-7 py-4 bg-[#121526] border border-white/30 hover:border-[#FFC82C] text-white font-achiko font-bold text-sm tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-white/10"
               >
                 {t("cta_contact")}
               </Link>
@@ -152,7 +164,7 @@ export default function Hero() {
           <img
               src="/images/pixarMe.png"
               alt={t("alt_portrait")}
-              className="object-cover w-full h-auto rounded-2xl relative z-10 transition-transform duration-500 group-hover:scale-105"
+              className="object-cover w-full h-auto rounded-2xl relative z-2 transition-transform duration-500 group-hover:scale-105"
             />
         </div>
       </div>
