@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import "primeicons/primeicons.css";
 
 interface Solution {
   id: string;
@@ -91,13 +90,7 @@ export default function Solutions() {
       <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-20">
         {/* HEADER */}
         <section className="space-y-4 font-azurio">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="font-azurio text-xs text-[#FFC82C] tracking-[0.4em] uppercase block font-bold"
-          >
-            {"// ARCHITECTURES_&_SERVICES"}
-          </motion.span>
+         
           <motion.h1
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}

@@ -178,56 +178,91 @@ export default function Home() {
         </div>
 
         {/* Project Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 pt-4">
           {filteredProjects.map((projet, index) => (
             <motion.div
               key={projet.id}
               initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -6 }}
               transition={{ delay: index * 0.12, duration: 0.5 }}
               viewport={{ once: true }}
-              className="glass-card rounded-2xl overflow-hidden flex flex-col group h-full border border-white/15 hover:border-[#FFC82C] transition-all duration-500 shadow-xl"
+              className="relative group w-full flex flex-col h-full"
             >
-              {/* Card Header Status */}
-              <div className="p-6 flex justify-between items-center z-10 border-b border-white/10 bg-[#121526]">
-                <span className="font-azurio text-xs text-[#FFC82C] font-bold">PROJET // {projet.id}</span>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 font-azurio">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="text-[9.5px] uppercase tracking-widest text-emerald-400 font-bold">
-                    {projet.isCompleted ? t("projects.status_ready") : t("projects.status_progress")}
-                  </span>
+              {/* Stacked Paper Layer 2 (Furthest back sheet - rotated -3deg) */}
+              <div className="absolute inset-0 bg-[#FFC82C]/10 border border-[#FFC82C]/25 rounded-3xl transform -rotate-5 transition-transform duration-500 group-hover:-rotate-5 group-hover:scale-[1.01] pointer-events-none shadow-lg" />
+
+              {/* Stacked Paper Layer 1 (Middle sheet - rotated +2deg) */}
+              <div className="absolute inset-0 bg-[#FF3B56]/10 border border-[#FF3B56]/25 rounded-3xl transform rotate-4 transition-transform duration-500 group-hover:rotate-4 group-hover:scale-[1.01] pointer-events-none shadow-md" />
+
+              {/* Main Front Note Card Sheet */}
+              <div className="relative glass-card rounded-3xl p-6 border border-white/20 shadow-2xl transition-all duration-500 group-hover:border-[#FFC82C] group-hover:-translate-y-2 bg-[#121526]/95 backdrop-blur-xl flex flex-col justify-between flex-grow h-full">
+                
+                {/* Metallic Paperclip / Trombone SVG at Top Center (Matching reference image) */}
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-30 pointer-events-none drop-shadow-[0_8px_12px_rgba(0,0,0,0.8)]">
+                  <svg width="34" height="68" viewBox="0 0 34 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M 12 8 L 12 50 C 12 60 22 60 22 50 L 22 18 C 22 12 16 12 16 18 L 16 42"
+                      stroke="#FFC82C"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M 12 8 L 12 50 C 12 60 22 60 22 50 L 22 18 C 22 12 16 12 16 18 L 16 42"
+                      stroke="rgba(255,255,255,0.7)"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
-              </div>
 
-              {/* Image Preview Container */}
-              <div className="relative h-64 w-full overflow-hidden bg-black group-hover:scale-105 transition-transform duration-700">
-                <Image
-                  src={projet.image}
-                  alt={t(`projects.items.${projet.titleKey}.title`)}
-                  fill
-                  className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
-                />
-              </div>
+                {/* Card Header Status */}
+                <div className="flex justify-between items-center mb-4 pt-2 z-10 font-azurio">
+                  <span className="text-xs text-[#FFC82C] font-mono font-bold tracking-wider">
+                    PROJET // {projet.id}
+                  </span>
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/15">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span className="text-[9.5px] uppercase tracking-widest text-emerald-400 font-bold">
+                      {projet.isCompleted ? t("projects.status_ready") : t("projects.status_progress")}
+                    </span>
+                  </div>
+                </div>
 
-              {/* Card Content Body */}
-              <div className="p-6 flex flex-col flex-grow justify-between space-y-6">
-                <div>
-                  <h3 className="font-achiko text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#FFC82C] transition-colors mb-2">
-                    {t(`projects.items.${projet.titleKey}.title`)}
-                  </h3>
-                  <p className="font-azurio text-xs text-gray-300 leading-relaxed uppercase">
+                {/* Card Title (Dark bold title + Hover color) */}
+                <h3 className="font-achiko text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#FFC82C] transition-colors mb-4 text-center">
+                  {t(`projects.items.${projet.titleKey}.title`)}
+                </h3>
+
+                {/* Image Preview Container */}
+                <div className="relative h-52 w-full rounded-2xl overflow-hidden bg-black mb-5 border border-white/10 group-hover:border-white/25 transition-all">
+                  <Image
+                    src={projet.image}
+                    alt={t(`projects.items.${projet.titleKey}.title`)}
+                    fill
+                    className="object-cover opacity-85 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Inner Description Box (Exact matching inner rounded rectangular border box from reference!) */}
+                <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-4 text-center mb-5 flex-grow flex items-center justify-center">
+                  <p className="font-azurio text-xs text-gray-200 leading-relaxed uppercase">
                     &rdquo;{t(`projects.items.${projet.titleKey}.description`)}&rdquo;
                   </p>
                 </div>
 
+                {/* Bottom Pill Badges for Tech Stack (Matching pill badges from reference image!) */}
                 <div className="space-y-4 font-azurio">
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap items-center justify-center gap-2">
                     {projet.tags.map((tag) => (
-                      <span key={tag} className="text-[9.5px] border border-white/15 px-2.5 py-1 rounded-md bg-white/5 text-gray-200 font-bold">
-                        {tag}
-                      </span>
+                      <div
+                        key={tag}
+                        className="flex items-center gap-1.5 px-3 py-1 rounded-xl border border-white/15 bg-white/[0.05] text-gray-200 text-[10px] font-bold transition-all hover:border-[#FFC82C] hover:bg-white/10"
+                      >
+                        <i className="pi pi-bolt text-[9px] text-[#FFC82C]" />
+                        <span>{tag}</span>
+                      </div>
                     ))}
                   </div>
 
@@ -245,13 +280,14 @@ export default function Home() {
 
                     <button
                       onClick={() => setSelectedProjectModal(projet)}
-                      className="p-2.5 rounded-lg border border-white/15 hover:border-[#FFC82C] text-gray-300 hover:text-white transition-all bg-white/5"
+                      className="p-2.5 rounded-xl border border-white/15 hover:border-[#FFC82C] text-gray-300 hover:text-white transition-all bg-white/5 cursor-pointer"
                       title="Aperçu Rapide"
                     >
                       <i className="pi pi-eye text-sm" />
                     </button>
                   </div>
                 </div>
+
               </div>
             </motion.div>
           ))}

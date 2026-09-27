@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import "primeicons/primeicons.css";
+
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });

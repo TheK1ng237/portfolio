@@ -147,31 +147,7 @@ export default function Hero() {
         {/* RIGHT COLUMN: INTERACTIVE 3D TILT MASCOT CARD WITH PATTERN AURA */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end items-center relative">
           {/* Secondary Pattern (path2.svg) Rotating Golden Aura */}
-          <div
-            className="absolute w-[420px] h-[420px] md:w-[520px] md:h-[520px] pattern-gold-filter opacity-25 pointer-events-none rounded-full"
-            style={{
-              backgroundImage: "url('/patterns/path2.svg')",
-              backgroundSize: "contain",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              animation: "patternRotateSlow 90s linear infinite",
-              filter: "drop-shadow(0 0 30px rgba(255,200,44,0.35))",
-            }}
-          />
-
-          {/* Primary Pattern (path1.svg) Subtle Radial Frame */}
-          <div
-            className="absolute w-[360px] h-[360px] md:w-[460px] md:h-[460px] pattern-crimson-filter opacity-20 pointer-events-none rounded-full"
-            style={{
-              backgroundImage: "url('/patterns/path1.svg')",
-              backgroundSize: "contain",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              animation: "patternRotateSlow 120s linear infinite reverse",
-            }}
-          />
-
-          {/* Hero Portrait Container with Glassmorphism & Gold Border */}
+        
           
           <img
               src="/images/pixarMe.png"
