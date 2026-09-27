@@ -5,7 +5,10 @@ import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Project } from "@/app/type";
 
+import { useTranslations } from "next-intl";
+
 export default function Projects() {
+  const t = useTranslations("ProjectsPage");
   const [filter, setFilter] = useState<string>("all");
   const [selectedModalProject, setSelectedModalProject] = useState<Project | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -80,15 +83,13 @@ export default function Projects() {
         
         {/* HERO / HEADER SECTION */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          
-
           <motion.h1
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             className="font-achiko text-4xl sm:text-6xl md:text-7xl font-black tracking-tight uppercase text-white leading-tight mb-6"
           >
-            MODULES <span className="text-[#FFC82C]">DÉPLOYÉS</span>
+            {t("header.title_main")} <span className="text-[#FFC82C]">{t("header.title_sub")}</span>
           </motion.h1>
 
           <motion.p
@@ -97,7 +98,7 @@ export default function Projects() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="font-azurio text-sm sm:text-base text-gray-300 font-light leading-relaxed mb-8"
           >
-            Explorez mes réalisations full-stack, mobiles et designs visuels suspendus sur la galerie. Survolez ou cliquez sur une carte pour une expérience immersive.
+            {t("header.description")}
           </motion.p>
 
           {/* FILTER BUTTONS BAR */}
@@ -108,10 +109,10 @@ export default function Projects() {
             className="inline-flex flex-wrap justify-center gap-2 p-2 rounded-2xl border border-white/20 bg-[#121526]/80 backdrop-blur-xl shadow-2xl font-azurio"
           >
             {[
-              { id: "all", label: "TOUS LES PROJETS" },
-              { id: "web", label: "WEB APP" },
-              { id: "mobile", label: "MOBILE" },
-              { id: "design", label: "DESIGN UI/UX" },
+              { id: "all", label: t("filters.all") },
+              { id: "web", label: t("filters.web") },
+              { id: "mobile", label: t("filters.mobile") },
+              { id: "design", label: t("filters.design") },
             ].map((f) => (
               <button
                 key={f.id}
