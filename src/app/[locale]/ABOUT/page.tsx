@@ -1,393 +1,584 @@
 "use client";
+
+import { useState } from "react";
 import Image from "next/image";
-import { Link } from '@/i18n/navigation';
-import { motion } from "framer-motion";
-import "primeicons/primeicons.css";
+import { Link } from "@/i18n/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-// Palette de couleurs
-const colors = {
-  gold: "#E9B826",
-  red: "#BB141A",
-  green: "#2D5D2A",
-  dark: "#0A0A0A",
-  light: "#F5F5DC",
-  grey: "#1a1a1a",
-  tertiary: "#6B7280",
-};
 type SkillBarProps = {
-  skill: string;
-  level: number;
-  color: string;
+  name: string;
+  icon?: string;
 };
 
+type SkillGroupItem = {
+  step: string;
+  stepLabel: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  color: string;
+  borderColor: string;
+  icon: string;
+  tag: string;
+  items: SkillBarProps[];
+};
 
+type VoletItem = {
+  id: string;
+  voletNumber: string;
+  voletTitle: string;
+  voletDescription: string;
+  color: string;
+  groups: SkillGroupItem[];
+};
+
+const voletsData: VoletItem[] = [
+  {
+    id: "skills",
+    voletNumber: "VOLET 01",
+    voletTitle: "MES SKILLS",
+    voletDescription: "Compétences techniques et ingénierie logicielle pour la construction d'applications web modernes.",
+    color: "#FFC82C",
+    groups: [
+      {
+        step: "1",
+        stepLabel: "SKILL 01",
+        title: "FRONTEND",
+        subtitle: "Interfaces Réactives & UX",
+        description: "Conception d'interfaces web fluides, performantes et accessibles avec Next.js, Angular et TypeScript.",
+        color: "#FFC82C",
+        borderColor: "rgba(255, 200, 44, 0.3)",
+        icon: "pi pi-desktop",
+        tag: "#FRONTEND_DEV",
+        items: [
+          { name: "Next.js", icon: "nextjs3dicon.svg" },
+          { name: "Angular", icon: "angular3dicon.svg" },
+          { name: "HTML5", icon: "html3dicon.svg" },
+          { name: "CSS3", icon: "css3dicon.svg" },
+          { name: "JavaScript", icon: "javascript3dicon.svg" },
+          { name: "TypeScript", icon: "typescript3dicon.svg" },
+          { name: "Tailwind CSS", icon: "tailwindcss3dicon.svg" },
+        ],
+      },
+      {
+        step: "2",
+        stepLabel: "SKILL 02",
+        title: "BACKEND & LANGAGES",
+        subtitle: "Architecture Serveur & APIs RESTful",
+        description: "Création d'APIs REST hautes performances et services backend sécurisés avec Node.js, Java, Express et Django.",
+        color: "#FF3B56",
+        borderColor: "rgba(255, 59, 86, 0.3)",
+        icon: "pi pi-server",
+        tag: "#BACKEND_ENG",
+        items: [
+          { name: "Node.js", icon: "nodejs3dicon.svg" },
+          { name: "Java", icon: "java3dicon.svg" },
+          { name: "Express.js" ,icon: "express3dicon.svg"},
+          { name: "Django",icon: "django3dicon.svg" },
+          { name: "API REST", icon: "postman3dicon.svg" },
+        ],
+      },
+      {
+        step: "3",
+        stepLabel: "SKILL 03",
+        title: "DATA & WEB3",
+        subtitle: "Bases de Données & Blockchain",
+        description: "Modélisation de données (SQL & NoSQL) et intégration des protocoles décentralisés Web3.",
+        color: "#10B981",
+        borderColor: "rgba(16, 185, 129, 0.3)",
+        icon: "pi pi-database",
+        tag: "#DATA_WEB3",
+        items: [
+          { name: "MongoDB", icon: "mongodb3dicon.svg" },
+          { name: "PostgreSQL", icon: "postgres3dicon.svg" },
+          { name: "MySQL", icon: "mysql3dicon.svg" },
+          { name: "Supabase", icon: "supabase3dicon.svg" },
+          { name: "MetaMask & Blockchain", icon: "metamask3dicon.svg" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "outils",
+    voletNumber: "VOLET 02",
+    voletTitle: "MES OUTILS",
+    voletDescription: "Suite logicielle, prototypage design, versioning et outils de développement collaboratif au quotidien.",
+    color: "#FFE57F",
+    groups: [
+      {
+        step: "4",
+        stepLabel: "OUTIL 01",
+        title: "DESIGN & CREATION",
+        subtitle: "Prototypage UI/UX & Canvas Visuel",
+        description: "Design d'interfaces futuristes sur Figma, suite Adobe (Photoshop, Illustrator) et organisation créative sur Milanote.",
+        color: "#FFE57F",
+        borderColor: "rgba(255, 229, 127, 0.3)",
+        icon: "pi pi-palette",
+        tag: "#DESIGN_TOOLS",
+        items: [
+          { name: "Figma", icon: "figma.svg" },
+          { name: "Photoshop", icon: "potoshop3dicon.svg" },
+          { name: "Illustrator", icon: "illustrator.svg" },
+          { name: "Milanote", icon: "milanote3dicon.svg" },
+          { name: "Canva & Graphic UI",icon: "canva3dicon.svg" },
+        ],
+      },
+      {
+        step: "5",
+        stepLabel: "OUTIL 02",
+        title: "DEV & ENVIRONMENT",
+        subtitle: "Éditeur, Versioning & Hosting",
+        description: "Environnement de développement sur VS Code, gestion de dépôt Git, GitHub, GitLab, Postman et déploiement Vercel.",
+        color: "#3B82F6",
+        borderColor: "rgba(59, 130, 246, 0.3)",
+        icon: "pi pi-code",
+        tag: "#DEV_ENVIRONMENT",
+        items: [
+          { name: "VS Code", icon: "vscode3dicon.svg" },
+          { name: "Git", icon: "git3dicon.svg" },
+          { name: "GitHub", icon: "github3dicon.svg" },
+          { name: "GitLab", icon: "gitlab3dicon.svg" },
+          { name: "Postman", icon: "postman3dicon.svg" },
+          { name: "Vercel", icon: "vercel3dicon.svg" },
+        ],
+      },
+      {
+        step: "6",
+        stepLabel: "OUTIL 03",
+        title: "ORGANISATION & WORKFLOW",
+        subtitle: "Gestion de Projet & CMS",
+        description: "Planification Agile sur Trello, intégration CMS sur WordPress et suivi de projet collaboratif.",
+        color: "#A855F7",
+        borderColor: "rgba(168, 85, 247, 0.3)",
+        icon: "pi pi-sliders-h",
+        tag: "#WORKFLOW_AGILE",
+        items: [
+          { name: "Trello", icon: "trello3dicon.svg" },
+          
+        ],
+      },
+    ],
+  },
+];
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 100 : -100,
+    opacity: 0,
+    scale: 0.96,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -100 : 100,
+    opacity: 0,
+    scale: 0.96,
+  }),
+};
 
 export default function About() {
   const t = useTranslations("AboutPage");
+  const [activeVoletIndex, setActiveVoletIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
 
-  // --- COMPOSANTS UI RÉUTILISABLES ---
+  const activeVolet = voletsData[activeVoletIndex];
 
-//  Un séparateur stylisé "Tech"
-const Divider = ({ color = colors.gold }) => (
-  <div className="flex items-center gap-4 py-8 opacity-50">
-    <div className="h-[1px] w-12" style={{ backgroundColor: color }} />
-    <div className="text-[10px] font-mono uppercase tracking-widest text-gray-500">
-      {t("ui.section_break")}
-    </div>
-    <div className="h-[1px] flex-1" style={{ backgroundColor: color }} />
-  </div>
-);
+  const handleSelectVolet = (index: number) => {
+    setDirection(index > activeVoletIndex ? 1 : -1);
+    setActiveVoletIndex(index);
+  };
 
-// Carte de compétence style "System Monitor"
-const SkillBar = ({ skill, level, color }: SkillBarProps) => (
-  <div className="mb-6 group">
-    <div className="flex justify-between mb-2 font-mono text-xs uppercase tracking-wider">
-      <span className="text-gray-300 group-hover:text-white transition-colors">
-        {skill}
-      </span>
-      <span style={{ color: color }}>{level}% {t("skills.efficiency")}</span>
-    </div>
-    <div className="h-1 w-full bg-white/5 overflow-hidden">
-      <motion.div
-        initial={{ width: 0 }}
-        whileInView={{ width: `${level}%` }}
-        transition={{ duration: 1.5, ease: "circOut" }}
-        className="h-full relative"
-        style={{ backgroundColor: color }}
-      >
-        <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-white shadow-[0_0_10px_white]" />
-      </motion.div>
-    </div>
-  </div>
-);
+  const handlePrev = () => {
+    setDirection(-1);
+    setActiveVoletIndex((prev) => (prev === 0 ? voletsData.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setDirection(1);
+    setActiveVoletIndex((prev) => (prev === voletsData.length - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <div
-      className="min-h-screen relative overflow-hidden"
-      style={{ backgroundColor: colors.dark, color: colors.light }}
-    >
-      {/* --- BACKGROUND GRILLE --- */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(${colors.light} 1px, transparent 1px), linear-gradient(90deg, ${colors.light} 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
-        }}
-      ></div>
-
-      {/* --- HEADER : PROFIL ID --- */}
-      <section className="relative pt-32 pb-20 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Colonne Photo (Style Carte d'Identité) */}
-          <div className="lg:col-span-4 relative">
+    <div className="min-h-screen relative overflow-hidden bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-24">
+      {/* HEADER SECTION */}
+      <section className="relative pt-10 pb-16 px-6 max-w-7xl mx-auto z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: ID Card */}
+          <div className="lg:col-span-5 relative font-azurio">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              className="relative p-2 border border-white/10 bg-white/5 backdrop-blur-sm"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.8 }}
+              className="glass-card p-4 rounded-3xl border border-[#FFC82C] shadow-[0_0_35px_rgba(255,200,44,0.2)]"
             >
-              <div className="relative aspect-square overflow-hidden  transition-all duration-500">
-                <Image
-                  src="/profil.png"
+              <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/15 bg-[#0B0D18]">
+                <img
+                  src="/images/yann.jpg"
                   alt="KingTang"
-                  fill
-                  className="object-cover"
+                  className="object-cover h-full w-full"
                 />
-                {/* Overlay Scan Line */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent animate-scan" />
               </div>
-
-              <div className="mt-4 space-y-2 font-mono text-xs">
-                <div className="flex justify-between border-b border-white/10 pb-1">
-                  <span className="text-gray-500">
-                    {t("identity.id_label")}
-                  </span>
-                  <span>KT-2026-DEV</span>
-                </div>
-                <div className="flex justify-between border-b border-white/10 pb-1">
-                  <span className="text-gray-500">
-                    {t("identity.class_label")}
-                  </span>
-                  <span style={{ color: colors.gold }}>
-                    {t("identity.class_value")}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">
-                    {t("identity.origin_label")}
-                  </span>
-                  <span>{t("identity.origin_value")}</span>
-                </div>
-              </div>
-
-              {/* Coins décoratifs */}
-              <div
-                className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2"
-                style={{ borderColor: colors.gold }}
-              />
-              <div
-                className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2"
-                style={{ borderColor: colors.red }}
-              />
             </motion.div>
           </div>
 
-          {/* Colonne Biographie */}
-          <div className="lg:col-span-8">
+          {/* Right Column: Bio */}
+          <div className="lg:col-span-7 space-y-6">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              transition={{ duration: 0.8 }}
             >
-              <h1 className="text-6xl md:text-7xl font-black tracking-tighter mb-8 opacity-90">
-                {t("header.title_prefix")} <br />
-                <span
-                  className="text-transparent bg-clip-text"
-                  style={{
-                    backgroundImage: `linear-gradient(to right, ${colors.gold}, white)`,
-                  }}
-                >
-                  {t("header.name")}
-                </span>
+              <h1 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
+                INGÉNIERIE LOGICIELLE &amp; <span className="text-[#FFC82C]">VISION CREATIVE</span>
               </h1>
-
-              <div className="prose prose-invert max-w-none">
-                <p
-                  className="text-xl md:text-2xl font-light leading-relaxed text-gray-300 border-l-4 pl-6 mb-8"
-                  style={{ borderColor: colors.gold }}
-                >
-                  {t("bio.quote")}
-                </p>
-
-                <div className="grid md:grid-cols-2 gap-8 text-sm md:text-base text-gray-400 leading-relaxed">
-                  <p>{t("bio.p1")} </p>
-                  <p>{t("bio.p2")} </p>
-                </div>
-              </div>
             </motion.div>
-          </div>
-        </div>
-      </section>
 
-      <div className="max-w-7xl mx-auto px-6">
-        <Divider color={colors.red} />
-      </div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-azurio text-base md:text-lg text-gray-200 leading-relaxed font-light"
+            >
+              Développeur full-stack, je conçois des applications web de bout en bout : interfaces soignées, API, bases de données et intégrations. J’allie architecture fiable, expérience utilisateur et expression culturelle.
+            </motion.p>
 
-      {/* --- SECTION 2 : TIMELINE "VERSION LOG" --- */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-12 gap-12">
-          {/* Titre Latéral */}
-          <div className="lg:col-span-4">
-            <h2 className="text-4xl font-bold mb-4 flex items-center gap-3">
-              <i className="pi pi-history" style={{ color: colors.gold }}></i>
-              <span className="tracking-tight">{t("timeline.title")}</span>
-            </h2>
-            <p className="text-sm text-gray-500 font-mono">
-              {t("timeline.subtitle")}
-            </p>
-          </div>
-
-          {/* Timeline Style "Git Commit" */}
-          <div className="lg:col-span-8 relative border-l border-white/10 ml-4 lg:ml-0 space-y-12">
-            {[
-              {
-                year: "2025",
-                title: "FULLSTACK EXPANSION",
-                subtitle: "Backend Integration",
-                desc: "Architecture de bases de données avec MongoDB et création d'API REST ExpressJS. Le chaînon manquant.",
-                color: colors.green,
-              },
-              {
-                year: "2024",
-                title: "CULTURAL UI/UX",
-                subtitle: "Design System",
-                desc: "Définition de ma signature graphique : fusionner le minimalisme moderne avec la complexité des motifs africains.",
-                color: colors.gold,
-              },
-              {
-                year: "2023",
-                title: "FRONTEND SPECIALIST",
-                subtitle: "Framework Mastery",
-                desc: "Deep dive dans l'écosystème React, Next.js et TailwindCSS. Transition du code spaghetti vers l'architecture modulaire.",
-                color: colors.red,
-              },
-              {
-                year: "2022",
-                title: "SYSTEM INIT",
-                subtitle: "The Beginning",
-                desc: "Première ligne de code. HTML, CSS, PHP. Comprendre comment le web respire.",
-                color: colors.grey,
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="relative pl-12"
-              >
-                {/* Point sur la ligne */}
-                <div
-                  className="absolute -left-[5px] top-2 w-[9px] h-[9px] rounded-full ring-4 ring-[#0A0A0A]"
-                  style={{ backgroundColor: item.color }}
-                />
-
-                {/* Badge Année */}
-                <span
-                  className="inline-block px-2 py-1 mb-2 text-[10px] font-bold rounded text-black"
-                  style={{
-                    backgroundColor:
-                      item.color === colors.grey ? "#444" : item.color,
-                    color: item.color === colors.grey ? "white" : "black",
-                  }}
-                >
-                  v.{item.year}
-                </span>
-
-                <h3 className="text-2xl font-bold text-white">
-                  {t(`timeline.items.${item.year}.title`)}
-                </h3>
-                <h4 className="text-sm font-mono text-gray-500 mb-2">
-                  {t(`timeline.items.${item.year}.subtitle`)}
-                </h4>
-                <p className="text-gray-400 max-w-xl">
-                  {t(`timeline.items.${item.year}.desc`)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+              <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
+                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">FULL-STACK ENGINEERING</span>
+                <p className="text-xs text-gray-300 leading-relaxed font-light">
+                  Next.js, Angular, Node.js, Express.js et Django, des interfaces aux API.
                 </p>
               </motion.div>
-            ))}
+              <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
+                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">AFRO-FUTURISM UX</span>
+                <p className="text-xs text-gray-300 leading-relaxed font-light">
+                  Design d’interface fondé sur les mathématiques des motifs africains ancestraux.
+                </p>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-6">
-        <Divider color={colors.tertiary} />
-      </div>
-
-      {/* --- SECTION 3 : COMPÉTENCES & VALEURS --- */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          {/* Colonne Compétences Techniques */}
-          <div>
-            <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <i className="pi pi-server" style={{ color: colors.red }}></i>
-              {t("skills.title")}
-            </h3>
-
-            <div className="bg-white/5 p-8 rounded-lg border border-white/5 backdrop-blur-sm">
-              <SkillBar
-                skill={t("skills.items.frontend")}
-                level={90}
-                color={colors.gold}
-              />
-              <SkillBar
-                skill={t("skills.items.styling")}
-                level={95}
-                color={colors.red}
-              />
-              <SkillBar
-                skill={t("skills.items.logic")}
-                level={75}
-                color={colors.green}
-              />
-              <SkillBar
-                skill={t("skills.items.design")}
-                level={85}
-                color={colors.gold}
-              />
-              <SkillBar
-                skill={t("skills.items.backend")}
-                level={40}
-                color={colors.grey}
-              />
+      {/* ROADMAP SWIPER / EXPERTISE SECTION */}
+      <section className="py-20 px-6 max-w-7xl mx-auto z-10 relative border-t border-white/10">
+        
+        {/* NARRATIVE HEADER (MON EXPERTISE) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-6"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-[#FFC82C]/10 text-[#FFC82C] border border-[#FFC82C]/30 mb-4">
+              <i className="pi pi-compass text-xs" /> Swiper d&apos;Expertise en 2 Volets
             </div>
-          </div>
+            
+            <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
+              MON <span className="text-[#FFC82C]">EXPERTISE</span>
+            </h2>
 
-          {/* Colonne Valeurs (Cartes) */}
-          <div>
-            <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <i className="pi pi-compass" style={{ color: colors.green }}></i>
-              {t("values.title")}
-            </h3>
+            <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
+              Naviguez interactivement entre le <strong>Volet 1 : Mes Skills</strong> et le <strong>Volet 2 : Mes Outils</strong> via le Swiper ci-dessous.
+            </p>
+          </motion.div>
 
-            <div className="grid gap-4">
-              {[
-                {
-                  key: "heritage",
-                  icon: "pi-flag-fill",
-                  color: colors.gold,
-                },
-                {
-                  key: "performance",
-                  icon: "pi-bolt",
-                  color: colors.red,
-                },
-                {
-                  key: "clean",
-                  icon: "pi-lock",
-                  color: colors.green,
-                },
-              ].map((val, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{
-                    x: 10,
-                    backgroundColor: "rgba(255,255,255,0.05)",
-                  }}
-                  className="p-6 rounded border border-white/5 bg-black flex items-start gap-4 transition-all"
-                >
-                  <div
-                    className="mt-1 p-2 rounded bg-white/5"
-                    style={{ color: val.color }}
+          {/* SWIPER TAB BUTTONS & NAV CONTROLS */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-6 flex flex-col sm:flex-row items-start sm:items-center lg:justify-end gap-4"
+          >
+            {/* Volet Tabs */}
+            <div className="p-1.5 rounded-2xl glass-card border border-white/15 flex items-center gap-2 bg-[#121526]">
+              {voletsData.map((volet, idx) => {
+                const isActive = activeVoletIndex === idx;
+                return (
+                  <button
+                    key={volet.id}
+                    onClick={() => handleSelectVolet(idx)}
+                    className={`px-5 py-3 rounded-xl font-achiko text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 cursor-pointer ${
+                      isActive
+                        ? "bg-[#FFC82C] text-black shadow-[0_0_25px_rgba(255,200,44,0.4)] scale-105"
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                    }`}
                   >
-                    <i className={`pi ${val.icon} text-xl`}></i>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-white mb-1 uppercase tracking-wider">
-                      {t(`values.items.${val.key}.title`)}{" "}
-                    </h4>
-                    <p className="text-sm text-gray-400">
-                      {t(`values.items.${val.key}.desc`)}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                    <span className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-black ${
+                      isActive ? "bg-black text-[#FFC82C]" : "bg-white/10 text-gray-300"
+                    }`}>
+                      0{idx + 1}
+                    </span>
+                    {volet.voletTitle}
+                  </button>
+                );
+              })}
             </div>
-          </div>
+
+            {/* Navigation Arrows */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handlePrev}
+                aria-label="Volet précédent"
+                className="w-12 h-12 rounded-2xl glass-card border border-white/15 flex items-center justify-center text-white hover:border-[#FFC82C] hover:bg-[#FFC82C]/10 transition-all cursor-pointer group"
+              >
+                <i className="pi pi-chevron-left text-lg group-hover:-translate-x-0.5 transition-transform" />
+              </button>
+              <button
+                onClick={handleNext}
+                aria-label="Volet suivant"
+                className="w-12 h-12 rounded-2xl glass-card border border-white/15 flex items-center justify-center text-white hover:border-[#FFC82C] hover:bg-[#FFC82C]/10 transition-all cursor-pointer group"
+              >
+                <i className="pi pi-chevron-right text-lg group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
         </div>
+
+        {/* SWIPER CONTAINER WITH ANIMATE PRESENCE */}
+        <div className="relative min-h-[600px] overflow-hidden rounded-3xl pt-4">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={activeVolet.id}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.45, ease: "easeInOut" }}
+              className="w-full"
+            >
+              {/* VOLET SLIDE BANNER */}
+              <div className="flex items-center gap-4 mb-10 pb-4 border-b border-white/10">
+                <div
+                  className="px-4 py-2 rounded-xl text-xs font-achiko font-black uppercase text-black shadow-lg"
+                  style={{ backgroundColor: activeVolet.color }}
+                >
+                  {activeVolet.voletNumber}
+                </div>
+                <div>
+                  <h3 className="font-achiko text-2xl sm:text-4xl font-black uppercase text-white tracking-tight">
+                    {activeVolet.voletTitle}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-300 font-light mt-1">
+                    {activeVolet.voletDescription}
+                  </p>
+                </div>
+              </div>
+
+              {/* ROADMAP CONTENT FOR THIS VOLET */}
+              <div className="relative">
+                
+                {/* DESKTOP SVG ROAD PATH */}
+                <div className="hidden lg:block absolute inset-0 pointer-events-none z-0">
+                  <svg className="w-full h-full" viewBox="0 0 1000 800" preserveAspectRatio="none" fill="none">
+                    <path
+                      d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
+                      stroke="#1B2035"
+                      strokeWidth="50"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
+                      stroke="#0D0F1C"
+                      strokeWidth="40"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
+                      stroke={activeVolet.color}
+                      strokeWidth="42"
+                      strokeLinecap="round"
+                      opacity="0.25"
+                    />
+                    <path
+                      d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
+                      stroke="#FFFFFF"
+                      strokeWidth="4"
+                      strokeDasharray="12 12"
+                      strokeLinecap="round"
+                      opacity="0.8"
+                    />
+                  </svg>
+                </div>
+
+                {/* MOBILE VERTICAL ROAD LINE */}
+                <div className="lg:hidden absolute left-6 sm:left-10 top-0 bottom-0 w-2.5 bg-[#121526] border-x border-white/20 z-0">
+                  <div className="w-full h-full border-r border-dashed border-white/40" />
+                </div>
+
+                {/* GROUPS INSIDE VOLET */}
+                <div className="space-y-12 lg:space-y-20 relative z-10">
+                  {activeVolet.groups.map((group, index) => {
+                    const isEven = index % 2 === 0;
+
+                    return (
+                      <div
+                        key={group.title}
+                        className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center ${
+                          isEven ? "lg:flex-row" : "lg:flex-row-reverse"
+                        }`}
+                      >
+                        {/* MOBILE ROADMAP STEP BADGE */}
+                        <div className="lg:hidden flex items-center gap-4 pl-1 sm:pl-4">
+                          <div
+                            className="w-12 h-12 rounded-full flex items-center justify-center font-achiko text-xl font-black text-black shadow-lg ring-4 ring-[#0B0D18]"
+                            style={{ backgroundColor: group.color }}
+                          >
+                            {group.step}
+                          </div>
+                          <div>
+                            <span className="text-xs font-mono font-bold tracking-widest text-gray-400 block">
+                              {group.stepLabel} &bull; {activeVolet.voletTitle}
+                            </span>
+                            <h4 className="font-achiko text-lg font-bold uppercase tracking-wider" style={{ color: group.color }}>
+                              {group.title}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* DESKTOP ALTERNATING CARD PLACEMENT */}
+                        <div className={`lg:col-span-6 ${isEven ? "lg:pr-8" : "lg:pl-8 lg:col-start-7"}`}>
+                          <div
+                            className="glass-card p-6 sm:p-8 rounded-3xl border transition-all duration-300 relative group overflow-hidden"
+                            style={{ borderColor: group.borderColor }}
+                          >
+                            {/* Ambient Card Glow */}
+                            <div
+                              className="absolute -right-16 -top-16 w-44 h-44 rounded-full blur-3xl pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity"
+                              style={{ backgroundColor: group.color }}
+                            />
+
+                            {/* Card Header */}
+                            <div className="flex items-start justify-between gap-4 mb-4">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className="w-10 h-10 rounded-xl flex items-center justify-center text-black font-achiko font-black text-lg"
+                                  style={{ backgroundColor: group.color }}
+                                >
+                                  {group.step}
+                                </div>
+                                <div>
+                                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-gray-400 block">
+                                    {group.stepLabel} &bull; {group.tag}
+                                  </span>
+                                  <h4 className="font-achiko text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
+                                    {group.title}
+                                  </h4>
+                                </div>
+                              </div>
+                              <i className={`${group.icon} text-2xl opacity-80`} style={{ color: group.color }} />
+                            </div>
+
+                            <p className="text-xs sm:text-sm text-gray-300 font-light mb-6 leading-relaxed">
+                              {group.description}
+                            </p>
+
+                            {/* SKILLS / TOOLS GRID */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                              {group.items.map((item: SkillBarProps) => (
+                                <motion.div
+                                  key={item.name}
+                                  whileHover={{ scale: 1.04, y: -2 }}
+                                  className="group/icon min-h-24 flex flex-col items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-3 text-center "
+                                >
+                                  {item.icon ? (
+                                    <Image
+                                      src={`/stack/${item.icon}`}
+                                      alt={item.name}
+                                      width={38}
+                                      height={38}
+                                      className="h-24 w-24 object-contain transition-all duration-300 group-hover/icon:scale-110 group-hover/icon:brightness-125"
+                                      style={{ filter: `drop-shadow(0 0 3px ${group.color}bb) drop-shadow(0 0 10px ${group.color}66)` }}
+                                    />
+                                  ) : (
+                                    <span
+                                      className="h-24  flex items-center text-2xl transition-all duration-300 group-hover/icon:scale-110"
+                                      style={{ color: group.color, filter: `drop-shadow(0 0 3px ${group.color}bb) drop-shadow(0 0 15px ${group.color}66)` }}
+                                    >
+                                      <i className="pi pi-bolt" />
+                                    </span>
+                                  )}
+                                  <span className="text-[11px] font-bold leading-tight text-gray-200">
+                                    {item.name}
+                                  </span>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* DESKTOP CENTER ROAD MAP BADGE PIN */}
+                        <div className={`hidden lg:flex lg:col-span-6 items-center justify-center ${
+                          isEven ? "lg:col-start-7 lg:pl-12" : "lg:col-start-1 lg:row-start-1 lg:pr-12"
+                        }`}>
+                          <div className="relative flex items-center justify-center">
+                            <div
+                              className="w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed opacity-60"
+                              style={{ borderColor: group.color }}
+                            />
+                            <div
+                              className="absolute w-16 h-16 rounded-full flex flex-col items-center justify-center text-black shadow-[0_0_30px_rgba(0,0,0,0.8)] border-4 border-[#0B0D18] z-20 transition-transform hover:scale-110"
+                              style={{ backgroundColor: group.color }}
+                            >
+                              <span className="font-achiko text-2xl font-black leading-none">{group.step}</span>
+                              <span className="text-[8px] font-bold tracking-tighter uppercase font-mono">NODE</span>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* SWIPER PAGINATION INDICATORS */}
+        <div className="flex items-center justify-center gap-3 mt-12">
+          {voletsData.map((volet, idx) => {
+            const isActive = activeVoletIndex === idx;
+            return (
+              <button
+                key={volet.id}
+                onClick={() => handleSelectVolet(idx)}
+                aria-label={`Aller au ${volet.voletTitle}`}
+                className={`h-3 rounded-full transition-all cursor-pointer ${
+                  isActive
+                    ? "w-10 bg-[#FFC82C] shadow-[0_0_15px_rgba(255,200,44,0.6)]"
+                    : "w-3 bg-white/20 hover:bg-white/40"
+                }`}
+              />
+            );
+          })}
+        </div>
+
       </section>
 
-      {/* --- CTA FINAL --- */}
-      <section className="py-24 text-center relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#E9B826]/10 to-transparent pointer-events-none" />
-
-        <h2 className="text-4xl md:text-5xl font-black mb-6">
-          {t("cta.title")}
-        </h2>
-        <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            {t("cta.subtitle")}
-        </p>
-
-        <Link
-          href="/contact"
-          className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors"
-        >
-          <span>{t("cta.button")}</span>
-          <i className="pi pi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-        </Link>
-      </section>
-
-      <style jsx global>{`
-        @keyframes scan {
-          0% {
-            transform: translateY(-100%);
-          }
-          100% {
-            transform: translateY(100%);
-          }
-        }
-        .animate-scan {
-          animation: scan 3s linear infinite;
-        }
-      `}</style>
+      {/* CTA FOOTER LINK */}
+      <div className="text-center pt-8 relative z-10">
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+          <Link
+            href="/PROJECT"
+            className="px-10 py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm uppercase tracking-widest rounded-xl shadow-[0_0_30px_rgba(255,200,44,0.4)] transition-all inline-block"
+          >
+            {t("cta.button")}
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 }
+
+
+

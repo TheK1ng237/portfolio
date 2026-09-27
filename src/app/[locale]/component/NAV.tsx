@@ -1,40 +1,29 @@
-
 "use client";
 
-// 1. UTILISE LES IMPORTS DE TON FICHIER NAVIGATION
-import { Link, usePathname } from "@/i18n/navigation"; 
+import { Link, usePathname } from "@/i18n/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl"; // Ajouté
-import "primeicons/primeicons.css";
+import { useLocale, useTranslations } from "next-intl";
+import AudioController from "./AudioController";
 
-const COLORS = {
-  primary: '#E9B826', 
-  secondary: '#BB141A',
-  dark: '#0A0A0A',
-  light: '#F5F5DC',
-  border: 'rgba(233, 184, 38, 0.1)'
-};
-
-// On garde les IDs, les labels seront traduits via useTranslations
 const NAV_ITEMS = [
-  { id: '01', key: 'about', path: '/ABOUT' },
-  { id: '02', key: 'projects', path: '/PROJECT' },
-  { id: '03', key: 'culture', path: '/CULTURE' },
-  { id: '04', key: 'solution', path: '/SOLUTION' },
-  { id: '05', key: 'contact', path: '/CONTACT' },
+  {  key: "about", path: "/ABOUT" },
+  {  key: "projects", path: "/PROJECT" },
+  {  key: "culture", path: "/CULTURE" },
+  {  key: "solution", path: "/SOLUTION" },
+  {  key: "contact", path: "/CONTACT" },
 ];
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const locale = useLocale(); // Récupère 'fr' ou 'en'
-  const t = useTranslations('Nav'); // Assure-toi d'avoir une clé "Nav" dans tes JSON
+  const locale = useLocale();
+  const t = useTranslations("Nav");
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => setIsScrolled(window.scrollY > 25);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -43,21 +32,28 @@ export default function Navigation() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Petit composant Switcher réutilisable
   const LanguageSwitcher = () => (
-    <div className="flex items-center gap-2 font-mono text-[9px] border border-white/10 px-2 py-1 bg-white/5">
-      <Link 
-        href={pathname} 
-        locale="fr" 
-        className={`transition-colors ${locale === 'fr' ? 'text-primary' : 'text-gray-500 hover:text-white'}`}
+    <div className="flex items-center gap-1 font-azurio text-[10px] border border-[#FFC82C]/40 px-2.5 py-1 rounded-full bg-[#121526] shadow-sm">
+      <Link
+        href={pathname}
+        locale="fr"
+        className={`px-2 py-0.5 rounded-full transition-all font-bold ${
+          locale === "fr"
+            ? "bg-[#FFC82C] text-black font-black"
+            : "text-gray-300 hover:text-white"
+        }`}
       >
         FR
       </Link>
-      <span className="text-gray-700">|</span>
-      <Link 
-        href={pathname} 
-        locale="en" 
-        className={`transition-colors ${locale === 'en' ? 'text-primary' : 'text-gray-500 hover:text-white'}`}
+      <span className="text-gray-500">|</span>
+      <Link
+        href={pathname}
+        locale="en"
+        className={`px-2 py-0.5 rounded-full transition-all font-bold ${
+          locale === "en"
+            ? "bg-[#FFC82C] text-black font-black"
+            : "text-gray-300 hover:text-white"
+        }`}
       >
         EN
       </Link>
@@ -71,107 +67,141 @@ export default function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         style={{
-          paddingTop: isScrolled ? '12px' : '20px',
-          paddingBottom: isScrolled ? '12px' : '20px',
-          backgroundColor: isScrolled ? 'rgba(10, 10, 10, 0.9)' : 'transparent',
-          backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-          borderBottom: isScrolled ? `1px solid ${COLORS.border}` : '1px solid transparent'
+          paddingTop: isScrolled ? "10px" : "18px",
+          paddingBottom: isScrolled ? "10px" : "18px",
+          backgroundColor: isScrolled ? "rgba(11, 13, 24, 0.95)" : "transparent",
+          backdropFilter: isScrolled ? "blur(20px)" : "none",
+          borderBottom: isScrolled
+            ? "1px solid rgba(255, 200, 44, 0.3)"
+            : "1px solid transparent",
+          boxShadow: isScrolled ? "0 10px 30px rgba(0,0,0,0.5)" : "none",
         }}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          
-          {/* LOGO */}
-          <Link href="/" className="relative group flex items-center gap-4">
+          {/* BRAND LOGO */}
+          <Link href="/" className="relative group flex items-center gap-3.5">
             <div className="relative flex items-center justify-center">
-               {/* Glow effect behind logo */}
-               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <Image
                 src="/logojaune.png"
                 alt="KingTang Seal"
-                width={45}
-                height={45}
-                className="z-10 transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(233,184,38,0.5)]"
+                width={42}
+                height={42}
+                className="z-10 transition-transform duration-500 group-hover:scale-110 drop-shadow-[0_0_12px_rgba(255,200,44,0.4)]"
                 priority
               />
-              
-              {/* Scanline Effect overlay on logo */}
-              <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none opacity-40">
-                <motion.div 
-                  className="w-full h-[1px] bg-white shadow-[0_0_8px_#E9B826]"
-                  animate={{ y: [-10, 50] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                />
-              </div>
             </div>
-            <div className="hidden sm:block">
-              <span className="block text-[10px] font-mono tracking-[0.4em] text-gray-500 leading-none mb-1 uppercase">Identification</span>
-               <span className="block text-[11px] font-black tracking-[0.2em] text-primary leading-none" style={{ color: COLORS.primary }}>KING</span>
-             </div>
 
-            </Link>
+            <div className="hidden sm:block font-azurio">
+              <span className="block text-[9px] font-azurio tracking-[0.35em] text-gray-300 uppercase leading-none mb-1 font-bold">
+                IDENTITY
+              </span>
+              <span className="block text-[14px] font-achiko tracking-[0.2em] text-[#FFC82C] leading-none">
+                KINGTANG
+              </span>
+            </div>
+          </Link>
 
-          {/* DESKTOP NAV */}
+          {/* DESKTOP NAVIGATION */}
           <nav className="hidden md:flex items-center gap-2">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.map((item,index) => {
               const isActive = pathname.toUpperCase() === item.path;
               return (
-                <Link key={item.id} href={item.path} className="relative px-5 py-2 group">
+                <Link
+                  key={index}
+                  href={item.path}
+                  className="relative px-4 py-2 group rounded-md"
+                >
                   <div className="flex flex-col items-center">
-                    <span className="text-[7px] font-mono text-gray-600 mb-1 opacity-40">{item.id}</span>
-                    <span 
-                      className={`text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 ${isActive ? 'scale-105' : 'opacity-70 group-hover:opacity-100'}`}
-                      style={{ color: isActive ? COLORS.primary : COLORS.light }}
+                    
+                    <span
+                      className={`text-[12px] font-achiko tracking-[0.18em] uppercase transition-all duration-300 ${
+                        isActive
+                          ? "text-[#FFC82C] font-bold"
+                          : "text-gray-200 group-hover:text-white"
+                      }`}
                     >
-                      {t(item.key)} {/* TRADUCTION ICI */}
+                      {t(item.key)}
                     </span>
                   </div>
                   {isActive && (
-                    <motion.div layoutId="activeGlow" className="absolute bottom-0 left-5 right-5 h-[1px]" style={{ backgroundColor: COLORS.primary }} />
+                    <motion.div
+                      layoutId="activeGlow"
+                      className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#FFC82C] shadow-[0_0_10px_#FFC82C]"
+                    />
                   )}
                 </Link>
               );
             })}
 
-            {/* SYSTEM STATUS + LANGUAGE SWITCHER */}
-            <div className="ml-8 pl-8 border-l border-white/5 flex items-center gap-4">
-                <LanguageSwitcher />
-                <div className="flex items-center gap-3 px-3 py-1.5 rounded-sm border border-primary/10 bg-primary/5">
-                  <div className="relative flex">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping absolute opacity-75" />
-                    <span className="relative w-1.5 h-1.5 rounded-full bg-green-500" />
-                  </div>
-                  <span className="text-[8px] font-mono text-primary uppercase tracking-[0.2em]">Core_Online</span>
-                </div>
+            {/* CONTROLS & HUD STATUS */}
+            <div className="ml-6 pl-6 border-l border-white/20 flex items-center gap-3.5">
+              <AudioController />
+              <LanguageSwitcher />
+
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 font-azurio">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-[9px] font-azurio text-emerald-400 uppercase tracking-[0.2em] font-bold">
+                  CORE_ONLINE
+                </span>
+              </div>
             </div>
           </nav>
 
           {/* MOBILE TOGGLE */}
-          <button 
-            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1 border border-white/10"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <motion.div animate={isMobileMenuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }} className="w-5 h-[1.5px] bg-white" />
-            <motion.div animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }} className="w-3 h-[1.5px] bg-primary ml-2.5" style={{ backgroundColor: COLORS.primary }} />
-            <motion.div animate={isMobileMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }} className="w-5 h-[1.5px] bg-white" />
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <AudioController />
+            <button
+              className="w-10 h-10 flex flex-col items-center justify-center gap-1.5 border border-[#FFC82C] rounded-lg bg-[#121526]"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              <motion.div
+                animate={isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                className="w-5 h-[2px] bg-[#FFC82C]"
+              />
+              <motion.div
+                animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                className="w-3.5 h-[2px] bg-white ml-1.5"
+              />
+              <motion.div
+                animate={isMobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                className="w-5 h-[2px] bg-[#FFC82C]"
+              />
+            </button>
+          </div>
         </div>
       </motion.header>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE DRAWER */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
+            initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-[90] bg-[#050505] md:hidden flex flex-col"
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[90] bg-[#0B0D18] md:hidden flex flex-col justify-between p-8 pt-28"
           >
-            <div className="flex-grow flex flex-col justify-center px-10 space-y-8 relative z-10">
+            <div className="space-y-6">
               {NAV_ITEMS.map((item, i) => (
-                <motion.div key={item.id} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}>
-                  <Link href={item.path} className="group flex flex-col" onClick={() => setIsMobileMenuOpen(false)}>
-                    <span className="font-mono text-primary text-[10px] tracking-[0.5em] mb-2" style={{ color: COLORS.primary }}> MODULE_{item.id}</span>
-                    <span className="text-5xl font-black tracking-tighter uppercase group-hover:text-primary">
+                <motion.div
+                  key={1}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <Link
+                    href={item.path}
+                    className="group flex flex-col"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="font-azurio text-[#FFC82C] text-[10px] tracking-[0.4em] font-bold">
+                      MODULE_{i}
+                    </span>
+                    <span className="text-4xl font-achiko tracking-tight uppercase group-hover:text-[#FFC82C] transition-colors text-white">
                       {t(item.key)}
                     </span>
                   </Link>
@@ -179,14 +209,25 @@ export default function Navigation() {
               ))}
             </div>
 
-            <div className="p-10 border-t border-white/5 flex justify-between items-end relative z-10">
-              <div className="flex flex-col gap-4">
-                <span className="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Language</span>
-                <LanguageSwitcher /> {/* Switcher aussi sur mobile */}
-              </div>
-              <div className="flex gap-6">
-                 <a href="#" className="hover:text-primary transition-colors"><i className="pi pi-linkedin text-lg" /></a>
-                 <a href="#" className="hover:text-primary transition-colors"><i className="pi pi-github text-lg" /></a>
+            <div className="pt-8 border-t border-white/20 flex justify-between items-center">
+              <LanguageSwitcher />
+              <div className="flex gap-4 text-[#FFC82C]">
+                <a
+                  href="https://github.com/TangB5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition-transform"
+                >
+                  <i className="pi pi-github text-xl" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/ndoh-yannick-tang-5b004934a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition-transform"
+                >
+                  <i className="pi pi-linkedin text-xl" />
+                </a>
               </div>
             </div>
           </motion.div>

@@ -1,146 +1,161 @@
-'use client'
-import React from 'react';
-import Image from 'next/image';
-import { Link } from '@/i18n/navigation'; 
-import { useTranslations } from 'next-intl';
+"use client";
 
-const colors = {
-  gold: '#E9B826',
-  red: '#BB141A',
-  green: '#2D5D2A',
-  dark: '#0A0A0A',
-  light: '#F5F5DC'
-};
+import React, { useRef } from "react";
+import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
-const Hero = () => {
-  const t = useTranslations('Hero');
+export default function Hero() {
+  const t = useTranslations("Hero");
+
+  // 3D Card Parallax Tilt Effect
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { damping: 25, stiffness: 200 });
+  const mouseYSpring = useSpring(y, { damping: 25, stiffness: 200 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["18deg", "-18deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-18deg", "18deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <section className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden px-6"
-             style={{ backgroundColor: colors.dark, color: colors.light }}>
-      
-      {/* --- 1. BACKGROUND ARCHITECTURE --- */}
-      <div className="absolute inset-0 z-0 opacity-10"
-           style={{ maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)' }}>
-        <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="grid-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke={colors.light} strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-        </svg>
-      </div>
+    <section className="relative min-h-[92vh] w-full flex flex-col justify-center items-center overflow-hidden px-6 pt-24 pb-16 bg-[#0B0D18]">
+      {/* HERO CONTENT GRID */}
+      <div className="relative z-10 max-w-7xl  w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* LEFT COLUMN: HERO TEXT & BADGES */}
+        <div className="lg:col-span-7 text-left space-y-8">
 
-      {/* Lueurs d'ambiance */}
-      <div className="absolute top-[-10%] left-[-5%] w-96 h-96 rounded-full blur-[120px] opacity-20 animate-pulse" 
-           style={{ backgroundColor: colors.gold }} />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-15 animate-float" 
-           style={{ backgroundColor: colors.red }} />
 
-      {/* --- 2. MAIN LAYOUT --- */}
-      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        
-        {/* COLONNE GAUCHE */}
-        <div className="text-left space-y-8">
-          
-          {/* Badge de disponibilité */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md animate-fade-in">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: colors.green }}></span>
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: colors.green }}></span>
+          {/* Main Title - Achiko for main headings */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="space-y-3"
+          >
+            <span className="block text-xs font-azurio text-[#FFC82C] tracking-[0.45em] uppercase font-bold">
+              FULL-STACK DEVELOPER & CREATIVE ENGINEER
             </span>
-            <span className="text-xs font-mono tracking-widest uppercase opacity-80">
-              {t('badge')}
-            </span>
-          </div>
+            <h1 className="font-achiko text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.92] text-white">
+              {t("title_top")}{" "}
+              <span className="block text-[#FFC82C] mt-1 drop-shadow-[0_0_25px_rgba(255,200,44,0.3)]">
+                {t("title_highlight")}
+              </span>
+            </h1>
+          </motion.div>
 
-          {/* Titre Principal */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-fade-in-up">
-            {t('title_top')} <br />
-            <span style={{ 
-              backgroundImage: `linear-gradient(to right, ${colors.gold}, ${colors.light})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              {t('title_highlight')}
-            </span>
-          </h1>
-
-          {/* Description avec formatage riche */}
-          <p className="text-lg text-gray-400 max-w-lg leading-relaxed border-l-2 pl-6 animate-fade-in-up delay-100"
-             style={{ borderColor: colors.red }}>
-            {t.rich('description', {
-              culture: (chunks) => <span className="text-white font-medium">{chunks}</span>,
-              tech: (chunks) => <span className="text-white font-medium">{chunks}</span>
+          {/* Subtitle / Description - Azurio for body */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="font-azurio text-base md:text-xl text-gray-200 max-w-xl leading-relaxed border-l-3 border-[#FF3B56] pl-6 font-light"
+          >
+            {t.rich("description", {
+              culture: (chunks) => (
+                <span className="text-[#FFC82C] font-bold">{chunks}</span>
+              ),
+              tech: (chunks) => (
+                <span className="text-white font-bold">{chunks}</span>
+              ),
             })}
-          </p>
+          </motion.p>
 
-          {/* Boutons d'action */}
-          <div className="flex flex-wrap gap-4 animate-fade-in-up delay-200">
-            <Link href="#projets" 
-               className="px-8 py-4 font-bold rounded-sm transition-all hover:-translate-y-1 active:scale-95 duration-200 flex items-center gap-2"
-               style={{ backgroundColor: colors.gold, color: colors.dark }}>
-              {t('cta_projects')} <i className="pi pi-arrow-right"></i>
-            </Link>
-            
-            <Link href="#contact" 
-               className="px-8 py-4 font-bold rounded-sm border hover:bg-white/5 transition-all hover:-translate-y-1 active:scale-95 duration-200"
-               style={{ borderColor: 'rgba(255,255,255,0.2)', color: colors.light }}>
-              {t('cta_contact')}
-            </Link>
-          </div>
+          {/* Action CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="flex flex-wrap items-center gap-4 pt-2"
+          >
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="#projets"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm tracking-widest uppercase rounded-xl shadow-[0_0_25px_rgba(255,200,44,0.4)] transition-all duration-300"
+              >
+                <span className="relative z-10">{t("cta_projects")}</span>
+                <i className="pi pi-arrow-right relative z-10 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="#contact"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#121526] border border-white/30 hover:border-[#FFC82C] text-white font-achiko font-bold text-sm tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-white/10"
+              >
+                {t("cta_contact")}
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Live Key Performance Metrics Bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="pt-6 grid grid-cols-3 gap-4 border-t border-white/20 max-w-lg font-azurio"
+          >
+            <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
+              <span className="block text-2xl md:text-3xl font-achiko font-black text-[#FFC82C]">
+                05+
+              </span>
+              <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
+                Expérience (Ans)
+              </span>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
+              <span className="block text-2xl md:text-3xl font-achiko font-black text-white">
+                25+
+              </span>
+              <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
+                Projets Livrés
+              </span>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
+              <span className="block text-2xl md:text-3xl font-achiko font-black text-[#FF3B56]">
+                100%
+              </span>
+              <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
+                Satisfaction UX
+              </span>
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* COLONNE DROITE */}
-        <div className="relative flex justify-center items-center lg:justify-end animate-fade-in delay-300">
-          <div className="relative w-80 h-96 md:w-[28rem] md:h-[34rem]">
-            <div className="absolute top-[-20px] right-[-20px] w-24 h-24 border-t-4 border-r-4"
-                 style={{ borderColor: colors.gold }} />
-            <div className="absolute bottom-[-20px] left-[-20px] w-24 h-24 border-b-4 border-l-4"
-                 style={{ borderColor: colors.red }} />
-            
-            <div className="relative w-full h-full bg-gray-900 overflow-hidden shadow-2xl group">
-              <Image 
-                src="/mascote.png"  
-                alt={t('alt_portrait')}
-                fill
-                className="object-cover transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-            </div>
-          </div>
+        {/* RIGHT COLUMN: INTERACTIVE 3D TILT MASCOT CARD WITH PATTERN AURA */}
+        <div className="lg:col-span-5 flex justify-center lg:justify-end items-center relative">
+          {/* Secondary Pattern (path2.svg) Rotating Golden Aura */}
+        
+          
+          <img
+              src="/images/pixarMe.png"
+              alt={t("alt_portrait")}
+              className="object-cover w-full h-auto rounded-2xl relative z-10 transition-transform duration-500 group-hover:scale-105"
+            />
         </div>
       </div>
-
-      {/* --- SCROLL INDICATOR --- */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-fade-in delay-300">
-        <span className="text-[10px] font-mono uppercase tracking-[0.2em] opacity-50">{t('scroll')}</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white to-transparent opacity-30" />
-      </div>
-
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0); }
-          50% { transform: translate(10px, -20px); }
-        }
-        .animate-fade-in-up { animation: fade-in-up 1s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
-        .animate-fade-in { animation: fade-in 1.5s ease-out forwards; }
-        .animate-float { animation: float 10s ease-in-out infinite; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 400ms; }
-      `}</style>
     </section>
   );
-};
-
-export default Hero;
+}
