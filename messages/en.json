@@ -171,9 +171,18 @@
       "subtitle": "Tech x Culture",
       "main_text": "Web uniformity is a system error. My mission is to reinject algorithmic diversity using African visual structures.",
       "items": {
-        "adinkra": { "title": "ADINKRA SYMBOLS", "use": "Metaphoric Navigation & Icons" },
-        "ndop": { "title": "NDOP GEOMETRY", "use": "Grids & Structural Layouts" },
-        "wax": { "title": "WAX TEXTURES", "use": "Dynamic Backgrounds & Motion" }
+        "adinkra": {
+          "title": "ADINKRA SYMBOLS",
+          "use": "Metaphoric Navigation & Icons"
+        },
+        "ndop": {
+          "title": "NDOP GEOMETRY",
+          "use": "Grids & Structural Layouts"
+        },
+        "wax": {
+          "title": "WAX TEXTURES",
+          "use": "Dynamic Backgrounds & Motion"
+        }
       },
       "framework": {
         "title": "Cultural Framework v1.0",
@@ -238,7 +247,22 @@
       "submitting": "TRANSMISSION IN PROGRESS...",
       "success_title": "TRANSMISSION COMPLETED SUCCESSFULLY",
       "success_msg": "Your message has been transmitted to our station. We will get back to you within 24 hours.",
-      "security": "GUARANTEED CONFIDENTIALITY"
+      "security": "GUARANTEED CONFIDENTIALITY",
+      "mission_type_label": "Mission type",
+      "mission_type_placeholder": "Choose a mission",
+      "phone_label": "Phone",
+      "budget_label": "Budget",
+      "date_label": "Preferred timeline",
+      "consent_label": "I agree that my data may be processed for this request.",
+      "mission_options": [
+        "Landing page",
+        "Web application",
+        "Branding & design",
+        "Consulting"
+      ],
+      "api_error": "The server could not process your request.",
+      "field_error": "Please check the required fields.",
+      "website_label": "Website"
     }
   },
   "SolutionPage": {
@@ -350,5 +374,36 @@
     "cta_contact": "CALL_SUPPORT",
     "back_message": "Going back to safety...",
     "quote": "\"In code, as in life: every error is just a message waiting to be understood.\""
+  },
+  "AdminPage": {
+    "badge": "ADMIN",
+    "title": "Back-office KingTang",
+    "loading": "Loading...",
+    "logout": "Logout",
+    "recent": "Recent requests",
+    "inquiries": "Inquiries",
+    "quickAccess": "Quick access",
+    "empty": "No recent data.",
+    "cards": {
+      "inquiries": "New requests",
+      "quotes": "Quotes to process",
+      "pending": "Pending quotes",
+      "clients": "Clients"
+    },
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in..."
+    },
+    "errors": {
+      "login": "Invalid credentials.",
+      "session": "Session expired or not authorized."
+    },
+    "resources": {
+      "projects": "Projects",
+      "services": "Services",
+      "inquiries": "Inquiries"
+    }
   }
 }

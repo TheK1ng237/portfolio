@@ -100,16 +100,20 @@ export default async function LocaleLayout({ children, params }: Props) {
       </head>
       <body className="bg-[#050508] text-[#F5F5DC] antialiased min-h-screen flex flex-col selection:bg-[#E9B826] selection:text-black">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <CustomCursor />
-          <BackgroundCanvas />
-          <Navigation />
-          <LogoIntro />
+          <div className="print:hidden">
+            <CustomCursor />
+            <BackgroundCanvas />
+            <Navigation />
+            <LogoIntro />
+          </div>
 
           <main className="flex-grow z-10 relative">
             {children}
           </main>
 
-          <Footer />
+          <div className="print:hidden">
+            <Footer />
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

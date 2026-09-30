@@ -171,9 +171,18 @@
       "subtitle": "Tech x Culture",
       "main_text": "L'uniformisation du web est une erreur système. Ma mission est de réinjecter de la diversité algorithmique en utilisant des structures visuelles africaines.",
       "items": {
-        "adinkra": { "title": "SYMBOLES ADINKRA", "use": "Navigation métaphorique & Icônes" },
-        "ndop": { "title": "GÉOMÉTRIE NDOP", "use": "Grilles & Layouts structurels" },
-        "wax": { "title": "TEXTURES WAX", "use": "Fonds Dynamiques & Motion" }
+        "adinkra": {
+          "title": "SYMBOLES ADINKRA",
+          "use": "Navigation métaphorique & Icônes"
+        },
+        "ndop": {
+          "title": "GÉOMÉTRIE NDOP",
+          "use": "Grilles & Layouts structurels"
+        },
+        "wax": {
+          "title": "TEXTURES WAX",
+          "use": "Fonds Dynamiques & Motion"
+        }
       },
       "framework": {
         "title": "Framework Culturel v1.0",
@@ -238,7 +247,22 @@
       "submitting": "TRANSMISSION EN COURS...",
       "success_title": "TRANSMISSION EFFECTUÉE AVEC SUCCÈS",
       "success_msg": "Votre message a été transmis à notre station. Nous reviendrons vers vous sous 24h.",
-      "security": "CONFIDENTIALITÉ GARANTIE"
+      "security": "CONFIDENTIALITÉ GARANTIE",
+      "mission_type_label": "Type de mission",
+      "mission_type_placeholder": "Choisissez...",
+      "phone_label": "Téléphone",
+      "budget_label": "Budget",
+      "date_label": "Délais souhaité",
+      "consent_label": "J’accepte que mes données soient traitées dans le cadre de ma demande.",
+      "mission_options": [
+        "Site vitrine",
+        "Application web",
+        "Branding & design",
+        "Consulting"
+      ],
+      "api_error": "Le serveur n’a pas pu traiter votre demande.",
+      "field_error": "Merci de vérifier les champs obligatoires.",
+      "website_label": "Site web"
     }
   },
   "SolutionPage": {
@@ -350,5 +374,36 @@
     "cta_contact": "APPELER_SUPPORT",
     "back_message": "Retour en sécurité...",
     "quote": "\"En code, comme dans la vie : chaque erreur est juste un message en attente de compréhension.\""
+  },
+  "AdminPage": {
+    "badge": "ADMIN",
+    "title": "Back-office KingTang",
+    "loading": "Chargement...",
+    "logout": "Déconnexion",
+    "recent": "Demandes récentes",
+    "inquiries": "Demandes",
+    "quickAccess": "Accès rapide",
+    "empty": "Aucune donnée récente.",
+    "cards": {
+      "inquiries": "Nouvelles demandes",
+      "quotes": "Devis en traitement",
+      "pending": "Devis en attente",
+      "clients": "Clients"
+    },
+    "form": {
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion..."
+    },
+    "errors": {
+      "login": "Identifiants invalides.",
+      "session": "Session expirée ou non autorisée."
+    },
+    "resources": {
+      "projects": "Projets",
+      "services": "Services",
+      "inquiries": "Demandes"
+    }
   }
 }

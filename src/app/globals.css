@@ -192,3 +192,32 @@ body::after {
 ::-webkit-scrollbar-thumb:hover {
   background: #FFE57F;
 }
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #171923 !important;
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  .proposal-document {
+    padding-bottom: 0 !important;
+  }
+
+  .proposal-sheet {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .proposal-sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
