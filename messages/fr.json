@@ -272,66 +272,7 @@
     "pricing": "TARIFICATION",
     "details_btn": "SPÉCIFICATIONS DÉTAILLÉES",
     "benefits_title": "BÉNÉFICES CLÉS :",
-    "order_btn": "COMMANDER CE MODULE",
-    "solutions": {
-      "0": {
-        "id": "01",
-        "category": "ENGINE",
-        "title": "ARCHITECTURE WEB SUR-MESURE",
-        "description": "Développement complet d'applications web Next.js & React réactives, scalables et optimisées pour le SEO.",
-        "price": "Sur Devis",
-        "features": {
-          "0": "Next.js 15 & React 19 Full-Stack",
-          "1": "Design Responsive Afro-Futuriste",
-          "2": "Optimisation Performance & SEO 99+"
-        },
-        "full_description": "Conception de bout en bout de votre plateforme web. De l'architecture front-end aux API RESTful et à la base de données, nous construisons une solution performante, moderne et totalement sur-mesure.",
-        "benefits": {
-          "0": "Architecture moderne et zéro dette technique",
-          "1": "Performance d'affichage ultra-rapide",
-          "2": "Identité visuelle unique et captivante"
-        },
-        "target_audience": "Startups, Entreprises et Projets ambitieux"
-      },
-      "1": {
-        "id": "02",
-        "category": "PROTOCOL",
-        "title": "AUDIT UX/UI & REFONTE GRAPHIQUE",
-        "description": "Analyse ergonomique approfondie, création de système de design et optimisation du parcours utilisateur.",
-        "price": "Sur Devis",
-        "features": {
-          "0": "Audit d'Ergonomie & UX Research",
-          "1": "Création de Design System complet",
-          "2": "Prototypes Figma Haute-Fidélité"
-        },
-        "full_description": "Améliorez le taux de conversion et la satisfaction de vos utilisateurs grâce à une révision globale de votre expérience visuelle et interactive.",
-        "benefits": {
-          "0": "Augmentation de l'engagement des utilisateurs",
-          "1": "Cohérence visuelle sur toutes les pages",
-          "2": "Prototypes clairs prêts pour les développeurs"
-        },
-        "target_audience": "Applications existantes souhaitant moderniser leur interface"
-      },
-      "2": {
-        "id": "03",
-        "category": "LAB",
-        "title": "DESIGN CULTUREL AFRO-FUTURISTE",
-        "description": "Intégration d'art numérique, géométrie sacrée (Ndop, Adinkra) et identité culturelle forte dans vos projets web.",
-        "price": "Sur Devis",
-        "features": {
-          "0": "Vectorisation de motifs ancestraux",
-          "1": "Animations & Micro-interactions CSS",
-          "2": "Direction artistique & Branding"
-        },
-        "full_description": "Donnez une âme unique à vos produits digitaux en fusionnant les motifs visuels africains ancestraux avec les standards du web cybernétique et moderne.",
-        "benefits": {
-          "0": "Démarque concrète face à la concurrence",
-          "1": "Valorisation du patrimoine et récit de marque",
-          "2": "Expérience immersive et mémorable"
-        },
-        "target_audience": "Marques, institutions culturelles et créateurs passionnés"
-      }
-    }
+    "order_btn": "COMMANDER CE MODULE"
   },
   "Footer": {
     "brand": {

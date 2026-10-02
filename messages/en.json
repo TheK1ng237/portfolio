@@ -272,66 +272,7 @@
     "pricing": "PRICING",
     "details_btn": "DETAILED SPECIFICATIONS",
     "benefits_title": "KEY BENEFITS:",
-    "order_btn": "ORDER THIS MODULE",
-    "solutions": {
-      "0": {
-        "id": "01",
-        "category": "ENGINE",
-        "title": "CUSTOM WEB ARCHITECTURE",
-        "description": "Full-stack development of responsive, scalable, SEO-optimized Next.js & React web applications.",
-        "price": "Custom Quote",
-        "features": {
-          "0": "Next.js 15 & React 19 Full-Stack",
-          "1": "Afro-Futuristic Responsive Design",
-          "2": "99+ Performance & SEO Optimization"
-        },
-        "full_description": "End-to-end design of your digital web platform. From front-end architecture to RESTful APIs and databases, we build a high-performance, modern, and completely custom solution.",
-        "benefits": {
-          "0": "Modern architecture with zero technical debt",
-          "1": "Ultra-fast page load speeds",
-          "2": "Unique and engaging visual identity"
-        },
-        "target_audience": "Startups, Businesses, and Ambitious Projects"
-      },
-      "1": {
-        "id": "02",
-        "category": "PROTOCOL",
-        "title": "UX/UI AUDIT & GRAPHIC REDESIGN",
-        "description": "In-depth ergonomics analysis, design system creation, and user journey optimization.",
-        "price": "Custom Quote",
-        "features": {
-          "0": "Ergonomic Audit & UX Research",
-          "1": "Complete Design System Creation",
-          "2": "High-Fidelity Figma Prototypes"
-        },
-        "full_description": "Boost user retention and conversion rates with a complete overhaul of your visual and interactive user experience.",
-        "benefits": {
-          "0": "Increased user engagement and retention",
-          "1": "Visual consistency across all touchpoints",
-          "2": "Developer-ready interactive prototypes"
-        },
-        "target_audience": "Existing web applications seeking visual modernization"
-      },
-      "2": {
-        "id": "03",
-        "category": "LAB",
-        "title": "AFRO-FUTURIST CULTURAL DESIGN",
-        "description": "Integration of digital art, sacred geometry (Ndop, Adinkra), and strong cultural identity into web projects.",
-        "price": "Custom Quote",
-        "features": {
-          "0": "Vectorization of ancestral patterns",
-          "1": "CSS Animations & Micro-interactions",
-          "2": "Art Direction & Cultural Branding"
-        },
-        "full_description": "Give a unique soul to your digital products by fusing traditional African visual motifs with modern cybernetic web standards.",
-        "benefits": {
-          "0": "Distinctive competitive edge",
-          "1": "Heritage preservation & brand storytelling",
-          "2": "Immersive and memorable user experience"
-        },
-        "target_audience": "Brands, cultural institutions, and passionate creators"
-      }
-    }
+    "order_btn": "ORDER THIS MODULE"
   },
   "Footer": {
     "brand": {

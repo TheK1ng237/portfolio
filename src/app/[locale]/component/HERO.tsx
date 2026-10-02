@@ -102,7 +102,7 @@ export default function Hero() {
 
             <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
               <a
-                href="/cv/CV.pdf"
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
                 download
                 target="_blank"
                 rel="noopener noreferrer"
