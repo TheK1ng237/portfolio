@@ -338,7 +338,7 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-                {t("header.title_main")} <span className="text-[#FFC82C]">{t("header.title_sub")}</span>
+                INGÉNIERIE LOGICIELLE &amp; <span className="text-[#FFC82C]">VISION CREATIVE</span>
               </h1>
             </motion.div>
 
@@ -348,20 +348,20 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-azurio text-base md:text-lg text-gray-200 leading-relaxed font-light"
             >
-              {t("header.bio")}
+              Développeur full-stack, je conçois des applications web de bout en bout : interfaces soignées, API, bases de données et intégrations. J’allie architecture fiable, expérience utilisateur et expression culturelle.
             </motion.p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
               <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
-                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">{t("header.card1_title")}</span>
+                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">FULL-STACK ENGINEERING</span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  {t("header.card1_desc")}
+                  Next.js, Angular, Node.js, Express.js et Django, des interfaces aux API.
                 </p>
               </motion.div>
               <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
-                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">{t("header.card2_title")}</span>
+                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">AFRO-FUTURISM UX</span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  {t("header.card2_desc")}
+                  Design d’interface fondé sur les mathématiques des motifs africains ancestraux.
                 </p>
               </motion.div>
             </div>
@@ -381,7 +381,7 @@ export default function About() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs sm:text-sm uppercase tracking-[0.2em] rounded-2xl shadow-[0_0_25px_rgba(255,59,86,0.35)] transition-all group cursor-pointer"
               >
                 <i className="pi pi-file-pdf text-lg group-hover:scale-110 transition-transform" />
-                {t("header.download_cv")}
+                TÉLÉCHARGER LE CV OFFICIEL (PDF)
               </a>
             </motion.div>
           </div>
@@ -399,12 +399,14 @@ export default function About() {
             viewport={{ once: true }}
             className="lg:col-span-6"
           >
+            
+            
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              {t("expertise.title")}
+              MON <span className="text-[#FFC82C]">EXPERTISE</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              {t("expertise.description")}
+              Naviguez interactivement entre le <strong>Volet 1 : Mes Skills</strong> et le <strong>Volet 2 : Mes Outils</strong> via le Swiper ci-dessous.
             </p>
           </motion.div>
 
@@ -695,21 +697,23 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
+            
+            
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              {t("certifications.title")}
+              CERTIFICATIONS &amp; <span className="text-[#FFC82C]">DIPLÔMES</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              {t("certifications.description")}
+              Formations certifiantes et diplômes obtenus sur <strong>OpenClassrooms</strong> et <strong>Udemy</strong> attestant d&apos;une maîtrise technique rigoureuse.
             </p>
           </motion.div>
 
           {/* FILTER TABS */}
           <div className="p-1.5 rounded-2xl glass-card border border-white/15 flex flex-wrap items-center gap-2 bg-[#121526] self-start md:self-auto">
             {[
-              { id: "ALL", label: t("certifications.filter_all") },
-              { id: "OPENCLASSROOMS", label: t("certifications.filter_openclassrooms") },
-              { id: "UDEMY", label: t("certifications.filter_udemy") },
+              { id: "ALL", label: "TOUS (10)" },
+              { id: "OPENCLASSROOMS", label: "OPENCLASSROOMS (6)" },
+              { id: "UDEMY", label: "UDEMY (4)" },
             ].map((tab) => {
               const isActive = certifCategoryFilter === tab.id;
               return (
@@ -795,7 +799,7 @@ export default function About() {
                 {/* PDF Download Button */}
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-gray-400 font-bold uppercase">
-                    {t("certifications.pdf_format")}
+                    FORMAT: PDF VERIFIÉ
                   </span>
 
                   <a
@@ -805,7 +809,7 @@ export default function About() {
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#FFC82C] text-white hover:text-black font-achiko text-xs font-bold uppercase tracking-wider transition-all border border-white/15 hover:border-[#FFC82C] group/btn cursor-pointer"
                   >
                     <i className="pi pi-file-pdf text-sm" />
-                    <span>{t("certifications.view_pdf")}</span>
+                    <span>VOIR DIPLÔME</span>
                   </a>
                 </div>
               </motion.div>

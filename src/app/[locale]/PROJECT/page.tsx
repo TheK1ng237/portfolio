@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Project } from "@/app/type";
 import { apiFetch } from "@/lib/api";
 
+<<<<<<< HEAD
 const fallbackProjects: Project[] = [
   {
     id: 1,
@@ -79,6 +80,9 @@ const mapProject = (item: any): Project => ({
 export default function Projects() {
   const t = useTranslations("ProjectsPage");
   const locale = useLocale();
+=======
+export default function Projects() {
+>>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
   const [filter, setFilter] = useState<string>("all");
   const [selectedModalProject, setSelectedModalProject] = useState<Project | null>(null);
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
@@ -116,13 +120,15 @@ export default function Projects() {
     <div className="min-h-screen relative overflow-x-clip bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-32">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
+          
+
           <motion.h1
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             className="font-achiko text-4xl sm:text-6xl md:text-7xl font-black tracking-tight uppercase text-white leading-tight mb-6"
           >
-            {t("header.title_main")} <span className="text-[#FFC82C]">{t("header.title_sub")}</span>
+            MODULES <span className="text-[#FFC82C]">DÉPLOYÉS</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -130,7 +136,7 @@ export default function Projects() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="font-azurio text-sm sm:text-base text-gray-300 font-light leading-relaxed mb-8"
           >
-            {t("header.description")}
+            Explorez mes réalisations full-stack, mobiles et designs visuels suspendus sur la galerie. Survolez ou cliquez sur une carte pour une expérience immersive.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -139,11 +145,19 @@ export default function Projects() {
             className="inline-flex flex-wrap justify-center gap-2 p-2 rounded-2xl border border-white/20 bg-[#121526]/80 backdrop-blur-xl shadow-2xl font-azurio"
           >
             {[
+<<<<<<< HEAD
               { id: "all", label: t("filters.all") },
               { id: "web", label: t("filters.web") },
               { id: "mobile", label: t("filters.mobile") },
               { id: "design", label: t("filters.design") },
             ].map((filterOption) => (
+=======
+              { id: "all", label: "TOUS LES PROJETS" },
+              { id: "web", label: "WEB APP" },
+              { id: "mobile", label: "MOBILE" },
+              { id: "design", label: "DESIGN UI/UX" },
+            ].map((f) => (
+>>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
               <button
                 key={filterOption.id}
                 onClick={() => setFilter(filterOption.id)}

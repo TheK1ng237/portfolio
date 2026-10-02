@@ -105,7 +105,7 @@ export default function Solutions() {
             transition={{ duration: 0.8 }}
             className="font-achiko text-4xl md:text-7xl font-black tracking-tight uppercase text-white"
           >
-            {t("title_main")} <span className="text-[#FFC82C]">{t("title_sub")}</span>
+            SOLUTIONS <span className="text-[#FFC82C]">SUR MESURE</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -113,7 +113,7 @@ export default function Solutions() {
             transition={{ delay: 0.2 }}
             className="font-azurio max-w-2xl text-base text-gray-200 font-light leading-relaxed"
           >
-            {t("description")}
+            De la création d’interfaces web complexes aux audits ergonomiques et au design culturel Afro-Futuriste.
           </motion.p>
         </section>
 
@@ -160,7 +160,7 @@ export default function Solutions() {
 
               <div className="pt-8 border-t border-white/15 mt-8 space-y-4 font-azurio">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-[9.5px] text-gray-300 uppercase font-bold">{t("pricing")}</span>
+                  <span className="text-[9.5px] text-gray-300 uppercase font-bold">TARIFICATION</span>
                   <span className="text-lg font-achiko font-black text-[#FFC82C]">{solution.price}</span>
                 </div>
 
@@ -170,7 +170,7 @@ export default function Solutions() {
                   onClick={() => setSelectedSolution(solution)}
                   className="w-full py-3.5 bg-white/10 border border-white/20 hover:border-[#FFC82C] text-xs font-achiko font-bold text-white hover:text-[#FFC82C] uppercase rounded-xl transition-all"
                 >
-                  {t("details_btn")}
+                  SPÉCIFICATIONS DÉTAILLÉES
                 </motion.button>
               </div>
             </motion.div>
@@ -204,7 +204,7 @@ export default function Solutions() {
                 <p className="font-azurio text-sm text-gray-200 font-light leading-relaxed">{selectedSolution.fullDescription}</p>
 
                 <div className="space-y-2">
-                  <h4 className="font-azurio text-xs text-[#FFC82C] uppercase font-bold">{t("benefits_title")}</h4>
+                  <h4 className="font-azurio text-xs text-[#FFC82C] uppercase font-bold">BÉNÉFICES CLÉS :</h4>
                   <ul className="space-y-1 text-xs text-gray-300 font-azurio">
                     {selectedSolution.benefits.map((benefit, idx) => (
                       <li key={`${selectedSolution.id}-${idx}`}>⚡ {benefit}</li>
@@ -214,8 +214,16 @@ export default function Solutions() {
 
                 <div className="flex justify-between items-center pt-4 border-t border-white/15">
                   <span className="text-lg font-achiko font-black text-[#FFC82C]">{selectedSolution.price}</span>
+<<<<<<< HEAD
                   <Link href="/CONTACT" className="px-6 py-3 bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider rounded-xl hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]">
                     {t("order_btn")}
+=======
+                  <Link
+                    href="/CONTACT"
+                    className="px-6 py-3 bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider rounded-xl hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]"
+                  >
+                    COMMANDER CE MODULE
+>>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
                   </Link>
                 </div>
               </motion.div>
