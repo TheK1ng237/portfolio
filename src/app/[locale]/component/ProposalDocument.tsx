@@ -124,8 +124,18 @@ export default function ProposalDocument({
         </button>
       </div>
 
-      <section className="proposal-sheet relative mx-auto mb-5 flex min-h-[297mm] w-full flex-col justify-between overflow-hidden bg-[#0b0d18] px-[17mm] py-[16mm] text-[#f8f9fa] shadow-2xl print:mb-0 print:h-[297mm] print:min-h-0 print:w-[210mm] print:shadow-none">
-        <div className="pointer-events-none absolute -right-24 bottom-10 h-80 w-80 rounded-full border border-[#ffc82c]/25 shadow-[0_0_0_38px_rgba(255,200,44,0.025),0_0_0_82px_rgba(255,59,86,0.025)]" />
+      <section className="proposal-sheet relative mx-auto mb-5 flex min-h-[297mm] w-full flex-col justify-between overflow-visible bg-[#0b0d18] px-[17mm] py-[16mm] text-[#f8f9fa] shadow-2xl print:mb-0 print:h-[297mm] print:min-h-0 print:w-[210mm] print:shadow-none">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-25"
+          style={{
+            backgroundImage: 'url("/patterns/path2.svg")',
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right bottom",
+            backgroundSize: "contain",
+          }}
+        />
+        <div className="pointer-events-none absolute -right-24 bottom-8 h-80 w-80 rounded-full border border-[#ffc82c]/25 bg-[radial-gradient(circle,_rgba(255,200,44,0.1),_rgba(255,200,44,0)_60%)] shadow-[0_0_0_38px_rgba(255,200,44,0.025),0_0_0_82px_rgba(255,59,86,0.025)]" />
         <div className="relative z-10 flex items-center justify-between gap-4">
           <span className="font-achiko text-2xl text-[#ffc82c]">{proposal.brand}</span>
           <span className="text-right text-[9px] font-bold uppercase tracking-[0.12em] text-[#c8ccd7]">

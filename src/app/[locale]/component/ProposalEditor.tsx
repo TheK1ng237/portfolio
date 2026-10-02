@@ -6,7 +6,8 @@ import ProposalDocument, {
   type ProposalPhase,
 } from "./ProposalDocument";
 
-const DRAFT_KEY = "thek1ng237-proposal-draft-v1";
+const DRAFT_KEY = "thek1ng237-proposal-draft-v2";
+const LEGACY_DRAFT_KEY = "thek1ng237-proposal-draft-v1";
 
 const controlClassName = "mt-1 w-full border border-white/15 bg-[#0b0d18] px-3 py-2 text-sm text-white placeholder:text-white/35 focus:border-[#ffc82c] focus:outline-none";
 
@@ -270,10 +271,18 @@ export default function ProposalEditor({
 
   useEffect(() => {
     try {
+      if (localStorage.getItem(LEGACY_DRAFT_KEY)) {
+        localStorage.removeItem(LEGACY_DRAFT_KEY);
+      }
+
       const savedDraft = localStorage.getItem(DRAFT_KEY);
       if (savedDraft) {
         const parsed: unknown = JSON.parse(savedDraft);
-        if (isProposalDocumentData(parsed)) setProposal(parsed);
+        if (isProposalDocumentData(parsed)) {
+          setProposal(parsed);
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+        }
       }
     } catch {
       setNotice("Le brouillon local n’a pas pu être chargé.");

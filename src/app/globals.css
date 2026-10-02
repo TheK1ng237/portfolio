@@ -212,12 +212,10 @@ body::after {
   }
 
   .proposal-sheet {
-    break-after: page;
-    page-break-after: always;
-  }
-
-  .proposal-sheet:last-child {
+    break-inside: avoid;
+    page-break-inside: avoid;
     break-after: auto;
     page-break-after: auto;
+    overflow: visible !important;
   }
 }
