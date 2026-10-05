@@ -333,34 +333,85 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
       // 5. VIBRANT, ULTRA-VISIBLE HIGH-TECH CYBER CAR MODEL
       const carGroup = new THREE.Group();
 
-      // Main Aerodynamic Chassis (Vibrant Gold & Matte Black)
-      const bodyGeo = new THREE.BoxGeometry(3.2, 1.2, 5.8);
+      // Sculpted low-profile body, extruded along the direction of travel.
+      const bodyShape = new THREE.Shape();
+      bodyShape.moveTo(-1.38, 0.25);
+      bodyShape.lineTo(-1.62, 0.48);
+      bodyShape.lineTo(-1.48, 0.92);
+      bodyShape.lineTo(-1.08, 1.25);
+      bodyShape.lineTo(1.08, 1.25);
+      bodyShape.lineTo(1.48, 0.92);
+      bodyShape.lineTo(1.62, 0.48);
+      bodyShape.lineTo(1.38, 0.25);
+      bodyShape.closePath();
+      const bodyGeo = new THREE.ExtrudeGeometry(bodyShape, {
+        depth: 5.5,
+        bevelEnabled: true,
+        bevelSegments: 3,
+        steps: 1,
+        bevelSize: 0.08,
+        bevelThickness: 0.07,
+      });
+      bodyGeo.translate(0, 0, -2.75);
       const bodyMat = new THREE.MeshStandardMaterial({
         color: 0xffc82c,
         metalness: 0.9,
         roughness: 0.15,
         emissive: 0xffc82c,
-        emissiveIntensity: 0.25,
+        emissiveIntensity: 0.12,
       });
       const carBody = new THREE.Mesh(bodyGeo, bodyMat);
-      carBody.position.y = 1.0;
       carBody.castShadow = true;
       carGroup.add(carBody);
 
-      // Cyber Black Accent Shell
-      const shellGeo = new THREE.BoxGeometry(3.0, 1.1, 3.2);
+      // Dark chassis, side skirts and a restrained hood accent.
+      const shellGeo = new THREE.BoxGeometry(2.9, 0.28, 5.15);
       const shellMat = new THREE.MeshStandardMaterial({
         color: 0x080c18,
         metalness: 0.95,
         roughness: 0.1,
       });
       const shellMesh = new THREE.Mesh(shellGeo, shellMat);
-      shellMesh.position.set(0, 1.35, -0.4);
+      shellMesh.position.set(0, 0.34, 0);
       carGroup.add(shellMesh);
 
-      // Neon Cyan Windshield Cockpit
-      const cockpitGeo = new THREE.ConeGeometry(1.6, 1.4, 4);
-      cockpitGeo.rotateX(Math.PI / 4);
+      const skirtMaterial = new THREE.MeshStandardMaterial({ color: 0x101725, metalness: 0.8, roughness: 0.28 });
+      const sillMaterial = new THREE.MeshBasicMaterial({ color: 0x00d9ef });
+      [-1, 1].forEach((side) => {
+        const skirt = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.22, 3.3), skirtMaterial);
+        skirt.position.set(side * 1.55, 0.42, -0.05);
+        carGroup.add(skirt);
+
+        const sillLight = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.06, 2.6), sillMaterial);
+        sillLight.position.set(side * 1.63, 0.46, -0.05);
+        carGroup.add(sillLight);
+      });
+
+      const hoodPanel = new THREE.Mesh(
+        new THREE.BoxGeometry(1.8, 0.035, 1.25),
+        new THREE.MeshStandardMaterial({ color: 0x9d7410, metalness: 0.82, roughness: 0.24 }),
+      );
+      hoodPanel.position.set(0, 1.27, 1.55);
+      carGroup.add(hoodPanel);
+
+      // Sloped glass canopy with a narrow roofline.
+      const cockpitShape = new THREE.Shape();
+      cockpitShape.moveTo(-1.08, 1.16);
+      cockpitShape.lineTo(-0.82, 1.72);
+      cockpitShape.lineTo(-0.45, 2.02);
+      cockpitShape.lineTo(0.45, 2.02);
+      cockpitShape.lineTo(0.82, 1.72);
+      cockpitShape.lineTo(1.08, 1.16);
+      cockpitShape.closePath();
+      const cockpitGeo = new THREE.ExtrudeGeometry(cockpitShape, {
+        depth: 1.9,
+        bevelEnabled: true,
+        bevelSegments: 2,
+        steps: 1,
+        bevelSize: 0.035,
+        bevelThickness: 0.035,
+      });
+      cockpitGeo.translate(0, 0, -1.0);
       const cockpitMat = new THREE.MeshPhysicalMaterial({
         color: 0x00f3ff,
         emissive: 0x00f3ff,
@@ -368,12 +419,42 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
         metalness: 0.2,
         roughness: 0.1,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.78,
+        side: THREE.DoubleSide,
       });
       const cockpit = new THREE.Mesh(cockpitGeo, cockpitMat);
-      cockpit.position.set(0, 1.9, -0.2);
-      cockpit.scale.set(1.4, 0.9, 1.8);
+      cockpit.castShadow = true;
       carGroup.add(cockpit);
+
+      const roof = new THREE.Mesh(
+        new THREE.BoxGeometry(0.88, 0.07, 0.78),
+        new THREE.MeshStandardMaterial({ color: 0x101725, metalness: 0.75, roughness: 0.2 }),
+      );
+      roof.position.set(0, 2.04, -0.05);
+      carGroup.add(roof);
+
+      const frontSplitter = new THREE.Mesh(
+        new THREE.BoxGeometry(3.35, 0.1, 0.38),
+        new THREE.MeshStandardMaterial({ color: 0x080c18, metalness: 0.75, roughness: 0.32 }),
+      );
+      frontSplitter.position.set(0, 0.3, 2.82);
+      carGroup.add(frontSplitter);
+
+      const rearWing = new THREE.Mesh(
+        new THREE.BoxGeometry(3.2, 0.12, 0.42),
+        new THREE.MeshStandardMaterial({ color: 0x151a28, metalness: 0.7, roughness: 0.3 }),
+      );
+      rearWing.position.set(0, 1.28, -2.72);
+      carGroup.add(rearWing);
+
+      [-1.05, 1.05].forEach((x) => {
+        const support = new THREE.Mesh(
+          new THREE.BoxGeometry(0.12, 0.5, 0.12),
+          new THREE.MeshStandardMaterial({ color: 0x090c13, metalness: 0.7, roughness: 0.35 }),
+        );
+        support.position.set(x, 1.02, -2.66);
+        carGroup.add(support);
+      });
 
       // FLOATING NEON UNDERGLOW HALO RING (makes car POP out from any background)
       const haloGeo = new THREE.RingGeometry(2.0, 3.8, 32);
@@ -389,32 +470,42 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
       haloMesh.position.y = 0.08;
       carGroup.add(haloMesh);
 
-      // Massive Dual Cyan Laser Headlights + Light Beams
-      const headlightGeo = new THREE.BoxGeometry(0.8, 0.3, 0.2);
-      const headlightMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
-      
-      const hlLeft = new THREE.Mesh(headlightGeo, headlightMat);
-      hlLeft.position.set(-1.1, 1.1, 2.91);
-      const hlRight = hlLeft.clone();
-      hlRight.position.x = 1.1;
-      carGroup.add(hlLeft);
-      carGroup.add(hlRight);
-
-      // Forward Light Cones (volumetric beam effect)
-      const coneGeo = new THREE.ConeGeometry(3.5, 30, 16);
-      coneGeo.rotateX(Math.PI / 2);
-      const coneMat = new THREE.MeshBasicMaterial({
-        color: 0x00f3ff,
-        transparent: true,
-        opacity: 0.25,
-        blending: THREE.AdditiveBlending,
+      // Headlamp beams widen away from the lamps, down the road.
+      const headlightGeo = new THREE.BoxGeometry(0.76, 0.18, 0.12);
+      const headlightMat = new THREE.MeshStandardMaterial({
+        color: 0xbafaff,
+        emissive: 0x5cecff,
+        emissiveIntensity: 2.2,
+        metalness: 0.15,
+        roughness: 0.12,
       });
-      const beamLeft = new THREE.Mesh(coneGeo, coneMat);
-      beamLeft.position.set(-1.1, 1.0, 17);
-      const beamRight = beamLeft.clone();
-      beamRight.position.x = 1.1;
-      carGroup.add(beamLeft);
-      carGroup.add(beamRight);
+      const coneGeo = new THREE.ConeGeometry(3.2, 28, 24);
+      coneGeo.rotateX(-Math.PI / 2);
+      coneGeo.translate(0, 0, 14);
+      const coneMat = new THREE.MeshBasicMaterial({
+        color: 0x00dfff,
+        transparent: true,
+        opacity: 0.09,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      });
+      
+      [-1, 1].forEach((side) => {
+        const lampX = side * 1.08;
+        const lamp = new THREE.Mesh(headlightGeo, headlightMat);
+        lamp.position.set(lampX, 0.96, 2.82);
+        carGroup.add(lamp);
+
+        const beam = new THREE.Mesh(coneGeo, coneMat);
+        beam.position.set(lampX, 0.94, 2.82);
+        carGroup.add(beam);
+
+        const spot = new THREE.SpotLight(0x8cefff, 18, 48, Math.PI / 9, 0.55, 1.2);
+        spot.position.set(lampX, 0.92, 2.78);
+        spot.target.position.set(lampX, 0.15, 32);
+        carGroup.add(spot, spot.target);
+      });
 
       // Red Rear LED Bar
       const rearLightGeo = new THREE.BoxGeometry(2.8, 0.25, 0.15);
