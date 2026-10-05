@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { apiFetch } from "@/lib/api";
 
 interface Solution {
@@ -58,30 +58,52 @@ const fallbackSolutions: Solution[] = [
   },
 ];
 
-const mapService = (item: any): Solution => ({
-  id: item.id ?? item.slug ?? "01",
+type SolutionApiItem = {
+  id?: string | number;
+  slug?: string;
+  title?: string;
+  titleFr?: string;
+  titleEn?: string;
+  description?: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+  priceLabel?: string;
+  priceLabelFr?: string;
+  priceLabelEn?: string;
+  icon?: string;
+  features?: string[];
+  featuresFr?: string[];
+  fullDescription?: string;
+  fullDescriptionFr?: string;
+  fullDescriptionEn?: string;
+  benefits?: string[];
+  targetAudience?: string;
+  category?: "ENGINE" | "PROTOCOL" | "LAB" | string;
+};
+
+const mapService = (item: SolutionApiItem): Solution => ({
+  id: String(item.id ?? item.slug ?? "01"),
   title: item.title ?? item.titleFr ?? item.titleEn ?? "Service",
   description: item.description ?? item.descriptionFr ?? item.descriptionEn ?? "",
   price: item.priceLabel ?? item.priceLabelFr ?? item.priceLabelEn ?? "Sur Devis",
   icon: item.icon ?? "pi pi-box",
   features: Array.isArray(item.features) ? item.features : Array.isArray(item.featuresFr) ? item.featuresFr : [],
   fullDescription: item.fullDescription ?? item.fullDescriptionFr ?? item.fullDescriptionEn ?? "",
-  benefits: item.benefits ?? ["Qualité", "Performance", "Évolution"],
+  benefits: Array.isArray(item.benefits) ? item.benefits : ["Qualité", "Performance", "Évolution"],
   targetAudience: item.targetAudience ?? "Entreprises & projets ambitieux",
-  category: "ENGINE",
+  category: item.category === "ENGINE" || item.category === "PROTOCOL" || item.category === "LAB" ? item.category : "ENGINE",
 });
 
 export default function Solutions() {
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
   const [solutions, setSolutions] = useState<Solution[]>(fallbackSolutions);
   const locale = useLocale();
-  const t = useTranslations("SolutionPage");
 
   useEffect(() => {
     let cancelled = false;
     const loadServices = async () => {
       try {
-        const data = await apiFetch<{ items: any[] }>("/public/services", { locale, method: "GET" });
+        const data = await apiFetch<{ items: SolutionApiItem[] }>("/public/services", { locale, method: "GET" });
         if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
           setSolutions(data.items.map(mapService));
         }
@@ -214,16 +236,11 @@ export default function Solutions() {
 
                 <div className="flex justify-between items-center pt-4 border-t border-white/15">
                   <span className="text-lg font-achiko font-black text-[#FFC82C]">{selectedSolution.price}</span>
-<<<<<<< HEAD
-                  <Link href="/CONTACT" className="px-6 py-3 bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider rounded-xl hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]">
-                    {t("order_btn")}
-=======
                   <Link
                     href="/CONTACT"
                     className="px-6 py-3 bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider rounded-xl hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]"
                   >
                     COMMANDER CE MODULE
->>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
                   </Link>
                 </div>
               </motion.div>

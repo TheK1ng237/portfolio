@@ -287,7 +287,6 @@
       "description": "Prêt à injecter de l'authenticité africaine dans votre prochain projet digital ? Établissons une connexion."
     },
     "form": {
-<<<<<<< HEAD
       "title": "TERMINAL DE MESSAGERIE",
       "subtitle": "FORMULAIRE HAUTE-PRIORITÉ // DIRECT TO INBOX",
       "status": "STATUS: EN_LIGNE",
@@ -318,51 +317,6 @@
       "api_error": "Le serveur n’a pas pu traiter votre demande.",
       "field_error": "Merci de vérifier les champs obligatoires.",
       "website_label": "Site web"
-=======
-      "section_title": "Champ_Saisie_Données",
-      "name_label": "Identité.Nom",
-      "name_placeholder": "NOM COMPLET",
-      "email_label": "Nœud.Email",
-      "email_placeholder": "VOTRE@EMAIL.COM",
-      "message_label": "Charge.Message",
-      "message_placeholder": "DÉCRIVEZ VOTRE VISION...",
-      "submit_button": "TRANSMETTRE_DONNÉES",
-      "success_message": "[SUCCÈS] : MESSAGE_DÉPOSÉ_EN_COFFRE"
-    },
-    "contact_nodes": {
-      "title": "NŒUDS_ACTIFS",
-      "email_label": "COURRIER_DIRECT",
-      "whatsapp_label": "WHATSAPP_CHIFFRÉ",
-      "location_label": "LOCALISATION_BASE"
-    },
-    "social": {
-      "title": "GRILLE_SOCIAL"
-    },
-    "quote": {
-      "text": "Chaque projet est une chance de recode notre histoire visuelle. Merci d'être partie de ce mouvement."
-    },
-    "faq": {
-      "title": "Base de Connaissances",
-      "subtitle": "FAQ_v1.0",
-      "items": {
-        "0": {
-          "q": "Consultations ?",
-          "a": "Affirmatif. 30 min de protocole initial offert pour analyser vos besoins."
-        },
-        "1": {
-          "q": "International ?",
-          "a": "Système global. Je collabore avec des clients sur tous les fuseaux horaires."
-        },
-        "2": {
-          "q": "Délais ?",
-          "a": "Optimisés. 2-4 semaines pour les interfaces, 2-3 mois pour les écosystèmes complets."
-        },
-        "3": {
-          "q": "Héritage ?",
-          "a": "C'est le noyau. L'intégration culturelle est le moteur de chaque design."
-        }
-      }
->>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
     }
   },
   "SolutionPage": {

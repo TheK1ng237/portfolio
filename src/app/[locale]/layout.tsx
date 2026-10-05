@@ -5,6 +5,7 @@ import LogoIntro from './component/LogoIntro';
 import Navigation from './component/NAV';
 import BackgroundCanvas from './component/BackgroundCanvas';
 import CustomCursor from './component/CustomCursor';
+import SiteChrome from './component/SiteChrome';
 import '../globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
@@ -100,20 +101,19 @@ export default async function LocaleLayout({ children, params }: Props) {
       </head>
       <body className="bg-[#050508] text-[#F5F5DC] antialiased min-h-screen flex flex-col selection:bg-[#E9B826] selection:text-black">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <div className="print:hidden">
-            <CustomCursor />
-            <BackgroundCanvas />
-            <Navigation />
-            <LogoIntro />
-          </div>
-
-          <main className="flex-grow z-10 relative">
+          <SiteChrome
+            decorations={
+              <>
+                <CustomCursor />
+                <BackgroundCanvas />
+                <LogoIntro />
+              </>
+            }
+            header={<Navigation />}
+            footer={<Footer />}
+          >
             {children}
-          </main>
-
-          <div className="print:hidden">
-            <Footer />
-          </div>
+          </SiteChrome>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -7,7 +7,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { Project } from "@/app/type";
 import { apiFetch } from "@/lib/api";
 
-<<<<<<< HEAD
 const fallbackProjects: Project[] = [
   {
     id: 1,
@@ -63,7 +62,25 @@ const fallbackProjects: Project[] = [
   },
 ];
 
-const mapProject = (item: any): Project => ({
+type ProjectApiItem = {
+  id?: number | string;
+  title?: string;
+  titleFr?: string;
+  titleEn?: string;
+  description?: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+  image?: string;
+  link?: string;
+  github?: string;
+  tech?: string[];
+  category?: string;
+  featured?: boolean;
+  isCompleted?: boolean;
+  version?: string;
+};
+
+const mapProject = (item: ProjectApiItem): Project => ({
   id: Number(item.id ?? Math.random()),
   title: item.title ?? item.titleFr ?? item.titleEn ?? "Projet",
   description: item.description ?? item.descriptionFr ?? item.descriptionEn ?? "",
@@ -71,7 +88,7 @@ const mapProject = (item: any): Project => ({
   link: item.link ?? "",
   github: item.github ?? "",
   tech: Array.isArray(item.tech) ? item.tech : [],
-  category: item.category ?? "web",
+  category: item.category === "web" || item.category === "mobile" || item.category === "design" ? item.category : "web",
   featured: Boolean(item.featured),
   isCompleted: item.isCompleted ?? true,
   version: item.version ?? "v1.0",
@@ -80,9 +97,6 @@ const mapProject = (item: any): Project => ({
 export default function Projects() {
   const t = useTranslations("ProjectsPage");
   const locale = useLocale();
-=======
-export default function Projects() {
->>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
   const [filter, setFilter] = useState<string>("all");
   const [selectedModalProject, setSelectedModalProject] = useState<Project | null>(null);
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
@@ -94,7 +108,7 @@ export default function Projects() {
 
     const loadProjects = async () => {
       try {
-        const data = await apiFetch<{ items: any[] }>("/public/projects", { locale, method: "GET" });
+        const data = await apiFetch<{ items: ProjectApiItem[] }>("/public/projects", { locale, method: "GET" });
         if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
           setProjects(data.items.map(mapProject));
         }
@@ -145,19 +159,11 @@ export default function Projects() {
             className="inline-flex flex-wrap justify-center gap-2 p-2 rounded-2xl border border-white/20 bg-[#121526]/80 backdrop-blur-xl shadow-2xl font-azurio"
           >
             {[
-<<<<<<< HEAD
               { id: "all", label: t("filters.all") },
               { id: "web", label: t("filters.web") },
               { id: "mobile", label: t("filters.mobile") },
               { id: "design", label: t("filters.design") },
             ].map((filterOption) => (
-=======
-              { id: "all", label: "TOUS LES PROJETS" },
-              { id: "web", label: "WEB APP" },
-              { id: "mobile", label: "MOBILE" },
-              { id: "design", label: "DESIGN UI/UX" },
-            ].map((f) => (
->>>>>>> parent of ef924fd (Refactor Culture, Projects, Solutions, and LogoIntro components for improved localization and UI enhancements)
               <button
                 key={filterOption.id}
                 onClick={() => setFilter(filterOption.id)}

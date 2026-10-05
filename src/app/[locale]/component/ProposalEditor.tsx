@@ -5,6 +5,7 @@ import ProposalDocument, {
   type ProposalDocumentData,
   type ProposalPhase,
 } from "./ProposalDocument";
+import { apiFetch, API_TOKEN_STORAGE_KEY } from "@/lib/api";
 
 const DRAFT_KEY = "thek1ng237-proposal-draft-v2";
 const LEGACY_DRAFT_KEY = "thek1ng237-proposal-draft-v1";
@@ -267,41 +268,56 @@ export default function ProposalEditor({
   const [isLoaded, setIsLoaded] = useState(false);
   const [savedAt, setSavedAt] = useState("");
   const [notice, setNotice] = useState("");
+  const [token, setToken] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [clientFirstName, setClientFirstName] = useState("");
+  const [clientLastName, setClientLastName] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedProposals, setSavedProposals] = useState<{ id: string; proposalNumber: string; title: string }[]>([]);
+  const [selectedSavedProposal, setSelectedSavedProposal] = useState("");
   const importInput = useRef<HTMLInputElement>(null);
+  const draftKey = `${DRAFT_KEY}:${initialProposal.reference}`;
 
   useEffect(() => {
     try {
+      setToken(localStorage.getItem(API_TOKEN_STORAGE_KEY) ?? "");
+      const recipient = initialProposal.recipient.replace(/^(M\.?|Mme|M\s*me)\s*/i, "").trim().split(/\s+/);
+      setClientFirstName(recipient[0] ?? "");
+      setClientLastName(recipient.slice(1).join(" "));
       if (localStorage.getItem(LEGACY_DRAFT_KEY)) {
         localStorage.removeItem(LEGACY_DRAFT_KEY);
       }
 
-      const savedDraft = localStorage.getItem(DRAFT_KEY);
+      const savedDraft = localStorage.getItem(draftKey);
       if (savedDraft) {
         const parsed: unknown = JSON.parse(savedDraft);
         if (isProposalDocumentData(parsed)) {
           setProposal(parsed);
         } else {
-          localStorage.removeItem(DRAFT_KEY);
+          localStorage.removeItem(draftKey);
         }
       }
     } catch {
       setNotice("Le brouillon local n’a pas pu être chargé.");
     }
     setIsLoaded(true);
-  }, []);
+  }, [draftKey, initialProposal]);
 
   useEffect(() => {
     if (!isLoaded) return;
     const timeout = window.setTimeout(() => {
       try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(proposal));
+        localStorage.setItem(draftKey, JSON.stringify(proposal));
         setSavedAt(new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
       } catch {
         setNotice("Le brouillon n’a pas pu être enregistré dans ce navigateur.");
       }
     }, 350);
     return () => window.clearTimeout(timeout);
-  }, [isLoaded, proposal]);
+  }, [draftKey, isLoaded, proposal]);
 
   function updateField<Key extends keyof ProposalDocumentData>(key: Key, value: ProposalDocumentData[Key]) {
     setProposal((current) => ({ ...current, [key]: value }));
@@ -333,6 +349,115 @@ export default function ProposalEditor({
     event.target.value = "";
   }
 
+  async function login(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const result = await apiFetch<{ token: string }>("auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email: loginEmail, password: loginPassword }),
+      });
+      localStorage.setItem(API_TOKEN_STORAGE_KEY, result.token);
+      setToken(result.token);
+      setLoginPassword("");
+      setNotice("Connexion à l’API réussie.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Connexion impossible.");
+    }
+  }
+
+  async function saveToBackend() {
+    if (!token) return;
+    if (!clientFirstName.trim() || !clientLastName.trim() || !clientEmail.trim()) {
+      setNotice("Renseigne le prénom, le nom et l’email du client.");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const clients = await apiFetch<{ id: string; email: string }[]>(
+        `clients?search=${encodeURIComponent(clientEmail.trim())}&limit=100`,
+        { token },
+      );
+      const existingClient = clients.find((client) => client.email.toLowerCase() === clientEmail.trim().toLowerCase());
+      const client = existingClient ?? await apiFetch<{ id: string }>("clients", {
+        method: "POST",
+        token,
+        body: JSON.stringify({
+          companyName: proposal.clientName,
+          firstName: clientFirstName.trim(),
+          lastName: clientLastName.trim(),
+          email: clientEmail.trim(),
+          phone: clientPhone.trim() || undefined,
+        }),
+      });
+
+      const items = proposal.budgetItems
+        .filter((item) => item.phase.trim() && item.amount >= 0)
+        .map((item) => ({ label: item.phase, description: item.deliverables, quantity: 1, unitPrice: item.amount }));
+      if (!items.length) throw new Error("Ajoute au moins une ligne budgétaire avant d’enregistrer.");
+
+      const validDays = Number.parseInt(proposal.validity, 10);
+      const validUntil = Number.isFinite(validDays)
+        ? new Date(Date.now() + validDays * 24 * 60 * 60 * 1000).toISOString()
+        : undefined;
+      const created = await apiFetch<{ id: string; proposalNumber: string; createdAt: string }>("proposals", {
+        method: "POST",
+        token,
+        body: JSON.stringify({
+          title: `${proposal.clientShortName} - ${proposal.summary}`.slice(0, 200),
+          description: proposal.summary,
+          documentData: proposal,
+          clientId: client.id,
+          currency: "XAF",
+          validUntil,
+          items,
+        }),
+      });
+      const savedDocument = {
+        ...proposal,
+        reference: created.proposalNumber,
+        issuedAt: new Date(created.createdAt).toLocaleDateString("fr-FR", { dateStyle: "long" }),
+      };
+      await apiFetch(`proposals/${created.id}`, {
+        method: "PUT",
+        token,
+        body: JSON.stringify({ documentData: savedDocument }),
+      });
+      setProposal(savedDocument);
+      setSelectedSavedProposal(created.id);
+      setNotice(`Devis ${created.proposalNumber} enregistré dans la base.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Enregistrement du devis impossible.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function loadSavedProposals() {
+    if (!token) return;
+    try {
+      const proposals = await apiFetch<{ id: string; proposalNumber: string; title: string }[]>("proposals?limit=100", { token });
+      setSavedProposals(proposals);
+      setNotice(`${proposals.length} devis chargé${proposals.length > 1 ? "s" : ""}.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Chargement des devis impossible.");
+    }
+  }
+
+  async function loadSelectedProposal() {
+    if (!token || !selectedSavedProposal) return;
+    try {
+      const loaded = await apiFetch<{ documentData?: unknown }>(`proposals/${selectedSavedProposal}`, { token });
+      if (!isProposalDocumentData(loaded.documentData)) {
+        throw new Error("Ce devis ne contient pas de document éditable.");
+      }
+      setProposal(loaded.documentData);
+      setNotice("Devis chargé depuis la base.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Chargement du devis impossible.");
+    }
+  }
+
   const total = proposal.budgetItems.reduce((sum, item) => sum + (Number.isFinite(item.amount) ? item.amount : 0), 0);
   const paymentShare = proposal.payments.reduce((sum, payment) => sum + payment.percentage, 0);
 
@@ -349,12 +474,48 @@ export default function ProposalEditor({
             <input ref={importInput} type="file" accept="application/json,.json" className="hidden" onChange={importProposal} />
             <button type="button" onClick={() => importInput.current?.click()} className="border border-white/20 px-3 py-2 text-xs font-bold text-white hover:border-[#ffc82c] hover:text-[#ffc82c]">Importer JSON</button>
             <button type="button" onClick={exportProposal} className="border border-[#ffc82c]/60 px-3 py-2 text-xs font-bold text-[#ffc82c] hover:bg-[#ffc82c] hover:text-[#0b0d18]">Exporter JSON</button>
-            <button type="button" onClick={() => { setProposal(initialProposal); setNotice("Exemple GSHI restauré."); }} className="border border-white/20 px-3 py-2 text-xs font-bold text-white/70 hover:border-white hover:text-white">Restaurer l’exemple</button>
+            <button type="button" onClick={() => { setProposal(initialProposal); setNotice("Modèle restauré."); }} className="border border-white/20 px-3 py-2 text-xs font-bold text-white/70 hover:border-white hover:text-white">Restaurer le modèle</button>
           </div>
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-3 text-xs text-white/45">
           <span aria-live="polite">{notice || (savedAt ? `Brouillon enregistré à ${savedAt}` : isLoaded ? "Modifications enregistrées automatiquement" : "Chargement du brouillon…")}</span>
           <a href="#proposal-preview" className="font-bold text-[#ffc82c] hover:text-white">Aller à l’aperçu ↓</a>
+        </div>
+      </section>
+
+      <section className="mb-8 grid gap-5 border border-white/10 bg-[#121526] p-5 md:grid-cols-2 print:hidden">
+        {!token ? (
+          <form onSubmit={login} className="grid gap-3">
+            <h2 className="font-achiko text-lg">Connexion à la gestion des devis</h2>
+            <Field label="Email du compte admin" value={loginEmail} onChange={setLoginEmail} type="email" />
+            <Field label="Mot de passe" value={loginPassword} onChange={setLoginPassword} type="password" />
+            <button className="justify-self-start border border-[#ffc82c]/60 px-4 py-2 text-sm font-bold text-[#ffc82c] hover:bg-[#ffc82c] hover:text-[#0b0d18]">Se connecter</button>
+          </form>
+        ) : (
+          <div className="grid gap-3">
+            <h2 className="font-achiko text-lg">Client à enregistrer</h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Prénom du contact" value={clientFirstName} onChange={setClientFirstName} />
+              <Field label="Nom du contact" value={clientLastName} onChange={setClientLastName} />
+              <Field label="Email du client" value={clientEmail} onChange={setClientEmail} type="email" />
+              <Field label="Téléphone du client" value={clientPhone} onChange={setClientPhone} />
+            </div>
+            <button type="button" disabled={isSaving} onClick={saveToBackend} className="justify-self-start border border-[#ffc82c]/60 px-4 py-2 text-sm font-bold text-[#ffc82c] hover:bg-[#ffc82c] hover:text-[#0b0d18] disabled:opacity-50">
+              {isSaving ? "Enregistrement…" : "Enregistrer le devis"}
+            </button>
+          </div>
+        )}
+        <div className="grid content-start gap-3">
+          <h2 className="font-achiko text-lg">Devis enregistrés</h2>
+          <button type="button" disabled={!token} onClick={loadSavedProposals} className="justify-self-start border border-white/20 px-3 py-2 text-xs font-bold text-white disabled:opacity-40">Charger la liste</button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <select aria-label="Choisir un devis enregistré" className={controlClassName} value={selectedSavedProposal} onChange={(event) => setSelectedSavedProposal(event.target.value)}>
+              <option value="">Sélectionner un devis</option>
+              {savedProposals.map((saved) => <option key={saved.id} value={saved.id}>{saved.proposalNumber} · {saved.title}</option>)}
+            </select>
+            <button type="button" disabled={!token || !selectedSavedProposal} onClick={loadSelectedProposal} className="shrink-0 border border-white/20 px-3 py-2 text-xs font-bold text-white disabled:opacity-40">Ouvrir</button>
+          </div>
+          {token && <button type="button" onClick={() => { localStorage.removeItem(API_TOKEN_STORAGE_KEY); setToken(""); setNotice("Déconnecté de l’API."); }} className="justify-self-start text-xs text-white/50 hover:text-white">Se déconnecter</button>}
         </div>
       </section>
 
