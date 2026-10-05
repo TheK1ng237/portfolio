@@ -9,8 +9,10 @@ export default function LogoIntro() {
   const [animationStep, setAnimationStep] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
-  const [particlePositions, setParticlePositions] = useState<{ top: number; left: number }[]>([]);
-  const fullText = "KINGTANG";
+  const [particlePositions, setParticlePositions] = useState<
+    { top: number; left: number }[]
+  >([]);
+  const fullText = "Thek1ng237";
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -113,7 +115,11 @@ export default function LogoIntro() {
                 backgroundSize: "70px 70px",
                 transform: "rotateX(70deg) translateZ(-400px)",
               }}
-              animate={animationStep >= 1 ? { backgroundPositionY: ["0px", "70px"] } : {}}
+              animate={
+                animationStep >= 1
+                  ? { backgroundPositionY: ["0px", "70px"] }
+                  : {}
+              }
               transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
             />
           </motion.div>
@@ -184,7 +190,7 @@ export default function LogoIntro() {
             >
               <Image
                 src="/logojaune.png"
-                alt="KingTang Totem"
+                alt="Thek1ng237 Totem"
                 width={180}
                 height={180}
                 className="object-contain relative z-10"

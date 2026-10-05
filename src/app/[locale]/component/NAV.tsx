@@ -8,11 +8,11 @@ import { useLocale, useTranslations } from "next-intl";
 import AudioController from "./AudioController";
 
 const NAV_ITEMS = [
-  {  key: "about", path: "/ABOUT" },
-  {  key: "projects", path: "/PROJECT" },
-  {  key: "culture", path: "/CULTURE" },
-  {  key: "solution", path: "/SOLUTION" },
-  {  key: "contact", path: "/CONTACT" },
+  { key: "about", path: "/ABOUT" },
+  { key: "projects", path: "/PROJECT" },
+  { key: "culture", path: "/CULTURE" },
+  { key: "solution", path: "/SOLUTION" },
+  { key: "contact", path: "/CONTACT" },
 ];
 
 export default function Navigation() {
@@ -69,7 +69,9 @@ export default function Navigation() {
         style={{
           paddingTop: isScrolled ? "10px" : "18px",
           paddingBottom: isScrolled ? "10px" : "18px",
-          backgroundColor: isScrolled ? "rgba(11, 13, 24, 0.95)" : "transparent",
+          backgroundColor: isScrolled
+            ? "rgba(11, 13, 24, 0.95)"
+            : "transparent",
           backdropFilter: isScrolled ? "blur(20px)" : "none",
           borderBottom: isScrolled
             ? "1px solid rgba(255, 200, 44, 0.3)"
@@ -83,7 +85,7 @@ export default function Navigation() {
             <div className="relative flex items-center justify-center">
               <Image
                 src="/logojaune.png"
-                alt="KingTang Seal"
+                alt="Thek1ng237 Seal"
                 width={42}
                 height={42}
                 className="z-10 transition-transform duration-500 group-hover:scale-110 drop-shadow-[0_0_12px_rgba(255,200,44,0.4)]"
@@ -96,14 +98,14 @@ export default function Navigation() {
                 IDENTITY
               </span>
               <span className="block text-[14px] font-achiko tracking-[0.2em] text-[#FFC82C] leading-none">
-                KINGTANG
+                Thek1ng237
               </span>
             </div>
           </Link>
 
           {/* DESKTOP NAVIGATION */}
           <nav className="hidden md:flex items-center gap-2">
-            {NAV_ITEMS.map((item,index) => {
+            {NAV_ITEMS.map((item, index) => {
               const isActive = pathname.toUpperCase() === item.path;
               return (
                 <Link
@@ -112,7 +114,6 @@ export default function Navigation() {
                   className="relative px-4 py-2 group rounded-md"
                 >
                   <div className="flex flex-col items-center">
-                    
                     <span
                       className={`text-[12px] font-achiko tracking-[0.18em] uppercase transition-all duration-300 ${
                         isActive
@@ -149,8 +150,6 @@ export default function Navigation() {
 
               <AudioController />
               <LanguageSwitcher />
-
-              
             </div>
           </nav>
 
@@ -163,7 +162,9 @@ export default function Navigation() {
               aria-label="Toggle navigation menu"
             >
               <motion.div
-                animate={isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                animate={
+                  isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }
+                }
                 className="w-5 h-[2px] bg-[#FFC82C]"
               />
               <motion.div
@@ -171,7 +172,11 @@ export default function Navigation() {
                 className="w-3.5 h-[2px] bg-white ml-1.5"
               />
               <motion.div
-                animate={isMobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                animate={
+                  isMobileMenuOpen
+                    ? { rotate: -45, y: -6 }
+                    : { rotate: 0, y: 0 }
+                }
                 className="w-5 h-[2px] bg-[#FFC82C]"
               />
             </button>

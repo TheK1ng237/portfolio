@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiFetch, API_TOKEN_STORAGE_KEY } from "@/lib/api";
 import ProposalStudioAdmin from "./ProposalStudioAdmin";
-import ProposalDocument, { type ProposalDocumentData } from "./ProposalDocument";
+import ProposalDocument, {
+  type ProposalDocumentData,
+} from "./ProposalDocument";
 
 type AdminUser = { id: string; name: string; email: string; role: string };
 
@@ -48,7 +50,19 @@ type ProposalDetail = Proposal & {
   }[];
 };
 
-type View = "overview" | "proposals" | "studio" | "clients";
+type Testimonial = {
+  id: string;
+  authorName: string;
+  authorRole?: string | null;
+  company?: string | null;
+  avatarUrl?: string | null;
+  content: string;
+  rating: number;
+  isPublished: boolean;
+  createdAt?: string;
+};
+
+type View = "overview" | "proposals" | "studio" | "clients" | "testimonials";
 
 type ClientForm = {
   companyName: string;
@@ -60,6 +74,16 @@ type ClientForm = {
   country: string;
 };
 
+type TestimonialForm = {
+  authorName: string;
+  authorRole: string;
+  company: string;
+  avatarUrl: string;
+  content: string;
+  rating: number;
+  isPublished: boolean;
+};
+
 const emptyClient: ClientForm = {
   companyName: "",
   firstName: "",
@@ -68,6 +92,16 @@ const emptyClient: ClientForm = {
   phone: "",
   city: "",
   country: "Cameroun",
+};
+
+const emptyTestimonial: TestimonialForm = {
+  authorName: "",
+  authorRole: "",
+  company: "",
+  avatarUrl: "",
+  content: "",
+  rating: 5,
+  isPublished: true,
 };
 
 const statusLabels: Record<Proposal["status"], string> = {
@@ -94,7 +128,9 @@ function formatMoney(value: number | string, currency: string) {
 
 function formatDate(value: string) {
   if (!value) return "—";
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" }).format(new Date(value));
+  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" }).format(
+    new Date(value),
+  );
 }
 
 function getClientName(client: Proposal["client"]) {
@@ -103,7 +139,9 @@ function getClientName(client: Proposal["client"]) {
 
 function StatusBadge({ status }: { status: Proposal["status"] }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${statusStyles[status]}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${statusStyles[status]}`}
+    >
       <span className="size-1.5 rounded-full bg-current" />
       {statusLabels[status]}
     </span>
@@ -144,13 +182,16 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   const [view, setView] = useState<View>("overview");
   const [token, setToken] = useState("");
   const [user, setUser] = useState<AdminUser | null>(null);
-  const [authState, setAuthState] = useState<"checking" | "signed-out" | "ready">("checking");
+  const [authState, setAuthState] = useState<
+    "checking" | "signed-out" | "ready"
+  >("checking");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
@@ -160,24 +201,41 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [clientForm, setClientForm] = useState<ClientForm>(emptyClient);
 
+  // Testimonial Modal
+  const [testimonialDialog, setTestimonialDialog] = useState(false);
+  const [editingTestimonial, setEditingTestimonial] =
+    useState<Testimonial | null>(null);
+  const [testimonialForm, setTestimonialForm] =
+    useState<TestimonialForm>(emptyTestimonial);
+
   // Proposal Detail Modal & Full Document Preview Modal
-  const [selectedProposal, setSelectedProposal] = useState<ProposalDetail | null>(null);
+  const [selectedProposal, setSelectedProposal] =
+    useState<ProposalDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
-  const [previewDocumentData, setPreviewDocumentData] = useState<ProposalDocumentData | null>(null);
+  const [previewDocumentData, setPreviewDocumentData] =
+    useState<ProposalDocumentData | null>(null);
 
   useEffect(() => {
     let active = true;
-    const savedToken = typeof window !== "undefined" ? window.localStorage.getItem(API_TOKEN_STORAGE_KEY) : null;
+    const savedToken =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem(API_TOKEN_STORAGE_KEY)
+        : null;
     if (!savedToken) {
       setAuthState("signed-out");
-      return () => { active = false; };
+      return () => {
+        active = false;
+      };
     }
 
     setToken(savedToken);
     apiFetch<AdminUser>("auth/me", { token: savedToken })
       .then((profile) => {
         if (!active) return;
-        if (profile.role !== "ADMIN") throw new Error("Ce compte ne possède pas les privilèges administrateur.");
+        if (profile.role !== "ADMIN")
+          throw new Error(
+            "Ce compte ne possède pas les privilèges administrateur.",
+          );
         setUser(profile);
         setAuthState("ready");
       })
@@ -186,10 +244,16 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         window.localStorage.removeItem(API_TOKEN_STORAGE_KEY);
         setToken("");
         setAuthState("signed-out");
-        setMessage(err instanceof Error ? err.message : "Session expirée. Veuillez vous réauthentifier.");
+        setMessage(
+          err instanceof Error
+            ? err.message
+            : "Session expirée. Veuillez vous réauthentifier.",
+        );
       });
 
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -197,21 +261,35 @@ export default function AdminDashboard({ locale }: { locale: string }) {
     let active = true;
     const timer = window.setTimeout(() => {
       setLoading(true);
-      const query = new URLSearchParams({ limit: "100", sortBy: "createdAt", order: "desc" });
+      const query = new URLSearchParams({
+        limit: "100",
+        sortBy: "createdAt",
+        order: "desc",
+      });
       if (search.trim()) query.set("search", search.trim());
       if (statusFilter) query.set("status", statusFilter);
 
       Promise.all([
         apiFetch<Proposal[]>(`proposals?${query.toString()}`, { token }),
-        apiFetch<Client[]>(`clients?limit=100&sortBy=createdAt&order=desc${search.trim() ? `&search=${encodeURIComponent(search.trim())}` : ""}`, { token }),
+        apiFetch<Client[]>(
+          `clients?limit=100&sortBy=createdAt&order=desc${search.trim() ? `&search=${encodeURIComponent(search.trim())}` : ""}`,
+          { token },
+        ),
+        apiFetch<Testimonial[]>("testimonials", { token }).catch(() => []),
       ])
-        .then(([propList, clientList]) => {
+        .then(([propList, clientList, testimonialList]) => {
           if (!active) return;
           setProposals(propList);
           setClients(clientList);
+          setTestimonials(testimonialList);
         })
         .catch((err: unknown) => {
-          if (active) setMessage(err instanceof Error ? err.message : "Erreur de chargement des données.");
+          if (active)
+            setMessage(
+              err instanceof Error
+                ? err.message
+                : "Erreur de chargement des données.",
+            );
         })
         .finally(() => {
           if (active) setLoading(false);
@@ -233,8 +311,11 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
-      const profile = await apiFetch<AdminUser>("auth/me", { token: result.token });
-      if (profile.role !== "ADMIN") throw new Error("Accès refusé. Compte non administrateur.");
+      const profile = await apiFetch<AdminUser>("auth/me", {
+        token: result.token,
+      });
+      if (profile.role !== "ADMIN")
+        throw new Error("Accès refusé. Compte non administrateur.");
       window.localStorage.setItem(API_TOKEN_STORAGE_KEY, result.token);
       setToken(result.token);
       setUser(profile);
@@ -242,7 +323,9 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       setPassword("");
       setMessage("");
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Authentification échouée.");
+      setMessage(
+        err instanceof Error ? err.message : "Authentification échouée.",
+      );
     } finally {
       setLoading(false);
     }
@@ -255,27 +338,45 @@ export default function AdminDashboard({ locale }: { locale: string }) {
     setAuthState("signed-out");
     setProposals([]);
     setClients([]);
+    setTestimonials([]);
     setView("overview");
   }
 
-  async function changeProposalStatus(proposal: Proposal, action: "send" | "accept" | "reject" | "cancel") {
+  async function changeProposalStatus(
+    proposal: Proposal,
+    action: "send" | "accept" | "reject" | "cancel",
+  ) {
     try {
-      await apiFetch(`proposals/${proposal.id}/${action}`, { method: "POST", token });
+      await apiFetch(`proposals/${proposal.id}/${action}`, {
+        method: "POST",
+        token,
+      });
       setMessage(`Statut du devis ${proposal.proposalNumber} mis à jour.`);
       setRefreshKey((k) => k + 1);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Impossible de modifier le statut.");
+      setMessage(
+        err instanceof Error
+          ? err.message
+          : "Impossible de modifier le statut.",
+      );
     }
   }
 
   async function removeProposal(proposal: Proposal) {
-    if (!window.confirm(`Voulez-vous supprimer définitivement le devis ${proposal.proposalNumber} ?`)) return;
+    if (
+      !window.confirm(
+        `Voulez-vous supprimer définitivement le devis ${proposal.proposalNumber} ?`,
+      )
+    )
+      return;
     try {
       await apiFetch(`proposals/${proposal.id}`, { method: "DELETE", token });
       setMessage("Devis supprimé.");
       setRefreshKey((k) => k + 1);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Suppression impossible.");
+      setMessage(
+        err instanceof Error ? err.message : "Suppression impossible.",
+      );
     }
   }
 
@@ -292,7 +393,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             city: client.city ?? "",
             country: client.country ?? "",
           }
-        : emptyClient
+        : emptyClient,
     );
     setClientDialog(true);
   }
@@ -300,19 +401,28 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   async function saveClient(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const payload = Object.fromEntries(
-      Object.entries(clientForm).map(([k, v]) => [k, v.trim() || undefined])
+      Object.entries(clientForm).map(([k, v]) => [k, v.trim() || undefined]),
     );
     try {
-      await apiFetch(editingClient ? `clients/${editingClient.id}` : "clients", {
-        method: editingClient ? "PUT" : "POST",
-        token,
-        body: JSON.stringify(payload),
-      });
+      await apiFetch(
+        editingClient ? `clients/${editingClient.id}` : "clients",
+        {
+          method: editingClient ? "PUT" : "POST",
+          token,
+          body: JSON.stringify(payload),
+        },
+      );
       setClientDialog(false);
-      setMessage(editingClient ? "Fiche client mise à jour." : "Nouveau client créé.");
+      setMessage(
+        editingClient ? "Fiche client mise à jour." : "Nouveau client créé.",
+      );
       setRefreshKey((k) => k + 1);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Enregistrement du client impossible.");
+      setMessage(
+        err instanceof Error
+          ? err.message
+          : "Enregistrement du client impossible.",
+      );
     }
   }
 
@@ -324,17 +434,112 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       setMessage("Client supprimé.");
       setRefreshKey((k) => k + 1);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Suppression impossible.");
+      setMessage(
+        err instanceof Error ? err.message : "Suppression impossible.",
+      );
+    }
+  }
+
+  // Testimonial Actions
+  function openTestimonialEditor(item?: Testimonial) {
+    setEditingTestimonial(item ?? null);
+    setTestimonialForm(
+      item
+        ? {
+            authorName: item.authorName,
+            authorRole: item.authorRole ?? "",
+            company: item.company ?? "",
+            avatarUrl: item.avatarUrl ?? "",
+            content: item.content,
+            rating: item.rating ?? 5,
+            isPublished: item.isPublished,
+          }
+        : emptyTestimonial,
+    );
+    setTestimonialDialog(true);
+  }
+
+  async function saveTestimonial(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const payload = {
+      authorName: testimonialForm.authorName.trim(),
+      authorRole: testimonialForm.authorRole.trim() || undefined,
+      company: testimonialForm.company.trim() || undefined,
+      avatarUrl: testimonialForm.avatarUrl.trim() || undefined,
+      content: testimonialForm.content.trim(),
+      rating: Number(testimonialForm.rating),
+      isPublished: Boolean(testimonialForm.isPublished),
+    };
+
+    try {
+      await apiFetch(
+        editingTestimonial
+          ? `testimonials/${editingTestimonial.id}`
+          : "testimonials",
+        {
+          method: editingTestimonial ? "PUT" : "POST",
+          token,
+          body: JSON.stringify(payload),
+        },
+      );
+      setTestimonialDialog(false);
+      setMessage(
+        editingTestimonial
+          ? "Témoignage mis à jour."
+          : "Nouveau témoignage ajouté.",
+      );
+      setRefreshKey((k) => k + 1);
+    } catch (err) {
+      setMessage(
+        err instanceof Error
+          ? err.message
+          : "Enregistrement du témoignage impossible.",
+      );
+    }
+  }
+
+  async function toggleTestimonialPublish(item: Testimonial) {
+    try {
+      await apiFetch(`testimonials/${item.id}`, {
+        method: "PUT",
+        token,
+        body: JSON.stringify({ isPublished: !item.isPublished }),
+      });
+      setMessage(`Visibilité du témoignage de ${item.authorName} mise à jour.`);
+      setRefreshKey((k) => k + 1);
+    } catch (err) {
+      setMessage(
+        err instanceof Error ? err.message : "Modification impossible.",
+      );
+    }
+  }
+
+  async function removeTestimonial(item: Testimonial) {
+    if (!window.confirm(`Supprimer le témoignage de ${item.authorName} ?`))
+      return;
+    try {
+      await apiFetch(`testimonials/${item.id}`, { method: "DELETE", token });
+      setMessage("Témoignage supprimé.");
+      setRefreshKey((k) => k + 1);
+    } catch (err) {
+      setMessage(
+        err instanceof Error ? err.message : "Suppression impossible.",
+      );
     }
   }
 
   async function openProposalDetail(proposal: Proposal) {
     setDetailLoading(true);
     try {
-      const detail = await apiFetch<ProposalDetail>(`proposals/${proposal.id}`, { token });
+      const detail = await apiFetch<ProposalDetail>(
+        `proposals/${proposal.id}`,
+        { token },
+      );
       setSelectedProposal(detail);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Erreur de chargement du devis.");
+      setMessage(
+        err instanceof Error ? err.message : "Erreur de chargement du devis.",
+      );
     } finally {
       setDetailLoading(false);
     }
@@ -343,11 +548,13 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   async function openDocumentPreview(proposal: Proposal) {
     setDetailLoading(true);
     try {
-      const detail = await apiFetch<ProposalDetail>(`proposals/${proposal.id}`, { token });
+      const detail = await apiFetch<ProposalDetail>(
+        `proposals/${proposal.id}`,
+        { token },
+      );
       if (detail.documentData && typeof detail.documentData === "object") {
         setPreviewDocumentData(detail.documentData as ProposalDocumentData);
       } else {
-        // Fallback document structure if documentData is missing
         setPreviewDocumentData({
           brand: "Thek1ng237",
           creatorName: "NDOH YANNICK TANG",
@@ -355,18 +562,26 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           phone: "+237 653 53 91 02",
           reference: detail.proposalNumber,
           issuedAt: formatDate(detail.createdAt),
-          validity: detail.validUntil ? formatDate(detail.validUntil) : "30 jours",
+          validity: detail.validUntil
+            ? formatDate(detail.validUntil)
+            : "30 jours",
           clientName: getClientName(detail.client),
           clientShortName: detail.client.companyName || detail.client.firstName,
           clientSlogan: detail.client.email,
           recipient: `${detail.client.firstName} ${detail.client.lastName}`,
           summary: detail.title,
           projectOverviewTitle: "Proposition commerciale sur mesure",
-          context: detail.description || "Cadrage et livraison des prestations demandées.",
+          context:
+            detail.description ||
+            "Cadrage et livraison des prestations demandées.",
           centralChallenge: "Réaliser le projet selon le cahier des charges.",
           centralChallengeLabel: "Objectif du projet",
           objectives: [
-            { title: "Livraison de qualité", description: "Respect des exigences techniques.", accent: "border-t-[#ffc82c]" },
+            {
+              title: "Livraison de qualité",
+              description: "Respect des exigences techniques.",
+              accent: "border-t-[#ffc82c]",
+            },
           ],
           objectivesHeading: "Objectifs clés",
           orientation: "Mise en place d'une solution moderne et évolutive.",
@@ -381,11 +596,13 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           developmentIntroduction: "Architecture solide et maintenable.",
           developmentPhases: [],
           implementationNotesLabel: "Notes d'exécution :",
-          implementationNotes: "Inclusions et périmètres validés avec le client.",
+          implementationNotes:
+            "Inclusions et périmètres validés avec le client.",
           deploymentHeading: "Recette et mise en ligne",
           deployment: "Tests et livraison finale.",
           budgetSectionTitle: "Proposition Financière",
-          budgetIntroduction: "Chiffrage des prestations incluses dans cette offre.",
+          budgetIntroduction:
+            "Chiffrage des prestations incluses dans cette offre.",
           budgetItems: (detail.items || []).map((it) => ({
             phase: it.label,
             deliverables: it.description || "",
@@ -393,12 +610,22 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           })),
           currency: detail.currency,
           payments: [
-            { label: "Acompte démarrage", percentage: 50, milestone: "À l'acceptation" },
-            { label: "Livraison finale", percentage: 50, milestone: "Après validation" },
+            {
+              label: "Acompte démarrage",
+              percentage: 50,
+              milestone: "À l'acceptation",
+            },
+            {
+              label: "Livraison finale",
+              percentage: 50,
+              milestone: "Après validation",
+            },
           ],
           paymentHeading: "Échéancier indicatif",
           timelineTitle: "Planning indicatif",
-          timeline: [{ period: "Livraison", description: "Selon calendrier convenu." }],
+          timeline: [
+            { period: "Livraison", description: "Selon calendrier convenu." },
+          ],
           clientInputsHeading: "À fournir par le client",
           clientInputs: "Contenus, visuels et accès requis.",
           finalChecksHeading: "Confidentialité & Validation",
@@ -406,17 +633,24 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         });
       }
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Erreur de chargement du document.");
+      setMessage(
+        err instanceof Error
+          ? err.message
+          : "Erreur de chargement du document.",
+      );
     } finally {
       setDetailLoading(false);
     }
   }
 
   // Statistics Computations
-  const totalsByCurrency = proposals.reduce<Record<string, number>>((acc, p) => {
-    acc[p.currency] = (acc[p.currency] ?? 0) + Number(p.totalAmount || 0);
-    return acc;
-  }, {});
+  const totalsByCurrency = proposals.reduce<Record<string, number>>(
+    (acc, p) => {
+      acc[p.currency] = (acc[p.currency] ?? 0) + Number(p.totalAmount || 0);
+      return acc;
+    },
+    {},
+  );
 
   const draftCount = proposals.filter((p) => p.status === "DRAFT").length;
   const sentCount = proposals.filter((p) => p.status === "SENT").length;
@@ -438,7 +672,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       <main className="grid min-h-screen place-items-center bg-[#07090e] px-4 py-12 font-azurio text-white">
         <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#10141e]/90 p-8 shadow-2xl backdrop-blur-xl">
           <div className="flex items-center justify-between border-b border-white/10 pb-6">
-            <a href={`/${locale}`} className="text-xs font-bold uppercase tracking-widest text-amber-400 hover:underline">
+            <a
+              href={`/${locale}`}
+              className="text-xs font-bold uppercase tracking-widest text-amber-400 hover:underline"
+            >
               ← Portfolio
             </a>
             <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
@@ -450,20 +687,40 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             <div className="mx-auto flex size-14 items-center justify-center rounded-2xl border border-amber-400/40 bg-amber-400/10 font-achiko text-2xl font-black text-amber-400 shadow-[0_0_20px_rgba(255,200,44,0.2)]">
               K
             </div>
-            <h1 className="mt-4 font-achiko text-2xl tracking-wide text-white">Console Backoffice</h1>
-            <p className="mt-1 text-xs text-white/50">Espace d’administration restreint · Gestion des Devis & CRM</p>
+            <h1 className="mt-4 font-achiko text-2xl tracking-wide text-white">
+              Console Backoffice
+            </h1>
+            <p className="mt-1 text-xs text-white/50">
+              Espace d’administration restreint · Devis, CRM &amp; Témoignages
+            </p>
           </div>
 
           <form className="mt-8 space-y-4" onSubmit={signIn}>
-            <InputField label="Identifiant email" type="email" value={email} onChange={setEmail} required placeholder="admin@kingtang.com" />
-            <InputField label="Clé de passe" type="password" value={password} onChange={setPassword} required placeholder="••••••••••••" />
+            <InputField
+              label="Identifiant email"
+              type="email"
+              value={email}
+              onChange={setEmail}
+              required
+              placeholder="admin@Thek1ng237.com"
+            />
+            <InputField
+              label="Clé de passe"
+              type="password"
+              value={password}
+              onChange={setPassword}
+              required
+              placeholder="••••••••••••"
+            />
 
             <button
               type="submit"
               disabled={loading}
               className="mt-2 w-full rounded-xl border border-amber-400/50 bg-gradient-to-r from-amber-500 to-amber-400 py-3 text-xs font-black uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,200,44,0.3)] transition hover:scale-[1.02] disabled:opacity-50"
             >
-              {loading ? "Authentification en cours..." : "Ouvrir la session backoffice"}
+              {loading
+                ? "Authentification en cours..."
+                : "Ouvrir la session backoffice"}
             </button>
           </form>
 
@@ -486,6 +743,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
     { id: "proposals", label: "Devis & Propositions", icon: "pi pi-file-edit" },
     { id: "studio", label: "Éditeur de Devis", icon: "pi pi-pencil" },
     { id: "clients", label: "CRM Clients", icon: "pi pi-users" },
+    { id: "testimonials", label: "Témoignages", icon: "pi pi-star" },
   ];
 
   return (
@@ -500,8 +758,12 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   K
                 </div>
                 <div>
-                  <span className="block text-xs font-bold tracking-widest text-white">KINGTANG</span>
-                  <span className="block text-[9px] uppercase tracking-wider text-amber-400/80">Backoffice Suite</span>
+                  <span className="block text-xs font-bold tracking-widest text-white">
+                    Thek1ng237
+                  </span>
+                  <span className="block text-[9px] uppercase tracking-wider text-amber-400/80">
+                    Backoffice Suite
+                  </span>
                 </div>
               </a>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
@@ -510,7 +772,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               </span>
             </div>
 
-            <nav className="mt-8 space-y-1.5" aria-label="Navigation principale Backoffice">
+            <nav
+              className="mt-8 space-y-1.5"
+              aria-label="Navigation principale Backoffice"
+            >
               {navItems.map((item) => {
                 const isActive = view === item.id;
                 return (
@@ -524,7 +789,9 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                         : "text-white/60 hover:bg-white/5 hover:text-white"
                     }`}
                   >
-                    <i className={`${item.icon} text-sm ${isActive ? "text-amber-400" : "text-white/40"}`} />
+                    <i
+                      className={`${item.icon} text-sm ${isActive ? "text-amber-400" : "text-white/40"}`}
+                    />
                     <span>{item.label}</span>
                     {isActive && (
                       <motion.div
@@ -544,16 +811,27 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 {user?.name?.slice(0, 2).toUpperCase() || "KT"}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-bold text-white">{user?.name}</p>
-                <p className="truncate text-[10px] text-white/40">{user?.email}</p>
+                <p className="truncate text-xs font-bold text-white">
+                  {user?.name}
+                </p>
+                <p className="truncate text-[10px] text-white/40">
+                  {user?.email}
+                </p>
               </div>
             </div>
 
             <div className="mt-3 flex items-center justify-between gap-2">
-              <a href={`/${locale}`} className="text-[10px] font-bold text-white/50 hover:text-amber-300 transition">
+              <a
+                href={`/${locale}`}
+                className="text-[10px] font-bold text-white/50 hover:text-amber-300 transition"
+              >
                 ← Portfolio Public
               </a>
-              <button type="button" onClick={signOut} className="text-[10px] font-bold text-rose-400/80 hover:text-rose-300 transition">
+              <button
+                type="button"
+                onClick={signOut}
+                className="text-[10px] font-bold text-rose-400/80 hover:text-rose-300 transition"
+              >
                 Déconnexion
               </button>
             </div>
@@ -565,13 +843,17 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5 print:hidden">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
-                Console d'administration · {new Intl.DateTimeFormat("fr-FR", { dateStyle: "full" }).format(new Date())}
+                Console d'administration ·{" "}
+                {new Intl.DateTimeFormat("fr-FR", { dateStyle: "full" }).format(
+                  new Date(),
+                )}
               </p>
               <h1 className="mt-1 font-achiko text-2xl text-white sm:text-3xl">
                 {view === "overview" && "Vue d'ensemble"}
                 {view === "proposals" && "Gestion des Devis"}
                 {view === "studio" && "Éditeur de Devis"}
                 {view === "clients" && "Gestion Clientèle (CRM)"}
+                {view === "testimonials" && "Gestion des Témoignages"}
               </h1>
             </div>
 
@@ -582,18 +864,31 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 disabled={loading}
                 className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-[#121622] px-3.5 py-2 text-xs font-bold text-white/80 transition hover:border-amber-400/50 hover:text-amber-300 disabled:opacity-50"
               >
-                <i className={`pi pi-refresh text-xs ${loading ? "animate-spin" : ""}`} />
+                <i
+                  className={`pi pi-refresh text-xs ${loading ? "animate-spin" : ""}`}
+                />
                 <span>Actualiser</span>
               </button>
 
-              <button
-                type="button"
-                onClick={() => setView("studio")}
-                className="inline-flex items-center gap-2 rounded-xl border border-amber-400/50 bg-amber-400/10 px-4 py-2 text-xs font-bold text-amber-300 transition hover:bg-amber-400 hover:text-black"
-              >
-                <i className="pi pi-plus text-xs" />
-                <span>Nouveau Devis</span>
-              </button>
+              {view === "testimonials" ? (
+                <button
+                  type="button"
+                  onClick={() => openTestimonialEditor()}
+                  className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2 text-xs font-bold text-black hover:bg-amber-300"
+                >
+                  <i className="pi pi-plus text-xs" />
+                  <span>Nouveau Témoignage</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setView("studio")}
+                  className="inline-flex items-center gap-2 rounded-xl border border-amber-400/50 bg-amber-400/10 px-4 py-2 text-xs font-bold text-amber-300 transition hover:bg-amber-400 hover:text-black"
+                >
+                  <i className="pi pi-plus text-xs" />
+                  <span>Nouveau Devis</span>
+                </button>
+              )}
             </div>
           </header>
 
@@ -606,7 +901,11 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 className="mb-6 flex items-center justify-between rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-xs text-amber-200 print:hidden"
               >
                 <span>{message}</span>
-                <button type="button" onClick={() => setMessage("")} className="text-base text-amber-400 hover:text-white">
+                <button
+                  type="button"
+                  onClick={() => setMessage("")}
+                  className="text-base text-amber-400 hover:text-white"
+                >
                   ×
                 </button>
               </motion.div>
@@ -618,17 +917,44 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             <div className="space-y-8 print:hidden">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {[
-                  { label: "Total Devis Enregistrés", value: String(proposals.length), icon: "pi pi-file", color: "text-amber-400" },
-                  { label: "Brouillons À Traiter", value: String(draftCount), icon: "pi pi-clock", color: "text-slate-400" },
-                  { label: "En Attente Client", value: String(sentCount), icon: "pi pi-send", color: "text-sky-400" },
-                  { label: "Devis Acceptés", value: String(acceptedCount), icon: "pi pi-check-circle", color: "text-emerald-400" },
+                  {
+                    label: "Total Devis Enregistrés",
+                    value: String(proposals.length),
+                    icon: "pi pi-file",
+                    color: "text-amber-400",
+                  },
+                  {
+                    label: "Brouillons À Traiter",
+                    value: String(draftCount),
+                    icon: "pi pi-clock",
+                    color: "text-slate-400",
+                  },
+                  {
+                    label: "En Attente Client",
+                    value: String(sentCount),
+                    icon: "pi pi-send",
+                    color: "text-sky-400",
+                  },
+                  {
+                    label: "Devis Acceptés",
+                    value: String(acceptedCount),
+                    icon: "pi pi-check-circle",
+                    color: "text-emerald-400",
+                  },
                 ].map((kpi) => (
-                  <div key={kpi.label} className="rounded-2xl border border-white/10 bg-[#0e121b] p-5 shadow-xl">
+                  <div
+                    key={kpi.label}
+                    className="rounded-2xl border border-white/10 bg-[#0e121b] p-5 shadow-xl"
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">{kpi.label}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">
+                        {kpi.label}
+                      </span>
                       <i className={`${kpi.icon} ${kpi.color} text-base`} />
                     </div>
-                    <strong className="mt-3 block font-achiko text-3xl text-white">{kpi.value}</strong>
+                    <strong className="mt-3 block font-achiko text-3xl text-white">
+                      {kpi.value}
+                    </strong>
                   </div>
                 ))}
               </div>
@@ -637,10 +963,18 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 <section className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
-                      <h2 className="font-achiko text-lg text-white">Devis Récents</h2>
-                      <p className="text-xs text-white/40">Dernières propositions émises dans le système</p>
+                      <h2 className="font-achiko text-lg text-white">
+                        Devis Récents
+                      </h2>
+                      <p className="text-xs text-white/40">
+                        Dernières propositions émises dans le système
+                      </p>
                     </div>
-                    <button type="button" onClick={() => setView("proposals")} className="text-xs font-bold text-amber-400 hover:underline">
+                    <button
+                      type="button"
+                      onClick={() => setView("proposals")}
+                      className="text-xs font-bold text-amber-400 hover:underline"
+                    >
                       Voir tout →
                     </button>
                   </div>
@@ -657,18 +991,31 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
                 <section className="space-y-6">
                   <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
-                    <h2 className="font-achiko text-lg text-white">Volume Financier</h2>
-                    <p className="mt-1 text-xs text-white/40">Valeur totale des devis par devise</p>
+                    <h2 className="font-achiko text-lg text-white">
+                      Volume Financier
+                    </h2>
+                    <p className="mt-1 text-xs text-white/40">
+                      Valeur totale des devis par devise
+                    </p>
                     <div className="mt-4 space-y-2">
                       {Object.entries(totalsByCurrency).map(([curr, total]) => (
-                        <div key={curr} className="flex items-center justify-between rounded-xl border border-white/10 bg-[#131824] p-3">
-                          <span className="text-xs font-bold text-white/70">{curr}</span>
-                          <strong className="font-achiko text-xl text-amber-400">{formatMoney(total, curr)}</strong>
+                        <div
+                          key={curr}
+                          className="flex items-center justify-between rounded-xl border border-white/10 bg-[#131824] p-3"
+                        >
+                          <span className="text-xs font-bold text-white/70">
+                            {curr}
+                          </span>
+                          <strong className="font-achiko text-xl text-amber-400">
+                            {formatMoney(total, curr)}
+                          </strong>
                         </div>
                       ))}
                       {Object.keys(totalsByCurrency).length === 0 && (
                         <div className="rounded-xl border border-white/10 bg-[#131824] p-3">
-                          <strong className="font-achiko text-xl text-amber-400">0 XAF</strong>
+                          <strong className="font-achiko text-xl text-amber-400">
+                            0 XAF
+                          </strong>
                         </div>
                       )}
                     </div>
@@ -676,19 +1023,30 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
                   <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                     <div className="flex items-center justify-between">
-                      <h2 className="font-achiko text-lg text-white">Clients Récents</h2>
-                      <button type="button" onClick={() => setView("clients")} className="text-xs font-bold text-amber-400 hover:underline">
+                      <h2 className="font-achiko text-lg text-white">
+                        Clients Récents
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => setView("clients")}
+                        className="text-xs font-bold text-amber-400 hover:underline"
+                      >
                         CRM →
                       </button>
                     </div>
                     <div className="mt-4 divide-y divide-white/10">
                       {clients.slice(0, 5).map((c) => (
-                        <div key={c.id} className="flex items-center justify-between py-3">
+                        <div
+                          key={c.id}
+                          className="flex items-center justify-between py-3"
+                        >
                           <div className="min-w-0">
                             <strong className="block truncate text-xs text-white">
                               {c.companyName || `${c.firstName} ${c.lastName}`}
                             </strong>
-                            <span className="truncate text-[10px] text-white/40">{c.email}</span>
+                            <span className="truncate text-[10px] text-white/40">
+                              {c.email}
+                            </span>
                           </div>
                           <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-bold text-amber-400">
                             {c._count?.proposals ?? 0} devis
@@ -798,17 +1156,27 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     {clients.map((c) => (
                       <tr key={c.id} className="hover:bg-white/[0.02]">
                         <td className="py-3.5 px-4">
-                          <strong className="block text-white">{c.companyName || `${c.firstName} ${c.lastName}`}</strong>
-                          <span className="text-[10px] text-white/40">{c.firstName} {c.lastName}</span>
+                          <strong className="block text-white">
+                            {c.companyName || `${c.firstName} ${c.lastName}`}
+                          </strong>
+                          <span className="text-[10px] text-white/40">
+                            {c.firstName} {c.lastName}
+                          </span>
                         </td>
                         <td className="py-3.5 px-4">
-                          <a href={`mailto:${c.email}`} className="text-white/80 hover:text-amber-300">
+                          <a
+                            href={`mailto:${c.email}`}
+                            className="text-white/80 hover:text-amber-300"
+                          >
                             {c.email}
                           </a>
-                          <span className="block text-[10px] text-white/40">{c.phone || "Sans téléphone"}</span>
+                          <span className="block text-[10px] text-white/40">
+                            {c.phone || "Sans téléphone"}
+                          </span>
                         </td>
                         <td className="py-3.5 px-4 text-white/60">
-                          {[c.city, c.country].filter(Boolean).join(", ") || "—"}
+                          {[c.city, c.country].filter(Boolean).join(", ") ||
+                            "—"}
                         </td>
                         <td className="py-3.5 px-4">
                           <span className="rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-bold text-amber-400">
@@ -842,6 +1210,121 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               </div>
             </section>
           )}
+
+          {/* TAB 5: TESTIMONIALS */}
+          {view === "testimonials" && (
+            <section className="space-y-6 print:hidden">
+              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                <div>
+                  <h2 className="font-achiko text-lg text-white">
+                    Modération &amp; Gestion des Témoignages
+                  </h2>
+                  <p className="text-xs text-white/60">
+                    Les clients laissent leurs avis sur le portfolio public.
+                    Modérez, validez et publiez les témoignages reçus.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openTestimonialEditor()}
+                  className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2.5 text-xs font-bold text-black hover:bg-amber-300"
+                >
+                  <i className="pi pi-plus text-xs" />
+                  <span>Ajouter un Témoignage</span>
+                </button>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                {testimonials.map((t) => (
+                  <div
+                    key={t.id}
+                    className={`flex flex-col justify-between rounded-2xl border p-6 shadow-xl transition ${
+                      !t.isPublished
+                        ? "border-amber-400/50 bg-[#121622]"
+                        : "border-white/10 bg-[#0e121b]"
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="flex text-amber-400">
+                            {Array.from({ length: t.rating || 5 }).map(
+                              (_, i) => (
+                                <i
+                                  key={i}
+                                  className="pi pi-star-fill text-xs mr-0.5"
+                                />
+                              ),
+                            )}
+                          </div>
+                          {!t.isPublished && (
+                            <span className="rounded-md border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-300">
+                              ⏳ À modérer
+                            </span>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => toggleTestimonialPublish(t)}
+                          className={`rounded-full border px-3 py-1 text-[9px] font-bold uppercase tracking-wider transition ${
+                            t.isPublished
+                              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
+                              : "border-amber-400 bg-amber-400 text-black hover:bg-amber-300"
+                          }`}
+                        >
+                          {t.isPublished
+                            ? "● En ligne (Publié)"
+                            : "✓ Valider & Publier"}
+                        </button>
+                      </div>
+
+                      <p className="text-xs leading-relaxed text-white/80 italic">
+                        "{t.content}"
+                      </p>
+                    </div>
+
+                    <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
+                      <div>
+                        <strong className="block font-achiko text-xs text-white">
+                          {t.authorName}
+                        </strong>
+                        <span className="text-[10px] text-amber-400">
+                          {[t.authorRole, t.company]
+                            .filter(Boolean)
+                            .join(" · ") || "Client"}
+                        </span>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openTestimonialEditor(t)}
+                          className="rounded-lg border border-white/15 p-1.5 text-white/70 hover:border-amber-400 hover:text-amber-300"
+                          title="Modifier le témoignage"
+                        >
+                          <i className="pi pi-pencil text-xs" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeTestimonial(t)}
+                          className="rounded-lg border border-white/15 p-1.5 text-rose-400/80 hover:border-rose-400 hover:text-rose-300"
+                          title="Supprimer"
+                        >
+                          <i className="pi pi-trash text-xs" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {testimonials.length === 0 && (
+                  <div className="col-span-2 rounded-2xl border border-white/10 bg-[#0e121b] p-12 text-center text-xs text-white/40">
+                    Aucun témoignage reçu ou enregistré pour le moment.
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
         </div>
       </div>
 
@@ -854,21 +1337,68 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <h2 className="font-achiko text-xl text-white">
-                {editingClient ? "Modifier le Client" : "Ajouter un Nouveau Client"}
+                {editingClient
+                  ? "Modifier le Client"
+                  : "Ajouter un Nouveau Client"}
               </h2>
-              <button type="button" onClick={() => setClientDialog(false)} className="text-xl text-white/40 hover:text-white">
+              <button
+                type="button"
+                onClick={() => setClientDialog(false)}
+                className="text-xl text-white/40 hover:text-white"
+              >
                 ×
               </button>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <InputField label="Nom d'entreprise / Marque" value={clientForm.companyName} onChange={(v) => setClientForm((f) => ({ ...f, companyName: v }))} placeholder="Ex: GSHI Incubator" />
-              <InputField label="Prénom" value={clientForm.firstName} onChange={(v) => setClientForm((f) => ({ ...f, firstName: v }))} required placeholder="Ex: Yannick" />
-              <InputField label="Nom" value={clientForm.lastName} onChange={(v) => setClientForm((f) => ({ ...f, lastName: v }))} required placeholder="Ex: Ndoh" />
-              <InputField label="Email" type="email" value={clientForm.email} onChange={(v) => setClientForm((f) => ({ ...f, email: v }))} required placeholder="contact@client.com" />
-              <InputField label="Téléphone" value={clientForm.phone} onChange={(v) => setClientForm((f) => ({ ...f, phone: v }))} placeholder="+237 6..." />
-              <InputField label="Ville" value={clientForm.city} onChange={(v) => setClientForm((f) => ({ ...f, city: v }))} placeholder="Douala / Yaoundé" />
-              <InputField label="Pays" value={clientForm.country} onChange={(v) => setClientForm((f) => ({ ...f, country: v }))} placeholder="Cameroun" />
+              <InputField
+                label="Nom d'entreprise / Marque"
+                value={clientForm.companyName}
+                onChange={(v) =>
+                  setClientForm((f) => ({ ...f, companyName: v }))
+                }
+                placeholder="Ex: GSHI Incubator"
+              />
+              <InputField
+                label="Prénom"
+                value={clientForm.firstName}
+                onChange={(v) => setClientForm((f) => ({ ...f, firstName: v }))}
+                required
+                placeholder="Ex: Yannick"
+              />
+              <InputField
+                label="Nom"
+                value={clientForm.lastName}
+                onChange={(v) => setClientForm((f) => ({ ...f, lastName: v }))}
+                required
+                placeholder="Ex: Ndoh"
+              />
+              <InputField
+                label="Email"
+                type="email"
+                value={clientForm.email}
+                onChange={(v) => setClientForm((f) => ({ ...f, email: v }))}
+                required
+                placeholder="contact@client.com"
+              />
+              <InputField
+                label="Téléphone"
+                value={clientForm.phone}
+                onChange={(v) => setClientForm((f) => ({ ...f, phone: v }))}
+                placeholder="+237 6..."
+              />
+              <InputField
+                label="Ville"
+                value={clientForm.city}
+                onChange={(v) => setClientForm((f) => ({ ...f, city: v }))}
+                placeholder="Douala / Yaoundé"
+              />
+              <InputField
+                label="Pays"
+                value={clientForm.country}
+                onChange={(v) => setClientForm((f) => ({ ...f, country: v }))}
+                placeholder="Cameroun"
+              />
             </div>
 
             <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
@@ -890,15 +1420,136 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         </div>
       )}
 
+      {/* TESTIMONIAL MODAL */}
+      {testimonialDialog && (
+        <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm print:hidden">
+          <form
+            onSubmit={saveTestimonial}
+            className="w-full max-w-lg rounded-2xl border border-white/15 bg-[#10141e] p-6 shadow-2xl space-y-4"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <h2 className="font-achiko text-xl text-white">
+                {editingTestimonial
+                  ? "Modifier le Témoignage"
+                  : "Nouveau Témoignage Client"}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setTestimonialDialog(false)}
+                className="text-xl text-white/40 hover:text-white"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <InputField
+                label="Nom de l'auteur"
+                value={testimonialForm.authorName}
+                onChange={(v) =>
+                  setTestimonialForm((f) => ({ ...f, authorName: v }))
+                }
+                required
+                placeholder="Ex: M. Moustapha"
+              />
+              <InputField
+                label="Poste / Rôle"
+                value={testimonialForm.authorRole}
+                onChange={(v) =>
+                  setTestimonialForm((f) => ({ ...f, authorRole: v }))
+                }
+                placeholder="Ex: Directeur Général"
+              />
+              <InputField
+                label="Entreprise / Marque"
+                value={testimonialForm.company}
+                onChange={(v) =>
+                  setTestimonialForm((f) => ({ ...f, company: v }))
+                }
+                placeholder="Ex: GSHI Incubator"
+              />
+              <label className="block text-xs font-bold text-white/70">
+                <span className="mb-1.5 block">Note (sur 5 étoiles)</span>
+                <select
+                  value={testimonialForm.rating}
+                  onChange={(e) =>
+                    setTestimonialForm((f) => ({
+                      ...f,
+                      rating: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white outline-none focus:border-amber-400"
+                >
+                  <option value={5}>★★★★★ (5 étoiles)</option>
+                  <option value={4}>★★★★☆ (4 étoiles)</option>
+                  <option value={3}>★★★☆☆ (3 étoiles)</option>
+                </select>
+              </label>
+            </div>
+
+            <label className="block text-xs font-bold text-white/70">
+              <span className="mb-1.5 block">Contenu du témoignage</span>
+              <textarea
+                required
+                rows={4}
+                value={testimonialForm.content}
+                onChange={(e) =>
+                  setTestimonialForm((f) => ({ ...f, content: e.target.value }))
+                }
+                placeholder="Rédigez le témoignage ou l'avis client..."
+                className="w-full rounded-xl border border-white/15 bg-[#0b0d14] p-3 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
+              />
+            </label>
+
+            <label className="flex items-center gap-2 text-xs font-bold text-white/80 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={testimonialForm.isPublished}
+                onChange={(e) =>
+                  setTestimonialForm((f) => ({
+                    ...f,
+                    isPublished: e.target.checked,
+                  }))
+                }
+                className="size-4 rounded border-white/20 bg-[#0b0d14] accent-amber-400"
+              />
+              <span>Publier immédiatement sur le portfolio public</span>
+            </label>
+
+            <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
+              <button
+                type="button"
+                onClick={() => setTestimonialDialog(false)}
+                className="rounded-xl border border-white/15 px-4 py-2 text-xs font-bold text-white/70 hover:bg-white/5"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                className="rounded-xl bg-amber-400 px-5 py-2 text-xs font-bold text-black hover:bg-amber-300"
+              >
+                {editingTestimonial
+                  ? "Enregistrer les modifications"
+                  : "Créer le témoignage"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       {/* PROPOSAL DETAIL MODAL */}
       {(selectedProposal || detailLoading) && (
         <div
           className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm print:hidden"
-          onClick={(e) => { if (e.target === e.currentTarget) setSelectedProposal(null); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedProposal(null);
+          }}
         >
           <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-white/15 bg-[#10141e] p-6 shadow-2xl">
             {detailLoading || !selectedProposal ? (
-              <p className="py-12 text-center text-xs text-white/50">Chargement du détail du devis...</p>
+              <p className="py-12 text-center text-xs text-white/50">
+                Chargement du détail du devis...
+              </p>
             ) : (
               <div className="space-y-6">
                 <div className="flex items-start justify-between border-b border-white/10 pb-4">
@@ -906,12 +1557,19 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
                       {selectedProposal.proposalNumber}
                     </span>
-                    <h2 className="font-achiko text-xl text-white">{selectedProposal.title}</h2>
+                    <h2 className="font-achiko text-xl text-white">
+                      {selectedProposal.title}
+                    </h2>
                     <p className="mt-1 text-xs text-white/50">
-                      Client : {getClientName(selectedProposal.client)} ({selectedProposal.client.email})
+                      Client : {getClientName(selectedProposal.client)} (
+                      {selectedProposal.client.email})
                     </p>
                   </div>
-                  <button type="button" onClick={() => setSelectedProposal(null)} className="text-xl text-white/40 hover:text-white">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProposal(null)}
+                    className="text-xl text-white/40 hover:text-white"
+                  >
                     ×
                   </button>
                 </div>
@@ -919,7 +1577,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 <div className="flex items-center justify-between rounded-xl border border-white/10 bg-[#141926] p-4">
                   <StatusBadge status={selectedProposal.status} />
                   <strong className="font-achiko text-2xl text-amber-400">
-                    {formatMoney(selectedProposal.totalAmount, selectedProposal.currency)}
+                    {formatMoney(
+                      selectedProposal.totalAmount,
+                      selectedProposal.currency,
+                    )}
                   </strong>
                 </div>
 
@@ -938,11 +1599,27 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                         <tr key={item.id}>
                           <td className="py-2.5 pr-4">
                             <strong className="text-white">{item.label}</strong>
-                            {item.description && <span className="block text-[10px] text-white/40">{item.description}</span>}
+                            {item.description && (
+                              <span className="block text-[10px] text-white/40">
+                                {item.description}
+                              </span>
+                            )}
                           </td>
-                          <td className="py-2.5 text-right text-white/70">{item.quantity}</td>
-                          <td className="py-2.5 text-right text-white/70">{formatMoney(item.unitPrice, selectedProposal.currency)}</td>
-                          <td className="py-2.5 text-right font-bold text-amber-300">{formatMoney(item.totalPrice, selectedProposal.currency)}</td>
+                          <td className="py-2.5 text-right text-white/70">
+                            {item.quantity}
+                          </td>
+                          <td className="py-2.5 text-right text-white/70">
+                            {formatMoney(
+                              item.unitPrice,
+                              selectedProposal.currency,
+                            )}
+                          </td>
+                          <td className="py-2.5 text-right font-bold text-amber-300">
+                            {formatMoney(
+                              item.totalPrice,
+                              selectedProposal.currency,
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -975,8 +1652,12 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 sm:p-8 backdrop-blur-md">
           <div className="sticky top-4 z-50 mx-auto flex max-w-[210mm] justify-between rounded-xl border border-white/15 bg-[#121622] p-4 text-white shadow-2xl print:hidden">
             <div className="flex items-center gap-3">
-              <span className="font-achiko text-base font-bold text-amber-400">Document Devis Officiel</span>
-              <span className="text-xs text-white/50">Format A4 Impresssion / Exportation PDF</span>
+              <span className="font-achiko text-base font-bold text-amber-400">
+                Document Devis Officiel
+              </span>
+              <span className="text-xs text-white/50">
+                Format A4 Impresssion / Exportation PDF
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -1018,7 +1699,10 @@ function ProposalTable({
   loading: boolean;
   onOpenDetail: (p: Proposal) => void;
   onOpenPreview: (p: Proposal) => void;
-  onStatus: (p: Proposal, action: "send" | "accept" | "reject" | "cancel") => void;
+  onStatus: (
+    p: Proposal,
+    action: "send" | "accept" | "reject" | "cancel",
+  ) => void;
   onDelete: (p: Proposal) => void;
 }) {
   return (
@@ -1038,16 +1722,30 @@ function ProposalTable({
           {proposals.map((p) => (
             <tr key={p.id} className="hover:bg-white/[0.02] transition">
               <td className="py-3.5 px-4 max-w-[260px]">
-                <button type="button" onClick={() => onOpenDetail(p)} className="text-left group">
-                  <span className="block text-[10px] font-bold text-amber-400">{p.proposalNumber}</span>
-                  <strong className="block truncate text-xs text-white group-hover:text-amber-300">{p.title}</strong>
+                <button
+                  type="button"
+                  onClick={() => onOpenDetail(p)}
+                  className="text-left group"
+                >
+                  <span className="block text-[10px] font-bold text-amber-400">
+                    {p.proposalNumber}
+                  </span>
+                  <strong className="block truncate text-xs text-white group-hover:text-amber-300">
+                    {p.title}
+                  </strong>
                 </button>
               </td>
               <td className="py-3.5 px-4">
-                <span className="block font-semibold text-white/80">{getClientName(p.client)}</span>
-                <span className="text-[10px] text-white/40">{p.client.email}</span>
+                <span className="block font-semibold text-white/80">
+                  {getClientName(p.client)}
+                </span>
+                <span className="text-[10px] text-white/40">
+                  {p.client.email}
+                </span>
               </td>
-              <td className="py-3.5 px-4 text-white/60">{formatDate(p.createdAt)}</td>
+              <td className="py-3.5 px-4 text-white/60">
+                {formatDate(p.createdAt)}
+              </td>
               <td className="py-3.5 px-4">
                 <StatusBadge status={p.status} />
               </td>
@@ -1132,9 +1830,15 @@ function ProposalTable({
           ))}
         </tbody>
       </table>
-      {loading && <p className="py-12 text-center text-xs text-white/40">Chargement des devis...</p>}
+      {loading && (
+        <p className="py-12 text-center text-xs text-white/40">
+          Chargement des devis...
+        </p>
+      )}
       {!loading && proposals.length === 0 && (
-        <p className="py-12 text-center text-xs text-white/40">Aucun devis à afficher.</p>
+        <p className="py-12 text-center text-xs text-white/40">
+          Aucun devis à afficher.
+        </p>
       )}
     </div>
   );

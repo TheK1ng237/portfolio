@@ -14,7 +14,7 @@
     "cta_projects": "Explorer mes projets",
     "cta_contact": "Me contacter",
     "scroll": "Défiler",
-    "alt_portrait": "Mascotte KingTang - Vision Tech"
+    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech"
   },
   "HomePage": {
     "projects": {
@@ -236,7 +236,7 @@
         },
         "1": {
           "text": "L'innovation naît des racines les plus profondes.",
-          "ref": "KingTang",
+          "ref": "Thek1ng237",
           "note": "// VALEUR_CLÉ_01"
         },
         "2": {
@@ -369,11 +369,7 @@
         "category": "LAB",
         "title": "Atelier Heritage & Tech",
         "description": "Sessions immersives sur l'intégration de la culture dans les produits technologiques.",
-        "features": [
-          "Ateliers en direct",
-          "Études de cas",
-          "Ressources PDF"
-        ],
+        "features": ["Ateliers en direct", "Études de cas", "Ressources PDF"],
         "full_description": "Un laboratoire d'idées où nous décortiquons comment le patrimoine africain peut influencer les algorithmes et l'expérience utilisateur de demain.",
         "benefits": [
           "Accès réseau exclusif",
@@ -442,7 +438,7 @@
   },
   "AdminPage": {
     "badge": "ADMIN",
-    "title": "Back-office KingTang",
+    "title": "Back-office Thek1ng237",
     "loading": "Chargement...",
     "logout": "Déconnexion",
     "recent": "Demandes récentes",
@@ -471,5 +467,4 @@
       "inquiries": "Demandes"
     }
   }
-
 }

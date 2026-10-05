@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://kingtang.vercel.app';
+  const baseUrl = 'https://Thek1ng237.vercel.app';
   const lastModified = new Date();
   const locales = ['en', 'fr'];
 

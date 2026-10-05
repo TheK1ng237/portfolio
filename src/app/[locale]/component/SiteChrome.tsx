@@ -16,6 +16,7 @@ export default function SiteChrome({
 }) {
   const pathname = usePathname() || "";
   const isAdminRoute = pathname.split("/").includes("admin");
+  const isProjectRoute = pathname.split("/").includes("PROJECT");
 
   if (isAdminRoute) {
     return (
@@ -35,7 +36,7 @@ export default function SiteChrome({
         {children}
       </main>
       <div className="print:hidden">
-        {footer}
+        {!isProjectRoute && footer}
       </div>
     </div>
   );
