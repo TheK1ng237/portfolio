@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ProposalEditor from "./ProposalEditor";
-import ProposalDocument, { type ProposalDocumentData } from "./ProposalDocument";
+import { type ProposalDocumentData } from "./ProposalDocument";
 import { apiFetch } from "@/lib/api";
 
 type Client = {
@@ -127,7 +127,7 @@ const weglowTemplate: ProposalDocumentData = {
   budgetItems: [
     { phase: "01 · Direction artistique & UI/UX", deliverables: "Charte web et maquettes des deux univers.", amount: 250000 },
     { phase: "02 · Frontend & galerie", deliverables: "Pages, catalogue, galerie filtrable, devis et WhatsApp.", amount: 450000 },
-    { phase: "03 · Back-office & backend", deliverables: "API et administration des réalisations et devis.", amount: 350000 },
+    { phase: "03 · Back-Office & backend", deliverables: "API et administration des réalisations et devis.", amount: 350000 },
     { phase: "04 · Déploiement & formation", deliverables: "Configuration, mise en ligne et prise en main.", amount: 150000 },
   ],
 };
@@ -144,7 +144,6 @@ export default function ProposalStudioAdmin({
   const [template, setTemplate] = useState<"gshi" | "weglow" | "custom">("gshi");
   const [selectedClientId, setSelectedClientId] = useState<string>(clients[0]?.id || "");
   const [proposalData, setProposalData] = useState<ProposalDocumentData>(gshiTemplate);
-  const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
@@ -161,7 +160,7 @@ export default function ProposalStudioAdmin({
 
   async function handleSaveToDatabase() {
     if (!selectedClientId) {
-      setSaveMessage("Erreur : Veuillez d'abord sélectionner ou ajouter un client.");
+      setSaveMessage("Erreur : Veuillez sélectionner un client destinataire avant d'enregistrer.");
       return;
     }
 
@@ -191,8 +190,10 @@ export default function ProposalStudioAdmin({
         body: JSON.stringify(payload),
       });
 
-      setSaveMessage("✅ Devis enregistré avec succès dans la base de données !");
-      onSaved();
+      setSaveMessage("✅ Devis enregistré avec succès dans la base de données ! Redirection vers la liste des devis...");
+      setTimeout(() => {
+        onSaved();
+      }, 1200);
     } catch (error) {
       setSaveMessage(error instanceof Error ? `❌ Erreur : ${error.message}` : "Impossible d'enregistrer le devis.");
     } finally {
@@ -203,7 +204,7 @@ export default function ProposalStudioAdmin({
   return (
     <div className="space-y-6">
       {/* Studio Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/10 bg-[#121620]/80 p-4 shadow-xl backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/10 bg-[#121620]/90 p-4 shadow-xl backdrop-blur-md">
         <div className="flex flex-wrap items-center gap-4">
           <div>
             <label htmlFor="studio-template" className="block text-[10px] font-bold uppercase tracking-wider text-amber-400">
@@ -232,7 +233,7 @@ export default function ProposalStudioAdmin({
               onChange={(e) => setSelectedClientId(e.target.value)}
             >
               {clients.length === 0 ? (
-                <option value="">Aucun client (Ajoutez un client d'abord)</option>
+                <option value="">Aucun client en BDD (Ajoutez un client d'abord)</option>
               ) : (
                 clients.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -244,38 +245,15 @@ export default function ProposalStudioAdmin({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex rounded-lg border border-white/15 bg-[#0b0d14] p-1">
-            <button
-              type="button"
-              onClick={() => setActiveTab("edit")}
-              className={`px-3 py-1 text-xs font-bold transition rounded-md ${
-                activeTab === "edit" ? "bg-amber-400 text-black shadow-md" : "text-white/60 hover:text-white"
-              }`}
-            >
-              <i className="pi pi-pencil mr-1 text-xs" /> Éditeur
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("preview")}
-              className={`px-3 py-1 text-xs font-bold transition rounded-md ${
-                activeTab === "preview" ? "bg-amber-400 text-black shadow-md" : "text-white/60 hover:text-white"
-              }`}
-            >
-              <i className="pi pi-eye mr-1 text-xs" /> Aperçu PDF / Impresssion
-            </button>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleSaveToDatabase}
-            disabled={saving || !selectedClientId}
-            className="inline-flex items-center gap-2 rounded-lg border border-amber-400/50 bg-gradient-to-r from-amber-500 to-amber-400 px-4 py-2 text-xs font-black uppercase tracking-wider text-black shadow-[0_0_15px_rgba(255,200,44,0.3)] transition hover:scale-105 disabled:opacity-50"
-          >
-            <i className={`pi ${saving ? "pi-spin pi-spinner" : "pi-save"} text-xs`} />
-            <span>{saving ? "Enregistrement..." : "Sauvegarder Devis BDD"}</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleSaveToDatabase}
+          disabled={saving || !selectedClientId}
+          className="inline-flex items-center gap-2 rounded-lg border border-amber-400/50 bg-gradient-to-r from-amber-500 to-amber-400 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-black shadow-[0_0_15px_rgba(255,200,44,0.3)] transition hover:scale-105 disabled:opacity-50"
+        >
+          <i className={`pi ${saving ? "pi-spin pi-spinner" : "pi-save"} text-xs`} />
+          <span>{saving ? "Enregistrement..." : "Enregistrer Devis dans BDD"}</span>
+        </button>
       </div>
 
       {saveMessage && (
@@ -290,28 +268,10 @@ export default function ProposalStudioAdmin({
         </div>
       )}
 
-      {/* Main Studio Viewport */}
-      {activeTab === "edit" ? (
-        <div className="rounded-2xl border border-white/10 bg-[#0d1017] p-4 sm:p-6 shadow-2xl">
-          <ProposalEditor initialProposal={proposalData} />
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-white/10 bg-[#0d1017] p-4 sm:p-6 shadow-2xl">
-          <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
-              Aperçu en direct du document de devis
-            </span>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-bold text-white hover:bg-white/20"
-            >
-              <i className="pi pi-print text-xs" /> Imprimer / Exporter PDF
-            </button>
-          </div>
-          <ProposalDocument proposal={proposalData} />
-        </div>
-      )}
+      {/* Editor Viewport */}
+      <div className="rounded-2xl border border-white/10 bg-[#0d1017] p-4 sm:p-6 shadow-2xl">
+        <ProposalEditor initialProposal={proposalData} />
+      </div>
     </div>
   );
 }

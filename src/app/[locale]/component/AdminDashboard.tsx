@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiFetch, API_TOKEN_STORAGE_KEY } from "@/lib/api";
 import ProposalStudioAdmin from "./ProposalStudioAdmin";
+import ProposalDocument, { type ProposalDocumentData } from "./ProposalDocument";
 
 type AdminUser = { id: string; name: string; email: string; role: string };
 
@@ -31,6 +32,7 @@ type Proposal = {
   validUntil?: string | null;
   client: Pick<Client, "firstName" | "lastName" | "companyName" | "email">;
   _count?: { items: number };
+  documentData?: unknown;
 };
 
 type ProposalDetail = Proposal & {
@@ -132,7 +134,7 @@ function InputField({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white placeholder-white/30 outline-none transition focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+        className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white placeholder-white/30 outline-none transition focus:border-amber-400"
       />
     </label>
   );
@@ -158,9 +160,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [clientForm, setClientForm] = useState<ClientForm>(emptyClient);
 
-  // Proposal Detail Modal
+  // Proposal Detail Modal & Full Document Preview Modal
   const [selectedProposal, setSelectedProposal] = useState<ProposalDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [previewDocumentData, setPreviewDocumentData] = useState<ProposalDocumentData | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -337,6 +340,78 @@ export default function AdminDashboard({ locale }: { locale: string }) {
     }
   }
 
+  async function openDocumentPreview(proposal: Proposal) {
+    setDetailLoading(true);
+    try {
+      const detail = await apiFetch<ProposalDetail>(`proposals/${proposal.id}`, { token });
+      if (detail.documentData && typeof detail.documentData === "object") {
+        setPreviewDocumentData(detail.documentData as ProposalDocumentData);
+      } else {
+        // Fallback document structure if documentData is missing
+        setPreviewDocumentData({
+          brand: "Thek1ng237",
+          creatorName: "NDOH YANNICK TANG",
+          email: "ndohyannick78@gmail.com",
+          phone: "+237 653 53 91 02",
+          reference: detail.proposalNumber,
+          issuedAt: formatDate(detail.createdAt),
+          validity: detail.validUntil ? formatDate(detail.validUntil) : "30 jours",
+          clientName: getClientName(detail.client),
+          clientShortName: detail.client.companyName || detail.client.firstName,
+          clientSlogan: detail.client.email,
+          recipient: `${detail.client.firstName} ${detail.client.lastName}`,
+          summary: detail.title,
+          projectOverviewTitle: "Proposition commerciale sur mesure",
+          context: detail.description || "Cadrage et livraison des prestations demandées.",
+          centralChallenge: "Réaliser le projet selon le cahier des charges.",
+          centralChallengeLabel: "Objectif du projet",
+          objectives: [
+            { title: "Livraison de qualité", description: "Respect des exigences techniques.", accent: "border-t-[#ffc82c]" },
+          ],
+          objectivesHeading: "Objectifs clés",
+          orientation: "Mise en place d'une solution moderne et évolutive.",
+          orientationLabel: "Approche préconisée",
+          designSectionTitle: "Spécifications & Design",
+          designPhases: [],
+          journeysHeading: "Parcours utilisateur",
+          journeys: ["Découverte de l'offre", "Validation du périmètre"],
+          designPrinciplesHeading: "Principes clés",
+          designPrinciples: ["Performance", "Sécurité", "Ergonomie"],
+          developmentSectionTitle: "Réalisation & Technologie",
+          developmentIntroduction: "Architecture solide et maintenable.",
+          developmentPhases: [],
+          implementationNotesLabel: "Notes d'exécution :",
+          implementationNotes: "Inclusions et périmètres validés avec le client.",
+          deploymentHeading: "Recette et mise en ligne",
+          deployment: "Tests et livraison finale.",
+          budgetSectionTitle: "Proposition Financière",
+          budgetIntroduction: "Chiffrage des prestations incluses dans cette offre.",
+          budgetItems: (detail.items || []).map((it) => ({
+            phase: it.label,
+            deliverables: it.description || "",
+            amount: Number(it.totalPrice),
+          })),
+          currency: detail.currency,
+          payments: [
+            { label: "Acompte démarrage", percentage: 50, milestone: "À l'acceptation" },
+            { label: "Livraison finale", percentage: 50, milestone: "Après validation" },
+          ],
+          paymentHeading: "Échéancier indicatif",
+          timelineTitle: "Planning indicatif",
+          timeline: [{ period: "Livraison", description: "Selon calendrier convenu." }],
+          clientInputsHeading: "À fournir par le client",
+          clientInputs: "Contenus, visuels et accès requis.",
+          finalChecksHeading: "Confidentialité & Validation",
+          finalChecks: "Document confidentiel adressé au client.",
+        });
+      }
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Erreur de chargement du document.");
+    } finally {
+      setDetailLoading(false);
+    }
+  }
+
   // Statistics Computations
   const totalsByCurrency = proposals.reduce<Record<string, number>>((acc, p) => {
     acc[p.currency] = (acc[p.currency] ?? 0) + Number(p.totalAmount || 0);
@@ -352,7 +427,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       <main className="grid min-h-screen place-items-center bg-[#07090e] font-azurio text-sm text-amber-400">
         <div className="flex items-center gap-3">
           <i className="pi pi-spin pi-spinner text-xl" />
-          <span>Vérification du protocole de session backoffice...</span>
+          <span>Vérification de la session admin...</span>
         </div>
       </main>
     );
@@ -409,17 +484,16 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   const navItems: { id: View; label: string; icon: string }[] = [
     { id: "overview", label: "Vue d’ensemble", icon: "pi pi-chart-line" },
     { id: "proposals", label: "Devis & Propositions", icon: "pi pi-file-edit" },
-    { id: "studio", label: "Studio Devis", icon: "pi pi-palette" },
+    { id: "studio", label: "Éditeur de Devis", icon: "pi pi-pencil" },
     { id: "clients", label: "CRM Clients", icon: "pi pi-users" },
   ];
 
   return (
-    <div className="min-h-screen bg-[#07090e] font-azurio text-white">
+    <div className="admin-shell min-h-screen bg-[#07090e] font-azurio text-white print:bg-white print:text-black">
       <div className="mx-auto grid min-h-screen max-w-[1720px] lg:grid-cols-[260px_minmax(0,1fr)]">
         {/* Sidebar */}
-        <aside className="sticky top-0 z-40 flex flex-col justify-between border-b border-white/10 bg-[#0c0f18] px-5 py-6 lg:h-screen lg:border-b-0 lg:border-r">
+        <aside className="sticky top-0 z-40 flex flex-col justify-between border-b border-white/10 bg-[#0c0f18] px-5 py-6 lg:h-screen lg:border-b-0 lg:border-r print:hidden">
           <div>
-            {/* Header Brand */}
             <div className="flex items-center justify-between">
               <a href={`/${locale}`} className="group flex items-center gap-3">
                 <div className="flex size-10 items-center justify-center rounded-xl border border-amber-400/50 bg-amber-400/10 font-achiko text-base font-black text-amber-400 transition group-hover:scale-105">
@@ -436,7 +510,6 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               </span>
             </div>
 
-            {/* Navigation Tabs */}
             <nav className="mt-8 space-y-1.5" aria-label="Navigation principale Backoffice">
               {navItems.map((item) => {
                 const isActive = view === item.id;
@@ -465,7 +538,6 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             </nav>
           </div>
 
-          {/* User Profile Card */}
           <div className="mt-8 border-t border-white/10 pt-5">
             <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#121622] p-3">
               <div className="flex size-8 items-center justify-center rounded-lg bg-amber-400/20 font-achiko text-xs font-black text-amber-400">
@@ -478,17 +550,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             </div>
 
             <div className="mt-3 flex items-center justify-between gap-2">
-              <a
-                href={`/${locale}`}
-                className="text-[10px] font-bold text-white/50 hover:text-amber-300 transition"
-              >
+              <a href={`/${locale}`} className="text-[10px] font-bold text-white/50 hover:text-amber-300 transition">
                 ← Portfolio Public
               </a>
-              <button
-                type="button"
-                onClick={signOut}
-                className="text-[10px] font-bold text-rose-400/80 hover:text-rose-300 transition"
-              >
+              <button type="button" onClick={signOut} className="text-[10px] font-bold text-rose-400/80 hover:text-rose-300 transition">
                 Déconnexion
               </button>
             </div>
@@ -496,9 +561,8 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         </aside>
 
         {/* Main Content Area */}
-        <div className="min-w-0 px-4 py-6 sm:px-8 lg:px-10">
-          {/* Top Control Bar */}
-          <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div className="min-w-0 px-4 py-6 sm:px-8 lg:px-10 print:p-0">
+          <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5 print:hidden">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
                 Console d'administration · {new Intl.DateTimeFormat("fr-FR", { dateStyle: "full" }).format(new Date())}
@@ -506,7 +570,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               <h1 className="mt-1 font-achiko text-2xl text-white sm:text-3xl">
                 {view === "overview" && "Vue d'ensemble"}
                 {view === "proposals" && "Gestion des Devis"}
-                {view === "studio" && "Studio Créateur de Devis"}
+                {view === "studio" && "Éditeur de Devis"}
                 {view === "clients" && "Gestion Clientèle (CRM)"}
               </h1>
             </div>
@@ -533,14 +597,13 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             </div>
           </header>
 
-          {/* Flash Notification */}
           <AnimatePresence>
             {message && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mb-6 flex items-center justify-between rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-xs text-amber-200"
+                className="mb-6 flex items-center justify-between rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-xs text-amber-200 print:hidden"
               >
                 <span>{message}</span>
                 <button type="button" onClick={() => setMessage("")} className="text-base text-amber-400 hover:text-white">
@@ -552,8 +615,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
           {/* TAB 1: OVERVIEW */}
           {view === "overview" && (
-            <div className="space-y-8">
-              {/* KPI Cards */}
+            <div className="space-y-8 print:hidden">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {[
                   { label: "Total Devis Enregistrés", value: String(proposals.length), icon: "pi pi-file", color: "text-amber-400" },
@@ -571,7 +633,6 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 ))}
               </div>
 
-              {/* Main Activity Grid */}
               <div className="grid gap-8 xl:grid-cols-[minmax(0,1.8fr)_minmax(300px,0.9fr)]">
                 <section className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                   <div className="mb-4 flex items-center justify-between">
@@ -587,14 +648,14 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   <ProposalTable
                     proposals={proposals.slice(0, 6)}
                     loading={loading}
-                    onOpen={openProposalDetail}
+                    onOpenDetail={openProposalDetail}
+                    onOpenPreview={openDocumentPreview}
                     onStatus={changeProposalStatus}
                     onDelete={removeProposal}
                   />
                 </section>
 
                 <section className="space-y-6">
-                  {/* Revenue Summary */}
                   <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                     <h2 className="font-achiko text-lg text-white">Volume Financier</h2>
                     <p className="mt-1 text-xs text-white/40">Valeur totale des devis par devise</p>
@@ -613,7 +674,6 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     </div>
                   </div>
 
-                  {/* Recent Clients */}
                   <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                     <div className="flex items-center justify-between">
                       <h2 className="font-achiko text-lg text-white">Clients Récents</h2>
@@ -644,7 +704,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
           {/* TAB 2: PROPOSALS */}
           {view === "proposals" && (
-            <section className="space-y-6">
+            <section className="space-y-6 print:hidden">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="relative flex-1">
                   <i className="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-white/40" />
@@ -675,7 +735,8 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 <ProposalTable
                   proposals={proposals}
                   loading={loading}
-                  onOpen={openProposalDetail}
+                  onOpenDetail={openProposalDetail}
+                  onOpenPreview={openDocumentPreview}
                   onStatus={changeProposalStatus}
                   onDelete={removeProposal}
                 />
@@ -685,19 +746,21 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
           {/* TAB 3: STUDIO DEVIS */}
           {view === "studio" && (
-            <ProposalStudioAdmin
-              token={token}
-              clients={clients}
-              onSaved={() => {
-                setRefreshKey((k) => k + 1);
-                setView("proposals");
-              }}
-            />
+            <div className="print:hidden">
+              <ProposalStudioAdmin
+                token={token}
+                clients={clients}
+                onSaved={() => {
+                  setRefreshKey((k) => k + 1);
+                  setView("proposals");
+                }}
+              />
+            </div>
           )}
 
           {/* TAB 4: CLIENTS CRM */}
           {view === "clients" && (
-            <section className="space-y-6">
+            <section className="space-y-6 print:hidden">
               <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <div className="relative flex-1">
                   <i className="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-white/40" />
@@ -776,9 +839,6 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     ))}
                   </tbody>
                 </table>
-                {!loading && clients.length === 0 && (
-                  <p className="py-12 text-center text-xs text-white/40">Aucun client répertorié pour le moment.</p>
-                )}
               </div>
             </section>
           )}
@@ -787,7 +847,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
       {/* CLIENT MODAL */}
       {clientDialog && (
-        <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm print:hidden">
           <form
             onSubmit={saveClient}
             className="w-full max-w-lg rounded-2xl border border-white/15 bg-[#10141e] p-6 shadow-2xl space-y-4"
@@ -823,7 +883,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 type="submit"
                 className="rounded-xl bg-amber-400 px-5 py-2 text-xs font-bold text-black hover:bg-amber-300"
               >
-                {editingClient ? "Enregistrer les modifications" : "Créer le client"}
+                {editingClient ? "Enregistrer" : "Créer le client"}
               </button>
             </div>
           </form>
@@ -833,7 +893,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       {/* PROPOSAL DETAIL MODAL */}
       {(selectedProposal || detailLoading) && (
         <div
-          className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm print:hidden"
           onClick={(e) => { if (e.target === e.currentTarget) setSelectedProposal(null); }}
         >
           <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-white/15 bg-[#10141e] p-6 shadow-2xl">
@@ -890,11 +950,55 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 </div>
 
                 <div className="flex items-center justify-between border-t border-white/10 pt-4 text-xs text-white/40">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const prop = selectedProposal;
+                      setSelectedProposal(null);
+                      openDocumentPreview(prop);
+                    }}
+                    className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2 text-xs font-bold text-black hover:bg-amber-300"
+                  >
+                    <i className="pi pi-print text-xs" />
+                    <span>Aperçu PDF / Imprimer ce devis</span>
+                  </button>
                   <span>Créé le {formatDate(selectedProposal.createdAt)}</span>
-                  <span>{selectedProposal.validUntil ? `Valide jusqu'au ${formatDate(selectedProposal.validUntil)}` : "Sans limite d'expiration"}</span>
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* FULL DOCUMENT PREVIEW MODAL */}
+      {previewDocumentData && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 sm:p-8 backdrop-blur-md">
+          <div className="sticky top-4 z-50 mx-auto flex max-w-[210mm] justify-between rounded-xl border border-white/15 bg-[#121622] p-4 text-white shadow-2xl print:hidden">
+            <div className="flex items-center gap-3">
+              <span className="font-achiko text-base font-bold text-amber-400">Document Devis Officiel</span>
+              <span className="text-xs text-white/50">Format A4 Impresssion / Exportation PDF</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-4 py-2 text-xs font-bold text-black hover:bg-amber-300"
+              >
+                <i className="pi pi-print text-xs" />
+                <span>Imprimer / Exporter PDF</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewDocumentData(null)}
+                className="rounded-lg border border-white/20 p-2 text-white/70 hover:bg-white/10 hover:text-white"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <ProposalDocument proposal={previewDocumentData} />
           </div>
         </div>
       )}
@@ -905,13 +1009,15 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 function ProposalTable({
   proposals,
   loading,
-  onOpen,
+  onOpenDetail,
+  onOpenPreview,
   onStatus,
   onDelete,
 }: {
   proposals: Proposal[];
   loading: boolean;
-  onOpen: (p: Proposal) => void;
+  onOpenDetail: (p: Proposal) => void;
+  onOpenPreview: (p: Proposal) => void;
   onStatus: (p: Proposal, action: "send" | "accept" | "reject" | "cancel") => void;
   onDelete: (p: Proposal) => void;
 }) {
@@ -932,7 +1038,7 @@ function ProposalTable({
           {proposals.map((p) => (
             <tr key={p.id} className="hover:bg-white/[0.02] transition">
               <td className="py-3.5 px-4 max-w-[260px]">
-                <button type="button" onClick={() => onOpen(p)} className="text-left group">
+                <button type="button" onClick={() => onOpenDetail(p)} className="text-left group">
                   <span className="block text-[10px] font-bold text-amber-400">{p.proposalNumber}</span>
                   <strong className="block truncate text-xs text-white group-hover:text-amber-300">{p.title}</strong>
                 </button>
@@ -952,11 +1058,20 @@ function ProposalTable({
                 <div className="flex justify-end gap-1.5">
                   <button
                     type="button"
-                    onClick={() => onOpen(p)}
+                    onClick={() => onOpenDetail(p)}
                     className="rounded-lg border border-white/15 p-1.5 text-white/80 hover:border-amber-400 hover:text-amber-300"
-                    title="Voir le devis"
+                    title="Voir les détails"
                   >
                     <i className="pi pi-eye text-xs" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onOpenPreview(p)}
+                    className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-1.5 text-amber-300 hover:bg-amber-400 hover:text-black"
+                    title="Imprimer / Aperçu Document PDF A4"
+                  >
+                    <i className="pi pi-print text-xs" />
                   </button>
 
                   {p.status === "DRAFT" && (
@@ -965,7 +1080,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "send")}
                         className="rounded-lg border border-sky-400/30 bg-sky-400/10 p-1.5 text-sky-300 hover:bg-sky-400 hover:text-black"
-                        title="Marquer comme envoyé au client"
+                        title="Marquer comme envoyé"
                       >
                         <i className="pi pi-send text-xs" />
                       </button>
@@ -973,7 +1088,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "cancel")}
                         className="rounded-lg border border-amber-400/30 bg-amber-400/10 p-1.5 text-amber-300 hover:bg-amber-400 hover:text-black"
-                        title="Annuler le devis"
+                        title="Annuler"
                       >
                         <i className="pi pi-ban text-xs" />
                       </button>
@@ -986,7 +1101,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "accept")}
                         className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 p-1.5 text-emerald-300 hover:bg-emerald-400 hover:text-black"
-                        title="Marquer comme accepté"
+                        title="Accepter"
                       >
                         <i className="pi pi-check text-xs" />
                       </button>
@@ -994,7 +1109,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "reject")}
                         className="rounded-lg border border-rose-400/30 bg-rose-400/10 p-1.5 text-rose-300 hover:bg-rose-400 hover:text-black"
-                        title="Marquer comme refusé"
+                        title="Refuser"
                       >
                         <i className="pi pi-times text-xs" />
                       </button>
@@ -1017,9 +1132,9 @@ function ProposalTable({
           ))}
         </tbody>
       </table>
-      {loading && <p className="py-12 text-center text-xs text-white/40">Chargement des devis en cours...</p>}
+      {loading && <p className="py-12 text-center text-xs text-white/40">Chargement des devis...</p>}
       {!loading && proposals.length === 0 && (
-        <p className="py-12 text-center text-xs text-white/40">Aucun devis ne correspond aux critères.</p>
+        <p className="py-12 text-center text-xs text-white/40">Aucun devis à afficher.</p>
       )}
     </div>
   );
