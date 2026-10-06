@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Hero from "./component/HERO";
+import TestimonialsSection from "./component/TestimonialsSection";
 import { useTranslations } from "next-intl";
 
 export default function Home() {
@@ -346,6 +347,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* 5. TESTIMONIALS SECTION */}
+      <TestimonialsSection />
 
       {/* QUICK PREVIEW MODAL */}
       <AnimatePresence>

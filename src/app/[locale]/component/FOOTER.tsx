@@ -20,7 +20,7 @@ export default function Footer() {
     { icon: "whatsapp", url: "https://wa.me/237653539102", label: "WhatsApp" },
     {
       icon: "instagram",
-      url: "https://instagram.com/kingtang337",
+      url: "https://instagram.com/Thek1ng237337",
       label: "Instagram",
     },
   ];
@@ -45,7 +45,7 @@ export default function Footer() {
                 <div className="relative p-2 border border-[#FFC82C] bg-[#121526] rounded-xl shadow-[0_0_20px_rgba(255,200,44,0.3)]">
                   <Image
                     src="/logojaune.png"
-                    alt="KingTang Totem"
+                    alt="Thek1ng237 Totem"
                     width={48}
                     height={48}
                     className="z-10 transition-transform duration-700 group-hover:rotate-[360deg]"

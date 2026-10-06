@@ -1,76 +1,97 @@
-import type { Metadata } from 'next';
-import Script from 'next/script';
-import Footer from './component/FOOTER';
-import LogoIntro from './component/LogoIntro';
-import Navigation from './component/NAV';
-import BackgroundCanvas from './component/BackgroundCanvas';
-import CustomCursor from './component/CustomCursor';
-import '../globals.css';
-import { NextIntlClientProvider } from 'next-intl';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
-import { getMessages } from 'next-intl/server';
+import type { Metadata } from "next";
+import Script from "next/script";
+import Footer from "./component/FOOTER";
+import LogoIntro from "./component/LogoIntro";
+import Navigation from "./component/NAV";
+import BackgroundCanvas from "./component/BackgroundCanvas";
+import CustomCursor from "./component/CustomCursor";
+import SiteChrome from "./component/SiteChrome";
+import "../globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
+import { getMessages } from "next-intl/server";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kingtang.vercel.app'),
+  metadataBase: new URL("https://Thek1ng237.vercel.app"),
   title: {
-    default: 'KingTang Portfolio | Full-Stack Developer',
-    template: '%s | KingTang',
+    default: "Thek1ng237 Portfolio | Full-Stack Developer",
+    template: "%s | Thek1ng237",
   },
-  description: "Portfolio Afro-Futuriste de KingTang, développeur full-stack. Applications web, API, bases de données et expériences numériques immersives.",
-  keywords: ['Full-Stack Developer', 'Next.js', 'Angular', 'Node.js', 'Django', 'Portfolio', 'KingTang', 'Afro-Futurism'],
-  authors: [{ name: 'KingTang' }],
-  creator: 'KingTang',
+  description:
+    "Portfolio Afro-Futuriste de Thek1ng237, développeur full-stack. Applications web, API, bases de données et expériences numériques immersives.",
+  keywords: [
+    "Full-Stack Developer",
+    "Next.js",
+    "Angular",
+    "Node.js",
+    "Django",
+    "Portfolio",
+    "Thek1ng237",
+    "Afro-Futurism",
+  ],
+  authors: [{ name: "Thek1ng237" }],
+  creator: "Thek1ng237",
 
   openGraph: {
-    type: 'website',
-    locale: 'fr_FR',
-    url: 'https://kingtang.vercel.app',
-    title: 'KingTang | Full-Stack Developer',
-    description: "Interfaces immersives de haute précision, ingénierie web moderne et héritage culturel.",
-    siteName: 'KingTang Portfolio',
+    type: "website",
+    locale: "fr_FR",
+    url: "https://Thek1ng237.vercel.app",
+    title: "Thek1ng237 | Full-Stack Developer",
+    description:
+      "Interfaces immersives de haute précision, ingénierie web moderne et héritage culturel.",
+    siteName: "Thek1ng237 Portfolio",
     images: [
       {
-        url: '/mascote.png',
+        url: "/mascote.png",
         width: 1200,
         height: 630,
-        alt: 'Aperçu du Portfolio de KingTang',
+        alt: "Aperçu du Portfolio de Thek1ng237",
       },
     ],
   },
 
   twitter: {
-    card: 'summary_large_image',
-    title: 'KingTang | Full-Stack Developer',
-    description: 'Full-Stack Developer passionate about immersive digital experiences.',
-    images: ['/mascote.png'],
-    creator: '@mfalme369',
+    card: "summary_large_image",
+    title: "Thek1ng237 | Full-Stack Developer",
+    description:
+      "Full-Stack Developer passionate about immersive digital experiences.",
+    images: ["/mascote.png"],
+    creator: "@mfalme369",
   },
 
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: '/apple-touch-icon.png',
+    apple: "/apple-touch-icon.png",
   },
-  manifest: '/site.webmanifest',
+  manifest: "/site.webmanifest",
 };
 
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'KingTang',
-  url: 'https://kingtang.vercel.app',
-  jobTitle: 'Full-Stack Developer',
-  description: 'Créateur d’expériences numériques immersives et innovateur culturel.',
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Thek1ng237",
+  url: "https://Thek1ng237.vercel.app",
+  jobTitle: "Full-Stack Developer",
+  description:
+    "Créateur d’expériences numériques immersives et innovateur culturel.",
   sameAs: [
-    'https://github.com/TangB5',
-    'https://linkedin.com/in/ndoh-yannick-tang-5b004934a',
-    'https://instagram.com/kingtang337'
+    "https://github.com/TangB5",
+    "https://linkedin.com/in/ndoh-yannick-tang-5b004934a",
+    "https://instagram.com/Thek1ng237337",
   ],
-  knowsAbout: ['React', 'Next.js', 'UX Design', 'Creative Coding', 'Tailwind CSS', 'Fullstack Engineering'],
+  knowsAbout: [
+    "React",
+    "Next.js",
+    "UX Design",
+    "Creative Coding",
+    "Tailwind CSS",
+    "Fullstack Engineering",
+  ],
 };
 
 type Props = {
@@ -100,16 +121,19 @@ export default async function LocaleLayout({ children, params }: Props) {
       </head>
       <body className="bg-[#050508] text-[#F5F5DC] antialiased min-h-screen flex flex-col selection:bg-[#E9B826] selection:text-black">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <CustomCursor />
-          <BackgroundCanvas />
-          <Navigation />
-          <LogoIntro />
-
-          <main className="flex-grow z-10 relative">
+          <SiteChrome
+            decorations={
+              <>
+                <CustomCursor />
+                <BackgroundCanvas />
+                <LogoIntro />
+              </>
+            }
+            header={<Navigation />}
+            footer={<Footer />}
+          >
             {children}
-          </main>
-
-          <Footer />
+          </SiteChrome>
         </NextIntlClientProvider>
       </body>
     </html>

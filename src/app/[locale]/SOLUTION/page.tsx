@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
+import { apiFetch } from "@/lib/api";
 
 interface Solution {
   id: string;
@@ -18,86 +19,115 @@ interface Solution {
   category: "ENGINE" | "PROTOCOL" | "LAB";
 }
 
+const fallbackSolutions: Solution[] = [
+  {
+    id: "01",
+    category: "ENGINE",
+    title: "ARCHITECTURE WEB SUR-MESURE",
+    description: "Développement complet d'applications web Next.js & React réactives, scalables et optimisées pour le SEO.",
+    price: "Sur Devis",
+    icon: "pi pi-box",
+    features: ["Next.js 15 & React 19 Full-Stack", "Design Responsive Afro-Futuriste", "Optimisation Performance & SEO 99+"],
+    fullDescription: "Conception de bout en bout de votre plateforme web. De l'architecture front-end aux API RESTful et à la base de données, nous construisons une solution performante, moderne et totalement sur-mesure.",
+    benefits: ["Architecture moderne et zéro dette technique", "Performance d'affichage ultra-rapide", "Identité visuelle unique et captivante"],
+    targetAudience: "Startups, entreprises et projets ambitieux",
+  },
+  {
+    id: "02",
+    category: "PROTOCOL",
+    title: "AUDIT UX/UI & REFONTE GRAPHIQUE",
+    description: "Analyse ergonomique approfondie, création de système de design et optimisation du parcours utilisateur.",
+    price: "Sur Devis",
+    icon: "pi pi-shield",
+    features: ["Audit ergonomique & UX Research", "Création de design system complet", "Prototypes Figma haute-fidélité"],
+    fullDescription: "Améliorez le taux de conversion et la satisfaction de vos utilisateurs grâce à une révision globale de votre expérience visuelle et interactive.",
+    benefits: ["Augmentation de l'engagement", "Cohérence visuelle sur toutes les pages", "Prototypes prêts pour dev"],
+    targetAudience: "Applications existantes souhaitant moderniser leur interface",
+  },
+  {
+    id: "03",
+    category: "LAB",
+    title: "DESIGN CULTUREL AFRO-FUTURISTE",
+    description: "Intégration d'art numérique, géométrie sacrée et identité culturelle forte dans vos projets web.",
+    price: "Sur Devis",
+    icon: "pi pi-microchip",
+    features: ["Vectorisation de motifs ancestraux", "Animations & micro-interactions CSS", "Direction artistique & branding"],
+    fullDescription: "Donnez une âme unique à vos produits digitaux en fusionnant les motifs visuels africains ancestraux avec les standards du web moderne.",
+    benefits: ["Démarque concrète", "Valorisation du patrimoine", "Expérience immersive et mémorable"],
+    targetAudience: "Marques, institutions culturelles et créateurs passionnés",
+  },
+];
+
+type SolutionApiItem = {
+  id?: string | number;
+  slug?: string;
+  title?: string;
+  titleFr?: string;
+  titleEn?: string;
+  description?: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+  priceLabel?: string;
+  priceLabelFr?: string;
+  priceLabelEn?: string;
+  icon?: string;
+  features?: string[];
+  featuresFr?: string[];
+  fullDescription?: string;
+  fullDescriptionFr?: string;
+  fullDescriptionEn?: string;
+  benefits?: string[];
+  targetAudience?: string;
+  category?: "ENGINE" | "PROTOCOL" | "LAB" | string;
+};
+
+const mapService = (item: SolutionApiItem): Solution => ({
+  id: String(item.id ?? item.slug ?? "01"),
+  title: item.title ?? item.titleFr ?? item.titleEn ?? "Service",
+  description: item.description ?? item.descriptionFr ?? item.descriptionEn ?? "",
+  price: item.priceLabel ?? item.priceLabelFr ?? item.priceLabelEn ?? "Sur Devis",
+  icon: item.icon ?? "pi pi-box",
+  features: Array.isArray(item.features) ? item.features : Array.isArray(item.featuresFr) ? item.featuresFr : [],
+  fullDescription: item.fullDescription ?? item.fullDescriptionFr ?? item.fullDescriptionEn ?? "",
+  benefits: Array.isArray(item.benefits) ? item.benefits : ["Qualité", "Performance", "Évolution"],
+  targetAudience: item.targetAudience ?? "Entreprises & projets ambitieux",
+  category: item.category === "ENGINE" || item.category === "PROTOCOL" || item.category === "LAB" ? item.category : "ENGINE",
+});
+
 export default function Solutions() {
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
-  const t = useTranslations("SolutionPage");
+  const [solutions, setSolutions] = useState<Solution[]>(fallbackSolutions);
+  const locale = useLocale();
 
-  const solutions: Solution[] = [
-    {
-      id: t("solutions.0.id"),
-      category: t("solutions.0.category") as "ENGINE" | "PROTOCOL" | "LAB",
-      title: t("solutions.0.title"),
-      description: t("solutions.0.description"),
-      price: t("solutions.0.price"),
-      icon: "pi pi-box",
-      features: [
-        t("solutions.0.features.0"),
-        t("solutions.0.features.1"),
-        t("solutions.0.features.2"),
-      ],
-      fullDescription: t("solutions.0.full_description"),
-      benefits: [
-        t("solutions.0.benefits.0"),
-        t("solutions.0.benefits.1"),
-        t("solutions.0.benefits.2"),
-      ],
-      targetAudience: t("solutions.0.target_audience"),
-    },
-    {
-      id: t("solutions.1.id"),
-      category: t("solutions.1.category") as "ENGINE" | "PROTOCOL" | "LAB",
-      title: t("solutions.1.title"),
-      description: t("solutions.1.description"),
-      price: t("solutions.1.price"),
-      icon: "pi pi-shield",
-      features: [
-        t("solutions.1.features.0"),
-        t("solutions.1.features.1"),
-        t("solutions.1.features.2"),
-      ],
-      fullDescription: t("solutions.1.full_description"),
-      benefits: [
-        t("solutions.1.benefits.0"),
-        t("solutions.1.benefits.1"),
-        t("solutions.1.benefits.2"),
-      ],
-      targetAudience: t("solutions.1.target_audience"),
-    },
-    {
-      id: t("solutions.2.id"),
-      category: t("solutions.2.category") as "ENGINE" | "PROTOCOL" | "LAB",
-      title: t("solutions.2.title"),
-      description: t("solutions.2.description"),
-      price: t("solutions.2.price"),
-      icon: "pi pi-microchip",
-      features: [
-        t("solutions.2.features.0"),
-        t("solutions.2.features.1"),
-        t("solutions.2.features.2"),
-      ],
-      fullDescription: t("solutions.2.full_description"),
-      benefits: [
-        t("solutions.2.benefits.0"),
-        t("solutions.2.benefits.1"),
-        t("solutions.2.benefits.2"),
-      ],
-      targetAudience: t("solutions.2.target_audience"),
-    },
-  ];
+  useEffect(() => {
+    let cancelled = false;
+    const loadServices = async () => {
+      try {
+        const data = await apiFetch<{ items: SolutionApiItem[] }>("/public/services", { locale, method: "GET" });
+        if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
+          setSolutions(data.items.map(mapService));
+        }
+      } catch {
+        if (!cancelled) setSolutions(fallbackSolutions);
+      }
+    };
+    void loadServices();
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-24">
       <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-20">
-        {/* HEADER */}
         <section className="space-y-4 font-azurio">
-         
           <motion.h1
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="font-achiko text-4xl md:text-7xl font-black tracking-tight uppercase text-white"
           >
-            {t("title_main")} <span className="text-[#FFC82C]">{t("title_sub")}</span>
+            SOLUTIONS <span className="text-[#FFC82C]">SUR MESURE</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -105,27 +135,24 @@ export default function Solutions() {
             transition={{ delay: 0.2 }}
             className="font-azurio max-w-2xl text-base text-gray-200 font-light leading-relaxed"
           >
-            {t("description")}
+            De la création d’interfaces web complexes aux audits ergonomiques et au design culturel Afro-Futuriste.
           </motion.p>
         </section>
 
-        {/* SOLUTIONS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 font-azurio">
-          {solutions.map((solution, i) => (
+          {solutions.map((solution, index) => (
             <motion.div
               key={solution.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -7 }}
-              transition={{ delay: i * 0.12, duration: 0.5 }}
+              transition={{ delay: index * 0.12, duration: 0.5 }}
               viewport={{ once: true }}
               className="glass-card rounded-3xl p-8 border border-white/15 flex flex-col justify-between hover:border-[#FFC82C] transition-all duration-500 group shadow-xl"
             >
               <div className="space-y-6">
                 <div className="flex justify-between items-center font-azurio">
-                  <span className="text-xs text-[#FFC82C] font-bold">
-                    MODULE // {solution.id}
-                  </span>
+                  <span className="text-xs text-[#FFC82C] font-bold">MODULE // {solution.id}</span>
                   <span className="text-[9.5px] border border-white/20 px-3 py-1 rounded-md bg-white/5 uppercase text-gray-200 font-bold">
                     {solution.category}
                   </span>
@@ -144,10 +171,10 @@ export default function Solutions() {
                 </p>
 
                 <div className="space-y-2 pt-2 border-t border-white/10 font-azurio">
-                  {solution.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-gray-300 font-bold">
+                  {solution.features.slice(0, 3).map((feature, idx) => (
+                    <div key={`${solution.id}-${idx}`} className="flex items-center gap-2 text-xs text-gray-300 font-bold">
                       <i className="pi pi-check text-[10px] text-[#FFC82C]" />
-                      <span>{feat}</span>
+                      <span>{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -155,7 +182,7 @@ export default function Solutions() {
 
               <div className="pt-8 border-t border-white/15 mt-8 space-y-4 font-azurio">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-[9.5px] text-gray-300 uppercase font-bold">{t("pricing")}</span>
+                  <span className="text-[9.5px] text-gray-300 uppercase font-bold">TARIFICATION</span>
                   <span className="text-lg font-achiko font-black text-[#FFC82C]">{solution.price}</span>
                 </div>
 
@@ -165,14 +192,13 @@ export default function Solutions() {
                   onClick={() => setSelectedSolution(solution)}
                   className="w-full py-3.5 bg-white/10 border border-white/20 hover:border-[#FFC82C] text-xs font-achiko font-bold text-white hover:text-[#FFC82C] uppercase rounded-xl transition-all"
                 >
-                  {t("details_btn")}
+                  SPÉCIFICATIONS DÉTAILLÉES
                 </motion.button>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* DETAILS MODAL */}
         <AnimatePresence>
           {selectedSolution && (
             <motion.div
@@ -186,13 +212,11 @@ export default function Solutions() {
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
                 className="glass-panel max-w-2xl w-full rounded-3xl border border-[#FFC82C] p-8 space-y-6 shadow-2xl"
               >
                 <div className="flex justify-between items-center border-b border-white/15 pb-4">
-                  <span className="font-azurio text-xs text-[#FFC82C] font-bold">
-                    MODULE_SPEC // {selectedSolution.id}
-                  </span>
+                  <span className="font-azurio text-xs text-[#FFC82C] font-bold">MODULE_SPEC // {selectedSolution.id}</span>
                   <button onClick={() => setSelectedSolution(null)} className="text-gray-300 hover:text-white">
                     <i className="pi pi-times text-xl" />
                   </button>
@@ -202,10 +226,10 @@ export default function Solutions() {
                 <p className="font-azurio text-sm text-gray-200 font-light leading-relaxed">{selectedSolution.fullDescription}</p>
 
                 <div className="space-y-2">
-                  <h4 className="font-azurio text-xs text-[#FFC82C] uppercase font-bold">{t("benefits_title")}</h4>
+                  <h4 className="font-azurio text-xs text-[#FFC82C] uppercase font-bold">BÉNÉFICES CLÉS :</h4>
                   <ul className="space-y-1 text-xs text-gray-300 font-azurio">
-                    {selectedSolution.benefits.map((b, idx) => (
-                      <li key={idx}>⚡ {b}</li>
+                    {selectedSolution.benefits.map((benefit, idx) => (
+                      <li key={`${selectedSolution.id}-${idx}`}>⚡ {benefit}</li>
                     ))}
                   </ul>
                 </div>
@@ -216,7 +240,7 @@ export default function Solutions() {
                     href="/CONTACT"
                     className="px-6 py-3 bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider rounded-xl hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]"
                   >
-                    {t("order_btn")}
+                    COMMANDER CE MODULE
                   </Link>
                 </div>
               </motion.div>

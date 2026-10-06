@@ -192,3 +192,61 @@ body::after {
 ::-webkit-scrollbar-thumb:hover {
   background: #FFE57F;
 }
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  aside,
+  header,
+  nav,
+  .print-hidden,
+  .print\:hidden,
+  .proposal-toolbar {
+    display: none !important;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #171923 !important;
+    display: block !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .proposal-document {
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  .proposal-sheet {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 18mm 17mm 15mm !important;
+    box-shadow: none !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    overflow: hidden !important;
+    position: relative !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .proposal-sheet:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+}

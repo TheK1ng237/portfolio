@@ -1,342 +1,488 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
 import { Project } from "@/app/type";
+import { apiFetch } from "@/lib/api";
+import { CyberCarSceneRef, BIOMES, CameraMode } from "@/components/3d/CyberCarScene";
 
-import { useTranslations } from "next-intl";
+const CyberCarScene = dynamic(
+  () => import("@/components/3d/CyberCarScene").then((m) => m.CyberCarScene),
+  { ssr: false }
+);
 
-export default function Projects() {
+const fallbackProjects: Project[] = [
+  {
+    id: 1,
+    title: 'Plateforme Web "Culture Africa"',
+    description: 'Site interactif pour explorer et promouvoir la culture africaine à travers des animations et récits visuels.',
+    image: "/images/mvp1.png",
+    link: "https://cultureafricaine.vercel.app",
+    github: "https://github.com/TangB5/mvp",
+    tech: ["Next.js 15", "Tailwind CSS", "Framer Motion", "TypeScript", "Three.js"],
+    category: "web",
+    featured: true,
+    isCompleted: true,
+    version: "v2.0",
+  },
+  {
+    id: 2,
+    title: 'Application "Culture Cameroun"',
+    description: 'Application éducative immersive explorant les richesses culturelles et patrimoniales du Cameroun.',
+    image: "/images/projet2.png",
+    link: "https://cultureafricaine.vercel.app",
+    github: "https://github.com/TangB5",
+    tech: ["React 19", "Tailwind CSS", "Framer Motion", "Next.js"],
+    category: "mobile",
+    featured: true,
+    isCompleted: true,
+    version: "v1.5",
+  },
+  {
+    id: 3,
+    title: 'Identité Visuelle "Ngano Fashion"',
+    description: 'Direction artistique complète, branding et motifs adinkra pour une marque de mode contemporaine.',
+    image: "/projet3.jpg",
+    link: "https://github.com/TangB5",
+    github: "https://github.com/TangB5",
+    tech: ["Figma", "Branding", "UI Design", "Adinkra Motifs"],
+    category: "design",
+    featured: true,
+    isCompleted: true,
+    version: "v1.0",
+  },
+  {
+    id: 4,
+    title: 'MarketPlace Africaine "AfroShop"',
+    description: "Plateforme e-commerce mettant en valeur l'artisanat local avec une architecture full-stack ultra rapide.",
+    image: "/projet1.jpg",
+    link: "https://github.com/TangB5",
+    github: "https://github.com/TangB5",
+    tech: ["Next.js", "Tailwind CSS", "Node.js", "E-Commerce"],
+    category: "web",
+    featured: false,
+    isCompleted: true,
+    version: "v2.0",
+  },
+  {
+    id: 5,
+    title: 'Écosystème "Wouri River Tech"',
+    description: 'Dashboard analytique et plateforme WebGL de monitoring de projets technologiques au Cameroun.',
+    image: "/images/mvp1.png",
+    link: "https://github.com/TangB5",
+    github: "https://github.com/TangB5",
+    tech: ["WebGL", "Three.js", "Tailwind CSS", "TypeScript"],
+    category: "web",
+    featured: true,
+    isCompleted: true,
+    version: "v3.0",
+  },
+];
+
+type ProjectApiItem = {
+  id?: number | string;
+  title?: string;
+  titleFr?: string;
+  titleEn?: string;
+  description?: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+  image?: string;
+  link?: string;
+  github?: string;
+  tech?: string[];
+  category?: string;
+  featured?: boolean;
+  isCompleted?: boolean;
+  version?: string;
+};
+
+const mapProject = (item: ProjectApiItem): Project => ({
+  id: Number(item.id ?? Math.random()),
+  title: item.title ?? item.titleFr ?? item.titleEn ?? "Projet",
+  description: item.description ?? item.descriptionFr ?? item.descriptionEn ?? "",
+  image: item.image ?? "/images/mvp1.png",
+  link: item.link ?? "",
+  github: item.github ?? "",
+  tech: Array.isArray(item.tech) ? item.tech : [],
+  category: item.category === "web" || item.category === "mobile" || item.category === "design" ? item.category : "web",
+  featured: Boolean(item.featured),
+  isCompleted: item.isCompleted ?? true,
+  version: item.version ?? "v1.0",
+});
+
+export default function ProjectsPage() {
   const t = useTranslations("ProjectsPage");
+  const locale = useLocale();
+
+  const sceneRef = useRef<CyberCarSceneRef>(null);
+
   const [filter, setFilter] = useState<string>("all");
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedModalProject, setSelectedModalProject] = useState<Project | null>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'Plateforme Web "Culture Africa"',
-      description: 'Site interactif pour explorer et promouvoir la culture africaine à travers des animations et récits visuels.',
-      image: "/images/mvp1.png",
-      link: "https://cultureafricaine.vercel.app",
-      github: "https://github.com/TangB5/mvp",
-      tech: ["Next.js 15", "Tailwind CSS", "Framer Motion", "TypeScript"],
-      category: "web" as const,
-      featured: true,
-      isCompleted: true,
-      version: "v2.0",
-    },
-    {
-      id: 2,
-      title: 'Application "Culture Cameroun"',
-      description: 'Application éducative immersive explorant les richesses culturelles du Cameroun.',
-      image: "/images/projet2.png",
-      link: "https://cultureafricaine.vercel.app",
-      github: "https://github.com/TangB5",
-      tech: ["React 19", "Tailwind CSS", "Framer Motion", "Next.js"],
-      category: "mobile" as const,
-      featured: true,
-      isCompleted: true,
-      version: "v1.5",
-    },
-    {
-      id: 3,
-      title: 'Identité Visuelle "Ngano Fashion"',
-      description: 'Direction artistique complète pour une marque de mode africaine contemporaine.',
-      image: "/projet3.jpg",
-      link: "https://github.com/TangB5",
-      github: "https://github.com/TangB5",
-      tech: ["Figma", "Branding", "UI Design", "Adinkra Motifs"],
-      category: "design" as const,
-      featured: true,
-      isCompleted: true,
-      version: "v1.0",
-    },
-    {
-      id: 4,
-      title: 'MarketPlace Africaine "AfroShop"',
-      description: "Plateforme e-commerce mettant en avant l'artisanat local avec une interface moderne.",
-      image: "/projet1.jpg",
-      link: "https://github.com/TangB5",
-      github: "https://github.com/TangB5",
-      tech: ["Next.js", "Tailwind CSS", "Node.js", "E-Commerce"],
-      category: "web" as const,
-      featured: false,
-      isCompleted: false,
-      version: "v2.0",
-    },
-  ];
+  // 3D Scene Interactive HUD States
+  const [activeBiomeIndex, setActiveBiomeIndex] = useState<number>(0);
+  const [currentSpeed, setCurrentSpeed] = useState<number>(0);
+  const [nearProject, setNearProject] = useState<Project | null>(null);
+  const [cameraMode, setCameraMode] = useState<CameraMode>("chase");
+  const [audioActive, setAudioActive] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<"3d" | "grid">("3d");
+  const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
 
-  const filteredProjects =
-    filter === "all" ? projects : projects.filter((p) => p.category === filter);
-  const { scrollYProgress } = useScroll({
-    target: carouselRef,
-    offset: ["start start", "end end"],
-  });
-  const rotationEnd = -((filteredProjects.length - 1) / filteredProjects.length) * 360;
-  const carouselRotation = useTransform(scrollYProgress, [0, 1], [0, rotationEnd]);
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadProjects = async () => {
+      try {
+        const data = await apiFetch<{ items: ProjectApiItem[] }>("/public/projects", { locale, method: "GET" });
+        if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
+          setProjects(data.items.map(mapProject));
+        }
+      } catch {
+        if (!cancelled) setProjects(fallbackProjects);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    void loadProjects();
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
+
+  const filteredProjects = useMemo(
+    () => filter === "all" ? projects : projects.filter((project) => project.category === filter),
+    [filter, projects],
+  );
+
+  const handleSelectProject = useCallback((project: Project) => setSelectedModalProject(project), []);
+  const handleBiomeChange = useCallback((index: number) => setActiveBiomeIndex(index), []);
+  const handleSpeedChange = useCallback((speed: number) => setCurrentSpeed(speed), []);
+  const handleNearProject = useCallback((project: Project | null) => setNearProject(project), []);
+
+  // Safe helper for translation strings
+  const getTrans = (key: string, fallback: string) => {
+    try {
+      return t(key);
+    } catch {
+      return fallback;
+    }
+  };
 
   return (
-    <div className="min-h-screen relative overflow-x-clip bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-32">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* HERO / HEADER SECTION */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="font-achiko text-4xl sm:text-6xl md:text-7xl font-black tracking-tight uppercase text-white leading-tight mb-6"
-          >
-            {t("header.title_main")} <span className="text-[#FFC82C]">{t("header.title_sub")}</span>
-          </motion.h1>
+    <div className="min-h-screen relative bg-[#050714] text-[#F8F9FA] font-azurio overflow-hidden selection:bg-[#FFC82C] selection:text-black">
+      {/* 3D WEBGL MOTION CONTAINER */}
+      {viewMode === "3d" ? (
+        <div className="fixed inset-0 z-0">
+          <CyberCarScene
+            ref={sceneRef}
+            projects={filteredProjects}
+            onSelectProject={handleSelectProject}
+            onBiomeChange={handleBiomeChange}
+            onSpeedChange={handleSpeedChange}
+            onNearProject={handleNearProject}
+          />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-azurio text-sm sm:text-base text-gray-300 font-light leading-relaxed mb-8"
-          >
-            {t("header.description")}
-          </motion.p>
+          {/* MOTION DESIGNER HUD OVERLAY LAYER */}
+          <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-4 sm:p-6 select-none">
+            {/* HUD HEADER & NAVIGATION BAR */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pointer-events-auto">
+            
+              <div className="flex items-center gap-2.5">
+                
 
-          {/* FILTER BUTTONS BAR */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="inline-flex flex-wrap justify-center gap-2 p-2 rounded-2xl border border-white/20 bg-[#121526]/80 backdrop-blur-xl shadow-2xl font-azurio"
-          >
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className="px-3.5 py-2 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-gray-300 hover:text-white text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer"
+                  title="Basculer en vue grille standard"
+                >
+                  <i className="pi pi-th-large" />
+                  <span className="hidden sm:inline">MODE GRILLE</span>
+                </button>
+
+                <button
+                  onClick={() => setShowHelpModal(true)}
+                  className="w-9 h-9 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-[#FFC82C] hover:bg-white/10 flex items-center justify-center text-sm font-bold cursor-pointer"
+                  title="Commandes et Aides"
+                >
+                  ?
+                </button>
+              </div>
+            </div>
+
+            {/* PROXIMITY WAYPOINT DETECTED ALERT BANNER */}
+            <AnimatePresence>
+              {nearProject && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                  className="pointer-events-auto self-center max-w-xl w-full bg-[#121526]/95 border-2 border-[#FFC82C] p-4 sm:p-5 rounded-3xl backdrop-blur-2xl shadow-[0_0_50px_rgba(255,200,44,0.4)] flex flex-col sm:flex-row items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-white/20 shrink-0 bg-black">
+                      <Image src={nearProject.image} alt={nearProject.title} fill className="object-cover" />
+                    </div>
+                    <div>
+                      <span className="text-[9.5px] font-mono font-bold tracking-widest text-[#FFC82C] uppercase flex items-center gap-1.5">
+                        <i className="pi pi-compass animate-spin text-[10px]" /> WAYPOINT HOLOGRAPHIQUE
+                      </span>
+                      <h3 className="font-achiko text-base sm:text-lg font-black uppercase text-white line-clamp-1">
+                        {nearProject.title}
+                      </h3>
+                      <p className="text-[11px] text-gray-300 line-clamp-1">{nearProject.description}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setSelectedModalProject(nearProject)}
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FFC82C] text-black font-achiko text-xs font-black uppercase tracking-wider hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,200,44,0.8)] shrink-0 cursor-pointer"
+                  >
+                    EXPLORER PROJET
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+
+            text
+
+            {/* HUD BOTTOM DASHBOARD, SPEEDOMETER & TOUCH CONTROLS */}
+            <div className="flex flex-wrap items-end justify-between gap-4 pointer-events-auto">
+              {/* SPEEDOMETER & DRIVE BUTTONS */}
+              <div className="flex flex-wrap items-center gap-3 bg-[#0c0f24]/90 backdrop-blur-xl border border-white/15 p-3 rounded-3xl shadow-2xl">
+                <div className="text-center border-r border-white/15 pr-3 pl-1">
+                  <span className="text-[8.5px] font-mono text-gray-400 block tracking-widest uppercase">VITESSE</span>
+                  <span className="font-achiko text-2xl sm:text-3xl font-black text-[#FFC82C] leading-none">
+                    {currentSpeed}
+                  </span>
+                  <span className="text-[8.5px] font-mono text-gray-400 block uppercase">KM/H</span>
+                </div>
+
+                {/* ON-SCREEN VIRTUAL STEERING & THROTTLE CONTROLS */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onMouseDown={() => sceneRef.current?.setSteerLeft(true)}
+                    onMouseUp={() => sceneRef.current?.setSteerLeft(false)}
+                    onTouchStart={() => sceneRef.current?.setSteerLeft(true)}
+                    onTouchEnd={() => sceneRef.current?.setSteerLeft(false)}
+                    className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 active:bg-[#FFC82C] active:text-black text-white font-bold flex items-center justify-center text-sm cursor-pointer select-none"
+                    title="Virer à gauche (Flèche Gauche / A)"
+                  >
+                    ◄
+                  </button>
+
+                  <div className="flex flex-col gap-1">
+                    <button
+                      onMouseDown={() => sceneRef.current?.setThrottle(true)}
+                      onMouseUp={() => sceneRef.current?.setThrottle(false)}
+                      onTouchStart={() => sceneRef.current?.setThrottle(true)}
+                      onTouchEnd={() => sceneRef.current?.setThrottle(false)}
+                      className="px-4 py-1.5 rounded-xl bg-[#10B981] hover:bg-[#059669] active:scale-95 text-black font-achiko font-black text-[11px] uppercase tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.5)] cursor-pointer select-none flex items-center gap-1"
+                    >
+                      ▲ AVANCER
+                    </button>
+                    <button
+                      onMouseDown={() => sceneRef.current?.setBrake(true)}
+                      onMouseUp={() => sceneRef.current?.setBrake(false)}
+                      onTouchStart={() => sceneRef.current?.setBrake(true)}
+                      onTouchEnd={() => sceneRef.current?.setBrake(false)}
+                      className="px-4 py-1 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-gray-200 font-mono text-[9.5px] uppercase tracking-wider border border-white/15 cursor-pointer select-none"
+                    >
+                      ▼ RECULER
+                    </button>
+                  </div>
+
+                  <button
+                    onMouseDown={() => sceneRef.current?.setSteerRight(true)}
+                    onMouseUp={() => sceneRef.current?.setSteerRight(false)}
+                    onTouchStart={() => sceneRef.current?.setSteerRight(true)}
+                    onTouchEnd={() => sceneRef.current?.setSteerRight(false)}
+                    className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 active:bg-[#FFC82C] active:text-black text-white font-bold flex items-center justify-center text-sm cursor-pointer select-none"
+                    title="Virer à droite (Flèche Droite / D)"
+                  >
+                    ►
+                  </button>
+                </div>
+
+                <button
+                  onClick={() => sceneRef.current?.triggerBoost()}
+                  className="px-3.5 py-3 rounded-2xl bg-gradient-to-r from-[#FF3B56] to-[#FFC82C] text-black font-achiko font-black text-[10px] tracking-widest uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,59,86,0.6)] cursor-pointer flex items-center gap-1 select-none"
+                >
+                  <i className="pi pi-bolt text-xs" /> TURBO
+                </button>
+              </div>
+
+              {/* CAMERA MODE SWITCHER */}
+              <div className="flex items-center gap-1.5 p-1.5 rounded-2xl border border-white/15 bg-[#0c0f24]/80 backdrop-blur-xl">
+                {(["chase", "cockpit", "orbit", "map"] as CameraMode[]).map((mode) => {
+                  const isActive = cameraMode === mode;
+                  const labels = {
+                    chase: "CHASE 3D",
+                    cockpit: "COCKPIT",
+                    orbit: "ORBIT 360",
+                    map: "SATELLITE",
+                  };
+                  return (
+                    <button
+                      key={mode}
+                      onClick={() => {
+                        sceneRef.current?.setCameraMode(mode);
+                        setCameraMode(mode);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-[#00F3FF] text-black shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+                          : "text-gray-400 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      {labels[mode]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* STANDARD CLASSIC GRID VIEW MODE FALLBACK */
+        <div className="max-w-7xl mx-auto px-6 pt-32 pb-32 relative z-10">
+          <div className="flex justify-between items-center mb-10 border-b border-white/15 pb-6">
+            <div>
+              <h1 className="font-achiko text-3xl sm:text-5xl font-black uppercase text-white">
+                PORTFOLIO <span className="text-[#FFC82C]">MODULES</span>
+              </h1>
+              <p className="text-sm text-gray-300 font-azurio">Galerie classique des projets récents</p>
+            </div>
+
+            <button
+              onClick={() => setViewMode("3d")}
+              className="px-5 py-3 rounded-2xl bg-[#FFC82C] text-black font-achiko text-xs font-black uppercase tracking-wider hover:scale-105 transition-all shadow-[0_0_25px_rgba(255,200,44,0.5)] flex items-center gap-2 cursor-pointer"
+            >
+              <i className="pi pi-compass text-sm" /> RETOURNER EN CONDUITE 3D
+            </button>
+          </div>
+
+          {/* FILTER BUTTONS */}
+          <div className="flex flex-wrap gap-2 mb-10">
             {[
-              { id: "all", label: t("filters.all") },
-              { id: "web", label: t("filters.web") },
-              { id: "mobile", label: t("filters.mobile") },
-              { id: "design", label: t("filters.design") },
+              { id: "all", label: getTrans("filters.all", "Tous") },
+              { id: "web", label: getTrans("filters.web", "Web") },
+              { id: "mobile", label: getTrans("filters.mobile", "Mobile") },
+              { id: "design", label: getTrans("filters.design", "Design") },
             ].map((f) => (
               <button
                 key={f.id}
                 onClick={() => setFilter(f.id)}
-                className={`px-6 py-3 rounded-xl text-xs font-achiko tracking-widest uppercase transition-all font-bold cursor-pointer ${
+                className={`px-5 py-2.5 rounded-xl text-xs font-achiko uppercase tracking-widest font-bold transition-all cursor-pointer ${
                   filter === f.id
-                    ? "bg-[#FFC82C] text-black shadow-[0_0_25px_rgba(255,200,44,0.5)] scale-105"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                    ? "bg-[#FFC82C] text-black shadow-[0_0_20px_rgba(255,200,44,0.5)]"
+                    : "bg-[#121526] text-gray-300 border border-white/10 hover:border-white/30"
                 }`}
               >
                 {f.label}
               </button>
             ))}
-          </motion.div>
-        </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="mt-6 hidden flex-col items-center gap-1.5 text-[#FFC82C] md:flex"
-            aria-label="Défiler pour découvrir les projets"
-          >
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em]">DÉFILER</span>
-            <span className="flex h-8 w-5 items-start justify-center rounded-full border border-[#FFC82C]/60 p-1">
-              <motion.span
-                animate={{ y: [0, 8, 0], opacity: [1, 0.45, 1] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-                className="h-1.5 w-1 rounded-full bg-[#FFC82C]"
-              />
-            </span>
-          </motion.div>
-
-        {/* SCROLL-DRIVEN ROTATING GALLERY */}
-        <div
-          ref={carouselRef}
-          className="relative mt-8 hidden md:block"
-          style={{ height: `${Math.max(filteredProjects.length, 1) * 100}vh` }}
-        >
-          <div className="sticky top-16 h-[calc(100vh-4rem)] min-h-[620px] flex items-center justify-center">
-            <div className="relative h-full w-full overflow-hidden" style={{ perspective: "1400px" }}>
-              <div
-                aria-hidden="true"
-                className="absolute left-1/2 top-[15%] aspect-square w-[min(760px,60vw)] rounded-full border-[5px] border-[#FFC82C] shadow-[0_0_32px_rgba(255,200,44,0.8)]"
-                style={{ transform: "translate(-50%, -50%) rotateX(74deg)" }}
-              />
-
-              <motion.div
-                className="absolute inset-0"
-                style={{ rotateY: carouselRotation, transformStyle: "preserve-3d" }}
-              >
-                {filteredProjects.map((projet, index) => {
-                  const angle = (index * 360) / filteredProjects.length;
-
-                  return (
-                    <div
-                      key={projet.id}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Voir le projet ${projet.title}`}
-                      onClick={() => setSelectedModalProject(projet)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          setSelectedModalProject(projet);
-                        }
-                      }}
-                      className="group absolute left-1/2 top-[56%] w-[min(76vw,380px)] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FFC82C] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0B0D18]"
-                      style={{
-                        transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(min(380px, 30vw))`,
-                        transformStyle: "preserve-3d",
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div aria-hidden="true" className="pointer-events-none absolute -top-24 left-1/2 z-30 flex h-24 -translate-x-1/2 flex-col items-center">
-                        <span className="h-[76px] w-[2px] bg-[#FFC82C] shadow-[0_0_8px_rgba(255,200,44,0.8)]" />
-                        <span className="h-4 w-4 rounded-full border-2 border-[#FFC82C] bg-[#0B0D18] shadow-[0_0_12px_rgba(255,200,44,0.8)]" />
-                      </div>
-
-                      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -rotate-2 rounded-3xl border border-[#FFC82C]/25 bg-[#FFC82C]/10 shadow-lg transition-transform duration-500 group-hover:-rotate-4" />
-                      <div aria-hidden="true" className="pointer-events-none absolute inset-0 rotate-2 rounded-3xl border border-[#FF3B56]/25 bg-[#FF3B56]/10 shadow-md transition-transform duration-500 group-hover:rotate-4" />
-
-                      <motion.div
-                        whileHover={{ rotateZ: index % 2 === 0 ? -2 : 2, y: -14, scale: 1.05 }}
-                        className="relative flex h-full flex-col justify-between rounded-3xl border border-white/20 bg-[#121526]/95 p-5 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-[#FFC82C]"
-                      >
-                        <div className="pointer-events-none absolute -top-7 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center transition-transform duration-300 group-hover:scale-110">
-                          <span className="h-4 w-4 rounded-full border-2 border-[#FFC82C] bg-[#0B0D18] shadow-[0_0_12px_rgba(255,200,44,0.8)]" />
-                          <span className="-mt-1 flex h-7 w-5 items-center justify-center rounded-sm border border-white/40 bg-[#FFC82C] shadow-lg">
-                            <span className="h-4 w-1 rounded-full bg-black/40" />
-                          </span>
-                        </div>
-
-                        <div className="mb-3 flex items-center justify-between pt-2 font-azurio">
-                          <span className="text-[10px] font-mono font-bold tracking-wider text-[#FFC82C]">0{projet.id} · {projet.version}</span>
-                          <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-0.5">
-                            <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-400" />
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-400">
-                              {projet.isCompleted ? "READY" : "IN_DEV"}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="group/image relative mb-4 h-48 w-full overflow-hidden rounded-2xl border border-white/10 bg-black transition-all group-hover:border-white/25">
-                          <Image
-                            src={projet.image}
-                            alt={projet.title}
-                            fill
-                            sizes="(max-width: 640px) 82vw, 380px"
-                            className="object-cover opacity-85 transition-all duration-700 group-hover/image:scale-105 group-hover/image:opacity-100"
-                          />
-                        </div>
-
-                        <h3 className="mb-2 text-center font-achiko text-xl font-black uppercase tracking-tight text-white transition-colors group-hover:text-[#FFC82C]">
-                          {projet.title}
-                        </h3>
-
-                        <div className="mb-4 flex min-h-16 flex-grow items-center justify-center rounded-xl border border-white/15 bg-white/[0.04] p-3 text-center">
-                          <p className="line-clamp-2 font-azurio text-[11px] uppercase leading-relaxed text-gray-200">
-                            &rdquo;{projet.description}&rdquo;
-                          </p>
-                        </div>
-
-                        <div className="mb-4 flex flex-wrap items-center justify-center gap-1.5">
-                          {projet.tech.slice(0, 3).map((tech) => (
-                            <span key={tech} className="flex items-center gap-1 rounded-lg border border-white/15 bg-white/[0.05] px-2.5 py-1 text-[9.5px] font-bold text-gray-200">
-                              <i className="pi pi-bolt text-[8px] text-[#FFC82C]" /> {tech}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="flex items-center justify-between border-t border-white/10 pt-3 font-azurio">
-                          <span className="flex items-center gap-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#FFC82C] transition-all group-hover:gap-2">
-                            EXPLORER <i className="pi pi-arrow-right text-[10px]" />
-                          </span>
-                          {projet.github && <i className="pi pi-github text-xs text-gray-400 transition-colors group-hover:text-white" />}
-                        </div>
-                      </motion.div>
-                    </div>
-                  );
-                })}
-              </motion.div>
-
-              <div aria-hidden="true" className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
-                {filteredProjects.map((projet, index) => (
-                  <span key={projet.id} className="h-1.5 w-5 rounded-full bg-white/20" style={{ opacity: index === 0 ? 0.9 : 0.45 }} />
-                ))}
-              </div>
-            </div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 gap-8 pt-8 sm:grid-cols-2 md:hidden">
-          {filteredProjects.map((projet) => (
-            <div
-              key={projet.id}
-              role="button"
-              tabIndex={0}
-              aria-label={`Voir le projet ${projet.title}`}
-              onClick={() => setSelectedModalProject(projet)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  setSelectedModalProject(projet);
-                }
-              }}
-              className="group relative w-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FFC82C] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0B0D18]"
-            >
-              <div aria-hidden="true" className="pointer-events-none absolute inset-0 -rotate-2 rounded-3xl border border-[#FFC82C]/25 bg-[#FFC82C]/10 shadow-lg transition-transform duration-500 group-hover:-rotate-4" />
-              <div aria-hidden="true" className="pointer-events-none absolute inset-0 rotate-2 rounded-3xl border border-[#FF3B56]/25 bg-[#FF3B56]/10 shadow-md transition-transform duration-500 group-hover:rotate-4" />
+          {/* GRID OF CARDS */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                onClick={() => setSelectedModalProject(project)}
+                className="glass-card group rounded-3xl p-5 border border-white/15 cursor-pointer hover:border-[#FFC82C] transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative h-48 w-full rounded-2xl overflow-hidden mb-4 bg-black">
+                    <Image src={project.image} alt={project.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-[#FFC82C] block mb-1">PROJET 0{project.id} · {project.version}</span>
+                  <h3 className="font-achiko text-xl font-black text-white mb-2 uppercase group-hover:text-[#FFC82C] transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-xs text-gray-300 line-clamp-3 mb-4 leading-relaxed">{project.description}</p>
+                </div>
 
-              <div className="glass-card relative flex h-full flex-col justify-between rounded-3xl border border-white/20 bg-[#121526]/95 p-5 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-[#FFC82C]">
-                <div className="mb-3 flex items-center justify-between pt-2 font-azurio">
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-[#FFC82C]">0{projet.id} · {projet.version}</span>
-                  <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-0.5">
-                    <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-400" />
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-400">
-                      {projet.isCompleted ? "READY" : "IN_DEV"}
-                    </span>
+                <div>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {project.tech.map((tech) => (
+                      <span key={tech} className="px-2 py-0.5 rounded-md border border-white/15 bg-white/5 text-[9px] font-mono text-gray-300">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-white/10 pt-3 text-[11px] font-mono text-[#FFC82C] font-bold">
+                    <span>EXPLORER LE PROJET</span>
+                    <i className="pi pi-arrow-right" />
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-                <div className="group/image relative mb-4 h-48 w-full overflow-hidden rounded-2xl border border-white/10 bg-black transition-all group-hover:border-white/25">
-                  <Image
-                    src={projet.image}
-                    alt={projet.title}
-                    fill
-                    sizes="(max-width: 640px) 90vw, 45vw"
-                    className="object-cover opacity-85 transition-all duration-700 group-hover/image:scale-105 group-hover/image:opacity-100"
-                  />
+      {/* HELP / CONTROLS MODAL */}
+      <AnimatePresence>
+        {showHelpModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowHelpModal(false)}
+            className="fixed inset-0 z-[100000] bg-black/80 backdrop-blur-xl flex items-center justify-center p-6 font-azurio"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="glass-panel max-w-lg w-full rounded-3xl border border-[#FFC82C] p-6 space-y-6 shadow-2xl"
+            >
+              
+
+              <div className="space-y-3 text-xs">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
+                  <span className="font-bold text-gray-300">AVANCER / RECULER</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">W / S  ou  FLÈCHES HAUT/BAS</span>
                 </div>
-
-                <h3 className="mb-2 text-center font-achiko text-xl font-black uppercase tracking-tight text-white transition-colors group-hover:text-[#FFC82C]">
-                  {projet.title}
-                </h3>
-
-                <div className="mb-4 flex min-h-16 flex-grow items-center justify-center rounded-xl border border-white/15 bg-white/[0.04] p-3 text-center">
-                  <p className="line-clamp-2 font-azurio text-[11px] uppercase leading-relaxed text-gray-200">
-                    &rdquo;{projet.description}&rdquo;
-                  </p>
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
+                  <span className="font-bold text-gray-300">VIRER À GAUCHE / DROITE</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">A / D  ou  FLÈCHES GAUCHE/DROITE</span>
                 </div>
-
-                <div className="mb-4 flex flex-wrap items-center justify-center gap-1.5">
-                  {projet.tech.slice(0, 3).map((tech) => (
-                    <span key={tech} className="flex items-center gap-1 rounded-lg border border-white/15 bg-white/[0.05] px-2.5 py-1 text-[9.5px] font-bold text-gray-200">
-                      <i className="pi pi-bolt text-[8px] text-[#FFC82C]" /> {tech}
-                    </span>
-                  ))}
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-[#FF3B56]/10 border-[#FF3B56]/30">
+                  <span className="font-bold text-[#FF3B56]">TURBO NITRO BOOST</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">BARRE D&apos;ESPACE</span>
                 </div>
-
-                <div className="flex items-center justify-between border-t border-white/10 pt-3 font-azurio">
-                  <span className="flex items-center gap-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#FFC82C] transition-all group-hover:gap-2">
-                    EXPLORER <i className="pi pi-arrow-right text-[10px]" />
-                  </span>
-                  {projet.github && <i className="pi pi-github text-xs text-gray-400 transition-colors group-hover:text-white" />}
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
+                  <span className="font-bold text-gray-300">CHANGER LA VUE CAMÉRA</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">TOUCHE &apos;C&apos;</span>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
+                  <span className="font-bold text-gray-300">NAVIGATION CONTINUED</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">MOLETTE DE LA SOURIS</span>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
 
-      </div>
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className="w-full py-3 rounded-xl bg-[#FFC82C] text-black font-achiko text-xs font-black uppercase tracking-wider"
+              >
+                COMPRIS, EN ROUTE !
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* FULL-SCREEN IMMERSIVE PROJECT PREVIEW MODAL */}
+      {/* PROJECT DETAIL MODAL */}
       <AnimatePresence>
         {selectedModalProject && (
           <motion.div
@@ -344,84 +490,89 @@ export default function Projects() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedModalProject(null)}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-[99999] flex items-start justify-center overflow-y-auto overscroll-contain bg-black/85 p-3 font-azurio backdrop-blur-2xl sm:items-center sm:p-6"
           >
             <motion.div
-              initial={{ scale: 0.9, y: 30, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.9, y: 30, opacity: 0 }}
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass-card max-w-2xl w-full rounded-3xl border border-[#FFC82C]/40 p-6 sm:p-8 bg-[#121526] relative shadow-[0_0_50px_rgba(255,200,44,0.25)]"
+              className="glass-panel relative my-auto max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-[#FFC82C] p-4 shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:space-y-6 sm:rounded-3xl sm:p-8"
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedModalProject(null)}
-                aria-label="Fermer l’aperçu du projet"
-                className="absolute right-5 top-5 z-30 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/40 bg-[#0B0D18]/90 text-white shadow-lg transition-colors hover:bg-[#FFC82C] hover:text-black"
-              >
-                <i className="pi pi-times text-base" />
-              </button>
-
-              {/* Modal Image Header */}
-              <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden bg-black mb-6 border border-white/15">
-                <Image
-                  src={selectedModalProject.image}
-                  alt={selectedModalProject.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/70 backdrop-blur border border-white/20 text-[#FFC82C] font-mono text-xs font-bold">
-                  VERSION {selectedModalProject.version}
-                </div>
-              </div>
-
-              {/* Title & Description */}
-              <h3 className="font-achiko text-3xl font-black uppercase text-white mb-3">
-                {selectedModalProject.title}
-              </h3>
-
-              <p className="font-azurio text-sm text-gray-300 leading-relaxed font-light mb-6">
-                {selectedModalProject.description}
-              </p>
-
-              {/* Tech Stack */}
-              <div className="mb-6">
-                <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#FFC82C] block mb-2">
-                  TECHNOLOGIES UTILISÉES :
+              <div className="sticky -mx-4 -mt-4 top-0 z-20 flex items-center justify-between gap-3 border-b border-white/15 bg-[#121526]/95 px-4 pb-3 pt-4 backdrop-blur-xl sm:-mx-8 sm:-mt-8 sm:px-8 sm:pb-4 sm:pt-8">
+                <span className="font-mono text-xs text-[#FFC82C] font-bold tracking-widest uppercase">
+                  WAYPOINT PROJET // 0{selectedModalProject.id} · {selectedModalProject.version}
                 </span>
-                <div className="flex flex-wrap gap-2">
-                  {selectedModalProject.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="px-3 py-1 rounded-xl border border-white/20 bg-white/5 text-gray-200 text-xs font-bold font-azurio"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedModalProject(null)}
+                  aria-label="Fermer le détail du projet"
+                  className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-gray-300 transition hover:bg-white/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C]"
+                >
+                  <i className="pi pi-times text-sm" />
+                </button>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                <a
-                  href={selectedModalProject.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-xl bg-[#FFC82C] text-black font-achiko font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform flex items-center gap-2"
-                >
-                  VOIR LE PROJET EN DIRECT <i className="pi pi-external-link" />
-                </a>
+              <div className="grid gap-5 pt-4 sm:gap-6 sm:pt-0 md:grid-cols-[1.2fr_0.8fr]">
+                <div className="space-y-4">
+                  <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 bg-black sm:h-72 sm:rounded-2xl">
+                    <Image src={selectedModalProject.image} alt={selectedModalProject.title} fill className="object-cover" />
+                  </div>
+                  <h3 className="font-achiko text-2xl sm:text-3xl font-black uppercase text-white">
+                    {selectedModalProject.title}
+                  </h3>
+                  <p className="text-sm text-gray-200 font-light leading-relaxed">
+                    {selectedModalProject.description}
+                  </p>
+                </div>
 
-                {selectedModalProject.github && (
-                  <a
-                    href={selectedModalProject.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 rounded-xl border border-white/20 hover:border-white text-white font-azurio font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-2"
-                  >
-                    GITHUB <i className="pi pi-github" />
-                  </a>
-                )}
+                <div className="space-y-5 rounded-2xl border border-white/10 bg-[#121526]/90 p-5 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFC82C] font-bold">STATUT</span>
+                      <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        {selectedModalProject.isCompleted ? getTrans("status.live", "En Ligne") : getTrans("status.dev", "En Développement")}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFC82C] font-bold block mb-2">
+                        {getTrans("status.tech_used", "TECHNOLOGIES EMPLOYÉES")}
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedModalProject.tech.map((tech) => (
+                          <span key={tech} className="rounded-xl border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-mono uppercase text-gray-200 font-bold">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2.5 pt-4">
+                    {selectedModalProject.link && (
+                      <a
+                        href={selectedModalProject.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full rounded-xl bg-[#FFC82C] px-4 py-3 text-center text-xs font-achiko font-black uppercase text-black hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(255,200,44,0.5)] flex items-center justify-center gap-2"
+                      >
+                        <i className="pi pi-external-link text-xs" /> {getTrans("status.view_live", "VOIR LE SITE DÉPLOYÉ")}
+                      </a>
+                    )}
+                    {selectedModalProject.github && (
+                      <a
+                        href={selectedModalProject.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-center text-xs font-achiko font-black uppercase text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <i className="pi pi-github text-xs" /> {getTrans("status.github", "CODE SOURCE GITHUB")}
+                      </a>
+                    )}
+                  </div>
+                </div>
               </div>
             </motion.div>
           </motion.div>

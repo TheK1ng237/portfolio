@@ -3,7 +3,7 @@
     "about": "À PROPOS",
     "projects": "PROJETS",
     "culture": "CULTURE",
-    "solution": "SOLUTIONS",
+    "solution": "SOLUTION",
     "contact": "CONTACT"
   },
   "Hero": {
@@ -14,7 +14,7 @@
     "cta_projects": "Explorer mes projets",
     "cta_contact": "Me contacter",
     "scroll": "Défiler",
-    "alt_portrait": "Mascotte KingTang - Vision Tech"
+    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech"
   },
   "HomePage": {
     "projects": {
@@ -54,70 +54,150 @@
       }
     }
   },
-  "AboutPage": {
-    "header": {
-      "title_main": "INGÉNIERIE LOGICIELLE &",
-      "title_sub": "VISION CRÉATIVE",
-      "bio": "Développeur full-stack, je conçois des applications web de bout en bout : interfaces soignées, API, bases de données et intégrations. J’allie architecture fiable, expérience utilisateur et expression culturelle.",
-      "card1_title": "FULL-STACK ENGINEERING",
-      "card1_desc": "Next.js, Angular, Node.js, Express.js et Django, des interfaces aux API.",
-      "card2_title": "AFRO-FUTURISM UX",
-      "card2_desc": "Design d’interface fondé sur les mathématiques des motifs africains ancestraux.",
-      "download_cv": "TÉLÉCHARGER LE CV OFFICIEL (PDF)"
-    },
-    "expertise": {
-      "title": "MON EXPERTISE",
-      "description": "Naviguez entre le Volet 1 (Mes Skills) et le Volet 2 (Mes Outils) ci-dessous.",
-      "badge": "Swiper d'Expertise en 2 Volets",
-      "volet1": "MES SKILLS",
-      "volet2": "MES OUTILS"
-    },
-    "certifications": {
-      "title": "CERTIFICATIONS & DIPLÔMES",
-      "subtitle": "ACCRÉDITATIONS VÉRIFIÉES (10)",
-      "description": "Formations certifiantes et diplômes obtenus sur OpenClassrooms et Udemy attestant d'une maîtrise technique rigoureuse.",
-      "filter_all": "TOUS (10)",
-      "filter_openclassrooms": "OPENCLASSROOMS (6)",
-      "filter_udemy": "UDEMY (4)",
-      "view_pdf": "VOIR DIPLÔME",
-      "pdf_format": "FORMAT: PDF VÉRIFIÉ"
-    },
-    "cta": {
-      "button": "VOIR MES PROJETS"
-    }
-  },
   "ProjectsPage": {
     "header": {
       "badge": "RÉPERTOIRE DE PROJETS 2026",
-      "title_main": "MODULES",
-      "title_sub": "DÉPLOYÉS",
-      "description": "Explorez mes réalisations full-stack, mobiles et designs visuels suspendus sur la galerie."
+      "title_main": "SOLUTIONS",
+      "title_sub": "INGÉNIÉES"
     },
     "filters": {
-      "all": "TOUS LES PROJETS",
-      "web": "WEB APP",
-      "mobile": "MOBILE",
-      "design": "DESIGN UI/UX"
+      "all": "Tous les Modules",
+      "web": "Systèmes-Web",
+      "mobile": "App-Mobiles",
+      "design": "ID-Visuelle"
+    },
+    "dividers": {
+      "featured": "MODULES_VEDETTES",
+      "archives": "TOUTES_LES_ARCHIVES"
     },
     "status": {
-      "live": "PRÊT",
+      "live": "EN LIGNE",
       "dev": "EN DÉV",
-      "explore": "EXPLORER",
-      "view_live": "VOIR LE PROJET EN DIRECT",
-      "github": "GITHUB",
-      "scroll": "DÉFILER",
-      "tech_used": "TECHNOLOGIES UTILISÉES :"
+      "launch": "Lancer le Système",
+      "locked": "Système Verrouillé",
+      "access": "Accéder",
+      "restricted": "Accès Restreint"
+    },
+    "cta": {
+      "title": "Besoin d'un module sur mesure ?",
+      "button": "Initialiser le Brief"
+    },
+    "items": {
+      "4": {
+        "title": "MarketPlace Africaine \"AfroShop\"",
+        "description": "Plateforme e-commerce mettant en avant l'artisanat local avec une interface moderne inspirée des textiles africains. Intègre un système de paiement adapté aux marchés africains."
+      },
+      "2": {
+        "title": "Application \"Culture Cameroun\"",
+        "description": "Application éducative immersive explorant les richesses culturelles du Cameroun. Contient des galeries visuelles, des documents historiques et des expériences interactives."
+      },
+      "3": {
+        "title": "Identité Visuelle \"Ngano Fashion\"",
+        "description": "Direction artistique complète pour une marque de mode africaine contemporaine. Logo, palette de couleurs, packaging et site web avec design inspiré des motifs Adinkra."
+      },
+      "1": {
+        "title": "Mini-site \"Culture Africa\"",
+        "description": "Site interactif pour explorer et promouvoir la culture africaine à travers des animations et récits visuels. Intègre une carte interactive des traditions africaines."
+      },
+      "5": {
+        "title": "Customizer de Visuels Africains",
+        "description": "Outil web permettant de personnaliser des designs avec motifs africains authentiques. Export en haute résolution pour supports print et digitaux."
+      },
+      "6": {
+        "title": "Projet Académique \"Angular Commerce\"",
+        "description": "Application e-commerce développée avec Angular dans un cadre académique, avec une attention particulière aux performances et à l'expérience utilisateur."
+      }
+    }
+  },
+  "AboutPage": {
+    "identity": {
+      "id_label": "ID",
+      "class_label": "CLASSE",
+      "class_value": "ARCHITECTE",
+      "origin_label": "ORIGINE",
+      "origin_value": "CAMEROUN, AFRIQUE"
+    },
+    "header": {
+      "title_prefix": "QUI EST",
+      "name": "NDOH YANNICK TANG ?"
+    },
+    "bio": {
+      "quote": "Je ne code pas juste des sites web. Je construis des ponts digitaux entre la tradition ancestrale et l'innovation future.",
+      "p1": "Titulaire d'une licence en informatique (Systèmes & Réseaux), j'ai rapidement pivoté vers ma véritable passion : la création. Mon background technique rigoureux me permet de comprendre la machine, mais c'est mon âme d'artiste qui guide mes doigts.",
+      "p2": "Ma mission est claire : contrer l'uniformité du web occidental en injectant l'ADN visuel africain (motifs Adinkra, palettes chaudes, storytelling) dans des architectures React & Next.js ultra-performantes."
+    },
+    "timeline": {
+      "title": "JOURNAL D'ÉVOLUTION",
+      "subtitle": "CHRONOLOGIE DES MISES À JOUR DE COMPÉTENCES",
+      "items": {
+        "2025": {
+          "title": "EXPANSION FULLSTACK",
+          "subtitle": "Intégration Backend",
+          "desc": "Architecture de bases de données avec MongoDB et création d'API REST ExpressJS. Le chaînon manquant."
+        },
+        "2024": {
+          "title": "UI/UX CULTUREL",
+          "subtitle": "Design System",
+          "desc": "Définition de ma signature graphique : fusionner le minimalisme moderne avec la complexité des motifs africains."
+        },
+        "2023": {
+          "title": "SPÉCIALISTE FRONTEND",
+          "subtitle": "Maîtrise des Frameworks",
+          "desc": "Plongée profonde dans l'écosystème React, Next.js et TailwindCSS. Transition du code spaghetti vers l'architecture modulaire."
+        },
+        "2022": {
+          "title": "INIT SYSTÈME",
+          "subtitle": "Le Commencement",
+          "desc": "Première ligne de code. HTML, CSS, PHP. Comprendre comment le web respire."
+        }
+      }
+    },
+    "skills": {
+      "title": "DIAGNOSTICS SYSTÈME",
+      "efficiency": "EFFICACITÉ",
+      "items": {
+        "frontend": "ARCHITECTURE FRONTEND (Next.js/React)",
+        "styling": "MOTEUR DE STYLE (Tailwind/CSS)",
+        "logic": "LOGIQUE CRÉATIVE (JS/TS)",
+        "design": "DESIGN VISUEL (Ps/Canva/Figma)",
+        "backend": "OPS BACKEND (Node/Mongo)"
+      }
+    },
+    "values": {
+      "title": "PROTOCOLES DE BASE",
+      "items": {
+        "heritage": {
+          "title": "L'Héritage d'Abord",
+          "desc": "Le code est universel, mais l'identité est locale. Je code avec fierté."
+        },
+        "performance": {
+          "title": "Haute Performance",
+          "desc": "Un site beau qui est lent est inutile. J'optimise chaque pixel et chaque fonction."
+        },
+        "clean": {
+          "title": "Architecture Propre",
+          "desc": "Code maintenable, scalable et sécurisé. Pas de bricolage."
+        }
+      }
+    },
+    "cta": {
+      "title": "PRÊT À COLLABORER ?",
+      "subtitle": "Initialiser le protocole de communication pour démarrer un projet unique.",
+      "button": "Démarrer le Projet"
+    },
+    "ui": {
+      "section_break": "RUPTURE DE SECTION"
     }
   },
   "CulturePage": {
     "hero": {
       "badge": "INITIALISATION_SYSTÈME : COFFRE_DU_PATRIMOINE",
-      "title_main": "HERITAGE",
-      "title_sub": "AFRO-FUTURISTE",
-      "description": "L’art traditionnel africain n’est pas un vestige du passé : c’est un langage visuel et algorithmique d’une modernité remarquable. Notre mission est d’extraire cette géométrie sacrée pour alimenter le Web de demain."
+      "title_main": "ROOTS",
+      "title_sub": "& BYTES",
+      "description": "Je traite l'héritage visuel africain comme du code source. Chaque motif est un ensemble de données historiques, réinventé pour l'architecture digitale de demain."
     },
     "library": {
-      "title": "MOTIFS & SYMBOLES",
+      "title": "Bibliothèque de Motifs",
       "subtitle": "Archives Numériques",
       "status": {
         "available": "DISPONIBLE",
@@ -156,7 +236,7 @@
         },
         "1": {
           "text": "L'innovation naît des racines les plus profondes.",
-          "ref": "KingTang",
+          "ref": "Thek1ng237",
           "note": "// VALEUR_CLÉ_01"
         },
         "2": {
@@ -171,9 +251,18 @@
       "subtitle": "Tech x Culture",
       "main_text": "L'uniformisation du web est une erreur système. Ma mission est de réinjecter de la diversité algorithmique en utilisant des structures visuelles africaines.",
       "items": {
-        "adinkra": { "title": "SYMBOLES ADINKRA", "use": "Navigation métaphorique & Icônes" },
-        "ndop": { "title": "GÉOMÉTRIE NDOP", "use": "Grilles & Layouts structurels" },
-        "wax": { "title": "TEXTURES WAX", "use": "Fonds Dynamiques & Motion" }
+        "adinkra": {
+          "title": "SYMBOLES ADINKRA",
+          "use": "Navigation métaphorique & Icônes"
+        },
+        "ndop": {
+          "title": "GÉOMÉTRIE NDOP",
+          "use": "Grilles & Layouts structurels"
+        },
+        "wax": {
+          "title": "TEXTURES WAX",
+          "use": "Fonds Dynamiques & Motion"
+        }
       },
       "framework": {
         "title": "Framework Culturel v1.0",
@@ -186,42 +275,16 @@
       "button": "Demander l'accès à l'Asset"
     },
     "cta": {
-      "title": "VOUS SOUHAITEZ INCLURE UNE DIMENSION CULTURELLE À VOTRE PROJET ?",
-      "button": "DÉMARRER UN PROJET CULTUREL"
+      "title": "Contribuer à l'Archive",
+      "button": "Ouvrir le Protocole"
     }
   },
   "ContactPage": {
-    "badge": "// CANAL_TACTIQUE_DE_TRANSMISSION",
-    "title_main": "INITIALISER",
-    "title_sub": "LE CONTACT",
-    "description": "Une vision de projet, une refonte UI/UX Afro-Futuriste ou une collaboration technique ? Connectez-vous via le terminal interactif ou nos canaux directs.",
-    "stats": {
-      "status": "STATUT",
-      "status_val": "100% DISPONIBLE",
-      "response": "DÉLAI RÉPONSE",
-      "response_val": "< 24H CHRONO",
-      "timezone": "FUSEAU HORAIRE",
-      "timezone_val": "GMT+1 (CAMEROUN)",
-      "modality": "MODALITÉ",
-      "modality_val": "FREELANCE / REMOTE"
-    },
-    "phone": {
-      "station": "STATION DE TRANSMISSION",
-      "live": "LIGNE DIRECTE ACTIVÉE - SANS INTERMÉDIAIRE",
-      "whatsapp": "DISCUTER SUR WHATSAPP INSTANTANÉ"
-    },
-    "channels": {
-      "title": "CANAUX DIRECTS",
-      "click_copy": "CLIQUEZ POUR COPIER",
-      "email": "EMAIL DIRECT",
-      "whatsapp": "WHATSAPP TACTIQUE",
-      "github": "GITHUB REPO",
-      "linkedin": "LINKEDIN PRO",
-      "copied": "COPIÉ !"
-    },
-    "cv": {
-      "doc": "DOCUMENTATION OFFICIELLE",
-      "download": "TÉLÉCHARGER LE CV PDF COMPLET"
+    "hero": {
+      "protocol": "PROTOCOLE : INITIATION_PONT",
+      "title_main": "ÉTABLISSONS",
+      "title_highlight": "UNE CONNEXION",
+      "description": "Prêt à injecter de l'authenticité africaine dans votre prochain projet digital ? Établissons une connexion."
     },
     "form": {
       "title": "TERMINAL DE MESSAGERIE",
@@ -238,75 +301,97 @@
       "submitting": "TRANSMISSION EN COURS...",
       "success_title": "TRANSMISSION EFFECTUÉE AVEC SUCCÈS",
       "success_msg": "Votre message a été transmis à notre station. Nous reviendrons vers vous sous 24h.",
-      "security": "CONFIDENTIALITÉ GARANTIE"
+      "security": "CONFIDENTIALITÉ GARANTIE",
+      "mission_type_label": "Type de mission",
+      "mission_type_placeholder": "Choisissez...",
+      "phone_label": "Téléphone",
+      "budget_label": "Budget",
+      "date_label": "Délais souhaité",
+      "consent_label": "J’accepte que mes données soient traitées dans le cadre de ma demande.",
+      "mission_options": [
+        "Site vitrine",
+        "Application web",
+        "Branding & design",
+        "Consulting"
+      ],
+      "api_error": "Le serveur n’a pas pu traiter votre demande.",
+      "field_error": "Merci de vérifier les champs obligatoires.",
+      "website_label": "Site web"
     }
   },
   "SolutionPage": {
-    "title_main": "SOLUTIONS",
-    "title_sub": "SUR MESURE",
-    "description": "De la création d’interfaces web complexes aux audits ergonomiques et au design culturel Afro-Futuriste.",
-    "pricing": "TARIFICATION",
-    "details_btn": "SPÉCIFICATIONS DÉTAILLÉES",
-    "benefits_title": "BÉNÉFICES CLÉS :",
-    "order_btn": "COMMANDER CE MODULE",
+    "hero": {
+      "badge": "CATALOGUE_SOLUTIONS_2026",
+      "title_main": "CONSTRUIRE",
+      "title_highlight": "NOUVELLES NORMES"
+    },
     "solutions": {
       "0": {
-        "id": "01",
-        "category": "ENGINE",
-        "title": "ARCHITECTURE WEB SUR-MESURE",
-        "description": "Développement complet d'applications web Next.js & React réactives, scalables et optimisées pour le SEO.",
-        "price": "Sur Devis",
-        "features": {
-          "0": "Next.js 15 & React 19 Full-Stack",
-          "1": "Design Responsive Afro-Futuriste",
-          "2": "Optimisation Performance & SEO 99+"
-        },
-        "full_description": "Conception de bout en bout de votre plateforme web. De l'architecture front-end aux API RESTful et à la base de données, nous construisons une solution performante, moderne et totalement sur-mesure.",
-        "benefits": {
-          "0": "Architecture moderne et zéro dette technique",
-          "1": "Performance d'affichage ultra-rapide",
-          "2": "Identité visuelle unique et captivante"
-        },
-        "target_audience": "Startups, Entreprises et Projets ambitieux"
+        "id": "SOL-001",
+        "category": "MOTEUR",
+        "title": "Moteur de Motifs Dynamiques",
+        "description": "Interface de génération visuelle fusionnant Ndop et Adinkra pour vos actifs digitaux.",
+        "features": [
+          "Génération vectorielle",
+          "Export HD (SVG/PNG)",
+          "Customisation de couleurs"
+        ],
+        "full_description": "Un moteur de rendu interactif conçu pour permettre aux créatifs de manipuler l'ADN visuel africain sans perte de sens. Idéal pour contrer l'uniformisation du design global.",
+        "benefits": [
+          "Identité forte",
+          "Prêt pour le Web",
+          "Respect des symboliques"
+        ],
+        "target_audience": "Designers & Créateurs de contenu",
+        "price": "GRATUIT / 10 000 FCFA"
       },
       "1": {
-        "id": "02",
-        "category": "PROTOCOL",
-        "title": "AUDIT UX/UI & REFONTE GRAPHIQUE",
-        "description": "Analyse ergonomique approfondie, création de système de design et optimisation du parcours utilisateur.",
-        "price": "Sur Devis",
-        "features": {
-          "0": "Audit d'Ergonomie & UX Research",
-          "1": "Création de Design System complet",
-          "2": "Prototypes Figma Haute-Fidélité"
-        },
-        "full_description": "Améliorez le taux de conversion et la satisfaction de vos utilisateurs grâce à une révision globale de votre expérience visuelle et interactive.",
-        "benefits": {
-          "0": "Augmentation de l'engagement des utilisateurs",
-          "1": "Cohérence visuelle sur toutes les pages",
-          "2": "Prototypes clairs prêts pour les développeurs"
-        },
-        "target_audience": "Applications existantes souhaitant moderniser leur interface"
+        "id": "SOL-002",
+        "category": "PROTOCOLE",
+        "title": "Protocole Design Africain",
+        "description": "Le guide ultime (African UX/UI) pour construire des interfaces qui parlent au continent.",
+        "features": [
+          "Livre blanc UX",
+          "Composants UI (Figma)",
+          "Psychologie des couleurs"
+        ],
+        "full_description": "Bien plus qu'un guide, c'est un protocole de construction d'interfaces basé sur l'ergonomie locale et la philosophie visuelle ancestrale adaptée au mobile-first.",
+        "benefits": [
+          "Engagement utilisateur accru",
+          "Standardisation pro",
+          "Scalabilité culturelle"
+        ],
+        "target_audience": "Product Managers & Développeurs",
+        "price": "25 000 FCFA / An"
       },
       "2": {
-        "id": "03",
+        "id": "SOL-003",
         "category": "LAB",
-        "title": "DESIGN CULTUREL AFRO-FUTURISTE",
-        "description": "Intégration d'art numérique, géométrie sacrée (Ndop, Adinkra) et identité culturelle forte dans vos projets web.",
-        "price": "Sur Devis",
-        "features": {
-          "0": "Vectorisation de motifs ancestraux",
-          "1": "Animations & Micro-interactions CSS",
-          "2": "Direction artistique & Branding"
-        },
-        "full_description": "Donnez une âme unique à vos produits digitaux en fusionnant les motifs visuels africains ancestraux avec les standards du web cybernétique et moderne.",
-        "benefits": {
-          "0": "Démarque concrète face à la concurrence",
-          "1": "Valorisation du patrimoine et récit de marque",
-          "2": "Expérience immersive et mémorable"
-        },
-        "target_audience": "Marques, institutions culturelles et créateurs passionnés"
+        "title": "Atelier Heritage & Tech",
+        "description": "Sessions immersives sur l'intégration de la culture dans les produits technologiques.",
+        "features": ["Ateliers en direct", "Études de cas", "Ressources PDF"],
+        "full_description": "Un laboratoire d'idées où nous décortiquons comment le patrimoine africain peut influencer les algorithmes et l'expérience utilisateur de demain.",
+        "benefits": [
+          "Accès réseau exclusif",
+          "Certificat de participation",
+          "Vision prospective"
+        ],
+        "target_audience": "Étudiants & Entreprises RSE",
+        "price": "5 000 FCFA (Don)"
       }
+    },
+    "newsletter": {
+      "title": "Rejoins le Mouvement",
+      "description": "Recevez les protocoles de design directement dans votre boîte mail.",
+      "placeholder": "root@culture-innovation.io",
+      "button": "S'abonner"
+    },
+    "modal": {
+      "overview_title": "Aperçu_Solution",
+      "benefits_title": "Avantages_Clés",
+      "audience_title": "Public_Cible",
+      "investment_title": "Investissement",
+      "cta_button": "Initialiser l'Intégration"
     }
   },
   "Footer": {
@@ -350,5 +435,36 @@
     "cta_contact": "APPELER_SUPPORT",
     "back_message": "Retour en sécurité...",
     "quote": "\"En code, comme dans la vie : chaque erreur est juste un message en attente de compréhension.\""
+  },
+  "AdminPage": {
+    "badge": "ADMIN",
+    "title": "Back-office Thek1ng237",
+    "loading": "Chargement...",
+    "logout": "Déconnexion",
+    "recent": "Demandes récentes",
+    "inquiries": "Demandes",
+    "quickAccess": "Accès rapide",
+    "empty": "Aucune donnée récente.",
+    "cards": {
+      "inquiries": "Nouvelles demandes",
+      "quotes": "Devis en traitement",
+      "pending": "Devis en attente",
+      "clients": "Clients"
+    },
+    "form": {
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion..."
+    },
+    "errors": {
+      "login": "Identifiants invalides.",
+      "session": "Session expirée ou non autorisée."
+    },
+    "resources": {
+      "projects": "Projets",
+      "services": "Services",
+      "inquiries": "Demandes"
+    }
   }
 }

@@ -38,7 +38,8 @@ const voletsData: VoletItem[] = [
     id: "skills",
     voletNumber: "VOLET 01",
     voletTitle: "MES SKILLS",
-    voletDescription: "Compétences techniques et ingénierie logicielle pour la construction d'applications web modernes.",
+    voletDescription:
+      "Compétences techniques et ingénierie logicielle pour la construction d'applications web modernes.",
     color: "#FFC82C",
     groups: [
       {
@@ -46,7 +47,8 @@ const voletsData: VoletItem[] = [
         stepLabel: "SKILL 01",
         title: "FRONTEND",
         subtitle: "Interfaces Réactives & UX",
-        description: "Conception d'interfaces web fluides, performantes et accessibles avec Next.js, Angular et TypeScript.",
+        description:
+          "Conception d'interfaces web fluides, performantes et accessibles avec Next.js, Angular et TypeScript.",
         color: "#FFC82C",
         borderColor: "rgba(255, 200, 44, 0.3)",
         icon: "pi pi-desktop",
@@ -66,7 +68,8 @@ const voletsData: VoletItem[] = [
         stepLabel: "SKILL 02",
         title: "BACKEND & LANGAGES",
         subtitle: "Architecture Serveur & APIs RESTful",
-        description: "Création d'APIs REST hautes performances et services backend sécurisés avec Node.js, Java, Express et Django.",
+        description:
+          "Création d'APIs REST hautes performances et services backend sécurisés avec Node.js, Java, Express et Django.",
         color: "#FF3B56",
         borderColor: "rgba(255, 59, 86, 0.3)",
         icon: "pi pi-server",
@@ -74,8 +77,8 @@ const voletsData: VoletItem[] = [
         items: [
           { name: "Node.js", icon: "nodejs3dicon.svg" },
           { name: "Java", icon: "java3dicon.svg" },
-          { name: "Express.js" ,icon: "express3dicon.svg"},
-          { name: "Django",icon: "django3dicon.svg" },
+          { name: "Express.js", icon: "express3dicon.svg" },
+          { name: "Django", icon: "django3dicon.svg" },
           { name: "API REST", icon: "postman3dicon.svg" },
         ],
       },
@@ -84,7 +87,8 @@ const voletsData: VoletItem[] = [
         stepLabel: "SKILL 03",
         title: "DATA & WEB3",
         subtitle: "Bases de Données & Blockchain",
-        description: "Modélisation de données (SQL & NoSQL) et intégration des protocoles décentralisés Web3.",
+        description:
+          "Modélisation de données (SQL & NoSQL) et intégration des protocoles décentralisés Web3.",
         color: "#10B981",
         borderColor: "rgba(16, 185, 129, 0.3)",
         icon: "pi pi-database",
@@ -103,7 +107,8 @@ const voletsData: VoletItem[] = [
     id: "outils",
     voletNumber: "VOLET 02",
     voletTitle: "MES OUTILS",
-    voletDescription: "Suite logicielle, prototypage design, versioning et outils de développement collaboratif au quotidien.",
+    voletDescription:
+      "Suite logicielle, prototypage design, versioning et outils de développement collaboratif au quotidien.",
     color: "#FFE57F",
     groups: [
       {
@@ -111,7 +116,8 @@ const voletsData: VoletItem[] = [
         stepLabel: "OUTIL 01",
         title: "DESIGN & CREATION",
         subtitle: "Prototypage UI/UX & Canvas Visuel",
-        description: "Design d'interfaces futuristes sur Figma, suite Adobe (Photoshop, Illustrator) et organisation créative sur Milanote.",
+        description:
+          "Design d'interfaces futuristes sur Figma, suite Adobe (Photoshop, Illustrator) et organisation créative sur Milanote.",
         color: "#FFE57F",
         borderColor: "rgba(255, 229, 127, 0.3)",
         icon: "pi pi-palette",
@@ -121,7 +127,7 @@ const voletsData: VoletItem[] = [
           { name: "Photoshop", icon: "potoshop3dicon.svg" },
           { name: "Illustrator", icon: "illustrator.svg" },
           { name: "Milanote", icon: "milanote3dicon.svg" },
-          { name: "Canva & Graphic UI",icon: "canva3dicon.svg" },
+          { name: "Canva & Graphic UI", icon: "canva3dicon.svg" },
         ],
       },
       {
@@ -129,7 +135,8 @@ const voletsData: VoletItem[] = [
         stepLabel: "OUTIL 02",
         title: "DEV & ENVIRONMENT",
         subtitle: "Éditeur, Versioning & Hosting",
-        description: "Environnement de développement sur VS Code, gestion de dépôt Git, GitHub, GitLab, Postman et déploiement Vercel.",
+        description:
+          "Environnement de développement sur VS Code, gestion de dépôt Git, GitHub, GitLab, Postman et déploiement Vercel.",
         color: "#3B82F6",
         borderColor: "rgba(59, 130, 246, 0.3)",
         icon: "pi pi-code",
@@ -148,15 +155,13 @@ const voletsData: VoletItem[] = [
         stepLabel: "OUTIL 03",
         title: "ORGANISATION & WORKFLOW",
         subtitle: "Gestion de Projet & CMS",
-        description: "Planification Agile sur Trello, intégration CMS sur WordPress et suivi de projet collaboratif.",
+        description:
+          "Planification Agile sur Trello, intégration CMS sur WordPress et suivi de projet collaboratif.",
         color: "#A855F7",
         borderColor: "rgba(168, 85, 247, 0.3)",
         icon: "pi pi-sliders-h",
         tag: "#WORKFLOW_AGILE",
-        items: [
-          { name: "Trello", icon: "trello3dicon.svg" },
-          
-        ],
+        items: [{ name: "Trello", icon: "trello3dicon.svg" }],
       },
     ],
   },
@@ -298,12 +303,16 @@ export default function About() {
 
   const handlePrev = () => {
     setDirection(-1);
-    setActiveVoletIndex((prev) => (prev === 0 ? voletsData.length - 1 : prev - 1));
+    setActiveVoletIndex((prev) =>
+      prev === 0 ? voletsData.length - 1 : prev - 1,
+    );
   };
 
   const handleNext = () => {
     setDirection(1);
-    setActiveVoletIndex((prev) => (prev === voletsData.length - 1 ? 0 : prev + 1));
+    setActiveVoletIndex((prev) =>
+      prev === voletsData.length - 1 ? 0 : prev + 1,
+    );
   };
 
   return (
@@ -323,7 +332,7 @@ export default function About() {
               <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/15 bg-[#0B0D18]">
                 <img
                   src="/images/yann.jpg"
-                  alt="KingTang"
+                  alt="Thek1ng237"
                   className="object-cover h-full w-full"
                 />
               </div>
@@ -338,7 +347,8 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-                {t("header.title_main")} <span className="text-[#FFC82C]">{t("header.title_sub")}</span>
+                INGÉNIERIE LOGICIELLE &amp;{" "}
+                <span className="text-[#FFC82C]">VISION CREATIVE</span>
               </h1>
             </motion.div>
 
@@ -348,20 +358,35 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-azurio text-base md:text-lg text-gray-200 leading-relaxed font-light"
             >
-              {t("header.bio")}
+              Développeur full-stack, je conçois des applications web de bout en
+              bout : interfaces soignées, API, bases de données et intégrations.
+              J’allie architecture fiable, expérience utilisateur et expression
+              culturelle.
             </motion.p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-              <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
-                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">{t("header.card1_title")}</span>
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="glass-card p-6 rounded-2xl border border-white/15 font-azurio"
+              >
+                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">
+                  FULL-STACK ENGINEERING
+                </span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  {t("header.card1_desc")}
+                  Next.js, Angular, Node.js, Express.js et Django, des
+                  interfaces aux API.
                 </p>
               </motion.div>
-              <motion.div whileHover={{ y: -4 }} className="glass-card p-6 rounded-2xl border border-white/15 font-azurio">
-                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">{t("header.card2_title")}</span>
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="glass-card p-6 rounded-2xl border border-white/15 font-azurio"
+              >
+                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">
+                  AFRO-FUTURISM UX
+                </span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  {t("header.card2_desc")}
+                  Design d’interface fondé sur les mathématiques des motifs
+                  africains ancestraux.
                 </p>
               </motion.div>
             </div>
@@ -381,7 +406,7 @@ export default function About() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs sm:text-sm uppercase tracking-[0.2em] rounded-2xl shadow-[0_0_25px_rgba(255,59,86,0.35)] transition-all group cursor-pointer"
               >
                 <i className="pi pi-file-pdf text-lg group-hover:scale-110 transition-transform" />
-                {t("header.download_cv")}
+                TÉLÉCHARGER LE CV OFFICIEL (PDF)
               </a>
             </motion.div>
           </div>
@@ -390,7 +415,6 @@ export default function About() {
 
       {/* ROADMAP SWIPER / EXPERTISE SECTION */}
       <section className="py-20 px-6 max-w-7xl mx-auto z-10 relative border-t border-white/10">
-        
         {/* NARRATIVE HEADER (MON EXPERTISE) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-12">
           <motion.div
@@ -400,11 +424,13 @@ export default function About() {
             className="lg:col-span-6"
           >
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              {t("expertise.title")}
+              MON <span className="text-[#FFC82C]">EXPERTISE</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              {t("expertise.description")}
+              Naviguez interactivement entre le{" "}
+              <strong>Volet 1 : Mes Skills</strong> et le{" "}
+              <strong>Volet 2 : Mes Outils</strong> via le Swiper ci-dessous.
             </p>
           </motion.div>
 
@@ -430,9 +456,13 @@ export default function About() {
                         : "text-gray-400 hover:text-white hover:bg-white/5"
                     }`}
                   >
-                    <span className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-black ${
-                      isActive ? "bg-black text-[#FFC82C]" : "bg-white/10 text-gray-300"
-                    }`}>
+                    <span
+                      className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-black ${
+                        isActive
+                          ? "bg-black text-[#FFC82C]"
+                          : "bg-white/10 text-gray-300"
+                      }`}
+                    >
                       0{idx + 1}
                     </span>
                     {volet.voletTitle}
@@ -494,10 +524,14 @@ export default function About() {
 
               {/* ROADMAP CONTENT FOR THIS VOLET */}
               <div className="relative">
-                
                 {/* DESKTOP SVG ROAD PATH */}
                 <div className="hidden lg:block absolute inset-0 pointer-events-none z-0">
-                  <svg className="w-full h-full" viewBox="0 0 1000 800" preserveAspectRatio="none" fill="none">
+                  <svg
+                    className="w-full h-full"
+                    viewBox="0 0 1000 800"
+                    preserveAspectRatio="none"
+                    fill="none"
+                  >
                     <path
                       d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
                       stroke="#1B2035"
@@ -557,14 +591,19 @@ export default function About() {
                             <span className="text-xs font-mono font-bold tracking-widest text-gray-400 block">
                               {group.stepLabel} &bull; {activeVolet.voletTitle}
                             </span>
-                            <h4 className="font-achiko text-lg font-bold uppercase tracking-wider" style={{ color: group.color }}>
+                            <h4
+                              className="font-achiko text-lg font-bold uppercase tracking-wider"
+                              style={{ color: group.color }}
+                            >
                               {group.title}
                             </h4>
                           </div>
                         </div>
 
                         {/* DESKTOP ALTERNATING CARD PLACEMENT */}
-                        <div className={`lg:col-span-6 ${isEven ? "lg:pr-8" : "lg:pl-8 lg:col-start-7"}`}>
+                        <div
+                          className={`lg:col-span-6 ${isEven ? "lg:pr-8" : "lg:pl-8 lg:col-start-7"}`}
+                        >
                           <div
                             className="glass-card p-6 sm:p-8 rounded-3xl border transition-all duration-300 relative group overflow-hidden"
                             style={{ borderColor: group.borderColor }}
@@ -593,7 +632,10 @@ export default function About() {
                                   </h4>
                                 </div>
                               </div>
-                              <i className={`${group.icon} text-2xl opacity-80`} style={{ color: group.color }} />
+                              <i
+                                className={`${group.icon} text-2xl opacity-80`}
+                                style={{ color: group.color }}
+                              />
                             </div>
 
                             <p className="text-xs sm:text-sm text-gray-300 font-light mb-6 leading-relaxed">
@@ -615,12 +657,17 @@ export default function About() {
                                       width={38}
                                       height={38}
                                       className="h-24 w-24 object-contain transition-all duration-300 group-hover/icon:scale-110 group-hover/icon:brightness-125"
-                                      style={{ filter: `drop-shadow(0 0 3px ${group.color}bb) drop-shadow(0 0 10px ${group.color}66)` }}
+                                      style={{
+                                        filter: `drop-shadow(0 0 3px ${group.color}bb) drop-shadow(0 0 10px ${group.color}66)`,
+                                      }}
                                     />
                                   ) : (
                                     <span
                                       className="h-24  flex items-center text-2xl transition-all duration-300 group-hover/icon:scale-110"
-                                      style={{ color: group.color, filter: `drop-shadow(0 0 3px ${group.color}bb) drop-shadow(0 0 15px ${group.color}66)` }}
+                                      style={{
+                                        color: group.color,
+                                        filter: `drop-shadow(0 0 3px ${group.color}bb) drop-shadow(0 0 15px ${group.color}66)`,
+                                      }}
                                     >
                                       <i className="pi pi-bolt" />
                                     </span>
@@ -635,9 +682,13 @@ export default function About() {
                         </div>
 
                         {/* DESKTOP CENTER ROAD MAP BADGE PIN */}
-                        <div className={`hidden lg:flex lg:col-span-6 items-center justify-center ${
-                          isEven ? "lg:col-start-7 lg:pl-12" : "lg:col-start-1 lg:row-start-1 lg:pr-12"
-                        }`}>
+                        <div
+                          className={`hidden lg:flex lg:col-span-6 items-center justify-center ${
+                            isEven
+                              ? "lg:col-start-7 lg:pl-12"
+                              : "lg:col-start-1 lg:row-start-1 lg:pr-12"
+                          }`}
+                        >
                           <div className="relative flex items-center justify-center">
                             <div
                               className="w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed opacity-60"
@@ -647,17 +698,19 @@ export default function About() {
                               className="absolute w-16 h-16 rounded-full flex flex-col items-center justify-center text-black shadow-[0_0_30px_rgba(0,0,0,0.8)] border-4 border-[#0B0D18] z-20 transition-transform hover:scale-110"
                               style={{ backgroundColor: group.color }}
                             >
-                              <span className="font-achiko text-2xl font-black leading-none">{group.step}</span>
-                              <span className="text-[8px] font-bold tracking-tighter uppercase font-mono">NODE</span>
+                              <span className="font-achiko text-2xl font-black leading-none">
+                                {group.step}
+                              </span>
+                              <span className="text-[8px] font-bold tracking-tighter uppercase font-mono">
+                                NODE
+                              </span>
                             </div>
                           </div>
                         </div>
-
                       </div>
                     );
                   })}
                 </div>
-
               </div>
             </motion.div>
           </AnimatePresence>
@@ -681,12 +734,10 @@ export default function About() {
             );
           })}
         </div>
-
       </section>
 
       {/* CERTIFICATIONS & ACCRÉDITATIONS SECTION */}
       <section className="py-24 px-6 max-w-7xl mx-auto z-10 relative border-t border-white/10 font-azurio">
-        
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <motion.div
@@ -696,20 +747,23 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              {t("certifications.title")}
+              CERTIFICATIONS &amp;{" "}
+              <span className="text-[#FFC82C]">DIPLÔMES</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              {t("certifications.description")}
+              Formations certifiantes et diplômes obtenus sur{" "}
+              <strong>OpenClassrooms</strong> et <strong>Udemy</strong>{" "}
+              attestant d&apos;une maîtrise technique rigoureuse.
             </p>
           </motion.div>
 
           {/* FILTER TABS */}
           <div className="p-1.5 rounded-2xl glass-card border border-white/15 flex flex-wrap items-center gap-2 bg-[#121526] self-start md:self-auto">
             {[
-              { id: "ALL", label: t("certifications.filter_all") },
-              { id: "OPENCLASSROOMS", label: t("certifications.filter_openclassrooms") },
-              { id: "UDEMY", label: t("certifications.filter_udemy") },
+              { id: "ALL", label: "TOUS (10)" },
+              { id: "OPENCLASSROOMS", label: "OPENCLASSROOMS (6)" },
+              { id: "UDEMY", label: "UDEMY (4)" },
             ].map((tab) => {
               const isActive = certifCategoryFilter === tab.id;
               return (
@@ -734,7 +788,8 @@ export default function About() {
           {certificationsData
             .filter(
               (cert) =>
-                certifCategoryFilter === "ALL" || cert.category === certifCategoryFilter
+                certifCategoryFilter === "ALL" ||
+                cert.category === certifCategoryFilter,
             )
             .map((cert, idx) => (
               <motion.div
@@ -795,7 +850,7 @@ export default function About() {
                 {/* PDF Download Button */}
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-gray-400 font-bold uppercase">
-                    {t("certifications.pdf_format")}
+                    FORMAT: PDF VERIFIÉ
                   </span>
 
                   <a
@@ -805,18 +860,21 @@ export default function About() {
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#FFC82C] text-white hover:text-black font-achiko text-xs font-bold uppercase tracking-wider transition-all border border-white/15 hover:border-[#FFC82C] group/btn cursor-pointer"
                   >
                     <i className="pi pi-file-pdf text-sm" />
-                    <span>{t("certifications.view_pdf")}</span>
+                    <span>VOIR DIPLÔME</span>
                   </a>
                 </div>
               </motion.div>
             ))}
         </div>
-
       </section>
 
       {/* CTA FOOTER LINK */}
       <div className="text-center pt-8 relative z-10">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="inline-block"
+        >
           <Link
             href="/PROJECT"
             className="px-10 py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm uppercase tracking-widest rounded-xl shadow-[0_0_30px_rgba(255,200,44,0.4)] transition-all inline-block"
@@ -828,6 +886,3 @@ export default function About() {
     </div>
   );
 }
-
-
-
