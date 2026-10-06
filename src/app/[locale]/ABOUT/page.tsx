@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 type SkillBarProps = {
@@ -288,62 +288,8 @@ const slideVariants = {
   }),
 };
 
-const atelierStages = [
-  {
-    number: "01",
-    title: "Comprendre",
-    label: "LE BESOIN",
-    description: "Clarifier le contexte, les objectifs et les personnes pour lesquelles on conçoit.",
-    color: "#FFC82C",
-    icon: "pi pi-compass",
-  },
-  {
-    number: "02",
-    title: "Dessiner",
-    label: "L'EXPÉRIENCE",
-    description: "Structurer les parcours et l'interface avant de choisir la solution technique.",
-    color: "#FF3B56",
-    icon: "pi pi-pencil",
-  },
-  {
-    number: "03",
-    title: "Construire",
-    label: "LE PRODUIT",
-    description: "Relier frontend, API et données dans une architecture claire et maintenable.",
-    color: "#10B981",
-    icon: "pi pi-code",
-  },
-  {
-    number: "04",
-    title: "Faire évoluer",
-    label: "LA SUITE",
-    description: "Tester, livrer et continuer à apprendre pour améliorer chaque version.",
-    color: "#59CBE8",
-    icon: "pi pi-sync",
-  },
-];
-
-const parcoursSteps = [
-  {
-    title: "Dessiner l’expérience",
-    text: "Partir des besoins réels, organiser l’information et rendre chaque interface simple à parcourir.",
-    accent: "#FFC82C",
-  },
-  {
-    title: "Construire le produit",
-    text: "Étendre cette attention au frontend, aux API et aux données pour livrer des applications cohérentes de bout en bout.",
-    accent: "#10B981",
-  },
-  {
-    title: "Créer avec une identité",
-    text: "Associer ingénierie moderne et expression culturelle pour donner aux projets une présence qui leur ressemble.",
-    accent: "#FF3B56",
-  },
-];
-
 export default function About() {
   const t = useTranslations("AboutPage");
-  const prefersReducedMotion = useReducedMotion();
   const [activeVoletIndex, setActiveVoletIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [certifCategoryFilter, setCertifCategoryFilter] = useState("ALL");
@@ -370,40 +316,39 @@ export default function About() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0B0D18] pb-16 pt-20 font-azurio text-[#F8F9FA] sm:pt-24">
-      <section className="relative z-10 mx-auto max-w-7xl px-4 pb-12 pt-6 sm:px-6 sm:pb-16 sm:pt-10">
-        <div className="grid grid-cols-[96px_minmax(0,1fr)] items-center gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-12 lg:gap-12">
-          <div className="relative font-azurio sm:row-span-2 lg:col-span-4 lg:row-span-1">
+    <div className="min-h-screen relative overflow-hidden bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-24">
+      {/* HEADER SECTION */}
+      <section className="relative pt-10 pb-16 px-6 max-w-7xl mx-auto z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: ID Card */}
+          <div className="lg:col-span-5 relative font-azurio">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.8 }}
-              className="relative mx-auto max-w-[360px]"
+              className="glass-card p-4 rounded-3xl border border-[#FFC82C] shadow-[0_0_35px_rgba(255,200,44,0.2)]"
             >
-              <div className="relative aspect-[4/5] overflow-hidden border border-[#FFC82C]/45 bg-[#121526] sm:rounded-t-[45%] sm:rounded-b-sm">
-                <Image
+              <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/15 bg-[#0B0D18]">
+                <img
                   src="/images/yann.jpg"
                   alt="Thek1ng237"
-                  fill
-                  priority
-                  sizes="(max-width: 639px) 96px, (max-width: 1023px) 38vw, 360px"
-                  className="object-cover object-[center_28%]"
+                  className="object-cover h-full w-full"
                 />
               </div>
-              <span className="absolute -bottom-3 -right-2 bg-[#FFC82C] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.12em] text-[#0B0D18] sm:-right-3 sm:px-3 sm:py-2 sm:text-[10px]">Full-stack · UX</span>
             </motion.div>
           </div>
 
-          <div className="min-w-0 space-y-4 sm:space-y-5 lg:col-span-8">
+          {/* Right Column: Bio */}
+          <div className="lg:col-span-7 space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="mb-2 font-mono text-[8px] font-bold uppercase tracking-[0.15em] text-[#FFC82C] sm:text-[10px] sm:tracking-[0.2em]">MON ATELIER NUMÉRIQUE · DOUALA, CAMEROUN</p>
-              <h1 className="break-words font-achiko text-[clamp(1.35rem,5.3vw,4rem)] font-black uppercase leading-[1.04] text-white">
-                Je transforme les idées en{" "}
-                <span className="text-[#FFC82C]">expériences numériques.</span>
+              <h1 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
+                INGÉNIERIE LOGICIELLE &amp;{" "}
+                <span className="text-[#FFC82C]">VISION CREATIVE</span>
               </h1>
             </motion.div>
 
@@ -411,108 +356,66 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="max-w-2xl text-xs font-light leading-relaxed text-gray-200 sm:text-base lg:text-lg"
+              className="font-azurio text-base md:text-lg text-gray-200 leading-relaxed font-light"
             >
-              Je suis développeur full-stack. Je relie design d’interface,
-              architecture backend et expression culturelle pour concevoir des
-              produits web utiles, lisibles et durables.
+              Développeur full-stack, je conçois des applications web de bout en
+              bout : interfaces soignées, API, bases de données et intégrations.
+              J’allie architecture fiable, expérience utilisateur et expression
+              culturelle.
             </motion.p>
 
-            <div className="flex flex-wrap gap-x-4 gap-y-1 border-l-2 border-[#FF3B56] pl-3 text-[9px] font-bold uppercase tracking-[0.08em] text-white/55 sm:gap-x-6 sm:pl-4 sm:text-[10px] sm:tracking-[0.12em]">
-              <span>Design UI/UX</span><span>Frontend</span><span>API &amp; data</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="glass-card p-6 rounded-2xl border border-white/15 font-azurio"
+              >
+                <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">
+                  FULL-STACK ENGINEERING
+                </span>
+                <p className="text-xs text-gray-300 leading-relaxed font-light">
+                  Next.js, Angular, Node.js, Express.js et Django, des
+                  interfaces aux API.
+                </p>
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="glass-card p-6 rounded-2xl border border-white/15 font-azurio"
+              >
+                <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">
+                  AFRO-FUTURISM UX
+                </span>
+                <p className="text-xs text-gray-300 leading-relaxed font-light">
+                  Design d’interface fondé sur les mathématiques des motifs
+                  africains ancestraux.
+                </p>
+              </motion.div>
             </div>
-          </div>
 
-          <div className="col-span-2 flex flex-wrap gap-3 sm:col-span-1 lg:col-span-8 lg:col-start-5">
-            <a
-              href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#FFC82C] px-4 py-3 font-achiko text-[10px] font-bold uppercase tracking-[0.08em] text-[#101018] transition hover:bg-[#FFE57F] sm:px-6 sm:text-xs sm:tracking-[0.14em]"
+            {/* CV DOWNLOAD ACTION CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="pt-2"
             >
-              <i className="pi pi-file-pdf" aria-hidden="true" /> Télécharger mon CV
-            </a>
-            <a href="#mon-atelier" className="inline-flex min-h-11 items-center gap-2 border border-white/20 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-white/75 transition hover:border-[#10B981] hover:text-[#10B981] sm:px-5 sm:text-xs sm:tracking-[0.12em]">
-              Découvrir ma méthode <i className="pi pi-arrow-down" aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <nav aria-label="Sommaire de la page À propos" className="relative z-20 border-y border-white/10 bg-[#0B0D18]/95">
-        <div className="mx-auto flex max-w-7xl gap-6 overflow-x-auto px-4 py-3 sm:gap-9 sm:px-6">
-          {[
-            ["#mon-parcours", "Mon parcours"],
-            ["#mon-atelier", "Ma méthode"],
-            ["#expertises", "Expertises & outils"],
-            ["#certifications", "Certifications"],
-          ].map(([href, label], index) => (
-            <a key={href} href={href} className="flex shrink-0 items-center gap-2 text-[9px] font-bold uppercase tracking-[0.1em] text-white/50 transition hover:text-[#FFC82C] sm:text-[10px] sm:tracking-[0.13em]">
-              <span className="font-mono text-[#FFC82C]/70">0{index + 1}</span>{label}
-            </a>
-          ))}
-        </div>
-      </nav>
-
-      <section id="mon-parcours" className="relative z-10 mx-auto max-w-7xl scroll-mt-28 px-4 py-14 sm:px-6 sm:py-20">
-        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.5fr] lg:items-start">
-          <div>
-            <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-[#FF3B56]">MON PARCOURS</p>
-            <h2 className="mt-3 max-w-sm font-achiko text-3xl font-black uppercase leading-tight text-white sm:text-5xl">Du pixel au <span className="text-[#FF3B56]">produit complet.</span></h2>
-            <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-white/55">Mon approche s’est construite autour d’un même fil : rendre la technologie claire, utile et expressive.</p>
-          </div>
-          <div className="border-l border-white/15 pl-5 sm:pl-8">
-            {parcoursSteps.map((step, index) => (
-              <motion.article
-                key={step.title}
-                initial={prefersReducedMotion ? false : { opacity: 0, x: 18 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.45, delay: prefersReducedMotion ? 0 : index * 0.1 }}
-                className="relative pb-7 last:pb-0 sm:pb-9"
+              <a
+                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs sm:text-sm uppercase tracking-[0.2em] rounded-2xl shadow-[0_0_25px_rgba(255,59,86,0.35)] transition-all group cursor-pointer"
               >
-                <span className="absolute -left-[26px] top-1 grid size-3 place-items-center rounded-full border-2 border-[#0B0D18] sm:-left-[39px]" style={{ backgroundColor: step.accent, boxShadow: `0 0 18px ${step.accent}70` }} />
-                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.15em]" style={{ color: step.accent }}>0{index + 1} / REPÈRE</span>
-                <h3 className="mt-1 font-achiko text-lg font-bold text-white sm:text-xl">{step.title}</h3>
-                <p className="mt-1 max-w-xl text-xs leading-relaxed text-white/50 sm:text-sm">{step.text}</p>
-              </motion.article>
-            ))}
+                <i className="pi pi-file-pdf text-lg group-hover:scale-110 transition-transform" />
+                TÉLÉCHARGER LE CV OFFICIEL (PDF)
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section id="mon-atelier" className="relative z-10 border-y border-white/10 bg-[#10131d] py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_2fr] lg:items-end">
-            <div>
-              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-[#10B981]">LE PROCESSUS DE CRÉATION</p>
-              <h2 className="mt-3 max-w-md font-achiko text-3xl font-black uppercase leading-tight text-white sm:text-5xl">De l’idée au <span className="text-[#10B981]">produit.</span></h2>
-            </div>
-            <p className="max-w-2xl text-sm font-light leading-relaxed text-white/55 sm:text-base">Chaque projet traverse quatre temps. L’atelier relie la compréhension du besoin, l’expérience, l’ingénierie et l’amélioration continue.</p>
-          </div>
-
-          <div className="mt-10 grid gap-0 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
-            {atelierStages.map((stage, index) => (
-              <motion.article
-                key={stage.number}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.45, delay: prefersReducedMotion ? 0 : index * 0.08 }}
-                className="relative border-t border-white/15 py-5 pr-5 sm:min-h-48 sm:border-l sm:border-t-0 sm:pl-5 sm:first:border-l-0 lg:min-h-56"
-              >
-                <span className="font-achiko text-4xl font-black" style={{ color: stage.color }}>{stage.number}</span>
-                <div className="mt-4 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.14em] text-white/40"><i className={stage.icon} style={{ color: stage.color }} aria-hidden="true" />{stage.label}</div>
-                <h3 className="mt-2 font-achiko text-xl font-bold text-white">{stage.title}</h3>
-                <p className="mt-2 max-w-xs text-xs leading-relaxed text-white/50">{stage.description}</p>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="expertises" className="relative z-10 mx-auto max-w-7xl scroll-mt-28 border-t border-white/10 px-4 py-16 sm:px-6 sm:py-20">
+      {/* ROADMAP SWIPER / EXPERTISE SECTION */}
+      <section className="py-20 px-6 max-w-7xl mx-auto z-10 relative border-t border-white/10">
+        {/* NARRATIVE HEADER (MON EXPERTISE) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -520,13 +423,14 @@ export default function About() {
             viewport={{ once: true }}
             className="lg:col-span-6"
           >
-            <p className="mb-3 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-[#FFC82C]">LES OUTILS DE L’ATELIER</p>
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              Mes <span className="text-[#FFC82C]">expertises</span>
+              MON <span className="text-[#FFC82C]">EXPERTISE</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              Des compétences qui couvrent le produit de bout en bout. Choisis un domaine pour parcourir les outils utilisés dans mon travail.
+              Naviguez interactivement entre le{" "}
+              <strong>Volet 1 : Mes Skills</strong> et le{" "}
+              <strong>Volet 2 : Mes Outils</strong> via le Swiper ci-dessous.
             </p>
           </motion.div>
 
@@ -588,7 +492,7 @@ export default function About() {
         </div>
 
         {/* SWIPER CONTAINER WITH ANIMATE PRESENCE */}
-        <div className="relative min-h-[420px] overflow-hidden pt-4 sm:min-h-[560px]">
+        <div className="relative min-h-[600px] overflow-hidden rounded-3xl pt-4">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={activeVolet.id}
@@ -630,25 +534,37 @@ export default function About() {
                   >
                     <path
                       d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
-                      stroke={activeVolet.color}
-                      strokeWidth="2"
+                      stroke="#1B2035"
+                      strokeWidth="50"
                       strokeLinecap="round"
-                      opacity="0.35"
+                    />
+                    <path
+                      d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
+                      stroke="#0D0F1C"
+                      strokeWidth="40"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
+                      stroke={activeVolet.color}
+                      strokeWidth="42"
+                      strokeLinecap="round"
+                      opacity="0.25"
                     />
                     <path
                       d="M 500 0 C 500 80, 800 80, 800 240 C 800 400, 200 400, 200 560 C 200 720, 500 720, 500 800"
                       stroke="#FFFFFF"
-                      strokeWidth="1"
-                      strokeDasharray="3 12"
+                      strokeWidth="4"
+                      strokeDasharray="12 12"
                       strokeLinecap="round"
-                      opacity="0.45"
+                      opacity="0.8"
                     />
                   </svg>
                 </div>
 
                 {/* MOBILE VERTICAL ROAD LINE */}
-                <div className="lg:hidden absolute left-[25px] sm:left-[49px] top-0 bottom-0 w-px bg-white/15 z-0">
-                  <div className="absolute inset-0 border-r border-dashed border-white/30" />
+                <div className="lg:hidden absolute left-6 sm:left-10 top-0 bottom-0 w-2.5 bg-[#121526] border-x border-white/20 z-0">
+                  <div className="w-full h-full border-r border-dashed border-white/40" />
                 </div>
 
                 {/* GROUPS INSIDE VOLET */}
@@ -821,7 +737,7 @@ export default function About() {
       </section>
 
       {/* CERTIFICATIONS & ACCRÉDITATIONS SECTION */}
-      <section id="certifications" className="scroll-mt-28 py-16 px-4 max-w-7xl mx-auto z-10 relative border-t border-white/10 font-azurio sm:px-6 sm:py-24">
+      <section className="py-24 px-6 max-w-7xl mx-auto z-10 relative border-t border-white/10 font-azurio">
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <motion.div

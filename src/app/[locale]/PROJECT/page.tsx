@@ -193,65 +193,9 @@ export default function ProjectsPage() {
           <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-4 sm:p-6 select-none">
             {/* HUD HEADER & NAVIGATION BAR */}
             <div className="flex flex-wrap items-center justify-between gap-4 pointer-events-auto">
-              {/* BRAND / EXPERIENCE TITLE */}
-              <div className="flex items-center gap-3 bg-[#0c0f24]/85 backdrop-blur-xl border border-[#FFC82C]/40 px-4 py-2.5 rounded-2xl shadow-[0_0_30px_rgba(255,200,44,0.15)]">
-                <div className="relative flex h-3.5 w-3.5 items-center justify-center">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]" />
-                </div>
-                <div>
-                  <h1 className="font-achiko text-sm sm:text-base font-black tracking-wider uppercase text-white flex items-center gap-2">
-                    CYBER <span className="text-[#FFC82C]">ROVER 3D</span>
-                  </h1>
-                  <p className="text-[10px] text-gray-300 font-mono tracking-widest uppercase">
-                    {BIOMES[activeBiomeIndex]?.subtitle}
-                  </p>
-                </div>
-              </div>
-
-              {/* SECTOR / BIOME TELEPORT SELECTOR */}
-              <div className="hidden lg:flex items-center gap-1.5 p-1.5 rounded-2xl border border-white/15 bg-[#0c0f24]/80 backdrop-blur-xl">
-                {BIOMES.map((b, idx) => {
-                  const isActive = activeBiomeIndex === idx;
-                  return (
-                    <button
-                      key={b.id}
-                      onClick={() => {
-                        sceneRef.current?.teleportToBiome(idx);
-                        setActiveBiomeIndex(idx);
-                      }}
-                      className={`px-3 py-1.5 rounded-xl text-[10.5px] font-achiko tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
-                        isActive
-                          ? "bg-[#FFC82C] text-black font-bold shadow-[0_0_20px_rgba(255,200,44,0.6)] scale-105"
-                          : "text-gray-300 hover:text-white hover:bg-white/10"
-                      }`}
-                    >
-                      <span className="text-xs">
-                        {idx === 0 ? "🌴" : idx === 1 ? "🔺" : idx === 2 ? "🐪" : idx === 3 ? "🌊" : "🌲"}
-                      </span>
-                      <span>0{idx + 1}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* ACTION CONTROLS (Audio, View Mode, Help) */}
+            
               <div className="flex items-center gap-2.5">
-                <button
-                  onClick={() => {
-                    const status = sceneRef.current?.toggleAudio();
-                    setAudioActive(Boolean(status));
-                  }}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all border flex items-center gap-2 cursor-pointer ${
-                    audioActive
-                      ? "bg-[#10B981]/20 border-[#10B981] text-[#10B981] shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-                      : "bg-[#0c0f24]/80 border-white/20 text-gray-300 hover:text-white"
-                  }`}
-                  title="Audio Synthé 3D"
-                >
-                  <i className={`pi ${audioActive ? "pi-volume-up" : "pi-volume-off"}`} />
-                  <span className="hidden sm:inline">{audioActive ? "AUDIO ON" : "AUDIO OFF"}</span>
-                </button>
+                
 
                 <button
                   onClick={() => setViewMode("grid")}
@@ -304,6 +248,9 @@ export default function ProjectsPage() {
                 </motion.div>
               )}
             </AnimatePresence>
+
+
+            text
 
             {/* HUD BOTTOM DASHBOARD, SPEEDOMETER & TOUCH CONTROLS */}
             <div className="flex flex-wrap items-end justify-between gap-4 pointer-events-auto">
@@ -499,14 +446,7 @@ export default function ProjectsPage() {
               onClick={(e) => e.stopPropagation()}
               className="glass-panel max-w-lg w-full rounded-3xl border border-[#FFC82C] p-6 space-y-6 shadow-2xl"
             >
-              <div className="flex justify-between items-center border-b border-white/15 pb-3">
-                <h2 className="font-achiko text-xl font-black uppercase text-white flex items-center gap-2">
-                  <i className="pi pi-compass text-[#FFC82C]" /> COMMANDES CYBER ROVER 3D
-                </h2>
-                <button onClick={() => setShowHelpModal(false)} className="text-gray-400 hover:text-white">
-                  <i className="pi pi-times text-lg" />
-                </button>
-              </div>
+              
 
               <div className="space-y-3 text-xs">
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
