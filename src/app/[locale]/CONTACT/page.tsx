@@ -1,16 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import dynamic from "next/dynamic";
+import Image from "next/image";
 import { apiUrl } from "@/lib/api";
-import { CyberPhoneContactSceneRef } from "@/components/3d/CyberPhoneContactScene";
-
-const CyberPhoneContactScene = dynamic(
-  () => import("@/components/3d/CyberPhoneContactScene").then((m) => m.CyberPhoneContactScene),
-  { ssr: false }
-);
 
 type ContactFormState = {
   name: string;
@@ -39,8 +33,6 @@ const emptyForm: ContactFormState = {
 export default function Contact() {
   const t = useTranslations("ContactPage");
   const locale = useLocale();
-
-  const sceneRef = useRef<CyberPhoneContactSceneRef>(null);
 
   const [formData, setFormData] = useState<ContactFormState>(emptyForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -87,9 +79,6 @@ export default function Contact() {
     setSubmitStatus(null);
     setSubmitError("");
 
-    // Trigger 3D Telephone Handset Lift Animation
-    sceneRef.current?.triggerSubmitAnimation();
-
     try {
       const response = await fetch(apiUrl("v1/public/inquiries"), {
         method: "POST",
@@ -126,43 +115,38 @@ export default function Contact() {
       await navigator.clipboard.writeText(text);
       setCopiedField(label);
       setTimeout(() => setCopiedField(null), 2500);
-      sceneRef.current?.triggerSubmitAnimation();
     } catch {
       // fallback optional
     }
   };
 
   return (
-    <div className="min-h-screen relative bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-20 overflow-hidden selection:bg-[#FFC82C] selection:text-black">
-      {/* GLOWING GOLD & CRIMSON BACKGROUND BLOB ACCENTS */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#FFC82C]/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#FF3B56]/10 rounded-full blur-[120px] pointer-events-none" />
+    <main className="relative min-h-screen overflow-hidden bg-[#0B0D18] px-4 pb-12 pt-28 font-azurio text-white selection:bg-[#FFC82C] selection:text-black sm:px-8 sm:pb-16">
+      <div aria-hidden="true" className="pointer-events-none absolute -left-36 top-24 h-96 w-96 rounded-full border border-[#FFC82C]/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-36 h-72 w-72 rounded-full border border-[#FF3B56]/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-44 bottom-10 h-[30rem] w-[30rem] rounded-full border border-[#FFC82C]/10" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* TOP TITLE SECTION MATCHING REFERENCE DESIGN IN GOLD DA */}
-        <div className="mb-10">
+      <section className="relative z-10 mx-auto min-h-[620px] max-w-[1240px] overflow-hidden rounded-xl border border-white/5 bg-[#121526] px-5 py-9 shadow-[0_28px_80px_rgba(0,0,0,0.4)] sm:px-10 sm:py-10 lg:px-14 lg:py-12">
+        <div className="mb-8 sm:mb-10">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-achiko text-4xl sm:text-6xl md:text-7xl font-black uppercase text-white tracking-widest mb-3"
+            className="mb-3 font-achiko text-3xl font-black uppercase tracking-[0.12em] text-white sm:text-4xl"
           >
             CONTACT <span className="text-[#FFC82C]">ME</span>
           </motion.h1>
 
-          <div className="inline-block border-b-2 border-[#FFC82C] pb-1">
-            <span className="font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#FFC82C]">
+          <div className="inline-block border-b border-[#FFC82C] pb-1">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#FFC82C]">
               DROP A MESSAGE
             </span>
           </div>
         </div>
 
-        {/* MAIN LAYOUT: LEFT FORM & SOCIALS | RIGHT 3D MODEL & FOOTER INFO */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* LEFT SIDE: SOCIAL ICONS BAR + CONTACT FORM */}
-          <div className="lg:col-span-6 flex gap-6 items-start">
-            {/* VERTICAL SOCIAL MEDIA BAR (Matching image left icons in Gold DA) */}
-            <div className="flex flex-col gap-5 pt-3 text-gray-400">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+          <div className="flex items-start gap-4 sm:gap-6">
+            <div className="flex shrink-0 flex-col gap-3 pt-1 text-[#FFC82C]">
               {[
                 { icon: "whatsapp", label: "WhatsApp", val: "+237 653 53 91 02" },
                 { icon: "envelope", label: "Email", val: "tangking237@gmail.com" },
@@ -173,20 +157,19 @@ export default function Contact() {
                   key={s.label}
                   onClick={() => copyToClipboard(s.val, s.label)}
                   title={`Copier ${s.label}`}
-                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-[#FFC82C] hover:text-[#FFC82C] flex items-center justify-center transition-all cursor-pointer text-sm"
+                  className="flex h-7 w-7 cursor-pointer items-center justify-center text-sm text-[#FFC82C] transition-colors hover:text-[#FF3B56]"
                 >
                   <i className={`pi pi-${s.icon}`} />
                 </button>
               ))}
             </div>
 
-            {/* FORM CONTAINER MATCHING REFERENCE INPUT STYLING IN GOLD DA */}
             <motion.form
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               onSubmit={handleSubmit}
-              className="flex-1 space-y-4 font-azurio"
+              className="min-w-0 flex-1 space-y-2 font-azurio sm:space-y-2.5"
             >
               {/* Full Name */}
               <div>
@@ -197,7 +180,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   placeholder="Full Name*"
-                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
+                  className="w-full rounded-sm border border-white/10 bg-[#0B0D18]/70 px-3 py-2.5 text-[11px] text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FFC82C]"
                 />
               </div>
 
@@ -210,7 +193,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   placeholder="Email*"
-                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
+                  className="w-full rounded-sm border border-white/10 bg-[#0B0D18]/70 px-3 py-2.5 text-[11px] text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FFC82C]"
                 />
               </div>
 
@@ -222,7 +205,7 @@ export default function Contact() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="Phone*"
-                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
+                  className="w-full rounded-sm border border-white/10 bg-[#0B0D18]/70 px-3 py-2.5 text-[11px] text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FFC82C]"
                 />
               </div>
 
@@ -233,7 +216,7 @@ export default function Contact() {
                   value={formData.missionType}
                   onChange={handleChange}
                   required
-                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white outline-none focus:border-[#FFC82C] transition-all"
+                  className="w-full rounded-sm border border-white/10 bg-[#121526] px-3 py-2.5 text-[11px] text-white outline-none transition-colors focus:border-[#FFC82C]"
                 >
                   <option value="">Subject / Mission Type*</option>
                   {missionOptions.map((opt) => (
@@ -251,7 +234,7 @@ export default function Contact() {
                   required
                   rows={4}
                   placeholder="Message*"
-                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
+                  className="w-full resize-y rounded-sm border border-white/10 bg-[#0B0D18]/70 px-3 py-2.5 text-[11px] text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FFC82C]"
                 />
               </div>
 
@@ -260,22 +243,21 @@ export default function Contact() {
                 <input name="website" value={formData.website} onChange={handleChange} tabIndex={-1} autoComplete="off" />
               </div>
 
-              {/* SUBMIT BUTTON MATCHING REFERENCE IMAGE PILL BUTTON IN GOLD DA */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto px-12 py-3.5 rounded-full bg-[#FFC82C] hover:bg-[#ffe082] text-black font-achiko text-xs font-black tracking-widest uppercase shadow-[0_0_30px_rgba(255,200,44,0.5)] transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#FFC82C] px-12 py-3 text-[10px] font-bold tracking-[0.18em] text-[#0B0D18] transition-colors hover:bg-[#FF3B56] hover:text-white disabled:cursor-wait disabled:opacity-60 sm:w-full"
                 >
                   {isSubmitting ? (
                     <>
-                      <i className="pi pi-spinner animate-spin text-xs text-black" /> SENDING...
+                      <i className="pi pi-spinner animate-spin text-xs" /> SENDING...
                     </>
                   ) : (
                     <>
-                      SUBMIT <i className="pi pi-arrow-right text-xs text-black" />
+                      SUBMIT
                     </>
                   )}
                 </motion.button>
@@ -317,24 +299,27 @@ export default function Contact() {
             </motion.form>
           </div>
 
-          {/* RIGHT SIDE: 3D CYBER SMARTPHONE & CHAT BUBBLE (FLOATING FREELY - NO CADRAN / NO BOX FRAME) */}
-          <div className="lg:col-span-6 flex flex-col justify-between h-full min-h-[500px]">
-            {/* 3D WebGL Phone & Chat Bubble Scene */}
-            <div className="relative w-full h-[520px] sm:h-[600px]">
-              <CyberPhoneContactScene ref={sceneRef} accentColor="#FFC82C" />
+          <div className="flex min-h-[340px] flex-col justify-between sm:min-h-[420px]">
+            <div className="relative flex min-h-[320px] flex-1 items-center justify-center sm:min-h-[400px]">
+              <Image
+                src="/phone.svg"
+                alt="Téléphone bleu"
+                width={480}
+                height={480}
+                className="h-auto max-h-[420px] w-full max-w-[480px] object-contain"
+              />
             </div>
 
-            {/* BOTTOM RIGHT LOCATION & DIRECT CONTACT INFO MATCHING IMAGE IN GOLD DA */}
-            <div className="flex items-center justify-end gap-3 text-right text-gray-400 text-xs font-mono pt-4 border-t border-white/10">
-              <i className="pi pi-map-marker text-[#FFC82C] text-base" />
+            <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-4 text-right font-mono text-[10px] text-white/45">
+              <i className="pi pi-map-marker text-sm text-[#FFC82C]" />
               <div>
-                <span className="block text-white font-bold">Douala, Littoral · Cameroun</span>
-                <span className="block text-[11px] text-gray-400">+237 653 53 91 02 · tangking237@gmail.com</span>
+                <span className="block font-bold text-white/70">Douala, Littoral · Cameroun</span>
+                <span className="block text-[10px]">+237 653 53 91 02 · tangking237@gmail.com</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

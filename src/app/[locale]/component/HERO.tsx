@@ -55,9 +55,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="space-y-3"
           >
-            <span className="block text-xs font-azurio text-[#FFC82C] tracking-[0.45em] uppercase font-bold">
-              FULL-STACK DEVELOPER & CREATIVE ENGINEER
-            </span>
+            
             <h1 className="font-achiko text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.92] text-white">
               {t("title_top")}{" "}
               <span className="block text-[#FFC82C] mt-1 drop-shadow-[0_0_25px_rgba(255,200,44,0.3)]">

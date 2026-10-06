@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import "primeicons/primeicons.css";
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,7 +31,7 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className="relative pt-28 pb-12 overflow-hidden border-t border-[#FFC82C]/30 bg-[#0B0D18] font-azurio"
+      className="relative pt-28 pb-12 overflow-hidden border-t border-[#FFC82C]/30 bg-[#0B0D18] backdrop-blur-3xl font-azurio"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
