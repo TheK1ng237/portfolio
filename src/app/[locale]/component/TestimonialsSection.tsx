@@ -131,16 +131,14 @@ export default function TestimonialsSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* Header */}
         <div className="text-center">
-          <span className="inline-block rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-300">
-            Retour d'expérience &amp; Témoignages
-          </span>
+         
           <h2 className="mt-4 font-achiko text-3xl font-black tracking-wide text-white sm:text-5xl">
             Avis{" "}
             <span className="text-amber-400">Clients &amp; Partenaires</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-xs leading-relaxed text-white/60 sm:text-sm">
             Vous avez travaillé avec Thek1ng237 ? Laissez votre avis pour
-            partager votre retour d'expérience sur nos réalisations web et
+            partager votre retour d&apos;expérience sur nos réalisations web et
             applicatives.
           </p>
 
@@ -184,7 +182,7 @@ export default function TestimonialsSection() {
                 </div>
 
                 <p className="text-xs leading-relaxed text-white/80 sm:text-sm italic">
-                  "{t.content}"
+                  &quot;{t.content}&quot;
                 </p>
               </div>
 
@@ -244,7 +242,7 @@ export default function TestimonialsSection() {
                   </h4>
                   <p className="text-xs text-white/60 leading-relaxed max-w-xs mx-auto">
                     Votre témoignage a été transmis avec succès. Il sera publié
-                    sur le site après validation par l'administrateur.
+                    sur le site après validation par l&apos;administrateur.
                   </p>
                   <button
                     type="button"
@@ -299,7 +297,7 @@ export default function TestimonialsSection() {
                     </label>
 
                     <label className="block text-xs font-bold text-white/70">
-                      <span className="mb-1 block">Note d'évaluation</span>
+                      <span className="mb-1 block">Note d&apos;évaluation</span>
                       <select
                         value={rating}
                         onChange={(e) => setRating(Number(e.target.value))}
