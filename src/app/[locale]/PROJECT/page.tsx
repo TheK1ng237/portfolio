@@ -190,31 +190,9 @@ export default function ProjectsPage() {
           />
 
           {/* MOTION DESIGNER HUD OVERLAY LAYER */}
-          <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-4 sm:p-6 select-none">
-            {/* HUD HEADER & NAVIGATION BAR */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pointer-events-auto">
+          <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-end p-4 sm:p-6 select-none space-y-5">
             
-              <div className="flex items-center gap-2.5">
-                
-
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className="px-3.5 py-2 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-gray-300 hover:text-white text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer"
-                  title="Basculer en vue grille standard"
-                >
-                  <i className="pi pi-th-large" />
-                  <span className="hidden sm:inline">MODE GRILLE</span>
-                </button>
-
-                <button
-                  onClick={() => setShowHelpModal(true)}
-                  className="w-9 h-9 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-[#FFC82C] hover:bg-white/10 flex items-center justify-center text-sm font-bold cursor-pointer"
-                  title="Commandes et Aides"
-                >
-                  ?
-                </button>
-              </div>
-            </div>
+            
 
             {/* PROXIMITY WAYPOINT DETECTED ALERT BANNER */}
             <AnimatePresence>
@@ -248,9 +226,31 @@ export default function ProjectsPage() {
                 </motion.div>
               )}
             </AnimatePresence>
+{/* HUD HEADER & NAVIGATION BAR */}
 
+            <div className="flex flex-wrap items-center justify-between gap-4 pointer-events-auto">
+            
+              <div className="flex items-center gap-2.5">
+                
 
-            text
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className="px-3.5 py-2 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-gray-300 hover:text-white text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer"
+                  title="Basculer en vue grille standard"
+                >
+                  <i className="pi pi-th-large" />
+                  <span className="hidden sm:inline">MODE GRILLE</span>
+                </button>
+
+                <button
+                  onClick={() => setShowHelpModal(true)}
+                  className="w-9 h-9 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-[#FFC82C] hover:bg-white/10 flex items-center justify-center text-sm font-bold cursor-pointer"
+                  title="Commandes et Aides"
+                >
+                  ?
+                </button>
+              </div>
+            </div>
 
             {/* HUD BOTTOM DASHBOARD, SPEEDOMETER & TOUCH CONTROLS */}
             <div className="flex flex-wrap items-end justify-between gap-4 pointer-events-auto">
@@ -499,10 +499,8 @@ export default function ProjectsPage() {
               onClick={(e) => e.stopPropagation()}
               className="glass-panel relative my-auto max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-[#FFC82C] p-4 shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:space-y-6 sm:rounded-3xl sm:p-8"
             >
-              <div className="sticky -mx-4 -mt-4 top-0 z-20 flex items-center justify-between gap-3 border-b border-white/15 bg-[#121526]/95 px-4 pb-3 pt-4 backdrop-blur-xl sm:-mx-8 sm:-mt-8 sm:px-8 sm:pb-4 sm:pt-8">
-                <span className="font-mono text-xs text-[#FFC82C] font-bold tracking-widest uppercase">
-                  WAYPOINT PROJET // 0{selectedModalProject.id} · {selectedModalProject.version}
-                </span>
+              <div className="flex justify-end">
+               
                 <button
                   type="button"
                   onClick={() => setSelectedModalProject(null)}
@@ -528,13 +526,7 @@ export default function ProjectsPage() {
 
                 <div className="space-y-5 rounded-2xl border border-white/10 bg-[#121526]/90 p-5 flex flex-col justify-between">
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFC82C] font-bold">STATUT</span>
-                      <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                        {selectedModalProject.isCompleted ? getTrans("status.live", "En Ligne") : getTrans("status.dev", "En Développement")}
-                      </span>
-                    </div>
+                    
 
                     <div>
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFC82C] font-bold block mb-2">

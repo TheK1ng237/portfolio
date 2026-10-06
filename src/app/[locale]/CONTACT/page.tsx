@@ -317,10 +317,10 @@ export default function Contact() {
             </motion.form>
           </div>
 
-          {/* RIGHT SIDE: 3D GOLD ROTARY TELEPHONE + LOCATION INFO FOOTER */}
-          <div className="lg:col-span-6 flex flex-col justify-between h-full min-h-[450px]">
+          {/* RIGHT SIDE: 3D CYBER SMARTPHONE & CHAT BUBBLE (FLOATING FREELY - NO CADRAN / NO BOX FRAME) */}
+          <div className="lg:col-span-6 flex flex-col justify-between h-full min-h-[500px]">
             {/* 3D WebGL Phone & Chat Bubble Scene */}
-            <div className="relative w-full h-[400px] sm:h-[480px]">
+            <div className="relative w-full h-[520px] sm:h-[600px]">
               <CyberPhoneContactScene ref={sceneRef} accentColor="#FFC82C" />
             </div>
 
