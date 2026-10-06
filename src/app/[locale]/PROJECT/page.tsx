@@ -550,30 +550,32 @@ export default function ProjectsPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedModalProject(null)}
-            className="fixed inset-0 z-[99999] bg-black/85 backdrop-blur-2xl flex items-center justify-center p-6 font-azurio"
+            className="fixed inset-0 z-[99999] flex items-start justify-center overflow-y-auto overscroll-contain bg-black/85 p-3 font-azurio backdrop-blur-2xl sm:items-center sm:p-6"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass-panel max-w-3xl w-full rounded-3xl border border-[#FFC82C] p-6 sm:p-8 space-y-6 shadow-2xl relative"
+              className="glass-panel relative my-auto max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-[#FFC82C] p-4 shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:space-y-6 sm:rounded-3xl sm:p-8"
             >
-              <div className="flex justify-between items-center border-b border-white/15 pb-4">
+              <div className="sticky -mx-4 -mt-4 top-0 z-20 flex items-center justify-between gap-3 border-b border-white/15 bg-[#121526]/95 px-4 pb-3 pt-4 backdrop-blur-xl sm:-mx-8 sm:-mt-8 sm:px-8 sm:pb-4 sm:pt-8">
                 <span className="font-mono text-xs text-[#FFC82C] font-bold tracking-widest uppercase">
                   WAYPOINT PROJET // 0{selectedModalProject.id} · {selectedModalProject.version}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setSelectedModalProject(null)}
-                  className="w-8 h-8 rounded-full bg-white/10 text-gray-300 hover:text-white flex items-center justify-center cursor-pointer"
+                  aria-label="Fermer le détail du projet"
+                  className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-gray-300 transition hover:bg-white/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C]"
                 >
                   <i className="pi pi-times text-sm" />
                 </button>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+              <div className="grid gap-5 pt-4 sm:gap-6 sm:pt-0 md:grid-cols-[1.2fr_0.8fr]">
                 <div className="space-y-4">
-                  <div className="relative h-64 sm:h-72 w-full overflow-hidden rounded-2xl border border-white/10 bg-black">
+                  <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 bg-black sm:h-72 sm:rounded-2xl">
                     <Image src={selectedModalProject.image} alt={selectedModalProject.title} fill className="object-cover" />
                   </div>
                   <h3 className="font-achiko text-2xl sm:text-3xl font-black uppercase text-white">
