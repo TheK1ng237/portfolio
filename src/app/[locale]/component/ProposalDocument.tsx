@@ -129,7 +129,7 @@ export default function ProposalDocument({
               {proposal.clientName}
             </strong>
             <p className="mt-1 text-xs text-white/80">{proposal.clientSlogan}</p>
-            <p className="mt-1 text-xs text-white/80">À l'attention de {proposal.recipient}</p>
+            <p className="mt-1 text-xs text-white/80">À l&apos;attention de {proposal.recipient}</p>
           </div>
 
           <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-4 border-t border-white/15 pt-5">

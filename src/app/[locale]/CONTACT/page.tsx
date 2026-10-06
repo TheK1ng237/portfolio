@@ -1,9 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
 import { apiUrl } from "@/lib/api";
+import { CyberPhoneContactSceneRef } from "@/components/3d/CyberPhoneContactScene";
+
+const CyberPhoneContactScene = dynamic(
+  () => import("@/components/3d/CyberPhoneContactScene").then((m) => m.CyberPhoneContactScene),
+  { ssr: false }
+);
 
 type ContactFormState = {
   name: string;
@@ -26,19 +33,36 @@ const emptyForm: ContactFormState = {
   desiredDate: "",
   message: "",
   website: "",
-  consent: false,
+  consent: true,
 };
 
 export default function Contact() {
   const t = useTranslations("ContactPage");
   const locale = useLocale();
+
+  const sceneRef = useRef<CyberPhoneContactSceneRef>(null);
+
   const [formData, setFormData] = useState<ContactFormState>(emptyForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
   const [submitError, setSubmitError] = useState<string>("");
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const missionOptions = (t.raw("form.mission_options") as string[]) ?? [];
+  const missionOptions = (t.raw("form.mission_options") as string[]) ?? [
+    "Application Web Full-Stack",
+    "Application Mobile iOS/Android",
+    "UI/UX Design & Direction Artistique",
+    "Expérience 3D WebGL / Motion",
+    "Consulting Tech & Architecture",
+  ];
+
+  const getTrans = (key: string, fallback: string) => {
+    try {
+      return t(key);
+    } catch {
+      return fallback;
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = event.target;
@@ -53,15 +77,18 @@ export default function Contact() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!formData.consent || formData.website) {
+    if (formData.website) {
       setSubmitStatus("error");
-      setSubmitError(t("form.field_error"));
+      setSubmitError("Requête invalide.");
       return;
     }
 
     setIsSubmitting(true);
     setSubmitStatus(null);
     setSubmitError("");
+
+    // Trigger 3D Telephone Handset Lift Animation
+    sceneRef.current?.triggerSubmitAnimation();
 
     try {
       const response = await fetch(apiUrl("v1/public/inquiries"), {
@@ -78,7 +105,9 @@ export default function Contact() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
         throw new Error(
-          typeof payload === "object" && payload && "error" in payload ? String(payload.error) : t("form.api_error")
+          typeof payload === "object" && payload && "error" in payload
+            ? String(payload.error)
+            : getTrans("form.api_error", "Erreur lors de l'envoi du message.")
         );
       }
 
@@ -86,7 +115,7 @@ export default function Contact() {
       setFormData(emptyForm);
     } catch (error) {
       setSubmitStatus("error");
-      setSubmitError(error instanceof Error ? error.message : t("form.api_error"));
+      setSubmitError(error instanceof Error ? error.message : getTrans("form.api_error", "Erreur d'envoi."));
     } finally {
       setIsSubmitting(false);
     }
@@ -97,206 +126,181 @@ export default function Contact() {
       await navigator.clipboard.writeText(text);
       setCopiedField(label);
       setTimeout(() => setCopiedField(null), 2500);
+      sceneRef.current?.triggerSubmitAnimation();
     } catch {
-      // no-op, clipboard is optional here
+      // fallback optional
     }
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-24">
-      <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-16">
-        <div className="space-y-4 font-azurio">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="font-azurio text-xs text-[#FFC82C] tracking-[0.4em] uppercase block font-bold"
-          >
-            {"// INITIER_UN_CANAL_DE_COMMUNICATION"}
-          </motion.span>
+    <div className="min-h-screen relative bg-[#0B0D18] text-[#F8F9FA] font-azurio pt-28 pb-20 overflow-hidden selection:bg-[#FFC82C] selection:text-black">
+      {/* GLOWING GOLD & CRIMSON BACKGROUND BLOB ACCENTS */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#FFC82C]/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#FF3B56]/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* TOP TITLE SECTION MATCHING REFERENCE DESIGN IN GOLD DA */}
+        <div className="mb-10">
           <motion.h1
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="font-achiko text-5xl md:text-8xl font-black tracking-tight uppercase text-white leading-[0.9]"
+            transition={{ duration: 0.6 }}
+            className="font-achiko text-4xl sm:text-6xl md:text-7xl font-black uppercase text-white tracking-widest mb-3"
           >
-            INITIALISER <span className="text-[#FFC82C]">LE CONTACT</span>
+            CONTACT <span className="text-[#FFC82C]">ME</span>
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="font-azurio max-w-2xl text-base md:text-lg text-gray-200 font-light leading-relaxed border-l-3 border-[#FF3B56] pl-6"
-          >
-            Une idée de projet, une refonte UI/UX ou une opportunité de collaboration ? Envoyez un message ou utilisez nos canaux directs.
-          </motion.p>
+
+          <div className="inline-block border-b-2 border-[#FFC82C] pb-1">
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#FFC82C]">
+              DROP A MESSAGE
+            </span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start font-azurio">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-7 glass-card p-8 md:p-10 rounded-3xl border border-white/15 shadow-xl"
-          >
-            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/15">
-              <span className="w-3 h-3 rounded-full bg-[#FFC82C] animate-pulse shadow-[0_0_10px_#FFC82C]" />
-              <span className="font-azurio text-xs text-gray-200 uppercase tracking-widest font-bold">
-                TERMINAL_MESSAGERIE
-              </span>
+        {/* MAIN LAYOUT: LEFT FORM & SOCIALS | RIGHT 3D MODEL & FOOTER INFO */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* LEFT SIDE: SOCIAL ICONS BAR + CONTACT FORM */}
+          <div className="lg:col-span-6 flex gap-6 items-start">
+            {/* VERTICAL SOCIAL MEDIA BAR (Matching image left icons in Gold DA) */}
+            <div className="flex flex-col gap-5 pt-3 text-gray-400">
+              {[
+                { icon: "whatsapp", label: "WhatsApp", val: "+237 653 53 91 02" },
+                { icon: "envelope", label: "Email", val: "tangking237@gmail.com" },
+                { icon: "github", label: "GitHub", val: "github.com/TangB5" },
+                { icon: "linkedin", label: "LinkedIn", val: "linkedin.com/in/ndoh-yannick-tang-5b004934a" },
+              ].map((s) => (
+                <button
+                  key={s.label}
+                  onClick={() => copyToClipboard(s.val, s.label)}
+                  title={`Copier ${s.label}`}
+                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-[#FFC82C] hover:text-[#FFC82C] flex items-center justify-center transition-all cursor-pointer text-sm"
+                >
+                  <i className={`pi pi-${s.icon}`} />
+                </button>
+              ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 font-azurio">
-              <div className="space-y-2">
-                <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                  {t("form.type_label")}
-                </label>
-                <select
-                  name="missionType"
-                  value={formData.missionType}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white outline-none focus:border-[#FFC82C] transition-colors"
-                >
-                  <option value="">{t("form.mission_type_placeholder")}</option>
-                  {missionOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                  {t("form.name_label")}
-                </label>
+            {/* FORM CONTAINER MATCHING REFERENCE INPUT STYLING IN GOLD DA */}
+            <motion.form
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              onSubmit={handleSubmit}
+              className="flex-1 space-y-4 font-azurio"
+            >
+              {/* Full Name */}
+              <div>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder={t("form.name_placeholder")}
-                  className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
+                  placeholder="Full Name*"
+                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
                 />
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                    {t("form.email_label")}
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    placeholder={t("form.email_placeholder")}
-                    className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                    {t("form.phone_label")}
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="+237 ..."
-                    className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
-                  />
-                </div>
+              {/* Email */}
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="Email*"
+                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
+                />
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                    {t("form.budget_label")}
-                  </label>
-                  <input
-                    type="text"
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    placeholder="15 000 - 60 000 XAF"
-                    className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                    {t("form.date_label")}
-                  </label>
-                  <input
-                    type="text"
-                    name="desiredDate"
-                    value={formData.desiredDate}
-                    onChange={handleChange}
-                    placeholder="2 à 4 semaines"
-                    className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
-                  />
-                </div>
+              {/* Phone */}
+              <div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Phone*"
+                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
+                />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-azurio text-gray-300 uppercase tracking-wider block font-bold">
-                  {t("form.message_label")}
-                </label>
+              {/* Subject / Mission Type */}
+              <div>
+                <select
+                  name="missionType"
+                  value={formData.missionType}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white outline-none focus:border-[#FFC82C] transition-all"
+                >
+                  <option value="">Subject / Mission Type*</option>
+                  {missionOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Message */}
+              <div>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows={5}
-                  placeholder={t("form.message_placeholder")}
-                  className="w-full bg-[#121526] border border-white/20 rounded-xl px-4 py-3.5 text-xs font-azurio text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-colors"
+                  rows={4}
+                  placeholder="Message*"
+                  className="w-full bg-[#121526]/90 border border-white/15 rounded-xl px-5 py-3.5 text-xs text-white placeholder-gray-400 outline-none focus:border-[#FFC82C] transition-all shadow-inner"
                 />
               </div>
 
+              {/* Honeypot hidden input */}
               <div className="hidden">
                 <input name="website" value={formData.website} onChange={handleChange} tabIndex={-1} autoComplete="off" />
               </div>
 
-              <label className="flex items-start gap-3 text-xs text-gray-300">
-                <input
-                  type="checkbox"
-                  name="consent"
-                  checked={formData.consent}
-                  onChange={handleChange}
-                  className="mt-1 h-4 w-4 rounded border-white/20 bg-[#121526] text-[#FFC82C] focus:ring-[#FFC82C]"
-                />
-                <span>{t("form.consent_label")}</span>
-              </label>
+              {/* SUBMIT BUTTON MATCHING REFERENCE IMAGE PILL BUTTON IN GOLD DA */}
+              <div className="pt-2">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto px-12 py-3.5 rounded-full bg-[#FFC82C] hover:bg-[#ffe082] text-black font-achiko text-xs font-black tracking-widest uppercase shadow-[0_0_30px_rgba(255,200,44,0.5)] transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <i className="pi pi-spinner animate-spin text-xs text-black" /> SENDING...
+                    </>
+                  ) : (
+                    <>
+                      SUBMIT <i className="pi pi-arrow-right text-xs text-black" />
+                    </>
+                  )}
+                </motion.button>
+              </div>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 bg-[#FFC82C] text-black font-achiko font-bold text-sm uppercase tracking-[0.2em] rounded-xl hover:shadow-[0_0_30px_rgba(255,200,44,0.4)] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <>
-                    <i className="pi pi-spinner text-sm" /> {t("form.submitting")}
-                  </>
-                ) : (
-                  <>
-                    {t("form.submit")} <i className="pi pi-send text-sm" />
-                  </>
-                )}
-              </motion.button>
-
+              {/* STATUS FEEDBACK */}
               <AnimatePresence>
+                {copiedField && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="text-[11px] font-mono text-emerald-400 font-bold"
+                  >
+                    ✓ {copiedField} copié dans le presse-papier !
+                  </motion.div>
+                )}
                 {submitStatus === "success" && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-azurio text-center font-bold"
+                    className="p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold"
                   >
-                    ✓ {t("form.success_title")}. {t("form.success_msg")}
+                    ✓ MESSAGE TRANSMIS AVEC SUCCÈS !
                   </motion.div>
                 )}
                 {submitStatus === "error" && (
@@ -304,76 +308,31 @@ export default function Contact() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="p-4 rounded-xl bg-red-500/15 border border-red-500/40 text-red-300 text-xs font-azurio text-center font-bold"
+                    className="p-3.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-mono font-bold"
                   >
-                    {submitError || t("form.api_error")}
+                    ⚠ {submitError || "Erreur lors de l'envoi."}
                   </motion.div>
                 )}
               </AnimatePresence>
-            </form>
-          </motion.div>
+            </motion.form>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-5 space-y-6 font-azurio"
-          >
-            <div className="glass-card p-8 rounded-3xl border border-white/15 space-y-6 shadow-xl font-azurio">
-              <h3 className="font-achiko text-xl font-black uppercase text-white flex items-center gap-3">
-                <i className="pi pi-compass text-[#FFC82C]" /> CANAUX DIRECTS
-              </h3>
+          {/* RIGHT SIDE: 3D GOLD ROTARY TELEPHONE + LOCATION INFO FOOTER */}
+          <div className="lg:col-span-6 flex flex-col justify-between h-full min-h-[450px]">
+            {/* 3D WebGL Phone & Chat Bubble Scene */}
+            <div className="relative w-full h-[400px] sm:h-[480px]">
+              <CyberPhoneContactScene ref={sceneRef} accentColor="#FFC82C" />
+            </div>
 
-              <div className="space-y-4 font-azurio">
-                {[
-                  { label: "EMAIL", val: "tangking237@gmail.com", icon: "envelope" },
-                  { label: "WHATSAPP", val: "+237 653 53 91 02", icon: "whatsapp" },
-                  { label: "GITHUB", val: "github.com/TangB5", icon: "github" },
-                  { label: "LINKEDIN", val: "linkedin.com/in/ndoh-yannick-tang-5b004934a", icon: "linkedin" },
-                ].map((channel) => (
-                  <motion.div
-                    key={channel.label}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => copyToClipboard(channel.val, channel.label)}
-                    className="p-4 rounded-2xl border border-white/15 bg-[#121526] hover:border-[#FFC82C] transition-all cursor-pointer flex justify-between items-center group font-azurio"
-                  >
-                    <div>
-                      <span className="block text-[8.5px] font-azurio text-gray-400 uppercase tracking-widest font-bold">
-                        {channel.label}
-                      </span>
-                      <span className="block text-xs font-azurio font-bold text-white group-hover:text-[#FFC82C] transition-colors">
-                        {channel.val}
-                      </span>
-                    </div>
-                    <div className="text-xs font-azurio text-[#FFC82C] flex items-center gap-1.5 font-bold">
-                      {copiedField === channel.label ? (
-                        <span className="text-emerald-400 font-bold">COPIÉ !</span>
-                      ) : (
-                        <i className="pi pi-copy text-gray-400 group-hover:text-[#FFC82C]" />
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
+            {/* BOTTOM RIGHT LOCATION & DIRECT CONTACT INFO MATCHING IMAGE IN GOLD DA */}
+            <div className="flex items-center justify-end gap-3 text-right text-gray-400 text-xs font-mono pt-4 border-t border-white/10">
+              <i className="pi pi-map-marker text-[#FFC82C] text-base" />
+              <div>
+                <span className="block text-white font-bold">Douala, Littoral · Cameroun</span>
+                <span className="block text-[11px] text-gray-400">+237 653 53 91 02 · tangking237@gmail.com</span>
               </div>
             </div>
-
-            <div className="glass-card p-6 rounded-3xl border border-[#FF3B56]/50 bg-[#FF3B56]/10 space-y-3 shadow-xl font-azurio">
-              <span className="text-[9.5px] font-mono text-gray-300 uppercase tracking-widest block font-bold">
-                DOCUMENTATION OFFICIELLE
-              </span>
-              <a
-                href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3.5 px-5 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,59,86,0.3)] group cursor-pointer"
-              >
-                <i className="pi pi-file-pdf text-base group-hover:scale-110 transition-transform" />
-                TÉLÉCHARGER LE CV PDF COMPLET
-              </a>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

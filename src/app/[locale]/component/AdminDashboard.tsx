@@ -843,7 +843,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5 print:hidden">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
-                Console d'administration ·{" "}
+                Console d&apos;administration ·{" "}
                 {new Intl.DateTimeFormat("fr-FR", { dateStyle: "full" }).format(
                   new Date(),
                 )}
@@ -1279,7 +1279,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                       </div>
 
                       <p className="text-xs leading-relaxed text-white/80 italic">
-                        "{t.content}"
+                          &quot;{t.content}&quot;
                       </p>
                     </div>
 

@@ -233,7 +233,7 @@ export default function ProposalStudioAdmin({
               onChange={(e) => setSelectedClientId(e.target.value)}
             >
               {clients.length === 0 ? (
-                <option value="">Aucun client en BDD (Ajoutez un client d'abord)</option>
+                <option value="">Aucun client en BDD (Ajoutez un client d&apos;abord)</option>
               ) : (
                 clients.map((c) => (
                   <option key={c.id} value={c.id}>
