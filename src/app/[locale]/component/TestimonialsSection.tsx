@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
 
 type Testimonial = {
@@ -52,6 +53,7 @@ const defaultTestimonials: Testimonial[] = [
 ];
 
 export default function TestimonialsSection() {
+  const t = useTranslations("Testimonials");
   const [testimonials, setTestimonials] =
     useState<Testimonial[]>(defaultTestimonials);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -87,7 +89,7 @@ export default function TestimonialsSection() {
   async function handleSubmitTestimonial(e: React.FormEvent) {
     e.preventDefault();
     if (!authorName.trim() || !content.trim()) {
-      setErrorMessage("Veuillez renseigner votre nom et votre témoignage.");
+      setErrorMessage(t("errors.required_fields"));
       return;
     }
 
@@ -116,7 +118,7 @@ export default function TestimonialsSection() {
       setErrorMessage(
         err instanceof Error
           ? err.message
-          : "Erreur lors de l'envoi du témoignage.",
+          : t("errors.submit"),
       );
     } finally {
       setSubmitting(false);
@@ -133,13 +135,10 @@ export default function TestimonialsSection() {
         <div className="text-center">
          
           <h2 className="mt-4 font-achiko text-3xl font-black tracking-wide text-white sm:text-5xl">
-            Avis{" "}
-            <span className="text-amber-400">Clients &amp; Partenaires</span>
+            {t("title_prefix")} <span className="text-amber-400">{t("title_highlight")}</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-xs leading-relaxed text-white/60 sm:text-sm">
-            Vous avez travaillé avec Thek1ng237 ? Laissez votre avis pour
-            partager votre retour d&apos;expérience sur nos réalisations web et
-            applicatives.
+            {t("description")}
           </p>
 
           <div className="mt-8">
@@ -153,7 +152,7 @@ export default function TestimonialsSection() {
               className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-6 py-3 text-xs font-black uppercase tracking-wider text-black shadow-[0_0_20px_rgba(255,200,44,0.3)] transition hover:scale-105"
             >
               <i className="pi pi-pencil text-xs" />
-              <span>Laisser un témoignage</span>
+              <span>{t("actions.leave_testimonial")}</span>
             </button>
           </div>
         </div>
@@ -217,10 +216,10 @@ export default function TestimonialsSection() {
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                    Partagez votre expérience
+                    {t("form.share_experience")}
                   </span>
                   <h3 className="font-achiko text-xl text-white">
-                    Laisser un Témoignage
+                    {t("form.title")}
                   </h3>
                 </div>
                 <button
@@ -237,19 +236,18 @@ export default function TestimonialsSection() {
                   <div className="mx-auto flex size-14 items-center justify-center rounded-full border border-emerald-400/50 bg-emerald-400/10 text-2xl text-emerald-400">
                     ✓
                   </div>
-                  <h4 className="font-achiko text-lg text-white">
-                    Merci pour votre retour !
+                    <h4 className="font-achiko text-lg text-white">
+                    {t("success.title")}
                   </h4>
                   <p className="text-xs text-white/60 leading-relaxed max-w-xs mx-auto">
-                    Votre témoignage a été transmis avec succès. Il sera publié
-                    sur le site après validation par l&apos;administrateur.
+                    {t("success.description")}
                   </p>
                   <button
                     type="button"
                     onClick={() => setShowSubmitModal(false)}
                     className="mt-4 rounded-xl bg-amber-400 px-6 py-2.5 text-xs font-bold text-black hover:bg-amber-300"
                   >
-                    Fermer
+                    {t("actions.close")}
                   </button>
                 </div>
               ) : (
@@ -259,24 +257,24 @@ export default function TestimonialsSection() {
                 >
                   <div className="grid gap-3 sm:grid-cols-2">
                     <label className="block text-xs font-bold text-white/70">
-                      <span className="mb-1 block">Votre Nom / Prénom *</span>
+                      <span className="mb-1 block">{t("form.name_label")} *</span>
                       <input
                         type="text"
                         required
                         value={authorName}
                         onChange={(e) => setAuthorName(e.target.value)}
-                        placeholder="Ex: Moustapha N."
+                        placeholder={t("form.name_placeholder")}
                         className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
                       />
                     </label>
 
                     <label className="block text-xs font-bold text-white/70">
-                      <span className="mb-1 block">Votre Poste / Titre</span>
+                      <span className="mb-1 block">{t("form.role_label")}</span>
                       <input
                         type="text"
                         value={authorRole}
                         onChange={(e) => setAuthorRole(e.target.value)}
-                        placeholder="Ex: Fondateur / CEO"
+                        placeholder={t("form.role_placeholder")}
                         className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
                       />
                     </label>
@@ -285,19 +283,19 @@ export default function TestimonialsSection() {
                   <div className="grid gap-3 sm:grid-cols-2">
                     <label className="block text-xs font-bold text-white/70">
                       <span className="mb-1 block">
-                        Entreprise / Organisation
+                        {t("form.company_label")}
                       </span>
                       <input
                         type="text"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
-                        placeholder="Ex: GSHI Incubator"
+                        placeholder={t("form.company_placeholder")}
                         className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
                       />
                     </label>
 
                     <label className="block text-xs font-bold text-white/70">
-                      <span className="mb-1 block">Note d&apos;évaluation</span>
+                      <span className="mb-1 block">{t("form.rating_label")}</span>
                       <select
                         value={rating}
                         onChange={(e) => setRating(Number(e.target.value))}
@@ -312,14 +310,14 @@ export default function TestimonialsSection() {
 
                   <label className="block text-xs font-bold text-white/70">
                     <span className="mb-1 block">
-                      Votre témoignage / Avis *
+                      {t("form.content_label")} *
                     </span>
                     <textarea
                       required
                       rows={4}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
-                      placeholder="Décrivez votre expérience de travail avec Thek1ng237..."
+                      placeholder={t("form.content_placeholder")}
                       className="w-full rounded-xl border border-white/15 bg-[#0b0d14] p-3 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
                     />
                   </label>
@@ -336,7 +334,7 @@ export default function TestimonialsSection() {
                       onClick={() => setShowSubmitModal(false)}
                       className="rounded-xl border border-white/15 px-4 py-2 text-xs font-bold text-white/70 hover:bg-white/5"
                     >
-                      Annuler
+                      {t("actions.cancel")}
                     </button>
                     <button
                       type="submit"
@@ -347,7 +345,7 @@ export default function TestimonialsSection() {
                         className={`pi ${submitting ? "pi-spin pi-spinner" : "pi-send"} text-xs`}
                       />
                       <span>
-                        {submitting ? "Envoi..." : "Envoyer mon témoignage"}
+                        {submitting ? t("actions.submitting") : t("actions.submit")}
                       </span>
                     </button>
                   </div>

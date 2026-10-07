@@ -245,20 +245,12 @@ export default function Contact() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const missionOptions = (t.raw("form.mission_options") as string[]) ?? [
-    "Application Web Full-Stack",
-    "Application Mobile iOS/Android",
-    "UI/UX Design & Direction Artistique",
-    "Expérience 3D WebGL / Motion",
-    "Consulting Tech & Architecture",
+    "Web application",
+    "Mobile application",
+    "UI/UX design",
+    "3D web experience",
+    "Technical consulting",
   ];
-
-  const getTrans = (key: string, fallback: string) => {
-    try {
-      return t(key);
-    } catch {
-      return fallback;
-    }
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = event.target;
@@ -275,7 +267,7 @@ export default function Contact() {
 
     if (formData.website) {
       setSubmitStatus("error");
-      setSubmitError("Requête invalide.");
+      setSubmitError(t("form.invalid_request"));
       return;
     }
 
@@ -300,7 +292,7 @@ export default function Contact() {
         throw new Error(
           typeof payload === "object" && payload && "error" in payload
             ? String(payload.error)
-            : getTrans("form.api_error", "Erreur lors de l'envoi du message.")
+            : t("form.api_error")
         );
       }
 
@@ -308,7 +300,7 @@ export default function Contact() {
       setFormData(emptyForm);
     } catch (error) {
       setSubmitStatus("error");
-      setSubmitError(error instanceof Error ? error.message : getTrans("form.api_error", "Erreur d'envoi."));
+      setSubmitError(error instanceof Error ? error.message : t("form.api_error"));
     } finally {
       setIsSubmitting(false);
     }
@@ -335,10 +327,10 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="font-achiko text-3xl font-black uppercase leading-[0.95] tracking-tight text-white sm:text-5xl md:text-6xl"
           >
-            PARLONS DE <span className="text-[#FFC82C]">VOTRE PROJET</span>
+            {t("content.title_prefix")} <span className="text-[#FFC82C]">{t("content.title_highlight")}</span>
           </motion.h1>
           <p className="max-w-2xl border-l-4 border-[#FFC82C] pl-5 text-base font-light leading-relaxed text-gray-200">
-            Décrivez votre besoin, vos délais et votre budget. Plus le message est précis, plus le devis sera juste.
+            {t("content.description")}
           </p>
         </header>
 
@@ -359,7 +351,7 @@ export default function Contact() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="contact-name" className={labelClass}>
-                    Nom complet <span className="text-[#FFC82C]">*</span>
+                    {t("form.name_label")} <span className="text-[#FFC82C]">*</span>
                   </label>
                   <input
                     id="contact-name"
@@ -369,14 +361,14 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     autoComplete="name"
-                    placeholder="Votre nom"
+                    placeholder={t("form.name_placeholder")}
                     className={fieldClass}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="contact-email" className={labelClass}>
-                    Email <span className="text-[#FFC82C]">*</span>
+                    {t("form.email_label")} <span className="text-[#FFC82C]">*</span>
                   </label>
                   <input
                     id="contact-email"
@@ -386,14 +378,14 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     autoComplete="email"
-                    placeholder="vous@exemple.com"
+                    placeholder={t("form.email_placeholder")}
                     className={fieldClass}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="contact-phone" className={labelClass}>
-                    Téléphone <span className="font-light text-gray-400">(facultatif)</span>
+                    {t("form.phone_label")} <span className="font-light text-gray-400">({t("form.optional")})</span>
                   </label>
                   <input
                     id="contact-phone"
@@ -402,14 +394,14 @@ export default function Contact() {
                     value={formData.phone}
                     onChange={handleChange}
                     autoComplete="tel"
-                    placeholder="+237 …"
+                    placeholder={t("form.phone_placeholder")}
                     className={fieldClass}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="contact-mission" className={labelClass}>
-                    Type de mission <span className="text-[#FFC82C]">*</span>
+                    {t("form.mission_label")} <span className="text-[#FFC82C]">*</span>
                   </label>
                   <select
                     id="contact-mission"
@@ -419,7 +411,7 @@ export default function Contact() {
                     required
                     className={`${fieldClass} bg-[#121526]`}
                   >
-                    <option value="">Choisir une mission</option>
+                    <option value="">{t("form.mission_placeholder")}</option>
                     {missionOptions.map((opt) => (
                       <option key={opt} value={opt}>
                         {opt}
@@ -430,7 +422,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="contact-budget" className={labelClass}>
-                    Budget estimé <span className="font-light text-gray-400">(facultatif)</span>
+                    {t("form.budget_label")} <span className="font-light text-gray-400">({t("form.optional")})</span>
                   </label>
                   <input
                     id="contact-budget"
@@ -438,14 +430,14 @@ export default function Contact() {
                     name="budget"
                     value={formData.budget}
                     onChange={handleChange}
-                    placeholder="Ex : 500 000 FCFA"
+                    placeholder={t("form.budget_placeholder")}
                     className={fieldClass}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="contact-date" className={labelClass}>
-                    Date souhaitée <span className="font-light text-gray-400">(facultatif)</span>
+                    {t("form.date_label")} <span className="font-light text-gray-400">({t("form.optional")})</span>
                   </label>
                   <input
                     id="contact-date"
@@ -460,7 +452,7 @@ export default function Contact() {
 
               <div>
                 <label htmlFor="contact-message" className={labelClass}>
-                  Message <span className="text-[#FFC82C]">*</span>
+                  {t("form.message_label")} <span className="text-[#FFC82C]">*</span>
                 </label>
                 <textarea
                   id="contact-message"
@@ -469,7 +461,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={5}
-                  placeholder="Contexte, objectifs, public visé, fonctionnalités attendues…"
+                  placeholder={t("form.message_placeholder")}
                   className={`${fieldClass} resize-y`}
                 />
               </div>
@@ -489,15 +481,15 @@ export default function Contact() {
                 >
                   {isSubmitting ? (
                     <>
-                      <i className="pi pi-spinner animate-spin text-sm" /> Envoi en cours…
+                      <i className="pi pi-spinner animate-spin text-sm" /> {t("form.submitting")}
                     </>
                   ) : (
-                    "Envoyer le message"
+                    t("form.submit")
                   )}
                 </motion.button>
 
                 <p className="text-xs font-light leading-relaxed text-gray-400">
-                  En envoyant ce formulaire, vous acceptez d’être recontacté au sujet de votre demande.
+                  {t("form.consent")}
                 </p>
               </div>
 
@@ -512,7 +504,7 @@ export default function Contact() {
                       className="rounded-xl border border-emerald-500/40 bg-emerald-500/15 p-4 text-sm font-bold text-emerald-300"
                     >
                       <i className="pi pi-check mr-2" />
-                      Message transmis avec succès. Merci !
+                      {t("form.success")}
                     </motion.div>
                   )}
                   {submitStatus === "error" && (
@@ -523,7 +515,7 @@ export default function Contact() {
                       className="rounded-xl border border-red-500/40 bg-red-500/15 p-4 text-sm font-bold text-red-300"
                     >
                       <i className="pi pi-exclamation-triangle mr-2" />
-                      {submitError || "Erreur lors de l'envoi."}
+                      {submitError || t("form.api_error")}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -540,7 +532,7 @@ export default function Contact() {
               <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
                 <div className="space-y-4 rounded-2xl border border-white/15 bg-[#0B0D18]/85 p-5 backdrop-blur-md">
                   <h2 className="font-achiko text-lg font-black uppercase text-white">
-                    Écrire <span className="text-[#FFC82C]">directement</span>
+                    {t("content.direct_title_prefix")} <span className="text-[#FFC82C]">{t("content.direct_title_highlight")}</span>
                   </h2>
 
                   <ul className="space-y-1">
@@ -563,8 +555,8 @@ export default function Contact() {
                         <button
                           type="button"
                           onClick={() => copyToClipboard(channel.value, channel.label)}
-                          aria-label={`Copier ${channel.label}`}
-                          title={`Copier ${channel.label}`}
+                          aria-label={t("form.copy_channel", { channel: channel.label })}
+                          title={t("form.copy_channel", { channel: channel.label })}
                           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-300 transition-colors hover:text-[#FFC82C]"
                         >
                           <i className="pi pi-copy" />
@@ -574,12 +566,12 @@ export default function Contact() {
                   </ul>
 
                   <div aria-live="polite" className="min-h-[1.25rem] text-xs font-bold text-emerald-400">
-                    {copiedField ? `${copiedField} copié dans le presse-papiers.` : ""}
+                    {copiedField ? t("form.copy_success", { channel: copiedField }) : ""}
                   </div>
 
                   <div className="flex items-center gap-2 border-t border-white/10 pt-3 text-xs text-gray-300">
                     <i className="pi pi-map-marker text-[#FFC82C]" />
-                    <span>Douala, Littoral · Cameroun</span>
+                    <span>{t("content.location")}</span>
                   </div>
                 </div>
               </div>

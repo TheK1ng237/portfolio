@@ -1,10 +1,23 @@
 {
+  "Metadata": {
+    "title": "Thek1ng237 Portfolio | Full-Stack Developer",
+    "description": "Afrofuturist portfolio of Thek1ng237, a full-stack developer building web applications, APIs, databases, and immersive digital experiences.",
+    "social_description": "Immersive interfaces, modern web engineering, and cultural heritage.",
+    "twitter_description": "Full-stack developer passionate about immersive digital experiences.",
+    "image_alt": "Preview of Thek1ng237’s portfolio",
+    "person_description": "Creator of immersive digital experiences and cultural innovator.",
+    "keywords": ["Full-stack developer", "Next.js", "Angular", "Node.js", "Django", "Portfolio", "Thek1ng237", "Afrofuturism"]
+  },
   "Nav": {
     "about": "ABOUT",
     "projects": "PROJECTS",
     "culture": "CULTURE",
     "solution": "SOLUTION",
-    "contact": "CONTACT"
+    "contact": "CONTACT",
+    "identity": "IDENTITY",
+    "cv_title": "Download my PDF résumé",
+    "menu_toggle": "Open or close the navigation menu",
+    "module_label": "MODULE"
   },
   "Hero": {
     "badge": "Open to Work 2026",
@@ -14,9 +27,42 @@
     "cta_projects": "Explore my projects",
     "cta_contact": "Contact me",
     "scroll": "Scroll",
-    "alt_portrait": "Thek1ng237 Mascot - Tech Vision"
+    "alt_portrait": "Thek1ng237 Mascot - Tech Vision",
+    "cta_cv": "DOWNLOAD RÉSUMÉ",
+    "stats": {
+      "experience": "YEARS OF EXPERIENCE",
+      "projects": "PROJECTS DELIVERED",
+      "satisfaction": "UX SATISFACTION"
+    }
   },
   "HomePage": {
+    "skills": {
+      "title_prefix": "ARCHITECTURE &",
+      "title_highlight": "SKILLS",
+      "description": "Combining software engineering rigor with creative exploration to build exceptional digital experiences.",
+      "items": {
+        "frontend": {
+          "title": "Frontend architecture",
+          "description": "Responsive web architectures with Next.js 15, React 19, TypeScript, and Tailwind CSS v4.",
+          "technologies": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "REST/GraphQL"]
+        },
+        "design": {
+          "title": "UI/UX & design systems",
+          "description": "User-centered interfaces, high-fidelity prototypes, and scalable design systems.",
+          "technologies": ["Figma", "Design systems", "Prototyping", "UX design", "Accessibility"]
+        },
+        "creative": {
+          "title": "Creative coding & motion",
+          "description": "Fluid micro-interactions, 3D/Canvas animations, and immersive cybernetic interfaces.",
+          "technologies": ["Framer Motion", "HTML5 Canvas", "WebGL", "Web Audio API", "Shaders"]
+        },
+        "culture": {
+          "title": "Afrofuturism & culture tech",
+          "description": "Algorithmic fusion of African sacred geometry (Ndop, Adinkra) with the modern web.",
+          "technologies": ["Ndop geometry", "Adinkra symbols", "Ethno-design", "Digital preservation"]
+        }
+      }
+    },
     "projects": {
       "label": "ACTIVE_DEPLOYMENTS",
       "title_part1": "Selected",
@@ -27,6 +73,22 @@
       "access_grant": "Execute_Access",
       "access_deny": "Access_Denied",
       "view_archive": "View full archive",
+      "filters": {
+        "all": "ALL",
+        "web": "WEB SYSTEMS",
+        "culture": "CULTURE",
+        "design": "UI DESIGN"
+      },
+      "quick_preview": "Quick preview",
+      "modal_title": "PROJECT DETAILS",
+      "metrics_label": "Metric",
+      "close": "Close",
+      "open_live": "Open live project",
+      "metrics": {
+        "01": "Lighthouse performance: 99/100",
+        "02": "Interactive cultural knowledge engine",
+        "03": "Complete Afro-futuristic visual identity"
+      },
       "items": {
         "01": {
           "title": "African MarketPlace",
@@ -48,13 +110,63 @@
       "cta": "Enter the Vision",
       "stats": {
         "origin": "Cameroon",
+        "origin_label": "ORIGIN",
         "medium": "Digital Art",
+        "medium_label": "MEDIUM",
         "legacy": "Legacy",
+        "legacy_label": "HERITAGE",
+        "vision_label": "VISION",
         "vision": "Innovation"
       }
     }
   },
   "ProjectsPage": {
+    "hud": {
+      "waypoint": "HOLOGRAPHIC WAYPOINT",
+      "open_project": "EXPLORE PROJECT",
+      "grid_mode_title": "Switch to standard grid view",
+      "grid_mode": "GRID VIEW",
+      "help_title": "Controls and help",
+      "speed": "SPEED",
+      "turn_left": "Turn left (left arrow or A)",
+      "turn_right": "Turn right (right arrow or D)",
+      "forward": "FORWARD",
+      "reverse": "REVERSE",
+      "turbo": "TURBO",
+      "camera": {
+        "chase": "CHASE 3D",
+        "cockpit": "COCKPIT",
+        "orbit": "ORBIT 360",
+        "map": "SATELLITE"
+      }
+    },
+    "grid": {
+      "title_prefix": "PORTFOLIO",
+      "title_highlight": "PROJECTS",
+      "description": "Classic gallery of recent projects",
+      "back_to_3d": "RETURN TO 3D DRIVING",
+      "project_label": "PROJECT",
+      "explore_project": "EXPLORE PROJECT"
+    },
+    "help": {
+      "forward_reverse": "FORWARD / REVERSE",
+      "forward_reverse_keys": "W / S or UP / DOWN ARROWS",
+      "turn": "TURN LEFT / RIGHT",
+      "turn_keys": "A / D or LEFT / RIGHT ARROWS",
+      "boost": "NITRO BOOST",
+      "boost_key": "SPACEBAR",
+      "camera": "CHANGE CAMERA VIEW",
+      "camera_key": "C KEY",
+      "scroll": "CONTINUE NAVIGATING",
+      "scroll_key": "MOUSE WHEEL",
+      "dismiss": "GOT IT, LET’S GO!"
+    },
+    "modal": {
+      "close": "Close project details",
+      "tech_used": "TECHNOLOGIES USED",
+      "view_live": "VIEW LIVE PROJECT",
+      "github": "GITHUB SOURCE CODE"
+    },
     "header": {
       "badge": "PROJECT REPOSITORY 2026",
       "title_main": "ENGINEERED",
@@ -110,6 +222,78 @@
     }
   },
   "AboutPage": {
+    "content": {
+      "portrait_alt": "Portrait of Thek1ng237",
+      "hero_title_prefix": "SOFTWARE ENGINEERING &",
+      "hero_title_highlight": "CREATIVE VISION",
+      "hero_description": "As a full-stack developer, I build end-to-end web applications: polished interfaces, APIs, databases, and integrations. I combine reliable architecture, user experience, and cultural expression.",
+      "engineering_title": "FULL-STACK ENGINEERING",
+      "engineering_description": "From interfaces to APIs with Next.js, Angular, Node.js, Express.js, and Django.",
+      "culture_title": "AFRO-FUTURIST UX",
+      "culture_description": "Interface design inspired by the mathematics of ancestral African patterns.",
+      "download_cv": "DOWNLOAD OFFICIAL RÉSUMÉ (PDF)",
+      "expertise_title_prefix": "MY",
+      "expertise_title_highlight": "EXPERTISE",
+      "expertise_description": "Explore the Skills and Tools panels interactively.",
+      "previous_expertise": "Previous panel",
+      "next_expertise": "Next panel",
+      "go_to_expertise": "Go to {title}",
+      "node": "NODE",
+      "certifications_all": "ALL ({count})",
+      "certifications_openclassrooms": "OPENCLASSROOMS ({count})",
+      "certifications_udemy": "UDEMY ({count})",
+      "certifications_title_prefix": "CERTIFICATIONS &",
+      "certifications_title_highlight": "DEGREES",
+      "certifications_description": "Professional certificates and degrees from OpenClassrooms and Udemy demonstrating rigorous technical skills.",
+      "pdf_format": "FORMAT: VERIFIED PDF",
+      "view_certificate": "VIEW CERTIFICATE"
+    },
+    "expertise": {
+      "skills": {
+        "number": "PANEL 01",
+        "title": "MY SKILLS",
+        "description": "Technical skills and software engineering for building modern web applications.",
+        "groups": {
+          "frontend": {
+            "step_label": "SKILL 01",
+            "title": "FRONTEND",
+            "description": "Building fluid, performant, and accessible web interfaces with Next.js, Angular, and TypeScript."
+          },
+          "backend": {
+            "step_label": "SKILL 02",
+            "title": "BACKEND & LANGUAGES",
+            "description": "Building high-performance REST APIs and secure backend services with Node.js, Java, Express, and Django."
+          },
+          "data": {
+            "step_label": "SKILL 03",
+            "title": "DATA & WEB3",
+            "description": "Modeling SQL and NoSQL data and integrating decentralized Web3 protocols."
+          }
+        }
+      },
+      "tools": {
+        "number": "PANEL 02",
+        "title": "MY TOOLS",
+        "description": "Everyday tools for prototyping, creative work, version control, and collaborative development.",
+        "groups": {
+          "design": {
+            "step_label": "TOOL 01",
+            "title": "DESIGN & CREATION",
+            "description": "Interface design with Figma and Adobe tools, with creative organization in Milanote."
+          },
+          "environment": {
+            "step_label": "TOOL 02",
+            "title": "DEVELOPMENT ENVIRONMENT",
+            "description": "Development with VS Code, Git and GitHub/GitLab repositories, Postman testing, and Vercel deployment."
+          },
+          "workflow": {
+            "step_label": "TOOL 03",
+            "title": "ORGANIZATION & WORKFLOW",
+            "description": "Agile planning with Trello, WordPress CMS integration, and collaborative project tracking."
+          }
+        }
+      }
+    },
     "identity": {
       "id_label": "ID",
       "class_label": "CLASS",
@@ -190,6 +374,91 @@
     }
   },
   "CulturePage": {
+    "content": {
+      "hero_title_prefix": "HERITAGE",
+      "hero_title_highlight": "AFRO-FUTURIST",
+      "hero_description": "Traditional African art is not a relic of the past: it is a remarkably modern visual and algorithmic language. Our mission is to extract its geometry and bring it into the web of tomorrow.",
+      "test_pattern": "Try a pattern",
+      "view_pillars": "Explore the pillars",
+      "pillars_title_prefix": "PATTERNS &",
+      "pillars_title_highlight": "SYMBOLS",
+      "pillars_disclaimer": "The visuals above are code-generated geometric stylizations inspired by Ndop, Adinkra, Toghu, Kente, Bogolan, and Ndebele painting. They do not reproduce original patterns, each of which has a specific name and meaning.",
+      "lab_title_prefix": "GEOMETRY,",
+      "lab_title_highlight": "LIVE",
+      "lab_description": "Change the pattern, hue, and scale: the result is rendered in real time without an image.",
+      "process_title_prefix": "FROM TEXTILE",
+      "process_title_highlight": "TO CODE",
+      "principle": "Principle: name the origin, cite sources, and never reduce a symbol to mere decoration.",
+      "cta_title_prefix": "LOOKING TO ADD A",
+      "cta_title_highlight": "CULTURAL DIMENSION",
+      "cta_title_suffix": "TO YOUR PROJECT?",
+      "cta_description": "We create bespoke visual identities and digital interfaces that resonate with elegance and authenticity.",
+      "cta_button": "START A CULTURAL PROJECT"
+    },
+    "labels": {
+      "origin": "Origin",
+      "symbolism": "Symbolism",
+      "web_implementation": "Web implementation"
+    },
+    "pillars": {
+      "ndop": {
+        "title": "Royal Ndop cloth",
+        "origin": "Cameroon (Bamileke, Bamoun)",
+        "symbolism": "Indigo resist-dyed cloth associated with traditional kingdoms; its networks of diamonds and lines express authority and unity.",
+        "implementation": "Repeated diamond grids in SVG, computed in code and recolorable."
+      },
+      "adinkra": {
+        "title": "Adinkra symbols",
+        "origin": "Ghana / Côte d’Ivoire (Akan, Ashanti)",
+        "symbolism": "Stamped grid symbols, each carrying a proverb: Adinkrahene (leadership), Dwennimmen (humility and strength), Sankofa (learning from the past), and Nkyinkyim (adaptability).",
+        "implementation": "Cell-based vector icon grids, ready for semantic micro-interactions."
+      },
+      "toghu": {
+        "title": "Toghu embroidery",
+        "origin": "Cameroon (Grassfields)",
+        "symbolism": "Prestigious ceremonial attire featuring embroidered bands of diamonds, triangles, and zigzags on a dark background.",
+        "implementation": "Embroidery bands recreated in SVG with high-contrast HSL palettes."
+      },
+      "kente": {
+        "title": "Kente weaving",
+        "origin": "Ghana (Ashanti, Ewe)",
+        "symbolism": "Cloth woven from joined strips; its colors and patterns express rank, a proverb, or a story.",
+        "implementation": "SVG-generated vertical bands and checkerboards with configurable colors."
+      },
+      "bogolan": {
+        "title": "Bogolan mud cloth",
+        "origin": "Mali (Bamana)",
+        "symbolism": "Cotton dyed with fermented mud and plants; its lines, crosses, and chevrons carry stories and protection.",
+        "implementation": "SVG lines, crosses, and chevrons for restrained, high-contrast backgrounds."
+      },
+      "ndebele": {
+        "title": "Ndebele mural painting",
+        "origin": "South Africa (Ndebele)",
+        "symbolism": "House façades painted by women, with bold black outlines and vivid colors expressing identity and pride.",
+        "implementation": "Solid fills and bold outlines create highly legible interface components."
+      }
+    },
+    "lab": {
+      "preview": "Preview of {pattern}, hue {hue} degrees, scale {scale}",
+      "pattern": "Pattern",
+      "hue": "Hue",
+      "scale": "Scale",
+      "generated_settings": "Generated settings"
+    },
+    "process": {
+      "observe": {
+        "title": "Observe",
+        "text": "Study a pattern, its origin, use, and story through reliable, cited sources."
+      },
+      "abstract": {
+        "title": "Abstract",
+        "text": "Identify its geometric rules: repetition, rotation, symmetry, and color rhythm."
+      },
+      "implement": {
+        "title": "Implement",
+        "text": "Translate those rules into SVG, CSS, or Canvas with HSL palettes and an accessible interface."
+      }
+    },
     "hero": {
       "badge": "SYSTEM_INIT: CULTURAL_HERITAGE_VAULT",
       "title_main": "ROOTS",
@@ -280,6 +549,14 @@
     }
   },
   "ContactPage": {
+    "content": {
+      "title_prefix": "LET'S TALK ABOUT",
+      "title_highlight": "YOUR PROJECT",
+      "description": "Tell us about your needs, timeline, and budget. The more precise your message, the more accurate the estimate.",
+      "direct_title_prefix": "GET IN",
+      "direct_title_highlight": "TOUCH",
+      "location": "Douala, Littoral · Cameroon"
+    },
     "hero": {
       "protocol": "PROTOCOL: BRIDGE_INITIATION",
       "title_main": "LET'S",
@@ -304,9 +581,27 @@
       "security": "GUARANTEED CONFIDENTIALITY",
       "mission_type_label": "Mission type",
       "mission_type_placeholder": "Choose a mission",
+      "name_label": "Full name",
+      "name_placeholder": "Your name",
+      "email_label": "Email",
+      "email_placeholder": "you@example.com",
       "phone_label": "Phone",
+      "phone_placeholder": "+237 …",
+      "optional": "optional",
+      "mission_label": "Mission type",
+      "mission_placeholder": "Choose a mission",
       "budget_label": "Budget",
+      "budget_placeholder": "e.g. 500,000 XAF",
       "date_label": "Preferred timeline",
+      "message_label": "Message",
+      "message_placeholder": "Context, goals, target audience, and required features…",
+      "submitting": "Sending…",
+      "submit": "Send message",
+      "consent": "By submitting this form, you agree to be contacted about your request.",
+      "success": "Message sent successfully. Thank you!",
+      "invalid_request": "Invalid request.",
+      "copy_channel": "Copy {channel}",
+      "copy_success": "{channel} copied to the clipboard.",
       "consent_label": "I agree that my data may be processed for this request.",
       "mission_options": [
         "Landing page",
@@ -320,6 +615,82 @@
     }
   },
   "SolutionPage": {
+    "content": {
+      "hero_title_prefix": "TAILORED",
+      "hero_title_highlight": "SOLUTIONS",
+      "hero_description": "From complex web interfaces to usability audits and Afrofuturist cultural design. Every offer is quoted according to your project.",
+      "offers_title_prefix": "OUR",
+      "offers_title_highlight": "SERVICES",
+      "filter_offers": "Filter services",
+      "all_categories": "All",
+      "process_title_prefix": "FROM IDEA",
+      "process_title_highlight": "TO QUOTE",
+      "custom_title_prefix": "DOES YOUR PROJECT FIT",
+      "custom_title_highlight": "NO TEMPLATE?",
+      "custom_description": "Tell us about it. We shape the offer around your needs, not the other way around.",
+      "custom_cta": "Discuss my project"
+    },
+    "categories": {
+      "engine": "Web engineering",
+      "protocol": "Design & UX",
+      "lab": "Cultural design"
+    },
+    "labels": {
+      "pricing": "Pricing"
+    },
+    "actions": {
+      "request_quote": "Request a quote",
+      "view_details": "View details",
+      "close": "Close"
+    },
+    "process": {
+      "describe": {
+        "title": "You describe your project",
+        "description": "Goals, audience, constraints, and timeline through the contact form."
+      },
+      "estimate": {
+        "title": "We prepare an estimate",
+        "description": "Scope, milestones, timeline, and budget in a clear quote refined with you."
+      },
+      "build": {
+        "title": "We build it together",
+        "description": "Step-by-step development, regular check-ins, and deliverables for your approval."
+      }
+    },
+    "modal": {
+      "benefits_title": "Key benefits",
+      "included_title": "What’s included",
+      "audience_label": "Best for:"
+    },
+    "offers": {
+      "01": {
+        "title": "CUSTOM WEB ARCHITECTURE",
+        "description": "End-to-end development of responsive, scalable Next.js and React applications optimized for SEO.",
+        "price": "Custom quote",
+        "features": ["Next.js 15 & React 19 full-stack", "Afrofuturist responsive design", "Performance and SEO optimization"],
+        "full_description": "End-to-end design and development for your web platform. From frontend architecture to REST APIs and databases, we build a modern, high-performance solution tailored to your needs.",
+        "benefits": ["Modern architecture without technical debt", "Fast page rendering", "Distinctive visual identity"],
+        "target_audience": "Startups, businesses, and ambitious projects"
+      },
+      "02": {
+        "title": "UX/UI AUDIT & VISUAL REDESIGN",
+        "description": "In-depth usability analysis, design system creation, and user journey optimization.",
+        "price": "Custom quote",
+        "features": ["Usability audit and UX research", "Complete design system", "High-fidelity Figma prototypes"],
+        "full_description": "Improve conversions and user satisfaction through a complete review of your visual and interactive experience.",
+        "benefits": ["Higher engagement", "Consistent visuals across pages", "Development-ready prototypes"],
+        "target_audience": "Existing products looking to modernize their interface"
+      },
+      "03": {
+        "title": "AFROFUTURIST CULTURAL DESIGN",
+        "description": "Digital art, sacred geometry, and a strong cultural identity integrated into your web projects.",
+        "price": "Custom quote",
+        "features": ["Vectorization of ancestral patterns", "CSS animations and micro-interactions", "Art direction and branding"],
+        "full_description": "Give your digital products a distinctive identity by blending African visual patterns with modern web standards.",
+        "benefits": ["Meaningful differentiation", "Cultural heritage promotion", "Immersive, memorable experiences"],
+        "target_audience": "Brands, cultural institutions, and independent creators"
+      }
+    },
     "hero": {
       "badge": "SOLUTIONS_CATALOG_2026",
       "title_main": "BUILDING",
@@ -413,6 +784,49 @@
       "base_location": "Base_Location",
       "location": "Douala, CM.AFR",
       "status": "ENCRYPTED_SESSION_ACTIVE"
+    },
+    "back_to_top": "BACK TO TOP"
+  },
+  "Common": {
+    "logo_loading": "Thek1ng237 — loading portfolio",
+    "audio": {
+      "enable": "Enable ambient sound",
+      "disable": "Disable ambient sound",
+      "off": "AUDIO_OFF",
+      "on": "AUDIO_ON"
+    }
+  },
+  "Testimonials": {
+    "title_prefix": "Client",
+    "title_highlight": "& partner testimonials",
+    "description": "Worked with Thek1ng237? Share your experience with our web and application projects.",
+    "actions": {
+      "leave_testimonial": "Leave a testimonial",
+      "close": "Close",
+      "cancel": "Cancel",
+      "submitting": "Sending…",
+      "submit": "Send testimonial"
+    },
+    "form": {
+      "share_experience": "Share your experience",
+      "title": "Leave a testimonial",
+      "name_label": "Your name",
+      "name_placeholder": "e.g. Moustapha N.",
+      "role_label": "Your role / title",
+      "role_placeholder": "e.g. Founder / CEO",
+      "company_label": "Company / organization",
+      "company_placeholder": "e.g. GSHI Incubator",
+      "rating_label": "Your rating",
+      "content_label": "Your testimonial",
+      "content_placeholder": "Describe your experience working with Thek1ng237…"
+    },
+    "success": {
+      "title": "Thank you for your feedback!",
+      "description": "Your testimonial was submitted successfully. It will be published after administrator approval."
+    },
+    "errors": {
+      "required_fields": "Please enter your name and testimonial.",
+      "submit": "There was an error submitting your testimonial."
     }
   },
   "NotFound": {
@@ -433,6 +847,333 @@
     "quote": "\"In code, as in life: every error is just a message waiting to be understood.\""
   },
   "AdminPage": {
+    "editor": {
+      "ui": {
+        "client_to_save": "Client to save",
+        "saved_proposals": "Saved proposals",
+        "generator_title": "Proposal generator",
+        "generator_heading": "Adapt this template to your project",
+        "generator_description": "Edit sections, add or remove line items, then export a JSON copy for each client. Your changes are saved in this browser.",
+        "import_json": "Import JSON",
+        "export_json": "Export JSON",
+        "restore_template": "Restore template",
+        "go_to_preview": "Go to preview",
+        "api_login_title": "Proposal management sign-in",
+        "admin_email": "Admin account email",
+        "password": "Password"
+      },
+      "sections": {
+        "identity_title": "Identity & client",
+        "identity_description": "Contact details, references, and proposal introduction.",
+        "needs_title": "Needs & objectives",
+        "needs_description": "Context, expected outcomes, and user journeys to design.",
+        "deliverables_title": "Services & deliverables",
+        "deliverables_description": "Customize phases, descriptions, and individual deliverables.",
+        "budget_title": "Budget & payments",
+        "budget_description": "Totals and payment amounts are calculated from line items and percentages.",
+        "timeline_title": "Timeline & terms",
+        "timeline_description": "Duration, milestones, client inputs, and final approvals."
+      },
+      "fields": {
+        "contact_first_name": "Contact first name",
+        "contact_last_name": "Contact last name",
+        "client_email": "Client email",
+        "client_phone": "Client phone",
+        "brand": "Brand",
+        "full_name": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "proposal_reference": "Proposal reference",
+        "issue_date": "Issue date",
+        "offer_validity": "Offer validity",
+        "client_organization": "Client / organization name",
+        "short_name": "Short name",
+        "client_slogan": "Client tagline",
+        "recipient": "Recipient",
+        "document_title": "Document title",
+        "project_section_title": "Project section title",
+        "objectives_title": "Objectives heading",
+        "client_context": "Client context",
+        "central_challenge": "Central challenge",
+        "challenge_label": "Challenge label",
+        "orientation_title": "Approach heading",
+        "proposed_orientation": "Proposed approach",
+        "journeys_title": "User journeys heading",
+        "project_journeys": "Project journeys",
+        "journey": "Journey",
+        "design_principles_title": "Design principles heading",
+        "design_principles": "Design principles",
+        "principle": "Principle",
+        "design_section_title": "Design section title",
+        "design_phases": "Design / UX phases",
+        "development_section_title": "Development section title",
+        "development_intro": "Development introduction",
+        "development_phases": "Development phases",
+        "implementation_notes_title": "Implementation notes heading",
+        "dependencies_assumptions": "Dependencies and assumptions",
+        "deployment_title": "Deployment heading",
+        "deployment_description": "Testing, delivery, and launch",
+        "budget_title": "Budget title",
+        "currency": "Currency",
+        "budget_intro": "Budget introduction",
+        "budget_lines": "Budget line items",
+        "phase": "Phase",
+        "amount_currency": "Amount ({currency})",
+        "included_deliverables": "Included deliverables",
+        "payment_schedule_title": "Payment schedule title",
+        "payment_label": "Label",
+        "percentage": "Percentage",
+        "payment_milestone": "Payment milestone",
+        "timeline_title": "Timeline title",
+        "client_inputs_title": "Client inputs heading",
+        "client_inputs": "Client-provided inputs",
+        "final_checks_title": "Final terms heading",
+        "final_checks": "Items to confirm before approval",
+        "timeline_steps": "Timeline steps",
+        "period": "Period",
+        "description": "Description",
+        "deliverables": "Deliverables",
+        "deliverable": "Deliverable",
+        "objectives": "Objectives",
+        "accent_color": "Accent color"
+      },
+      "labels": {
+        "phase_number": "Phase {number}",
+        "objective_number": "Objective {number}",
+        "line_number": "Line {number}",
+        "payment_number": "Payment {number}",
+        "calculated_total": "Calculated total",
+        "payment_share": "Payment schedule ({percentage}% allocated)"
+      },
+      "actions": {
+        "add": "Add",
+        "remove_item": "Remove {item} {number}",
+        "add_phase": "Add a phase",
+        "remove_phase": "Remove this phase",
+        "add_objective": "Add an objective",
+        "remove_objective": "Remove this objective",
+        "add_budget_line": "Add a line item",
+        "remove_budget_line": "Remove this line item",
+        "add_payment": "Add a payment",
+        "remove_payment": "Remove this payment",
+        "add_step": "Add a step",
+        "remove_step": "Remove step {number}",
+        "save_proposal": "Save proposal",
+        "load_list": "Load list",
+        "choose_proposal": "Choose a saved proposal",
+        "open": "Open",
+        "disconnect": "Sign out"
+      },
+      "colors": {
+        "gold": "Gold",
+        "red": "Red",
+        "green": "Green"
+      },
+      "messages": {
+        "draft_load_failed": "Could not load the local draft.",
+        "draft_save_failed": "Could not save the draft in this browser.",
+        "exported": "Proposal file exported.",
+        "imported": "Proposal imported.",
+        "api_connected": "Successfully connected to the API.",
+        "proposal_saved": "Proposal {reference} saved to the database.",
+        "proposals_loaded": "{count, plural, one {# proposal loaded} other {# proposals loaded}}.",
+        "proposal_loaded": "Proposal loaded from the database.",
+        "disconnected": "Disconnected from the API.",
+        "template_restored": "Template restored.",
+        "saving": "Saving…",
+        "draft_saved_at": "Draft saved at {time}",
+        "auto_saved": "Changes saved automatically",
+        "loading_draft": "Loading draft…",
+        "payment_total_warning": "Payment percentages should add up to 100%."
+      },
+      "errors": {
+        "invalid_file": "This JSON file does not match the proposal template.",
+        "connection": "Could not connect.",
+        "client_fields_required": "Enter the client’s first name, last name, and email.",
+        "budget_line_required": "Add at least one budget line before saving.",
+        "save_failed": "Could not save the proposal.",
+        "load_proposals": "Could not load proposals.",
+        "not_editable": "This proposal does not contain an editable document."
+      }
+    },
+    "studio": {
+      "template_label": "Starting template",
+      "templates": {
+        "gshi": "GSHI · Brochure website",
+        "weglow": "WeGlow · Admin-managed platform",
+        "custom": "Custom / blank"
+      },
+      "client_label": "Client record",
+      "no_clients": "No clients in the database (add a client first)",
+      "saving": "Saving…",
+      "save": "Save proposal to database",
+      "messages": {
+        "saved": "Proposal saved. Redirecting to the proposal list…"
+      },
+      "errors": {
+        "select_client": "Please select a recipient client before saving.",
+        "save_with_detail": "Error: {error}",
+        "save_failed": "Could not save the proposal."
+      }
+    },
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+    "labels": {
+      "created_at": "Created {date}"
+    },
+    "confirm": {
+      "delete_proposal": "Permanently delete proposal {reference}?",
+      "delete_client": "Delete the client record for {name}?",
+      "delete_testimonial": "Delete the testimonial by {name}?"
+    },
+    "messages": {
+      "proposal_status_updated": "Status of proposal {reference} updated.",
+      "proposal_deleted": "Proposal deleted.",
+      "client_updated": "Client record updated.",
+      "client_created": "New client created.",
+      "client_deleted": "Client deleted.",
+      "testimonial_updated": "Testimonial updated.",
+      "testimonial_created": "New testimonial added.",
+      "testimonial_visibility_updated": "Visibility of {name}’s testimonial updated.",
+      "testimonial_deleted": "Testimonial deleted."
+    },
+    "errors": {
+      "load_data": "Could not load data.",
+      "admin_required": "This account does not have administrator privileges.",
+      "authentication": "Authentication failed.",
+      "update_status": "Could not update the status.",
+      "delete": "Could not delete this item.",
+      "save_client": "Could not save the client.",
+      "save_testimonial": "Could not save the testimonial.",
+      "update": "Could not make this change.",
+      "load_proposal": "Could not load the proposal.",
+      "load_document": "Could not load the document."
+    },
+    "ui": {
+      "checking_session": "Checking admin session…",
+      "api_online": "API ONLINE",
+      "console_title": "Back-office console",
+      "login_description": "Restricted area · Proposals, CRM & testimonials",
+      "email_label": "Email address",
+      "password_label": "Password",
+      "authenticating": "Signing in…",
+      "open_backoffice": "Open back-office session",
+      "security_note": "Secure access via JWT and administrator roles.",
+      "suite_name": "Back-office Suite",
+      "nav_label": "Main back-office navigation",
+      "public_portfolio": "Public portfolio",
+      "console_label": "Admin console",
+      "nav": {
+        "overview": "Overview",
+        "proposals": "Proposals",
+        "studio": "Proposal editor",
+        "clients": "Client CRM",
+        "testimonials": "Testimonials"
+      },
+      "headers": {
+        "proposals": "Proposal management",
+        "clients": "Client management (CRM)",
+        "testimonials": "Testimonial management"
+      },
+      "refresh": "Refresh",
+      "new_testimonial": "New testimonial",
+      "new_proposal": "New proposal",
+      "stats": {
+        "total_proposals": "Total proposals recorded",
+        "drafts": "Drafts to process",
+        "awaiting_client": "Awaiting client",
+        "accepted": "Accepted proposals"
+      },
+      "recent_proposals": "Recent proposals",
+      "recent_proposals_description": "Latest proposals issued in the system",
+      "view_all": "View all",
+      "financial_volume": "Financial volume",
+      "proposals_by_currency": "Total proposal value by currency",
+      "recent_clients": "Recent clients",
+      "proposal_count": "{count, plural, one {# proposal} other {# proposals}}",
+      "search_proposals": "Search by reference, title, client, or email…",
+      "all_statuses": "All statuses",
+      "search_clients": "Search clients…",
+      "add_client": "Add a client",
+      "table": {
+        "client_company": "Client / company",
+        "contact": "Contact",
+        "location": "Location",
+        "proposals_made": "Proposals made",
+        "actions": "Actions"
+      },
+      "no_phone": "No phone number",
+      "edit": "Edit",
+      "delete": "Delete",
+      "testimonial_moderation_title": "Testimonial moderation & management",
+      "testimonial_moderation_description": "Clients can leave feedback on the public portfolio. Review, approve, and publish received testimonials.",
+      "add_testimonial": "Add a testimonial",
+      "pending_moderation": "Pending review",
+      "published": "● Live (published)",
+      "approve_publish": "✓ Approve & publish",
+      "client": "Client",
+      "edit_testimonial": "Edit testimonial",
+      "no_testimonials": "No testimonials have been received or recorded yet.",
+      "edit_client": "Edit client",
+      "new_client": "Add a new client",
+      "company_label": "Company / brand",
+      "company_placeholder": "e.g. GSHI Incubator",
+      "first_name": "First name",
+      "first_name_placeholder": "e.g. Yannick",
+      "last_name": "Last name",
+      "last_name_placeholder": "e.g. Ndoh",
+      "client_email_placeholder": "contact@client.com",
+      "phone": "Phone",
+      "city": "City",
+      "city_placeholder": "Douala / Yaoundé",
+      "country": "Country",
+      "country_placeholder": "Cameroon",
+      "cancel": "Cancel",
+      "save": "Save",
+      "create_client": "Create client",
+      "author_name": "Author name",
+      "author_name_placeholder": "e.g. Moustapha N.",
+      "role": "Role / title",
+      "role_placeholder": "e.g. General Manager",
+      "rating_label": "Rating (out of 5 stars)",
+      "stars": "stars",
+      "testimonial_content": "Testimonial content",
+      "testimonial_placeholder": "Write the client testimonial or review…",
+      "publish_immediately": "Publish immediately on the public portfolio",
+      "save_changes": "Save changes",
+      "create_testimonial": "Create testimonial",
+      "loading_proposal_detail": "Loading proposal details…",
+      "client_label": "Client",
+      "proposal_table": {
+        "reference_subject": "Ref. / subject",
+        "client": "Client",
+        "date": "Date",
+        "status": "Status",
+        "amount": "Amount",
+        "actions": "Actions",
+        "item": "Service / item",
+        "quantity": "Qty",
+        "unit_price": "Unit price"
+      },
+      "print_proposal": "PDF preview / print proposal",
+      "official_document": "Official proposal document",
+      "a4_pdf_note": "A4 · print / export PDF",
+      "print_export_pdf": "Print / export PDF",
+      "close": "Close",
+      "view_details": "View details",
+      "print_preview": "Print / preview A4 PDF",
+      "mark_sent": "Mark as sent",
+      "cancel_action": "Cancel",
+      "accept": "Accept",
+      "reject": "Reject",
+      "loading_proposals": "Loading proposals…",
+      "no_proposals": "No proposals to display."
+    },
     "badge": "ADMIN",
     "title": "Back-office Thek1ng237",
     "loading": "Loading...",

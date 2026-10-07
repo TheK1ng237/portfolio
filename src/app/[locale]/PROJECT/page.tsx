@@ -17,8 +17,8 @@ const CyberCarScene = dynamic(
 const fallbackProjects: Project[] = [
   {
     id: 1,
-    title: 'Plateforme Web "Culture Africa"',
-    description: 'Site interactif pour explorer et promouvoir la culture africaine à travers des animations et récits visuels.',
+    title: "",
+    description: "",
     image: "/projet/culture-africaine.png",
     link: "https://culture-africaine.vercel.app",
     github: "https://github.com/TangB5/mvp",
@@ -30,8 +30,8 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 2,
-    title: 'Application "Culture Cameroun"',
-    description: 'Application éducative immersive explorant les richesses culturelles et patrimoniales du Cameroun.',
+    title: "",
+    description: "",
     image: "/images/projet2.png",
     link: "https://cultureafricaine.vercel.app",
     github: "https://github.com/TangB5",
@@ -43,8 +43,8 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 3,
-    title: 'Identité Visuelle "Ngano Fashion"',
-    description: 'Direction artistique complète, branding et motifs adinkra pour une marque de mode contemporaine.',
+    title: "",
+    description: "",
     image: "/projet3.jpg",
     link: "https://github.com/TangB5",
     github: "https://github.com/TangB5",
@@ -56,8 +56,8 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 4,
-    title: 'MarketPlace Africaine "AfroShop"',
-    description: "Plateforme e-commerce mettant en valeur l'artisanat local avec une architecture full-stack ultra rapide.",
+    title: "",
+    description: "",
     image: "/projet1.jpg",
     link: "https://github.com/TangB5",
     github: "https://github.com/TangB5",
@@ -69,8 +69,8 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 5,
-    title: 'Écosystème "Wouri River Tech"',
-    description: 'Dashboard analytique et plateforme WebGL de monitoring de projets technologiques au Cameroun.',
+    title: "",
+    description: "",
     image: "/images/mvp1.png",
     link: "https://github.com/TangB5",
     github: "https://github.com/TangB5",
@@ -100,10 +100,10 @@ type ProjectApiItem = {
   version?: string;
 };
 
-const mapProject = (item: ProjectApiItem): Project => ({
+const mapProject = (item: ProjectApiItem, locale: string): Project => ({
   id: Number(item.id ?? Math.random()),
-  title: item.title ?? item.titleFr ?? item.titleEn ?? "Projet",
-  description: item.description ?? item.descriptionFr ?? item.descriptionEn ?? "",
+  title: (locale === "en" ? item.titleEn ?? item.titleFr : item.titleFr ?? item.titleEn) ?? item.title ?? "",
+  description: (locale === "en" ? item.descriptionEn ?? item.descriptionFr : item.descriptionFr ?? item.descriptionEn) ?? item.description ?? "",
   image: item.image ?? "/images/mvp1.png",
   link: item.link ?? "",
   github: item.github ?? "",
@@ -118,10 +118,19 @@ export default function ProjectsPage() {
   const t = useTranslations("ProjectsPage");
   const locale = useLocale();
 
+  const localizedFallbackProjects = useMemo(
+    () => fallbackProjects.map((project) => ({
+      ...project,
+      title: t(`items.${project.id}.title`),
+      description: t(`items.${project.id}.description`),
+    })),
+    [t],
+  );
+
   const sceneRef = useRef<CyberCarSceneRef>(null);
 
   const [filter, setFilter] = useState<string>("all");
-  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [projects, setProjects] = useState<Project[]>(localizedFallbackProjects);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedModalProject, setSelectedModalProject] = useState<Project | null>(null);
 
@@ -141,10 +150,10 @@ export default function ProjectsPage() {
       try {
         const data = await apiFetch<{ items: ProjectApiItem[] }>("/public/projects", { locale, method: "GET" });
         if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
-          setProjects(data.items.map(mapProject));
+          setProjects(data.items.map((item) => mapProject(item, locale)));
         }
       } catch {
-        if (!cancelled) setProjects(fallbackProjects);
+        if (!cancelled) setProjects(localizedFallbackProjects);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -154,7 +163,7 @@ export default function ProjectsPage() {
     return () => {
       cancelled = true;
     };
-  }, [locale]);
+  }, [locale, localizedFallbackProjects]);
 
   const filteredProjects = useMemo(
     () => filter === "all" ? projects : projects.filter((project) => project.category === filter),
@@ -165,15 +174,6 @@ export default function ProjectsPage() {
   const handleBiomeChange = useCallback((index: number) => setActiveBiomeIndex(index), []);
   const handleSpeedChange = useCallback((speed: number) => setCurrentSpeed(speed), []);
   const handleNearProject = useCallback((project: Project | null) => setNearProject(project), []);
-
-  // Safe helper for translation strings
-  const getTrans = (key: string, fallback: string) => {
-    try {
-      return t(key);
-    } catch {
-      return fallback;
-    }
-  };
 
   return (
     <div className="min-h-screen relative bg-[#050714] text-[#F8F9FA] font-azurio overflow-hidden selection:bg-[#FFC82C] selection:text-black">
@@ -209,7 +209,7 @@ export default function ProjectsPage() {
                     </div>
                     <div>
                       <span className="text-[9.5px] font-mono font-bold tracking-widest text-[#FFC82C] uppercase flex items-center gap-1.5">
-                        <i className="pi pi-compass animate-spin text-[10px]" /> WAYPOINT HOLOGRAPHIQUE
+                        <i className="pi pi-compass animate-spin text-[10px]" /> {t("hud.waypoint")}
                       </span>
                       <h3 className="font-achiko text-base sm:text-lg font-black uppercase text-white line-clamp-1">
                         {nearProject.title}
@@ -221,7 +221,7 @@ export default function ProjectsPage() {
                     onClick={() => setSelectedModalProject(nearProject)}
                     className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FFC82C] text-black font-achiko text-xs font-black uppercase tracking-wider hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,200,44,0.8)] shrink-0 cursor-pointer"
                   >
-                    EXPLORER PROJET
+                    {t("hud.open_project")}
                   </button>
                 </motion.div>
               )}
@@ -236,16 +236,16 @@ export default function ProjectsPage() {
                 <button
                   onClick={() => setViewMode("grid")}
                   className="px-3.5 py-2 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-gray-300 hover:text-white text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer"
-                  title="Basculer en vue grille standard"
+                  title={t("hud.grid_mode_title")}
                 >
                   <i className="pi pi-th-large" />
-                  <span className="hidden sm:inline">MODE GRILLE</span>
+                  <span className="hidden sm:inline">{t("hud.grid_mode")}</span>
                 </button>
 
                 <button
                   onClick={() => setShowHelpModal(true)}
                   className="w-9 h-9 rounded-xl bg-[#0c0f24]/80 border border-white/20 text-[#FFC82C] hover:bg-white/10 flex items-center justify-center text-sm font-bold cursor-pointer"
-                  title="Commandes et Aides"
+                  title={t("hud.help_title")}
                 >
                   ?
                 </button>
@@ -257,7 +257,7 @@ export default function ProjectsPage() {
               {/* SPEEDOMETER & DRIVE BUTTONS */}
               <div className="flex flex-wrap items-center gap-3 bg-[#0c0f24]/90 backdrop-blur-xl border border-white/15 p-3 rounded-3xl shadow-2xl">
                 <div className="text-center border-r border-white/15 pr-3 pl-1">
-                  <span className="text-[8.5px] font-mono text-gray-400 block tracking-widest uppercase">VITESSE</span>
+                  <span className="text-[8.5px] font-mono text-gray-400 block tracking-widest uppercase">{t("hud.speed")}</span>
                   <span className="font-achiko text-2xl sm:text-3xl font-black text-[#FFC82C] leading-none">
                     {currentSpeed}
                   </span>
@@ -272,7 +272,8 @@ export default function ProjectsPage() {
                     onTouchStart={() => sceneRef.current?.setSteerLeft(true)}
                     onTouchEnd={() => sceneRef.current?.setSteerLeft(false)}
                     className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 active:bg-[#FFC82C] active:text-black text-white font-bold flex items-center justify-center text-sm cursor-pointer select-none"
-                    title="Virer à gauche (Flèche Gauche / A)"
+                    title={t("hud.turn_left")}
+                    aria-label={t("hud.turn_left")}
                   >
                     ◄
                   </button>
@@ -285,7 +286,7 @@ export default function ProjectsPage() {
                       onTouchEnd={() => sceneRef.current?.setThrottle(false)}
                       className="px-4 py-1.5 rounded-xl bg-[#10B981] hover:bg-[#059669] active:scale-95 text-black font-achiko font-black text-[11px] uppercase tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.5)] cursor-pointer select-none flex items-center gap-1"
                     >
-                      ▲ AVANCER
+                      ▲ {t("hud.forward")}
                     </button>
                     <button
                       onMouseDown={() => sceneRef.current?.setBrake(true)}
@@ -294,7 +295,7 @@ export default function ProjectsPage() {
                       onTouchEnd={() => sceneRef.current?.setBrake(false)}
                       className="px-4 py-1 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-gray-200 font-mono text-[9.5px] uppercase tracking-wider border border-white/15 cursor-pointer select-none"
                     >
-                      ▼ RECULER
+                      ▼ {t("hud.reverse")}
                     </button>
                   </div>
 
@@ -304,7 +305,8 @@ export default function ProjectsPage() {
                     onTouchStart={() => sceneRef.current?.setSteerRight(true)}
                     onTouchEnd={() => sceneRef.current?.setSteerRight(false)}
                     className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 active:bg-[#FFC82C] active:text-black text-white font-bold flex items-center justify-center text-sm cursor-pointer select-none"
-                    title="Virer à droite (Flèche Droite / D)"
+                    title={t("hud.turn_right")}
+                    aria-label={t("hud.turn_right")}
                   >
                     ►
                   </button>
@@ -314,7 +316,7 @@ export default function ProjectsPage() {
                   onClick={() => sceneRef.current?.triggerBoost()}
                   className="px-3.5 py-3 rounded-2xl bg-gradient-to-r from-[#FF3B56] to-[#FFC82C] text-black font-achiko font-black text-[10px] tracking-widest uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,59,86,0.6)] cursor-pointer flex items-center gap-1 select-none"
                 >
-                  <i className="pi pi-bolt text-xs" /> TURBO
+                  <i className="pi pi-bolt text-xs" /> {t("hud.turbo")}
                 </button>
               </div>
 
@@ -323,10 +325,10 @@ export default function ProjectsPage() {
                 {(["chase", "cockpit", "orbit", "map"] as CameraMode[]).map((mode) => {
                   const isActive = cameraMode === mode;
                   const labels = {
-                    chase: "CHASE 3D",
-                    cockpit: "COCKPIT",
-                    orbit: "ORBIT 360",
-                    map: "SATELLITE",
+                    chase: t("hud.camera.chase"),
+                    cockpit: t("hud.camera.cockpit"),
+                    orbit: t("hud.camera.orbit"),
+                    map: t("hud.camera.map"),
                   };
                   return (
                     <button
@@ -355,26 +357,26 @@ export default function ProjectsPage() {
           <div className="flex justify-between items-center mb-10 border-b border-white/15 pb-6">
             <div>
               <h1 className="font-achiko text-3xl sm:text-5xl font-black uppercase text-white">
-                PORTFOLIO <span className="text-[#FFC82C]">MODULES</span>
+                {t("grid.title_prefix")} <span className="text-[#FFC82C]">{t("grid.title_highlight")}</span>
               </h1>
-              <p className="text-sm text-gray-300 font-azurio">Galerie classique des projets récents</p>
+              <p className="text-sm text-gray-300 font-azurio">{t("grid.description")}</p>
             </div>
 
             <button
               onClick={() => setViewMode("3d")}
               className="px-5 py-3 rounded-2xl bg-[#FFC82C] text-black font-achiko text-xs font-black uppercase tracking-wider hover:scale-105 transition-all shadow-[0_0_25px_rgba(255,200,44,0.5)] flex items-center gap-2 cursor-pointer"
             >
-              <i className="pi pi-compass text-sm" /> RETOURNER EN CONDUITE 3D
+              <i className="pi pi-compass text-sm" /> {t("grid.back_to_3d")}
             </button>
           </div>
 
           {/* FILTER BUTTONS */}
           <div className="flex flex-wrap gap-2 mb-10">
             {[
-              { id: "all", label: getTrans("filters.all", "Tous") },
-              { id: "web", label: getTrans("filters.web", "Web") },
-              { id: "mobile", label: getTrans("filters.mobile", "Mobile") },
-              { id: "design", label: getTrans("filters.design", "Design") },
+              { id: "all", label: t("filters.all") },
+              { id: "web", label: t("filters.web") },
+              { id: "mobile", label: t("filters.mobile") },
+              { id: "design", label: t("filters.design") },
             ].map((f) => (
               <button
                 key={f.id}
@@ -402,7 +404,7 @@ export default function ProjectsPage() {
                   <div className="relative h-48 w-full rounded-2xl overflow-hidden mb-4 bg-black">
                     <Image src={project.image} alt={project.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-[#FFC82C] block mb-1">PROJET 0{project.id} · {project.version}</span>
+                  <span className="text-[10px] font-mono font-bold text-[#FFC82C] block mb-1">{t("grid.project_label")} 0{project.id} · {project.version}</span>
                   <h3 className="font-achiko text-xl font-black text-white mb-2 uppercase group-hover:text-[#FFC82C] transition-colors">
                     {project.title}
                   </h3>
@@ -419,7 +421,7 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="flex items-center justify-between border-t border-white/10 pt-3 text-[11px] font-mono text-[#FFC82C] font-bold">
-                    <span>EXPLORER LE PROJET</span>
+                    <span>{t("grid.explore_project")}</span>
                     <i className="pi pi-arrow-right" />
                   </div>
                 </div>
@@ -450,24 +452,24 @@ export default function ProjectsPage() {
 
               <div className="space-y-3 text-xs">
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
-                  <span className="font-bold text-gray-300">AVANCER / RECULER</span>
-                  <span className="font-mono text-[#FFC82C] font-bold">W / S  ou  FLÈCHES HAUT/BAS</span>
+                  <span className="font-bold text-gray-300">{t("help.forward_reverse")}</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">{t("help.forward_reverse_keys")}</span>
                 </div>
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
-                  <span className="font-bold text-gray-300">VIRER À GAUCHE / DROITE</span>
-                  <span className="font-mono text-[#FFC82C] font-bold">A / D  ou  FLÈCHES GAUCHE/DROITE</span>
+                  <span className="font-bold text-gray-300">{t("help.turn")}</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">{t("help.turn_keys")}</span>
                 </div>
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-[#FF3B56]/10 border-[#FF3B56]/30">
-                  <span className="font-bold text-[#FF3B56]">TURBO NITRO BOOST</span>
-                  <span className="font-mono text-[#FFC82C] font-bold">BARRE D&apos;ESPACE</span>
+                  <span className="font-bold text-[#FF3B56]">{t("help.boost")}</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">{t("help.boost_key")}</span>
                 </div>
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
-                  <span className="font-bold text-gray-300">CHANGER LA VUE CAMÉRA</span>
-                  <span className="font-mono text-[#FFC82C] font-bold">TOUCHE &apos;C&apos;</span>
+                  <span className="font-bold text-gray-300">{t("help.camera")}</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">{t("help.camera_key")}</span>
                 </div>
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5">
-                  <span className="font-bold text-gray-300">NAVIGATION CONTINUED</span>
-                  <span className="font-mono text-[#FFC82C] font-bold">MOLETTE DE LA SOURIS</span>
+                  <span className="font-bold text-gray-300">{t("help.scroll")}</span>
+                  <span className="font-mono text-[#FFC82C] font-bold">{t("help.scroll_key")}</span>
                 </div>
               </div>
 
@@ -475,7 +477,7 @@ export default function ProjectsPage() {
                 onClick={() => setShowHelpModal(false)}
                 className="w-full py-3 rounded-xl bg-[#FFC82C] text-black font-achiko text-xs font-black uppercase tracking-wider"
               >
-                COMPRIS, EN ROUTE !
+                {t("help.dismiss")}
               </button>
             </motion.div>
           </motion.div>
@@ -504,7 +506,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedModalProject(null)}
-                  aria-label="Fermer le détail du projet"
+                  aria-label={t("modal.close")}
                   className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-gray-300 transition hover:bg-white/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C]"
                 >
                   <i className="pi pi-times text-sm" />
@@ -530,7 +532,7 @@ export default function ProjectsPage() {
 
                     <div>
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFC82C] font-bold block mb-2">
-                        {getTrans("status.tech_used", "TECHNOLOGIES EMPLOYÉES")}
+                        {t("modal.tech_used")}
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {selectedModalProject.tech.map((tech) => (
@@ -550,7 +552,7 @@ export default function ProjectsPage() {
                         rel="noreferrer"
                         className="w-full rounded-xl bg-[#FFC82C] px-4 py-3 text-center text-xs font-achiko font-black uppercase text-black hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(255,200,44,0.5)] flex items-center justify-center gap-2"
                       >
-                        <i className="pi pi-external-link text-xs" /> {getTrans("status.view_live", "VOIR LE SITE DÉPLOYÉ")}
+                        <i className="pi pi-external-link text-xs" /> {t("modal.view_live")}
                       </a>
                     )}
                     {selectedModalProject.github && (
@@ -560,7 +562,7 @@ export default function ProjectsPage() {
                         rel="noreferrer"
                         className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-center text-xs font-achiko font-black uppercase text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
                       >
-                        <i className="pi pi-github text-xs" /> {getTrans("status.github", "CODE SOURCE GITHUB")}
+                        <i className="pi pi-github text-xs" /> {t("modal.github")}
                       </a>
                     )}
                   </div>

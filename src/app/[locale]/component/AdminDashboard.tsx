@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { apiFetch, API_TOKEN_STORAGE_KEY } from "@/lib/api";
 import ProposalStudioAdmin from "./ProposalStudioAdmin";
 import ProposalDocument, {
@@ -104,14 +105,6 @@ const emptyTestimonial: TestimonialForm = {
   isPublished: true,
 };
 
-const statusLabels: Record<Proposal["status"], string> = {
-  DRAFT: "Brouillon",
-  SENT: "Envoyé",
-  ACCEPTED: "Accepté",
-  REJECTED: "Refusé",
-  CANCELLED: "Annulé",
-};
-
 const statusStyles: Record<Proposal["status"], string> = {
   DRAFT: "border-slate-500/30 bg-slate-500/10 text-slate-300",
   SENT: "border-sky-400/30 bg-sky-400/10 text-sky-300",
@@ -120,15 +113,15 @@ const statusStyles: Record<Proposal["status"], string> = {
   CANCELLED: "border-amber-400/30 bg-amber-400/10 text-amber-300",
 };
 
-function formatMoney(value: number | string, currency: string) {
+function formatMoney(value: number | string, currency: string, locale: string) {
   const amount = Number(value);
   if (!Number.isFinite(amount)) return `0 ${currency}`;
-  return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(amount)} ${currency}`;
+  return `${new Intl.NumberFormat(locale === "fr" ? "fr-FR" : "en-US", { maximumFractionDigits: 0 }).format(amount)} ${currency}`;
 }
 
-function formatDate(value: string) {
+function formatDate(value: string, locale: string) {
   if (!value) return "—";
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" }).format(
+  return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", { dateStyle: "medium" }).format(
     new Date(value),
   );
 }
@@ -138,12 +131,13 @@ function getClientName(client: Proposal["client"]) {
 }
 
 function StatusBadge({ status }: { status: Proposal["status"] }) {
+  const t = useTranslations("AdminPage");
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${statusStyles[status]}`}
     >
       <span className="size-1.5 rounded-full bg-current" />
-      {statusLabels[status]}
+      {t(`status.${status.toLowerCase()}`)}
     </span>
   );
 }
@@ -179,6 +173,7 @@ function InputField({
 }
 
 export default function AdminDashboard({ locale }: { locale: string }) {
+  const t = useTranslations("AdminPage");
   const [view, setView] = useState<View>("overview");
   const [token, setToken] = useState("");
   const [user, setUser] = useState<AdminUser | null>(null);
@@ -247,14 +242,14 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         setMessage(
           err instanceof Error
             ? err.message
-            : "Session expirée. Veuillez vous réauthentifier.",
+            : t("errors.session"),
         );
       });
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (!token || !user) return;
@@ -288,7 +283,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             setMessage(
               err instanceof Error
                 ? err.message
-                : "Erreur de chargement des données.",
+                : t("errors.load_data"),
             );
         })
         .finally(() => {
@@ -300,7 +295,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       active = false;
       window.clearTimeout(timer);
     };
-  }, [token, user, search, statusFilter, refreshKey]);
+  }, [token, user, search, statusFilter, refreshKey, t]);
 
   async function signIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -315,7 +310,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         token: result.token,
       });
       if (profile.role !== "ADMIN")
-        throw new Error("Accès refusé. Compte non administrateur.");
+        throw new Error(t("errors.admin_required"));
       window.localStorage.setItem(API_TOKEN_STORAGE_KEY, result.token);
       setToken(result.token);
       setUser(profile);
@@ -324,7 +319,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       setMessage("");
     } catch (err) {
       setMessage(
-        err instanceof Error ? err.message : "Authentification échouée.",
+        err instanceof Error ? err.message : t("errors.authentication"),
       );
     } finally {
       setLoading(false);
@@ -351,13 +346,13 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         method: "POST",
         token,
       });
-      setMessage(`Statut du devis ${proposal.proposalNumber} mis à jour.`);
+      setMessage(t("messages.proposal_status_updated", { reference: proposal.proposalNumber }));
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
         err instanceof Error
           ? err.message
-          : "Impossible de modifier le statut.",
+          : t("errors.update_status"),
       );
     }
   }
@@ -365,17 +360,17 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   async function removeProposal(proposal: Proposal) {
     if (
       !window.confirm(
-        `Voulez-vous supprimer définitivement le devis ${proposal.proposalNumber} ?`,
+        t("confirm.delete_proposal", { reference: proposal.proposalNumber }),
       )
     )
       return;
     try {
       await apiFetch(`proposals/${proposal.id}`, { method: "DELETE", token });
-      setMessage("Devis supprimé.");
+      setMessage(t("messages.proposal_deleted"));
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
-        err instanceof Error ? err.message : "Suppression impossible.",
+        err instanceof Error ? err.message : t("errors.delete"),
       );
     }
   }
@@ -414,24 +409,24 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       );
       setClientDialog(false);
       setMessage(
-        editingClient ? "Fiche client mise à jour." : "Nouveau client créé.",
+        editingClient ? t("messages.client_updated") : t("messages.client_created"),
       );
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
         err instanceof Error
           ? err.message
-          : "Enregistrement du client impossible.",
+          : t("errors.save_client"),
       );
     }
   }
 
   async function removeClient(client: Client) {
     const name = client.companyName || `${client.firstName} ${client.lastName}`;
-    if (!window.confirm(`Supprimer la fiche client ${name} ?`)) return;
+    if (!window.confirm(t("confirm.delete_client", { name }))) return;
     try {
       await apiFetch(`clients/${client.id}`, { method: "DELETE", token });
-      setMessage("Client supprimé.");
+      setMessage(t("messages.client_deleted"));
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
@@ -485,15 +480,15 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       setTestimonialDialog(false);
       setMessage(
         editingTestimonial
-          ? "Témoignage mis à jour."
-          : "Nouveau témoignage ajouté.",
+          ? t("messages.testimonial_updated")
+          : t("messages.testimonial_created"),
       );
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
         err instanceof Error
           ? err.message
-          : "Enregistrement du témoignage impossible.",
+          : t("errors.save_testimonial"),
       );
     }
   }
@@ -505,25 +500,25 @@ export default function AdminDashboard({ locale }: { locale: string }) {
         token,
         body: JSON.stringify({ isPublished: !item.isPublished }),
       });
-      setMessage(`Visibilité du témoignage de ${item.authorName} mise à jour.`);
+      setMessage(t("messages.testimonial_visibility_updated", { name: item.authorName }));
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
-        err instanceof Error ? err.message : "Modification impossible.",
+        err instanceof Error ? err.message : t("errors.update"),
       );
     }
   }
 
   async function removeTestimonial(item: Testimonial) {
-    if (!window.confirm(`Supprimer le témoignage de ${item.authorName} ?`))
+    if (!window.confirm(t("confirm.delete_testimonial", { name: item.authorName })))
       return;
     try {
       await apiFetch(`testimonials/${item.id}`, { method: "DELETE", token });
-      setMessage("Témoignage supprimé.");
+      setMessage(t("messages.testimonial_deleted"));
       setRefreshKey((k) => k + 1);
     } catch (err) {
       setMessage(
-        err instanceof Error ? err.message : "Suppression impossible.",
+        err instanceof Error ? err.message : t("errors.delete"),
       );
     }
   }
@@ -538,7 +533,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       setSelectedProposal(detail);
     } catch (err) {
       setMessage(
-        err instanceof Error ? err.message : "Erreur de chargement du devis.",
+        err instanceof Error ? err.message : t("errors.load_proposal"),
       );
     } finally {
       setDetailLoading(false);
@@ -561,9 +556,9 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           email: "ndohyannick78@gmail.com",
           phone: "+237 653 53 91 02",
           reference: detail.proposalNumber,
-          issuedAt: formatDate(detail.createdAt),
+          issuedAt: formatDate(detail.createdAt, locale),
           validity: detail.validUntil
-            ? formatDate(detail.validUntil)
+            ? formatDate(detail.validUntil, locale)
             : "30 jours",
           clientName: getClientName(detail.client),
           clientShortName: detail.client.companyName || detail.client.firstName,
@@ -636,7 +631,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       setMessage(
         err instanceof Error
           ? err.message
-          : "Erreur de chargement du document.",
+          : t("errors.load_document"),
       );
     } finally {
       setDetailLoading(false);
@@ -661,7 +656,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
       <main className="grid min-h-screen place-items-center bg-[#07090e] font-azurio text-sm text-amber-400">
         <div className="flex items-center gap-3">
           <i className="pi pi-spin pi-spinner text-xl" />
-          <span>Vérification de la session admin...</span>
+          <span>{t("ui.checking_session")}</span>
         </div>
       </main>
     );
@@ -679,7 +674,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               ← Portfolio
             </a>
             <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
-              API En Ligne
+              {t("ui.api_online")}
             </span>
           </div>
 
@@ -688,16 +683,16 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               K
             </div>
             <h1 className="mt-4 font-achiko text-2xl tracking-wide text-white">
-              Console Backoffice
+              {t("ui.console_title")}
             </h1>
             <p className="mt-1 text-xs text-white/50">
-              Espace d’administration restreint · Devis, CRM &amp; Témoignages
+              {t("ui.login_description")}
             </p>
           </div>
 
           <form className="mt-8 space-y-4" onSubmit={signIn}>
             <InputField
-              label="Identifiant email"
+              label={t("ui.email_label")}
               type="email"
               value={email}
               onChange={setEmail}
@@ -705,7 +700,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               placeholder="admin@Thek1ng237.com"
             />
             <InputField
-              label="Clé de passe"
+              label={t("ui.password_label")}
               type="password"
               value={password}
               onChange={setPassword}
@@ -719,8 +714,8 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               className="mt-2 w-full rounded-xl border border-amber-400/50 bg-gradient-to-r from-amber-500 to-amber-400 py-3 text-xs font-black uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,200,44,0.3)] transition hover:scale-[1.02] disabled:opacity-50"
             >
               {loading
-                ? "Authentification en cours..."
-                : "Ouvrir la session backoffice"}
+                ? t("ui.authenticating")
+                : t("ui.open_backoffice")}
             </button>
           </form>
 
@@ -731,7 +726,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           )}
 
           <p className="mt-6 text-center text-[10px] text-white/30">
-            Accès sécurisé via jeton JWT et rôles administrateurs PostgreSQL.
+            {t("ui.security_note")}
           </p>
         </div>
       </main>
@@ -739,11 +734,11 @@ export default function AdminDashboard({ locale }: { locale: string }) {
   }
 
   const navItems: { id: View; label: string; icon: string }[] = [
-    { id: "overview", label: "Vue d’ensemble", icon: "pi pi-chart-line" },
-    { id: "proposals", label: "Devis & Propositions", icon: "pi pi-file-edit" },
-    { id: "studio", label: "Éditeur de Devis", icon: "pi pi-pencil" },
-    { id: "clients", label: "CRM Clients", icon: "pi pi-users" },
-    { id: "testimonials", label: "Témoignages", icon: "pi pi-star" },
+    { id: "overview", label: t("ui.nav.overview"), icon: "pi pi-chart-line" },
+    { id: "proposals", label: t("ui.nav.proposals"), icon: "pi pi-file-edit" },
+    { id: "studio", label: t("ui.nav.studio"), icon: "pi pi-pencil" },
+    { id: "clients", label: t("ui.nav.clients"), icon: "pi pi-users" },
+    { id: "testimonials", label: t("ui.nav.testimonials"), icon: "pi pi-star" },
   ];
 
   return (
@@ -762,7 +757,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     Thek1ng237
                   </span>
                   <span className="block text-[9px] uppercase tracking-wider text-amber-400/80">
-                    Backoffice Suite
+                    {t("ui.suite_name")}
                   </span>
                 </div>
               </a>
@@ -774,7 +769,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
             <nav
               className="mt-8 space-y-1.5"
-              aria-label="Navigation principale Backoffice"
+              aria-label={t("ui.nav_label")}
             >
               {navItems.map((item) => {
                 const isActive = view === item.id;
@@ -825,14 +820,14 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 href={`/${locale}`}
                 className="text-[10px] font-bold text-white/50 hover:text-amber-300 transition"
               >
-                ← Portfolio Public
+                ← {t("ui.public_portfolio")}
               </a>
               <button
                 type="button"
                 onClick={signOut}
                 className="text-[10px] font-bold text-rose-400/80 hover:text-rose-300 transition"
               >
-                Déconnexion
+                {t("logout")}
               </button>
             </div>
           </div>
@@ -843,17 +838,17 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5 print:hidden">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
-                Console d&apos;administration ·{" "}
-                {new Intl.DateTimeFormat("fr-FR", { dateStyle: "full" }).format(
+                {t("ui.console_label")} ·{" "}
+                {new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", { dateStyle: "full" }).format(
                   new Date(),
                 )}
               </p>
               <h1 className="mt-1 font-achiko text-2xl text-white sm:text-3xl">
-                {view === "overview" && "Vue d'ensemble"}
-                {view === "proposals" && "Gestion des Devis"}
-                {view === "studio" && "Éditeur de Devis"}
-                {view === "clients" && "Gestion Clientèle (CRM)"}
-                {view === "testimonials" && "Gestion des Témoignages"}
+                {view === "overview" && t("ui.nav.overview")}
+                {view === "proposals" && t("ui.headers.proposals")}
+                {view === "studio" && t("ui.nav.studio")}
+                {view === "clients" && t("ui.headers.clients")}
+                {view === "testimonials" && t("ui.headers.testimonials")}
               </h1>
             </div>
 
@@ -867,7 +862,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 <i
                   className={`pi pi-refresh text-xs ${loading ? "animate-spin" : ""}`}
                 />
-                <span>Actualiser</span>
+                <span>{t("ui.refresh")}</span>
               </button>
 
               {view === "testimonials" ? (
@@ -877,7 +872,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2 text-xs font-bold text-black hover:bg-amber-300"
                 >
                   <i className="pi pi-plus text-xs" />
-                  <span>Nouveau Témoignage</span>
+                  <span>{t("ui.new_testimonial")}</span>
                 </button>
               ) : (
                 <button
@@ -886,7 +881,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   className="inline-flex items-center gap-2 rounded-xl border border-amber-400/50 bg-amber-400/10 px-4 py-2 text-xs font-bold text-amber-300 transition hover:bg-amber-400 hover:text-black"
                 >
                   <i className="pi pi-plus text-xs" />
-                  <span>Nouveau Devis</span>
+                  <span>{t("ui.new_proposal")}</span>
                 </button>
               )}
             </div>
@@ -918,25 +913,25 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {[
                   {
-                    label: "Total Devis Enregistrés",
+                    label: t("ui.stats.total_proposals"),
                     value: String(proposals.length),
                     icon: "pi pi-file",
                     color: "text-amber-400",
                   },
                   {
-                    label: "Brouillons À Traiter",
+                    label: t("ui.stats.drafts"),
                     value: String(draftCount),
                     icon: "pi pi-clock",
                     color: "text-slate-400",
                   },
                   {
-                    label: "En Attente Client",
+                    label: t("ui.stats.awaiting_client"),
                     value: String(sentCount),
                     icon: "pi pi-send",
                     color: "text-sky-400",
                   },
                   {
-                    label: "Devis Acceptés",
+                    label: t("ui.stats.accepted"),
                     value: String(acceptedCount),
                     icon: "pi pi-check-circle",
                     color: "text-emerald-400",
@@ -964,10 +959,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   <div className="mb-4 flex items-center justify-between">
                     <div>
                       <h2 className="font-achiko text-lg text-white">
-                        Devis Récents
+                        {t("ui.recent_proposals")}
                       </h2>
                       <p className="text-xs text-white/40">
-                        Dernières propositions émises dans le système
+                        {t("ui.recent_proposals_description")}
                       </p>
                     </div>
                     <button
@@ -975,11 +970,12 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                       onClick={() => setView("proposals")}
                       className="text-xs font-bold text-amber-400 hover:underline"
                     >
-                      Voir tout →
+                      {t("ui.view_all")} →
                     </button>
                   </div>
 
                   <ProposalTable
+                    locale={locale}
                     proposals={proposals.slice(0, 6)}
                     loading={loading}
                     onOpenDetail={openProposalDetail}
@@ -992,10 +988,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 <section className="space-y-6">
                   <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                     <h2 className="font-achiko text-lg text-white">
-                      Volume Financier
+                      {t("ui.financial_volume")}
                     </h2>
                     <p className="mt-1 text-xs text-white/40">
-                      Valeur totale des devis par devise
+                      {t("ui.proposals_by_currency")}
                     </p>
                     <div className="mt-4 space-y-2">
                       {Object.entries(totalsByCurrency).map(([curr, total]) => (
@@ -1007,7 +1003,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                             {curr}
                           </span>
                           <strong className="font-achiko text-xl text-amber-400">
-                            {formatMoney(total, curr)}
+                            {formatMoney(total, curr, locale)}
                           </strong>
                         </div>
                       ))}
@@ -1024,7 +1020,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-6 shadow-xl">
                     <div className="flex items-center justify-between">
                       <h2 className="font-achiko text-lg text-white">
-                        Clients Récents
+                        {t("ui.recent_clients")}
                       </h2>
                       <button
                         type="button"
@@ -1049,7 +1045,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                             </span>
                           </div>
                           <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-bold text-amber-400">
-                            {c._count?.proposals ?? 0} devis
+                            {t("ui.proposal_count", { count: c._count?.proposals ?? 0 })}
                           </span>
                         </div>
                       ))}
@@ -1070,7 +1066,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Rechercher par référence, intitulé, client ou email..."
+                    placeholder={t("ui.search_proposals")}
                     className="w-full rounded-xl border border-white/15 bg-[#0e121b] pl-10 pr-4 py-2.5 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
                   />
                 </div>
@@ -1080,10 +1076,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="rounded-xl border border-white/15 bg-[#0e121b] px-4 py-2.5 text-xs text-white outline-none focus:border-amber-400 sm:w-52"
                 >
-                  <option value="">Tous les statuts</option>
-                  {Object.entries(statusLabels).map(([k, label]) => (
-                    <option key={k} value={k}>
-                      {label}
+                  <option value="">{t("ui.all_statuses")}</option>
+                  {Object.keys(statusStyles).map((status) => (
+                    <option key={status} value={status}>
+                      {t(`status.${status.toLowerCase()}`)}
                     </option>
                   ))}
                 </select>
@@ -1091,6 +1087,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
               <div className="rounded-2xl border border-white/10 bg-[#0e121b] p-4 sm:p-6 shadow-xl">
                 <ProposalTable
+                  locale={locale}
                   proposals={proposals}
                   loading={loading}
                   onOpenDetail={openProposalDetail}
@@ -1126,7 +1123,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Rechercher un client..."
+                    placeholder={t("ui.search_clients")}
                     className="w-full rounded-xl border border-white/15 bg-[#0e121b] pl-10 pr-4 py-2.5 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
                   />
                 </div>
@@ -1137,7 +1134,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2.5 text-xs font-bold text-black hover:bg-amber-300"
                 >
                   <i className="pi pi-plus text-xs" />
-                  <span>Ajouter un client</span>
+                  <span>{t("ui.add_client")}</span>
                 </button>
               </div>
 
@@ -1145,11 +1142,11 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 <table className="w-full min-w-[750px] text-left text-xs">
                   <thead className="border-b border-white/10 text-[10px] uppercase tracking-wider text-white/40">
                     <tr>
-                      <th className="py-3 px-4">Client / Entreprise</th>
-                      <th className="py-3 px-4">Contact</th>
-                      <th className="py-3 px-4">Localisation</th>
-                      <th className="py-3 px-4">Devis Réalisés</th>
-                      <th className="py-3 px-4 text-right">Actions</th>
+                      <th className="py-3 px-4">{t("ui.table.client_company")}</th>
+                      <th className="py-3 px-4">{t("ui.table.contact")}</th>
+                      <th className="py-3 px-4">{t("ui.table.location")}</th>
+                      <th className="py-3 px-4">{t("ui.table.proposals_made")}</th>
+                      <th className="py-3 px-4 text-right">{t("ui.table.actions")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/10">
@@ -1171,7 +1168,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                             {c.email}
                           </a>
                           <span className="block text-[10px] text-white/40">
-                            {c.phone || "Sans téléphone"}
+                            {c.phone || t("ui.no_phone")}
                           </span>
                         </td>
                         <td className="py-3.5 px-4 text-white/60">
@@ -1189,7 +1186,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                               type="button"
                               onClick={() => openClientEditor(c)}
                               className="rounded-lg border border-white/15 p-1.5 text-white/70 hover:border-amber-400 hover:text-amber-300"
-                              title="Modifier"
+                              title={t("ui.edit")}
                             >
                               <i className="pi pi-pencil text-xs" />
                             </button>
@@ -1197,7 +1194,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                               type="button"
                               onClick={() => removeClient(c)}
                               className="rounded-lg border border-white/15 p-1.5 text-rose-400/80 hover:border-rose-400 hover:text-rose-300"
-                              title="Supprimer"
+                              title={t("ui.delete")}
                             >
                               <i className="pi pi-trash text-xs" />
                             </button>
@@ -1217,11 +1214,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
               <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
                   <h2 className="font-achiko text-lg text-white">
-                    Modération &amp; Gestion des Témoignages
+                    {t("ui.testimonial_moderation_title")}
                   </h2>
                   <p className="text-xs text-white/60">
-                    Les clients laissent leurs avis sur le portfolio public.
-                    Modérez, validez et publiez les témoignages reçus.
+                    {t("ui.testimonial_moderation_description")}
                   </p>
                 </div>
                 <button
@@ -1230,16 +1226,16 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2.5 text-xs font-bold text-black hover:bg-amber-300"
                 >
                   <i className="pi pi-plus text-xs" />
-                  <span>Ajouter un Témoignage</span>
+                  <span>{t("ui.add_testimonial")}</span>
                 </button>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                {testimonials.map((t) => (
+                {testimonials.map((testimonial) => (
                   <div
-                    key={t.id}
+                    key={testimonial.id}
                     className={`flex flex-col justify-between rounded-2xl border p-6 shadow-xl transition ${
-                      !t.isPublished
+                      !testimonial.isPublished
                         ? "border-amber-400/50 bg-[#121622]"
                         : "border-white/10 bg-[#0e121b]"
                     }`}
@@ -1248,7 +1244,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                           <div className="flex text-amber-400">
-                            {Array.from({ length: t.rating || 5 }).map(
+                            {Array.from({ length: testimonial.rating || 5 }).map(
                               (_, i) => (
                                 <i
                                   key={i}
@@ -1257,58 +1253,58 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                               ),
                             )}
                           </div>
-                          {!t.isPublished && (
+                          {!testimonial.isPublished && (
                             <span className="rounded-md border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-300">
-                              ⏳ À modérer
+                              {t("ui.pending_moderation")}
                             </span>
                           )}
                         </div>
                         <button
                           type="button"
-                          onClick={() => toggleTestimonialPublish(t)}
+                          onClick={() => toggleTestimonialPublish(testimonial)}
                           className={`rounded-full border px-3 py-1 text-[9px] font-bold uppercase tracking-wider transition ${
-                            t.isPublished
+                            testimonial.isPublished
                               ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
                               : "border-amber-400 bg-amber-400 text-black hover:bg-amber-300"
                           }`}
                         >
-                          {t.isPublished
-                            ? "● En ligne (Publié)"
-                            : "✓ Valider & Publier"}
+                          {testimonial.isPublished
+                            ? t("ui.published")
+                            : t("ui.approve_publish")}
                         </button>
                       </div>
 
                       <p className="text-xs leading-relaxed text-white/80 italic">
-                          &quot;{t.content}&quot;
+                          &quot;{testimonial.content}&quot;
                       </p>
                     </div>
 
                     <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
                       <div>
                         <strong className="block font-achiko text-xs text-white">
-                          {t.authorName}
+                          {testimonial.authorName}
                         </strong>
                         <span className="text-[10px] text-amber-400">
-                          {[t.authorRole, t.company]
+                          {[testimonial.authorRole, testimonial.company]
                             .filter(Boolean)
-                            .join(" · ") || "Client"}
+                            .join(" · ") || t("ui.client")}
                         </span>
                       </div>
 
                       <div className="flex gap-2">
                         <button
                           type="button"
-                          onClick={() => openTestimonialEditor(t)}
+                          onClick={() => openTestimonialEditor(testimonial)}
                           className="rounded-lg border border-white/15 p-1.5 text-white/70 hover:border-amber-400 hover:text-amber-300"
-                          title="Modifier le témoignage"
+                          title={t("ui.edit_testimonial")}
                         >
                           <i className="pi pi-pencil text-xs" />
                         </button>
                         <button
                           type="button"
-                          onClick={() => removeTestimonial(t)}
+                          onClick={() => removeTestimonial(testimonial)}
                           className="rounded-lg border border-white/15 p-1.5 text-rose-400/80 hover:border-rose-400 hover:text-rose-300"
-                          title="Supprimer"
+                          title={t("ui.delete")}
                         >
                           <i className="pi pi-trash text-xs" />
                         </button>
@@ -1319,7 +1315,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
                 {testimonials.length === 0 && (
                   <div className="col-span-2 rounded-2xl border border-white/10 bg-[#0e121b] p-12 text-center text-xs text-white/40">
-                    Aucun témoignage reçu ou enregistré pour le moment.
+                    {t("ui.no_testimonials")}
                   </div>
                 )}
               </div>
@@ -1338,8 +1334,8 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <h2 className="font-achiko text-xl text-white">
                 {editingClient
-                  ? "Modifier le Client"
-                  : "Ajouter un Nouveau Client"}
+                  ? t("ui.edit_client")
+                  : t("ui.new_client")}
               </h2>
               <button
                 type="button"
@@ -1352,26 +1348,26 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
             <div className="grid gap-3 sm:grid-cols-2">
               <InputField
-                label="Nom d'entreprise / Marque"
+                label={t("ui.company_label")}
                 value={clientForm.companyName}
                 onChange={(v) =>
                   setClientForm((f) => ({ ...f, companyName: v }))
                 }
-                placeholder="Ex: GSHI Incubator"
+                placeholder={t("ui.company_placeholder")}
               />
               <InputField
-                label="Prénom"
+                label={t("ui.first_name")}
                 value={clientForm.firstName}
                 onChange={(v) => setClientForm((f) => ({ ...f, firstName: v }))}
                 required
-                placeholder="Ex: Yannick"
+                placeholder={t("ui.first_name_placeholder")}
               />
               <InputField
-                label="Nom"
+                label={t("ui.last_name")}
                 value={clientForm.lastName}
                 onChange={(v) => setClientForm((f) => ({ ...f, lastName: v }))}
                 required
-                placeholder="Ex: Ndoh"
+                placeholder={t("ui.last_name_placeholder")}
               />
               <InputField
                 label="Email"
@@ -1379,25 +1375,25 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 value={clientForm.email}
                 onChange={(v) => setClientForm((f) => ({ ...f, email: v }))}
                 required
-                placeholder="contact@client.com"
+                placeholder={t("ui.client_email_placeholder")}
               />
               <InputField
-                label="Téléphone"
+                label={t("ui.phone")}
                 value={clientForm.phone}
                 onChange={(v) => setClientForm((f) => ({ ...f, phone: v }))}
                 placeholder="+237 6..."
               />
               <InputField
-                label="Ville"
+                label={t("ui.city")}
                 value={clientForm.city}
                 onChange={(v) => setClientForm((f) => ({ ...f, city: v }))}
-                placeholder="Douala / Yaoundé"
+                placeholder={t("ui.city_placeholder")}
               />
               <InputField
-                label="Pays"
+                label={t("ui.country")}
                 value={clientForm.country}
                 onChange={(v) => setClientForm((f) => ({ ...f, country: v }))}
-                placeholder="Cameroun"
+                placeholder={t("ui.country_placeholder")}
               />
             </div>
 
@@ -1407,13 +1403,13 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 onClick={() => setClientDialog(false)}
                 className="rounded-xl border border-white/15 px-4 py-2 text-xs font-bold text-white/70 hover:bg-white/5"
               >
-                Annuler
+                {t("ui.cancel")}
               </button>
               <button
                 type="submit"
                 className="rounded-xl bg-amber-400 px-5 py-2 text-xs font-bold text-black hover:bg-amber-300"
               >
-                {editingClient ? "Enregistrer" : "Créer le client"}
+                {editingClient ? t("ui.save") : t("ui.create_client")}
               </button>
             </div>
           </form>
@@ -1430,8 +1426,8 @@ export default function AdminDashboard({ locale }: { locale: string }) {
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <h2 className="font-achiko text-xl text-white">
                 {editingTestimonial
-                  ? "Modifier le Témoignage"
-                  : "Nouveau Témoignage Client"}
+                  ? t("ui.edit_testimonial")
+                  : t("ui.new_testimonial")}
               </h2>
               <button
                 type="button"
@@ -1444,32 +1440,32 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
             <div className="grid gap-3 sm:grid-cols-2">
               <InputField
-                label="Nom de l'auteur"
+                label={t("ui.author_name")}
                 value={testimonialForm.authorName}
                 onChange={(v) =>
                   setTestimonialForm((f) => ({ ...f, authorName: v }))
                 }
                 required
-                placeholder="Ex: M. Moustapha"
+                placeholder={t("ui.author_name_placeholder")}
               />
               <InputField
-                label="Poste / Rôle"
+                label={t("ui.role")}
                 value={testimonialForm.authorRole}
                 onChange={(v) =>
                   setTestimonialForm((f) => ({ ...f, authorRole: v }))
                 }
-                placeholder="Ex: Directeur Général"
+                placeholder={t("ui.role_placeholder")}
               />
               <InputField
-                label="Entreprise / Marque"
+                label={t("ui.company_label")}
                 value={testimonialForm.company}
                 onChange={(v) =>
                   setTestimonialForm((f) => ({ ...f, company: v }))
                 }
-                placeholder="Ex: GSHI Incubator"
+                placeholder={t("ui.company_placeholder")}
               />
               <label className="block text-xs font-bold text-white/70">
-                <span className="mb-1.5 block">Note (sur 5 étoiles)</span>
+                <span className="mb-1.5 block">{t("ui.rating_label")}</span>
                 <select
                   value={testimonialForm.rating}
                   onChange={(e) =>
@@ -1480,15 +1476,15 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   }
                   className="w-full rounded-xl border border-white/15 bg-[#0b0d14] px-3.5 py-2.5 text-xs text-white outline-none focus:border-amber-400"
                 >
-                  <option value={5}>★★★★★ (5 étoiles)</option>
-                  <option value={4}>★★★★☆ (4 étoiles)</option>
-                  <option value={3}>★★★☆☆ (3 étoiles)</option>
+                  <option value={5}>★★★★★ (5 {t("ui.stars")})</option>
+                  <option value={4}>★★★★☆ (4 {t("ui.stars")})</option>
+                  <option value={3}>★★★☆☆ (3 {t("ui.stars")})</option>
                 </select>
               </label>
             </div>
 
             <label className="block text-xs font-bold text-white/70">
-              <span className="mb-1.5 block">Contenu du témoignage</span>
+              <span className="mb-1.5 block">{t("ui.testimonial_content")}</span>
               <textarea
                 required
                 rows={4}
@@ -1496,7 +1492,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 onChange={(e) =>
                   setTestimonialForm((f) => ({ ...f, content: e.target.value }))
                 }
-                placeholder="Rédigez le témoignage ou l'avis client..."
+                placeholder={t("ui.testimonial_placeholder")}
                 className="w-full rounded-xl border border-white/15 bg-[#0b0d14] p-3 text-xs text-white placeholder-white/30 outline-none focus:border-amber-400"
               />
             </label>
@@ -1513,7 +1509,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 }
                 className="size-4 rounded border-white/20 bg-[#0b0d14] accent-amber-400"
               />
-              <span>Publier immédiatement sur le portfolio public</span>
+              <span>{t("ui.publish_immediately")}</span>
             </label>
 
             <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
@@ -1522,15 +1518,15 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 onClick={() => setTestimonialDialog(false)}
                 className="rounded-xl border border-white/15 px-4 py-2 text-xs font-bold text-white/70 hover:bg-white/5"
               >
-                Annuler
+                {t("ui.cancel")}
               </button>
               <button
                 type="submit"
                 className="rounded-xl bg-amber-400 px-5 py-2 text-xs font-bold text-black hover:bg-amber-300"
               >
                 {editingTestimonial
-                  ? "Enregistrer les modifications"
-                  : "Créer le témoignage"}
+                  ? t("ui.save_changes")
+                  : t("ui.create_testimonial")}
               </button>
             </div>
           </form>
@@ -1548,7 +1544,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-white/15 bg-[#10141e] p-6 shadow-2xl">
             {detailLoading || !selectedProposal ? (
               <p className="py-12 text-center text-xs text-white/50">
-                Chargement du détail du devis...
+                {t("ui.loading_proposal_detail")}
               </p>
             ) : (
               <div className="space-y-6">
@@ -1561,7 +1557,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                       {selectedProposal.title}
                     </h2>
                     <p className="mt-1 text-xs text-white/50">
-                      Client : {getClientName(selectedProposal.client)} (
+                      {t("ui.client_label")}: {getClientName(selectedProposal.client)} (
                       {selectedProposal.client.email})
                     </p>
                   </div>
@@ -1580,6 +1576,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     {formatMoney(
                       selectedProposal.totalAmount,
                       selectedProposal.currency,
+                      locale,
                     )}
                   </strong>
                 </div>
@@ -1588,10 +1585,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                   <table className="w-full text-left text-xs">
                     <thead className="border-b border-white/10 text-[9px] uppercase tracking-wider text-white/40">
                       <tr>
-                        <th className="py-2">Prestation / Lot</th>
-                        <th className="py-2 text-right">Qté</th>
-                        <th className="py-2 text-right">Prix Unitaire</th>
-                        <th className="py-2 text-right">Montant</th>
+                        <th className="py-2">{t("ui.proposal_table.item")}</th>
+                        <th className="py-2 text-right">{t("ui.proposal_table.quantity")}</th>
+                        <th className="py-2 text-right">{t("ui.proposal_table.unit_price")}</th>
+                        <th className="py-2 text-right">{t("ui.proposal_table.amount")}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/10">
@@ -1612,12 +1609,14 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                             {formatMoney(
                               item.unitPrice,
                               selectedProposal.currency,
+                              locale,
                             )}
                           </td>
                           <td className="py-2.5 text-right font-bold text-amber-300">
                             {formatMoney(
                               item.totalPrice,
                               selectedProposal.currency,
+                              locale,
                             )}
                           </td>
                         </tr>
@@ -1637,9 +1636,9 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                     className="inline-flex items-center gap-2 rounded-xl border border-amber-400 bg-amber-400 px-4 py-2 text-xs font-bold text-black hover:bg-amber-300"
                   >
                     <i className="pi pi-print text-xs" />
-                    <span>Aperçu PDF / Imprimer ce devis</span>
+                    <span>{t("ui.print_proposal")}</span>
                   </button>
-                  <span>Créé le {formatDate(selectedProposal.createdAt)}</span>
+                  <span>{t("labels.created_at", { date: formatDate(selectedProposal.createdAt, locale) })}</span>
                 </div>
               </div>
             )}
@@ -1653,10 +1652,10 @@ export default function AdminDashboard({ locale }: { locale: string }) {
           <div className="sticky top-4 z-50 mx-auto flex max-w-[210mm] justify-between rounded-xl border border-white/15 bg-[#121622] p-4 text-white shadow-2xl print:hidden">
             <div className="flex items-center gap-3">
               <span className="font-achiko text-base font-bold text-amber-400">
-                Document Devis Officiel
+                {t("ui.official_document")}
               </span>
               <span className="text-xs text-white/50">
-                Format A4 Impresssion / Exportation PDF
+                {t("ui.a4_pdf_note")}
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -1666,14 +1665,14 @@ export default function AdminDashboard({ locale }: { locale: string }) {
                 className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-4 py-2 text-xs font-bold text-black hover:bg-amber-300"
               >
                 <i className="pi pi-print text-xs" />
-                <span>Imprimer / Exporter PDF</span>
+                <span>{t("ui.print_export_pdf")}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setPreviewDocumentData(null)}
                 className="rounded-lg border border-white/20 p-2 text-white/70 hover:bg-white/10 hover:text-white"
               >
-                Fermer
+                {t("ui.close")}
               </button>
             </div>
           </div>
@@ -1688,6 +1687,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 }
 
 function ProposalTable({
+  locale,
   proposals,
   loading,
   onOpenDetail,
@@ -1695,6 +1695,7 @@ function ProposalTable({
   onStatus,
   onDelete,
 }: {
+  locale: string;
   proposals: Proposal[];
   loading: boolean;
   onOpenDetail: (p: Proposal) => void;
@@ -1705,17 +1706,18 @@ function ProposalTable({
   ) => void;
   onDelete: (p: Proposal) => void;
 }) {
+  const t = useTranslations("AdminPage");
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[800px] text-left text-xs">
         <thead className="border-b border-white/10 text-[10px] uppercase tracking-wider text-white/40">
           <tr>
-            <th className="py-3 px-4">Réf. / Objet</th>
-            <th className="py-3 px-4">Client</th>
-            <th className="py-3 px-4">Date</th>
-            <th className="py-3 px-4">Statut</th>
-            <th className="py-3 px-4 text-right">Montant</th>
-            <th className="py-3 px-4 text-right">Actions</th>
+            <th className="py-3 px-4">{t("ui.proposal_table.reference_subject")}</th>
+            <th className="py-3 px-4">{t("ui.proposal_table.client")}</th>
+            <th className="py-3 px-4">{t("ui.proposal_table.date")}</th>
+            <th className="py-3 px-4">{t("ui.proposal_table.status")}</th>
+            <th className="py-3 px-4 text-right">{t("ui.proposal_table.amount")}</th>
+            <th className="py-3 px-4 text-right">{t("ui.proposal_table.actions")}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/10">
@@ -1744,13 +1746,13 @@ function ProposalTable({
                 </span>
               </td>
               <td className="py-3.5 px-4 text-white/60">
-                {formatDate(p.createdAt)}
+                {formatDate(p.createdAt, locale)}
               </td>
               <td className="py-3.5 px-4">
                 <StatusBadge status={p.status} />
               </td>
               <td className="py-3.5 px-4 text-right font-achiko text-sm font-bold text-amber-300">
-                {formatMoney(p.totalAmount, p.currency)}
+                {formatMoney(p.totalAmount, p.currency, locale)}
               </td>
               <td className="py-3.5 px-4 text-right">
                 <div className="flex justify-end gap-1.5">
@@ -1758,7 +1760,7 @@ function ProposalTable({
                     type="button"
                     onClick={() => onOpenDetail(p)}
                     className="rounded-lg border border-white/15 p-1.5 text-white/80 hover:border-amber-400 hover:text-amber-300"
-                    title="Voir les détails"
+                    title={t("ui.view_details")}
                   >
                     <i className="pi pi-eye text-xs" />
                   </button>
@@ -1767,7 +1769,7 @@ function ProposalTable({
                     type="button"
                     onClick={() => onOpenPreview(p)}
                     className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-1.5 text-amber-300 hover:bg-amber-400 hover:text-black"
-                    title="Imprimer / Aperçu Document PDF A4"
+                    title={t("ui.print_preview")}
                   >
                     <i className="pi pi-print text-xs" />
                   </button>
@@ -1778,7 +1780,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "send")}
                         className="rounded-lg border border-sky-400/30 bg-sky-400/10 p-1.5 text-sky-300 hover:bg-sky-400 hover:text-black"
-                        title="Marquer comme envoyé"
+                        title={t("ui.mark_sent")}
                       >
                         <i className="pi pi-send text-xs" />
                       </button>
@@ -1786,7 +1788,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "cancel")}
                         className="rounded-lg border border-amber-400/30 bg-amber-400/10 p-1.5 text-amber-300 hover:bg-amber-400 hover:text-black"
-                        title="Annuler"
+                        title={t("ui.cancel")}
                       >
                         <i className="pi pi-ban text-xs" />
                       </button>
@@ -1799,7 +1801,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "accept")}
                         className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 p-1.5 text-emerald-300 hover:bg-emerald-400 hover:text-black"
-                        title="Accepter"
+                        title={t("ui.accept")}
                       >
                         <i className="pi pi-check text-xs" />
                       </button>
@@ -1807,7 +1809,7 @@ function ProposalTable({
                         type="button"
                         onClick={() => onStatus(p, "reject")}
                         className="rounded-lg border border-rose-400/30 bg-rose-400/10 p-1.5 text-rose-300 hover:bg-rose-400 hover:text-black"
-                        title="Refuser"
+                        title={t("ui.reject")}
                       >
                         <i className="pi pi-times text-xs" />
                       </button>
@@ -1819,7 +1821,7 @@ function ProposalTable({
                       type="button"
                       onClick={() => onDelete(p)}
                       className="rounded-lg border border-rose-400/30 p-1.5 text-rose-400 hover:border-rose-400 hover:bg-rose-400 hover:text-black"
-                      title="Supprimer"
+                      title={t("ui.delete")}
                     >
                       <i className="pi pi-trash text-xs" />
                     </button>
@@ -1832,12 +1834,12 @@ function ProposalTable({
       </table>
       {loading && (
         <p className="py-12 text-center text-xs text-white/40">
-          Chargement des devis...
+          {t("ui.loading_proposals")}
         </p>
       )}
       {!loading && proposals.length === 0 && (
         <p className="py-12 text-center text-xs text-white/40">
-          Aucun devis à afficher.
+          {t("ui.no_proposals")}
         </p>
       )}
     </div>

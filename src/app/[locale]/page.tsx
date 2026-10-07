@@ -56,27 +56,19 @@ export default function Home() {
   const skillMatrix = [
     {
       icon: "desktop",
-      title: "Frontend Architecture",
-      desc: "Architectures Web hautement réactives avec Next.js 15, React 19, TypeScript et Tailwind CSS v4.",
-      techs: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "REST/GraphQL"]
+      key: "frontend",
     },
     {
       icon: "palette",
-      title: "UI/UX & Design Systems",
-      desc: "Conception d'interfaces centrées utilisateur, prototypes haute-fidélité et systèmes de design scalables.",
-      techs: ["Figma", "Design Systems", "Prototypage", "Ergonomie UX", "Accessibilité"]
+      key: "design",
     },
     {
       icon: "sparkles",
-      title: "Creative Coding & Motion",
-      desc: "Micro-interactions fluides, animations 3D/Canvas et interfaces cybernétiques immersives.",
-      techs: ["Framer Motion", "HTML5 Canvas", "WebGL", "Web Audio API", "Shaders"]
+      key: "creative",
     },
     {
       icon: "globe",
-      title: "Afro-Futurism & Culture Tech",
-      desc: "Fusion algorithmique de la géométrie sacrée africaine (Ndop, Adinkra) avec le Web Moderne.",
-      techs: ["Ndop Math Geometry", "Adinkra Symbology", "Ethno-Design", "Digital Preservation"]
+      key: "culture",
     }
   ];
 
@@ -96,10 +88,10 @@ export default function Home() {
         >
           
           <h2 className="font-achiko text-4xl md:text-6xl font-black tracking-tight uppercase">
-            ARCHITECTURE & <span className="text-[#FFC82C]">COMPÉTENCES</span>
+            {t("skills.title_prefix")} <span className="text-[#FFC82C]">{t("skills.title_highlight")}</span>
           </h2>
           <p className="font-azurio text-gray-300 text-sm md:text-base font-light leading-relaxed">
-            Combinaison de rigueur technique logicielle et d&apos;exploration créative pour concevoir des expériences numériques d&apos;exception.
+            {t("skills.description")}
           </p>
         </motion.div>
 
@@ -119,15 +111,15 @@ export default function Home() {
                   <i className={`pi pi-${skill.icon} text-2xl text-[#FFC82C] group-hover:text-black`} />
                 </div>
                 <h3 className="font-achiko text-xl font-bold uppercase tracking-tight text-white mb-3 group-hover:text-[#FFC82C] transition-colors">
-                  {skill.title}
+                  {t(`skills.items.${skill.key}.title`)}
                 </h3>
                 <p className="font-azurio text-xs text-gray-300 font-light leading-relaxed mb-6">
-                  {skill.desc}
+                  {t(`skills.items.${skill.key}.description`)}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/10 font-azurio">
-                {skill.techs.map((tech) => (
+                {(t.raw(`skills.items.${skill.key}.technologies`) as string[]).map((tech) => (
                   <span key={tech} className="text-[9.5px] border border-white/15 px-2.5 py-1 rounded-md bg-white/5 text-gray-200 font-bold">
                     {tech}
                   </span>
@@ -158,10 +150,10 @@ export default function Home() {
           {/* Category Filter Tabs */}
           <div className="flex flex-wrap gap-2 border border-white/20 p-1.5 rounded-xl bg-[#121526] shadow-md font-azurio">
             {[
-              { id: "all", label: "TOUS" },
-              { id: "web", label: "WEB_SYSTEMS" },
-              { id: "culture", label: "CULTURE_ENGINE" },
-              { id: "design", label: "DESIGN_UI" },
+              { id: "all", label: t("projects.filters.all") },
+              { id: "web", label: t("projects.filters.web") },
+              { id: "culture", label: t("projects.filters.culture") },
+              { id: "design", label: t("projects.filters.design") },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -271,7 +263,8 @@ export default function Home() {
                     <button
                       onClick={() => setSelectedProjectModal(projet)}
                       className="p-2.5 rounded-xl border border-white/15 hover:border-[#FFC82C] text-gray-300 hover:text-white transition-all bg-white/5 cursor-pointer"
-                      title="Aperçu Rapide"
+                      title={t("projects.quick_preview")}
+                      aria-label={t("projects.quick_preview")}
                     >
                       <i className="pi pi-eye text-sm" />
                     </button>
@@ -309,10 +302,10 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 font-azurio">
             {[
-              { label: "ORIGINE", val: t("fusion.stats.origin"), icon: "flag" },
-              { label: "MÉDIUM", val: t("fusion.stats.medium"), icon: "palette" },
-              { label: "HÉRITAGE", val: t("fusion.stats.legacy"), icon: "history" },
-              { label: "VISION", val: t("fusion.stats.vision"), icon: "bolt" },
+              { label: t("fusion.stats.origin_label"), val: t("fusion.stats.origin"), icon: "flag" },
+              { label: t("fusion.stats.medium_label"), val: t("fusion.stats.medium"), icon: "palette" },
+              { label: t("fusion.stats.legacy_label"), val: t("fusion.stats.legacy"), icon: "history" },
+              { label: t("fusion.stats.vision_label"), val: t("fusion.stats.vision"), icon: "bolt" },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -358,9 +351,10 @@ export default function Home() {
               className="glass-panel max-w-2xl w-full rounded-3xl overflow-hidden border border-[#FFC82C] p-8 space-y-6 shadow-2xl"
             >
               <div className="flex justify-between items-center border-b border-white/15 pb-4">
-                <span className="font-azurio text-xs text-[#FFC82C] font-bold">DÉTAILS_PROJET // {selectedProjectModal.id}</span>
+                <span className="font-azurio text-xs text-[#FFC82C] font-bold">{t("projects.modal_title")}{" // "}{selectedProjectModal.id}</span>
                 <button
                   onClick={() => setSelectedProjectModal(null)}
+                  aria-label={t("projects.close")}
                   className="text-gray-300 hover:text-white p-1"
                 >
                   <i className="pi pi-times text-xl" />
@@ -385,7 +379,7 @@ export default function Home() {
                 </p>
 
                 <div className="p-4 rounded-xl bg-white/10 border border-white/15 text-xs font-azurio text-[#FFC82C] font-bold">
-                  ⚡ Metrics: {selectedProjectModal.metrics}
+                  ⚡ {t("projects.metrics_label")}: {t(`projects.metrics.${selectedProjectModal.titleKey}`)}
                 </div>
               </div>
 
@@ -394,7 +388,7 @@ export default function Home() {
                   onClick={() => setSelectedProjectModal(null)}
                   className="px-6 py-3 rounded-xl border border-white/25 text-xs font-azurio uppercase hover:bg-white/10 text-white font-bold"
                 >
-                  Fermer
+                  {t("projects.close")}
                 </button>
                 <a
                   href={selectedProjectModal.projectLink}
@@ -402,7 +396,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-xl bg-[#FFC82C] text-black text-xs font-bold font-achiko uppercase tracking-wider hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]"
                 >
-                  Accéder au Projet Live
+                  {t("projects.open_live")}
                 </a>
               </div>
             </motion.div>

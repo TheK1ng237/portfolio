@@ -1,10 +1,23 @@
 {
+  "Metadata": {
+    "title": "Portfolio Thek1ng237 | Développeur full-stack",
+    "description": "Portfolio afro-futuriste de Thek1ng237, développeur full-stack. Applications web, API, bases de données et expériences numériques immersives.",
+    "social_description": "Interfaces immersives de haute précision, ingénierie web moderne et héritage culturel.",
+    "twitter_description": "Développeur full-stack passionné par les expériences numériques immersives.",
+    "image_alt": "Aperçu du portfolio de Thek1ng237",
+    "person_description": "Créateur d’expériences numériques immersives et innovateur culturel.",
+    "keywords": ["Développeur full-stack", "Next.js", "Angular", "Node.js", "Django", "Portfolio", "Thek1ng237", "Afro-futurisme"]
+  },
   "Nav": {
     "about": "À PROPOS",
     "projects": "PROJETS",
     "culture": "CULTURE",
     "solution": "SOLUTION",
-    "contact": "CONTACT"
+    "contact": "CONTACT",
+    "identity": "IDENTITÉ",
+    "cv_title": "Télécharger mon CV PDF",
+    "menu_toggle": "Ouvrir ou fermer le menu de navigation",
+    "module_label": "MODULE"
   },
   "Hero": {
     "badge": "Disponible pour missions 2026",
@@ -14,9 +27,42 @@
     "cta_projects": "Explorer mes projets",
     "cta_contact": "Me contacter",
     "scroll": "Défiler",
-    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech"
+    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech",
+    "cta_cv": "TÉLÉCHARGER LE CV",
+    "stats": {
+      "experience": "EXPÉRIENCE (ANS)",
+      "projects": "PROJETS LIVRÉS",
+      "satisfaction": "SATISFACTION UX"
+    }
   },
   "HomePage": {
+    "skills": {
+      "title_prefix": "ARCHITECTURE &",
+      "title_highlight": "COMPÉTENCES",
+      "description": "Combinaison de rigueur technique logicielle et d’exploration créative pour concevoir des expériences numériques d’exception.",
+      "items": {
+        "frontend": {
+          "title": "Architecture frontend",
+          "description": "Architectures web réactives avec Next.js 15, React 19, TypeScript et Tailwind CSS v4.",
+          "technologies": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "REST/GraphQL"]
+        },
+        "design": {
+          "title": "UI/UX & systèmes de design",
+          "description": "Interfaces centrées sur l’utilisateur, prototypes haute fidélité et systèmes de design évolutifs.",
+          "technologies": ["Figma", "Systèmes de design", "Prototypage", "Ergonomie UX", "Accessibilité"]
+        },
+        "creative": {
+          "title": "Code créatif & motion design",
+          "description": "Micro-interactions fluides, animations 3D/Canvas et interfaces cybernétiques immersives.",
+          "technologies": ["Framer Motion", "HTML5 Canvas", "WebGL", "Web Audio API", "Shaders"]
+        },
+        "culture": {
+          "title": "Afro-futurisme & culture numérique",
+          "description": "Fusion algorithmique de la géométrie sacrée africaine (Ndop, Adinkra) et du Web moderne.",
+          "technologies": ["Géométrie Ndop", "Symboles Adinkra", "Ethno-design", "Préservation numérique"]
+        }
+      }
+    },
     "projects": {
       "label": "DÉPLOIEMENTS_ACTIFS",
       "title_part1": "Travaux",
@@ -27,6 +73,22 @@
       "access_grant": "Exécuter_Accès",
       "access_deny": "Accès_Refusé",
       "view_archive": "Voir toute l'archive",
+      "filters": {
+        "all": "TOUS",
+        "web": "SYSTÈMES WEB",
+        "culture": "CULTURE",
+        "design": "DESIGN UI"
+      },
+      "quick_preview": "Aperçu rapide",
+      "modal_title": "DÉTAILS DU PROJET",
+      "metrics_label": "Indicateur",
+      "close": "Fermer",
+      "open_live": "Accéder au projet en ligne",
+      "metrics": {
+        "01": "Performance Lighthouse : 99/100",
+        "02": "Moteur interactif de connaissances culturelles",
+        "03": "Identité visuelle afro-futuriste complète"
+      },
       "items": {
         "01": {
           "title": "MarketPlace Africaine",
@@ -48,13 +110,63 @@
       "cta": "Entrer dans la Vision",
       "stats": {
         "origin": "Cameroun",
+        "origin_label": "ORIGINE",
         "medium": "Art Numérique",
+        "medium_label": "MÉDIUM",
         "legacy": "Tradition",
+        "legacy_label": "HÉRITAGE",
+        "vision_label": "VISION",
         "vision": "Innovation"
       }
     }
   },
   "ProjectsPage": {
+    "hud": {
+      "waypoint": "POINT DE REPÈRE HOLOGRAPHIQUE",
+      "open_project": "EXPLORER LE PROJET",
+      "grid_mode_title": "Basculer vers la vue grille standard",
+      "grid_mode": "MODE GRILLE",
+      "help_title": "Commandes et aide",
+      "speed": "VITESSE",
+      "turn_left": "Tourner à gauche (flèche gauche ou A)",
+      "turn_right": "Tourner à droite (flèche droite ou D)",
+      "forward": "AVANCER",
+      "reverse": "RECULER",
+      "turbo": "TURBO",
+      "camera": {
+        "chase": "POURSUITE 3D",
+        "cockpit": "COCKPIT",
+        "orbit": "ORBITE 360",
+        "map": "SATELLITE"
+      }
+    },
+    "grid": {
+      "title_prefix": "PORTFOLIO",
+      "title_highlight": "PROJETS",
+      "description": "Galerie classique des projets récents",
+      "back_to_3d": "REPRENDRE LA CONDUITE 3D",
+      "project_label": "PROJET",
+      "explore_project": "EXPLORER LE PROJET"
+    },
+    "help": {
+      "forward_reverse": "AVANCER / RECULER",
+      "forward_reverse_keys": "W / S ou FLÈCHES HAUT / BAS",
+      "turn": "TOURNER À GAUCHE / DROITE",
+      "turn_keys": "A / D ou FLÈCHES GAUCHE / DROITE",
+      "boost": "TURBO NITRO",
+      "boost_key": "BARRE ESPACE",
+      "camera": "CHANGER L’ANGLE DE VUE",
+      "camera_key": "TOUCHE C",
+      "scroll": "POURSUIVRE LA NAVIGATION",
+      "scroll_key": "MOLETTE DE LA SOURIS",
+      "dismiss": "COMPRIS, EN ROUTE !"
+    },
+    "modal": {
+      "close": "Fermer le détail du projet",
+      "tech_used": "TECHNOLOGIES UTILISÉES",
+      "view_live": "VOIR LE PROJET EN LIGNE",
+      "github": "CODE SOURCE SUR GITHUB"
+    },
     "header": {
       "badge": "RÉPERTOIRE DE PROJETS 2026",
       "title_main": "SOLUTIONS",
@@ -110,6 +222,78 @@
     }
   },
   "AboutPage": {
+    "content": {
+      "portrait_alt": "Portrait de Thek1ng237",
+      "hero_title_prefix": "INGÉNIERIE LOGICIELLE &",
+      "hero_title_highlight": "VISION CRÉATIVE",
+      "hero_description": "Développeur full-stack, je conçois des applications web de bout en bout : interfaces soignées, API, bases de données et intégrations. J’allie architecture fiable, expérience utilisateur et expression culturelle.",
+      "engineering_title": "INGÉNIERIE FULL-STACK",
+      "engineering_description": "Next.js, Angular, Node.js, Express.js et Django, des interfaces aux API.",
+      "culture_title": "UX AFRO-FUTURISTE",
+      "culture_description": "Design d’interface fondé sur les mathématiques des motifs africains ancestraux.",
+      "download_cv": "TÉLÉCHARGER LE CV OFFICIEL (PDF)",
+      "expertise_title_prefix": "MON",
+      "expertise_title_highlight": "EXPERTISE",
+      "expertise_description": "Naviguez interactivement entre le volet Compétences et le volet Outils.",
+      "previous_expertise": "Volet précédent",
+      "next_expertise": "Volet suivant",
+      "go_to_expertise": "Aller au {title}",
+      "node": "NŒUD",
+      "certifications_all": "TOUS ({count})",
+      "certifications_openclassrooms": "OPENCLASSROOMS ({count})",
+      "certifications_udemy": "UDEMY ({count})",
+      "certifications_title_prefix": "CERTIFICATIONS &",
+      "certifications_title_highlight": "DIPLÔMES",
+      "certifications_description": "Formations certifiantes et diplômes obtenus sur OpenClassrooms et Udemy attestant d’une maîtrise technique rigoureuse.",
+      "pdf_format": "FORMAT : PDF VÉRIFIÉ",
+      "view_certificate": "VOIR LE DIPLÔME"
+    },
+    "expertise": {
+      "skills": {
+        "number": "VOLET 01",
+        "title": "MES COMPÉTENCES",
+        "description": "Compétences techniques et ingénierie logicielle pour la construction d’applications web modernes.",
+        "groups": {
+          "frontend": {
+            "step_label": "COMPÉTENCE 01",
+            "title": "FRONTEND",
+            "description": "Conception d’interfaces web fluides, performantes et accessibles avec Next.js, Angular et TypeScript."
+          },
+          "backend": {
+            "step_label": "COMPÉTENCE 02",
+            "title": "BACKEND & LANGAGES",
+            "description": "Création d’API REST performantes et de services backend sécurisés avec Node.js, Java, Express et Django."
+          },
+          "data": {
+            "step_label": "COMPÉTENCE 03",
+            "title": "DATA & WEB3",
+            "description": "Modélisation de données SQL et NoSQL et intégration de protocoles décentralisés Web3."
+          }
+        }
+      },
+      "tools": {
+        "number": "VOLET 02",
+        "title": "MES OUTILS",
+        "description": "Prototypage, création, versionnement et outils de développement collaboratif au quotidien.",
+        "groups": {
+          "design": {
+            "step_label": "OUTIL 01",
+            "title": "DESIGN & CRÉATION",
+            "description": "Design d’interfaces sur Figma et la suite Adobe, avec une organisation créative sur Milanote."
+          },
+          "environment": {
+            "step_label": "OUTIL 02",
+            "title": "ENVIRONNEMENT DE DÉVELOPPEMENT",
+            "description": "Développement avec VS Code, gestion de dépôts Git, GitHub et GitLab, tests Postman et déploiement Vercel."
+          },
+          "workflow": {
+            "step_label": "OUTIL 03",
+            "title": "ORGANISATION & FLUX DE TRAVAIL",
+            "description": "Planification agile sur Trello, intégration WordPress et suivi de projet collaboratif."
+          }
+        }
+      }
+    },
     "identity": {
       "id_label": "ID",
       "class_label": "CLASSE",
@@ -190,6 +374,91 @@
     }
   },
   "CulturePage": {
+    "content": {
+      "hero_title_prefix": "HÉRITAGE",
+      "hero_title_highlight": "AFRO-FUTURISTE",
+      "hero_description": "L’art traditionnel africain n’est pas un vestige du passé : c’est un langage visuel et algorithmique d’une modernité remarquable. Notre mission est d’en extraire la géométrie pour alimenter le Web de demain.",
+      "test_pattern": "Tester un motif",
+      "view_pillars": "Voir les piliers",
+      "pillars_title_prefix": "MOTIFS &",
+      "pillars_title_highlight": "SYMBOLES",
+      "pillars_disclaimer": "Les visuels ci-dessus sont des stylisations géométriques générées en code, inspirées du Ndop, des Adinkra, du Toghu, du Kente, du Bogolan et de la peinture Ndebele. Ils ne reproduisent pas les motifs originaux, dont chacun porte un nom et un sens précis.",
+      "lab_title_prefix": "LA GÉOMÉTRIE,",
+      "lab_title_highlight": "EN DIRECT",
+      "lab_description": "Changez le motif, la teinte et l’échelle : le rendu est calculé en temps réel, sans image.",
+      "process_title_prefix": "DU TEXTILE",
+      "process_title_highlight": "AU CODE",
+      "principle": "Principe : nommer l’origine, citer ses sources et ne jamais réduire un symbole à un simple décor.",
+      "cta_title_prefix": "VOUS SOUHAITEZ INCLURE UNE",
+      "cta_title_highlight": "DIMENSION CULTURELLE",
+      "cta_title_suffix": "À VOTRE PROJET ?",
+      "cta_description": "Nous concevons des identités visuelles et des interfaces numériques sur mesure qui résonnent avec élégance et authenticité.",
+      "cta_button": "DÉMARRER UN PROJET CULTUREL"
+    },
+    "labels": {
+      "origin": "Origine",
+      "symbolism": "Symbolique",
+      "web_implementation": "Implémentation web"
+    },
+    "pillars": {
+      "ndop": {
+        "title": "Tissu royal Ndop",
+        "origin": "Cameroun (Bamiléké, Bamoun)",
+        "symbolism": "Étoffe indigo teinte par réserve, associée aux chefferies : réseaux de losanges et lignes qui disent l’autorité et l’unité.",
+        "implementation": "Treillis de losanges répétés en SVG, calculés en code et recolorables."
+      },
+      "adinkra": {
+        "title": "Symboles Adinkra",
+        "origin": "Ghana / Côte d’Ivoire (Akan, Ashanti)",
+        "symbolism": "Symboles estampés en grille, chacun porteur d’un proverbe : Adinkrahene (leadership), Dwennimmen (humilité et force), Sankofa (apprendre du passé), Nkyinkyim (adaptabilité).",
+        "implementation": "Icônes vectorielles en grille de cellules, prêtes pour des micro-interactions sémantiques."
+      },
+      "toghu": {
+        "title": "Broderies Toghu",
+        "origin": "Cameroun (Grassfields)",
+        "symbolism": "Tenue de prestige des fêtes et cérémonies : bandes brodées de losanges, triangles et zigzags sur fond sombre.",
+        "implementation": "Bandes brodées reproduites en SVG, palettes HSL à fort contraste."
+      },
+      "kente": {
+        "title": "Tissage Kente",
+        "origin": "Ghana (Ashanti, Éwé)",
+        "symbolism": "Étoffe tissée en bandes assemblées : les couleurs et les motifs disent un rang, un proverbe ou une histoire.",
+        "implementation": "Bandes verticales et damiers générés en SVG, couleurs paramétrables."
+      },
+      "bogolan": {
+        "title": "Bogolan, tissu de boue",
+        "origin": "Mali (Bamanan)",
+        "symbolism": "Coton teint à la boue fermentée et aux plantes : lignes, croix et chevrons qui portent récits et protections.",
+        "implementation": "Lignes, croix et chevrons en SVG pour des fonds sobres et très contrastés."
+      },
+      "ndebele": {
+        "title": "Peinture murale Ndebele",
+        "origin": "Afrique du Sud (Ndebele)",
+        "symbolism": "Façades peintes par les femmes : contours noirs épais et aplats vifs, expression d’identité et de fierté.",
+        "implementation": "Aplats et contours épais : formes très lisibles pour des composants d’interface."
+      }
+    },
+    "lab": {
+      "preview": "Aperçu du motif {pattern}, teinte {hue} degrés, échelle {scale}",
+      "pattern": "Motif",
+      "hue": "Teinte",
+      "scale": "Échelle",
+      "generated_settings": "Paramètres générés"
+    },
+    "process": {
+      "observe": {
+        "title": "Observer",
+        "text": "Étudier un motif, son origine, son usage et ce qu’il raconte, à partir de sources fiables et citées."
+      },
+      "abstract": {
+        "title": "Abstraire",
+        "text": "Dégager les règles géométriques : répétition, rotation, symétrie, rythme des couleurs."
+      },
+      "implement": {
+        "title": "Implémenter",
+        "text": "Traduire ces règles en SVG, CSS ou Canvas, avec des palettes HSL et une interface accessible."
+      }
+    },
     "hero": {
       "badge": "INITIALISATION_SYSTÈME : COFFRE_DU_PATRIMOINE",
       "title_main": "ROOTS",
@@ -280,6 +549,14 @@
     }
   },
   "ContactPage": {
+    "content": {
+      "title_prefix": "PARLONS DE",
+      "title_highlight": "VOTRE PROJET",
+      "description": "Décrivez votre besoin, vos délais et votre budget. Plus le message est précis, plus le devis sera juste.",
+      "direct_title_prefix": "ÉCRIRE",
+      "direct_title_highlight": "DIRECTEMENT",
+      "location": "Douala, Littoral · Cameroun"
+    },
     "hero": {
       "protocol": "PROTOCOLE : INITIATION_PONT",
       "title_main": "ÉTABLISSONS",
@@ -304,9 +581,27 @@
       "security": "CONFIDENTIALITÉ GARANTIE",
       "mission_type_label": "Type de mission",
       "mission_type_placeholder": "Choisissez...",
+      "name_label": "Nom complet",
+      "name_placeholder": "Votre nom",
+      "email_label": "Email",
+      "email_placeholder": "vous@exemple.com",
       "phone_label": "Téléphone",
+      "phone_placeholder": "+237 …",
+      "optional": "facultatif",
+      "mission_label": "Type de mission",
+      "mission_placeholder": "Choisir une mission",
       "budget_label": "Budget",
+      "budget_placeholder": "Ex : 500 000 FCFA",
       "date_label": "Délais souhaité",
+      "message_label": "Message",
+      "message_placeholder": "Contexte, objectifs, public visé, fonctionnalités attendues…",
+      "submitting": "Envoi en cours…",
+      "submit": "Envoyer le message",
+      "consent": "En envoyant ce formulaire, vous acceptez d’être recontacté au sujet de votre demande.",
+      "success": "Message transmis avec succès. Merci !",
+      "invalid_request": "Requête invalide.",
+      "copy_channel": "Copier {channel}",
+      "copy_success": "{channel} copié dans le presse-papiers.",
       "consent_label": "J’accepte que mes données soient traitées dans le cadre de ma demande.",
       "mission_options": [
         "Site vitrine",
@@ -320,6 +615,82 @@
     }
   },
   "SolutionPage": {
+    "content": {
+      "hero_title_prefix": "SOLUTIONS",
+      "hero_title_highlight": "SUR MESURE",
+      "hero_description": "De la création d’interfaces web complexes aux audits ergonomiques et au design culturel afro-futuriste. Chaque offre est chiffrée sur devis, selon votre projet.",
+      "offers_title_prefix": "NOS",
+      "offers_title_highlight": "OFFRES",
+      "filter_offers": "Filtrer les offres",
+      "all_categories": "Toutes",
+      "process_title_prefix": "DE L’IDÉE",
+      "process_title_highlight": "AU DEVIS",
+      "custom_title_prefix": "VOTRE PROJET NE RENTRE DANS",
+      "custom_title_highlight": "AUCUNE CASE ?",
+      "custom_description": "Décrivez-le-nous : nous construisons l’offre autour de votre besoin, pas l’inverse.",
+      "custom_cta": "Parler de mon projet"
+    },
+    "categories": {
+      "engine": "Ingénierie web",
+      "protocol": "Design & UX",
+      "lab": "Design culturel"
+    },
+    "labels": {
+      "pricing": "Tarification"
+    },
+    "actions": {
+      "request_quote": "Demander un devis",
+      "view_details": "Voir le détail",
+      "close": "Fermer"
+    },
+    "process": {
+      "describe": {
+        "title": "Vous décrivez votre projet",
+        "description": "Objectifs, public, contraintes et délais souhaités, via le formulaire de contact."
+      },
+      "estimate": {
+        "title": "Nous chiffrons l’offre",
+        "description": "Périmètre, étapes, délais et budget détaillés dans un devis clair, ajusté avec vous."
+      },
+      "build": {
+        "title": "Nous construisons avec vous",
+        "description": "Développement par étapes, avec des points réguliers et des livrables que vous validez."
+      }
+    },
+    "modal": {
+      "benefits_title": "Bénéfices clés",
+      "included_title": "Inclus",
+      "audience_label": "Pour qui :"
+    },
+    "offers": {
+      "01": {
+        "title": "ARCHITECTURE WEB SUR MESURE",
+        "description": "Développement complet d’applications web Next.js et React réactives, évolutives et optimisées pour le SEO.",
+        "price": "Sur devis",
+        "features": ["Next.js 15 & React 19 full-stack", "Design responsive afro-futuriste", "Performance et SEO optimisés"],
+        "full_description": "Conception complète de votre plateforme web. De l’architecture frontend aux API REST et à la base de données, nous construisons une solution performante, moderne et adaptée à vos besoins.",
+        "benefits": ["Architecture moderne sans dette technique", "Affichage ultra-rapide", "Identité visuelle unique"],
+        "target_audience": "Startups, entreprises et projets ambitieux"
+      },
+      "02": {
+        "title": "AUDIT UX/UI & REFONTE GRAPHIQUE",
+        "description": "Analyse ergonomique approfondie, création d’un système de design et optimisation du parcours utilisateur.",
+        "price": "Sur devis",
+        "features": ["Audit ergonomique et recherche UX", "Création d’un système de design", "Prototypes Figma haute fidélité"],
+        "full_description": "Améliorez vos conversions et la satisfaction des utilisateurs grâce à une révision complète de votre expérience visuelle et interactive.",
+        "benefits": ["Engagement accru", "Cohérence visuelle sur toutes les pages", "Prototypes prêts à développer"],
+        "target_audience": "Applications existantes qui souhaitent moderniser leur interface"
+      },
+      "03": {
+        "title": "DESIGN CULTUREL AFRO-FUTURISTE",
+        "description": "Intégration d’art numérique, de géométrie sacrée et d’une identité culturelle forte dans vos projets web.",
+        "price": "Sur devis",
+        "features": ["Vectorisation de motifs ancestraux", "Animations et micro-interactions CSS", "Direction artistique et branding"],
+        "full_description": "Donnez une identité singulière à vos produits numériques en fusionnant les motifs visuels africains avec les standards du web moderne.",
+        "benefits": ["Différenciation concrète", "Valorisation du patrimoine", "Expérience immersive et mémorable"],
+        "target_audience": "Marques, institutions culturelles et créateurs"
+      }
+    },
     "hero": {
       "badge": "CATALOGUE_SOLUTIONS_2026",
       "title_main": "CONSTRUIRE",
@@ -417,6 +788,49 @@
       "base_location": "Localisation_Base",
       "location": "Douala, CM.AFR",
       "status": "SESSION_CHIFFRÉE_ACTIVE"
+    },
+    "back_to_top": "HAUT DE PAGE"
+  },
+  "Common": {
+    "logo_loading": "Thek1ng237 — chargement du portfolio",
+    "audio": {
+      "enable": "Activer l’ambiance sonore",
+      "disable": "Désactiver l’ambiance sonore",
+      "off": "AUDIO_DÉSACTIVÉ",
+      "on": "AUDIO_ACTIVÉ"
+    }
+  },
+  "Testimonials": {
+    "title_prefix": "Avis",
+    "title_highlight": "Clients & partenaires",
+    "description": "Vous avez travaillé avec Thek1ng237 ? Laissez votre avis pour partager votre retour d’expérience sur nos réalisations web et applicatives.",
+    "actions": {
+      "leave_testimonial": "Laisser un témoignage",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "submitting": "Envoi…",
+      "submit": "Envoyer mon témoignage"
+    },
+    "form": {
+      "share_experience": "Partagez votre expérience",
+      "title": "Laisser un témoignage",
+      "name_label": "Votre nom / prénom",
+      "name_placeholder": "Ex. : Moustapha N.",
+      "role_label": "Votre poste / titre",
+      "role_placeholder": "Ex. : Fondateur / CEO",
+      "company_label": "Entreprise / organisation",
+      "company_placeholder": "Ex. : GSHI Incubator",
+      "rating_label": "Note d’évaluation",
+      "content_label": "Votre témoignage / avis",
+      "content_placeholder": "Décrivez votre expérience de travail avec Thek1ng237…"
+    },
+    "success": {
+      "title": "Merci pour votre retour !",
+      "description": "Votre témoignage a été transmis avec succès. Il sera publié sur le site après validation par l’administrateur."
+    },
+    "errors": {
+      "required_fields": "Veuillez renseigner votre nom et votre témoignage.",
+      "submit": "Erreur lors de l’envoi du témoignage."
     }
   },
   "NotFound": {
@@ -437,6 +851,333 @@
     "quote": "\"En code, comme dans la vie : chaque erreur est juste un message en attente de compréhension.\""
   },
   "AdminPage": {
+    "editor": {
+      "ui": {
+        "client_to_save": "Client à enregistrer",
+        "saved_proposals": "Devis enregistrés",
+        "generator_title": "Générateur de devis",
+        "generator_heading": "Adapte ce modèle à ton projet",
+        "generator_description": "Modifie les rubriques, ajoute ou retire des lignes, puis exporte une copie JSON par client. Tes changements sont enregistrés dans ce navigateur.",
+        "import_json": "Importer JSON",
+        "export_json": "Exporter JSON",
+        "restore_template": "Restaurer le modèle",
+        "go_to_preview": "Aller à l’aperçu",
+        "api_login_title": "Connexion à la gestion des devis",
+        "admin_email": "Email du compte admin",
+        "password": "Mot de passe"
+      },
+      "sections": {
+        "identity_title": "Identité & client",
+        "identity_description": "Coordonnées, références et présentation du devis.",
+        "needs_title": "Besoin & objectifs",
+        "needs_description": "Le contexte, les résultats attendus et les parcours à concevoir.",
+        "deliverables_title": "Prestations & livrables",
+        "deliverables_description": "Personnalise les phases, leur description et chaque livrable.",
+        "budget_title": "Budget & paiements",
+        "budget_description": "Les totaux et montants de paiement sont calculés à partir des lignes et pourcentages.",
+        "timeline_title": "Planning & conditions",
+        "timeline_description": "Durée, jalons, éléments attendus du client et validations finales."
+      },
+      "fields": {
+        "contact_first_name": "Prénom du contact",
+        "contact_last_name": "Nom du contact",
+        "client_email": "Email du client",
+        "client_phone": "Téléphone du client",
+        "brand": "Marque",
+        "full_name": "Nom complet",
+        "email": "Email",
+        "phone": "Téléphone",
+        "proposal_reference": "Référence du devis",
+        "issue_date": "Date d’émission",
+        "offer_validity": "Validité de l’offre",
+        "client_organization": "Nom du client / organisation",
+        "short_name": "Nom court",
+        "client_slogan": "Slogan du client",
+        "recipient": "Destinataire",
+        "document_title": "Titre du document",
+        "project_section_title": "Titre de la section projet",
+        "objectives_title": "Titre des objectifs",
+        "client_context": "Contexte du client",
+        "central_challenge": "Enjeu central",
+        "challenge_label": "Libellé de l’enjeu",
+        "orientation_title": "Titre de l’orientation",
+        "proposed_orientation": "Orientation proposée",
+        "journeys_title": "Titre des parcours",
+        "project_journeys": "Parcours du projet",
+        "journey": "Parcours",
+        "design_principles_title": "Titre des principes de conception",
+        "design_principles": "Principes de conception",
+        "principle": "Principe",
+        "design_section_title": "Titre de la section design",
+        "design_phases": "Phases design / UX",
+        "development_section_title": "Titre de la section développement",
+        "development_intro": "Introduction au développement",
+        "development_phases": "Phases développement",
+        "implementation_notes_title": "Titre des points de cadrage",
+        "dependencies_assumptions": "Dépendances et hypothèses",
+        "deployment_title": "Titre de mise en ligne",
+        "deployment_description": "Tests, livraison et mise en ligne",
+        "budget_title": "Titre du budget",
+        "currency": "Devise",
+        "budget_intro": "Présentation du budget",
+        "budget_lines": "Lignes budgétaires",
+        "phase": "Phase",
+        "amount_currency": "Montant ({currency})",
+        "included_deliverables": "Livrables inclus",
+        "payment_schedule_title": "Titre de l’échéancier",
+        "payment_label": "Libellé",
+        "percentage": "Pourcentage",
+        "payment_milestone": "Moment du paiement",
+        "timeline_title": "Titre du planning",
+        "client_inputs_title": "Titre des éléments à fournir",
+        "client_inputs": "Éléments à fournir par le client",
+        "final_checks_title": "Titre des conditions finales",
+        "final_checks": "Points à valider avant accord",
+        "timeline_steps": "Étapes du planning",
+        "period": "Période",
+        "description": "Description",
+        "deliverables": "Livrables",
+        "deliverable": "Livrable",
+        "objectives": "Objectifs",
+        "accent_color": "Couleur d’accent"
+      },
+      "labels": {
+        "phase_number": "Phase {number}",
+        "objective_number": "Objectif {number}",
+        "line_number": "Ligne {number}",
+        "payment_number": "Échéance {number}",
+        "calculated_total": "Total calculé",
+        "payment_share": "Échéances ({percentage} % répartis)"
+      },
+      "actions": {
+        "add": "Ajouter",
+        "remove_item": "Supprimer {item} {number}",
+        "add_phase": "Ajouter une phase",
+        "remove_phase": "Supprimer cette phase",
+        "add_objective": "Ajouter un objectif",
+        "remove_objective": "Supprimer cet objectif",
+        "add_budget_line": "Ajouter une ligne",
+        "remove_budget_line": "Supprimer cette ligne",
+        "add_payment": "Ajouter une échéance",
+        "remove_payment": "Supprimer cette échéance",
+        "add_step": "Ajouter une étape",
+        "remove_step": "Supprimer l’étape {number}",
+        "save_proposal": "Enregistrer le devis",
+        "load_list": "Charger la liste",
+        "choose_proposal": "Choisir un devis enregistré",
+        "open": "Ouvrir",
+        "disconnect": "Se déconnecter"
+      },
+      "colors": {
+        "gold": "Or",
+        "red": "Rouge",
+        "green": "Vert"
+      },
+      "messages": {
+        "draft_load_failed": "Le brouillon local n’a pas pu être chargé.",
+        "draft_save_failed": "Le brouillon n’a pas pu être enregistré dans ce navigateur.",
+        "exported": "Fichier de devis exporté.",
+        "imported": "Le devis a été importé.",
+        "api_connected": "Connexion à l’API réussie.",
+        "proposal_saved": "Devis {reference} enregistré dans la base.",
+        "proposals_loaded": "{count, plural, one {# devis chargé} other {# devis chargés}}.",
+        "proposal_loaded": "Devis chargé depuis la base.",
+        "disconnected": "Déconnecté de l’API.",
+        "template_restored": "Modèle restauré.",
+        "saving": "Enregistrement…",
+        "draft_saved_at": "Brouillon enregistré à {time}",
+        "auto_saved": "Modifications enregistrées automatiquement",
+        "loading_draft": "Chargement du brouillon…",
+        "payment_total_warning": "La répartition des paiements devrait totaliser 100 %."
+      },
+      "errors": {
+        "invalid_file": "Ce fichier JSON ne correspond pas au modèle de devis.",
+        "connection": "Connexion impossible.",
+        "client_fields_required": "Renseigne le prénom, le nom et l’email du client.",
+        "budget_line_required": "Ajoute au moins une ligne budgétaire avant d’enregistrer.",
+        "save_failed": "Enregistrement du devis impossible.",
+        "load_proposals": "Chargement des devis impossible.",
+        "not_editable": "Ce devis ne contient pas de document éditable."
+      }
+    },
+    "studio": {
+      "template_label": "Modèle de départ",
+      "templates": {
+        "gshi": "GSHI · Site vitrine",
+        "weglow": "WeGlow · Plateforme web administrable",
+        "custom": "Personnalisé / vierge"
+      },
+      "client_label": "Client associé en base",
+      "no_clients": "Aucun client en base (ajoutez d’abord un client)",
+      "saving": "Enregistrement…",
+      "save": "Enregistrer le devis dans la base",
+      "messages": {
+        "saved": "Devis enregistré avec succès. Redirection vers la liste des devis…"
+      },
+      "errors": {
+        "select_client": "Erreur : veuillez sélectionner un client destinataire avant d’enregistrer.",
+        "save_with_detail": "Erreur : {error}",
+        "save_failed": "Impossible d’enregistrer le devis."
+      }
+    },
+    "status": {
+      "draft": "Brouillon",
+      "sent": "Envoyé",
+      "accepted": "Accepté",
+      "rejected": "Refusé",
+      "cancelled": "Annulé"
+    },
+    "labels": {
+      "created_at": "Créé le {date}"
+    },
+    "confirm": {
+      "delete_proposal": "Voulez-vous supprimer définitivement le devis {reference} ?",
+      "delete_client": "Supprimer la fiche client {name} ?",
+      "delete_testimonial": "Supprimer le témoignage de {name} ?"
+    },
+    "messages": {
+      "proposal_status_updated": "Statut du devis {reference} mis à jour.",
+      "proposal_deleted": "Devis supprimé.",
+      "client_updated": "Fiche client mise à jour.",
+      "client_created": "Nouveau client créé.",
+      "client_deleted": "Client supprimé.",
+      "testimonial_updated": "Témoignage mis à jour.",
+      "testimonial_created": "Nouveau témoignage ajouté.",
+      "testimonial_visibility_updated": "Visibilité du témoignage de {name} mise à jour.",
+      "testimonial_deleted": "Témoignage supprimé."
+    },
+    "errors": {
+      "load_data": "Erreur de chargement des données.",
+      "admin_required": "Ce compte ne possède pas les privilèges administrateur.",
+      "authentication": "Authentification échouée.",
+      "update_status": "Impossible de modifier le statut.",
+      "delete": "Suppression impossible.",
+      "save_client": "Enregistrement du client impossible.",
+      "save_testimonial": "Enregistrement du témoignage impossible.",
+      "update": "Modification impossible.",
+      "load_proposal": "Erreur de chargement du devis.",
+      "load_document": "Erreur de chargement du document."
+    },
+    "ui": {
+      "checking_session": "Vérification de la session admin…",
+      "api_online": "API EN LIGNE",
+      "console_title": "Console Back-office",
+      "login_description": "Espace restreint · Devis, CRM & témoignages",
+      "email_label": "Identifiant email",
+      "password_label": "Mot de passe",
+      "authenticating": "Authentification en cours…",
+      "open_backoffice": "Ouvrir la session back-office",
+      "security_note": "Accès sécurisé par jeton JWT et rôles administrateur.",
+      "suite_name": "Suite Back-office",
+      "nav_label": "Navigation principale du back-office",
+      "public_portfolio": "Portfolio public",
+      "console_label": "Console d’administration",
+      "nav": {
+        "overview": "Vue d’ensemble",
+        "proposals": "Devis & propositions",
+        "studio": "Éditeur de devis",
+        "clients": "CRM clients",
+        "testimonials": "Témoignages"
+      },
+      "headers": {
+        "proposals": "Gestion des devis",
+        "clients": "Gestion clientèle (CRM)",
+        "testimonials": "Gestion des témoignages"
+      },
+      "refresh": "Actualiser",
+      "new_testimonial": "Nouveau témoignage",
+      "new_proposal": "Nouveau devis",
+      "stats": {
+        "total_proposals": "Total des devis enregistrés",
+        "drafts": "Brouillons à traiter",
+        "awaiting_client": "En attente du client",
+        "accepted": "Devis acceptés"
+      },
+      "recent_proposals": "Devis récents",
+      "recent_proposals_description": "Dernières propositions émises dans le système",
+      "view_all": "Voir tout",
+      "financial_volume": "Volume financier",
+      "proposals_by_currency": "Valeur totale des devis par devise",
+      "recent_clients": "Clients récents",
+      "proposal_count": "{count, plural, one {# devis} other {# devis}}",
+      "search_proposals": "Rechercher par référence, intitulé, client ou email…",
+      "all_statuses": "Tous les statuts",
+      "search_clients": "Rechercher un client…",
+      "add_client": "Ajouter un client",
+      "table": {
+        "client_company": "Client / entreprise",
+        "contact": "Contact",
+        "location": "Localisation",
+        "proposals_made": "Devis réalisés",
+        "actions": "Actions"
+      },
+      "no_phone": "Sans téléphone",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "testimonial_moderation_title": "Modération & gestion des témoignages",
+      "testimonial_moderation_description": "Les clients laissent leurs avis sur le portfolio public. Modérez, validez et publiez les témoignages reçus.",
+      "add_testimonial": "Ajouter un témoignage",
+      "pending_moderation": "À modérer",
+      "published": "● En ligne (publié)",
+      "approve_publish": "✓ Valider & publier",
+      "client": "Client",
+      "edit_testimonial": "Modifier le témoignage",
+      "no_testimonials": "Aucun témoignage reçu ou enregistré pour le moment.",
+      "edit_client": "Modifier le client",
+      "new_client": "Ajouter un nouveau client",
+      "company_label": "Entreprise / marque",
+      "company_placeholder": "Ex. : GSHI Incubator",
+      "first_name": "Prénom",
+      "first_name_placeholder": "Ex. : Yannick",
+      "last_name": "Nom",
+      "last_name_placeholder": "Ex. : Ndoh",
+      "client_email_placeholder": "contact@client.com",
+      "phone": "Téléphone",
+      "city": "Ville",
+      "city_placeholder": "Douala / Yaoundé",
+      "country": "Pays",
+      "country_placeholder": "Cameroun",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "create_client": "Créer le client",
+      "author_name": "Nom de l’auteur",
+      "author_name_placeholder": "Ex. : M. Moustapha",
+      "role": "Poste / rôle",
+      "role_placeholder": "Ex. : Directeur général",
+      "rating_label": "Note (sur 5 étoiles)",
+      "stars": "étoiles",
+      "testimonial_content": "Contenu du témoignage",
+      "testimonial_placeholder": "Rédigez le témoignage ou l’avis client…",
+      "publish_immediately": "Publier immédiatement sur le portfolio public",
+      "save_changes": "Enregistrer les modifications",
+      "create_testimonial": "Créer le témoignage",
+      "loading_proposal_detail": "Chargement du détail du devis…",
+      "client_label": "Client",
+      "proposal_table": {
+        "reference_subject": "Réf. / objet",
+        "client": "Client",
+        "date": "Date",
+        "status": "Statut",
+        "amount": "Montant",
+        "actions": "Actions",
+        "item": "Prestation / lot",
+        "quantity": "Qté",
+        "unit_price": "Prix unitaire"
+      },
+      "print_proposal": "Aperçu PDF / imprimer ce devis",
+      "official_document": "Document de devis officiel",
+      "a4_pdf_note": "Format A4 · impression / export PDF",
+      "print_export_pdf": "Imprimer / exporter en PDF",
+      "close": "Fermer",
+      "view_details": "Voir les détails",
+      "print_preview": "Imprimer / aperçu du document PDF A4",
+      "mark_sent": "Marquer comme envoyé",
+      "cancel_action": "Annuler",
+      "accept": "Accepter",
+      "reject": "Refuser",
+      "loading_proposals": "Chargement des devis…",
+      "no_proposals": "Aucun devis à afficher."
+    },
     "badge": "ADMIN",
     "title": "Back-office Thek1ng237",
     "loading": "Chargement...",

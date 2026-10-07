@@ -95,7 +95,7 @@ export default function Navigation() {
 
             <div className="hidden sm:block font-azurio">
               <span className="block text-[9px] font-azurio tracking-[0.35em] text-gray-300 uppercase leading-none mb-1 font-bold">
-                IDENTITY
+                {t("identity")}
               </span>
               <span className="block text-[14px] font-achiko tracking-[0.2em] text-[#FFC82C] leading-none">
                 Thek1ng237
@@ -142,7 +142,7 @@ export default function Navigation() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#FFC82C]/50 bg-[#FFC82C]/10 hover:bg-[#FFC82C] hover:text-black text-[10px] font-azurio font-bold text-[#FFC82C] transition-all shadow-[0_0_12px_rgba(255,200,44,0.25)]"
-                title="Télécharger mon CV PDF"
+                title={t("cv_title")}
               >
                 <i className="pi pi-download text-xs" />
                 <span>CV PDF</span>
@@ -159,7 +159,7 @@ export default function Navigation() {
             <button
               className="w-10 h-10 flex flex-col items-center justify-center gap-1.5 border border-[#FFC82C] rounded-lg bg-[#121526]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle navigation menu"
+              aria-label={t("menu_toggle")}
             >
               <motion.div
                 animate={
@@ -208,7 +208,7 @@ export default function Navigation() {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <span className="font-azurio text-[#FFC82C] text-[10px] tracking-[0.4em] font-bold">
-                      MODULE_{i}
+                      {t("module_label")}_{i}
                     </span>
                     <span className="text-4xl font-achiko tracking-tight uppercase group-hover:text-[#FFC82C] transition-colors text-white">
                       {t(item.key)}
