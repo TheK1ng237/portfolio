@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export default function AudioController() {
+  const t = useTranslations("Common");
   const [isMuted, setIsMuted] = useState(true);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
@@ -64,8 +66,9 @@ export default function AudioController() {
   return (
     <button
       onClick={toggleAudio}
+      aria-label={isMuted ? t("audio.enable") : t("audio.disable")}
       className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FFC82C]/30 bg-[#121526]/80 backdrop-blur-md hover:border-[#FFC82C] transition-all text-[9px] font-mono tracking-widest text-[#FFC82C] uppercase group shadow-[0_0_15px_rgba(255,200,44,0.15)]"
-      title={isMuted ? "Activer l'ambiance sonore" : "Désactiver l'ambiance sonore"}
+      title={isMuted ? t("audio.enable") : t("audio.disable")}
     >
       <div className="relative flex items-center justify-center w-3 h-3">
         {isMuted ? (
@@ -91,7 +94,7 @@ export default function AudioController() {
         )}
       </div>
       <span className="hidden sm:inline font-bold opacity-90 group-hover:opacity-100">
-        {isMuted ? "AUDIO_OFF" : "AUDIO_ON"}
+        {isMuted ? t("audio.off") : t("audio.on")}
       </span>
     </button>
   );

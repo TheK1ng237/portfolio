@@ -179,7 +179,7 @@ export default function Footer() {
             onClick={scrollToTop}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#FFC82C] bg-[#121526] hover:bg-[#FFC82C] text-[#FFC82C] hover:text-black transition-all text-xs font-achiko tracking-widest uppercase font-bold group shadow-[0_0_15px_rgba(255,200,44,0.2)]"
           >
-            <span>TOP</span>
+              <span>{t("back_to_top")}</span>
             <i className="pi pi-arrow-up text-xs group-hover:-translate-y-0.5 transition-transform" />
           </motion.button>
         </div>

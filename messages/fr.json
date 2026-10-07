@@ -4,7 +4,11 @@
     "projects": "PROJETS",
     "culture": "CULTURE",
     "solution": "SOLUTION",
-    "contact": "CONTACT"
+    "contact": "CONTACT",
+    "identity": "IDENTITÉ",
+    "cv_title": "Télécharger mon CV PDF",
+    "menu_toggle": "Ouvrir ou fermer le menu de navigation",
+    "module_label": "MODULE"
   },
   "Hero": {
     "badge": "Disponible pour missions 2026",
@@ -14,9 +18,42 @@
     "cta_projects": "Explorer mes projets",
     "cta_contact": "Me contacter",
     "scroll": "Défiler",
-    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech"
+    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech",
+    "cta_cv": "TÉLÉCHARGER LE CV",
+    "stats": {
+      "experience": "EXPÉRIENCE (ANS)",
+      "projects": "PROJETS LIVRÉS",
+      "satisfaction": "SATISFACTION UX"
+    }
   },
   "HomePage": {
+    "skills": {
+      "title_prefix": "ARCHITECTURE &",
+      "title_highlight": "COMPÉTENCES",
+      "description": "Combinaison de rigueur technique logicielle et d’exploration créative pour concevoir des expériences numériques d’exception.",
+      "items": {
+        "frontend": {
+          "title": "Architecture frontend",
+          "description": "Architectures web réactives avec Next.js 15, React 19, TypeScript et Tailwind CSS v4.",
+          "technologies": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "REST/GraphQL"]
+        },
+        "design": {
+          "title": "UI/UX & systèmes de design",
+          "description": "Interfaces centrées sur l’utilisateur, prototypes haute fidélité et systèmes de design évolutifs.",
+          "technologies": ["Figma", "Systèmes de design", "Prototypage", "Ergonomie UX", "Accessibilité"]
+        },
+        "creative": {
+          "title": "Code créatif & motion design",
+          "description": "Micro-interactions fluides, animations 3D/Canvas et interfaces cybernétiques immersives.",
+          "technologies": ["Framer Motion", "HTML5 Canvas", "WebGL", "Web Audio API", "Shaders"]
+        },
+        "culture": {
+          "title": "Afro-futurisme & culture numérique",
+          "description": "Fusion algorithmique de la géométrie sacrée africaine (Ndop, Adinkra) et du Web moderne.",
+          "technologies": ["Géométrie Ndop", "Symboles Adinkra", "Ethno-design", "Préservation numérique"]
+        }
+      }
+    },
     "projects": {
       "label": "DÉPLOIEMENTS_ACTIFS",
       "title_part1": "Travaux",
@@ -27,6 +64,22 @@
       "access_grant": "Exécuter_Accès",
       "access_deny": "Accès_Refusé",
       "view_archive": "Voir toute l'archive",
+      "filters": {
+        "all": "TOUS",
+        "web": "SYSTÈMES WEB",
+        "culture": "CULTURE",
+        "design": "DESIGN UI"
+      },
+      "quick_preview": "Aperçu rapide",
+      "modal_title": "DÉTAILS DU PROJET",
+      "metrics_label": "Indicateur",
+      "close": "Fermer",
+      "open_live": "Accéder au projet en ligne",
+      "metrics": {
+        "01": "Performance Lighthouse : 99/100",
+        "02": "Moteur interactif de connaissances culturelles",
+        "03": "Identité visuelle afro-futuriste complète"
+      },
       "items": {
         "01": {
           "title": "MarketPlace Africaine",
@@ -48,13 +101,63 @@
       "cta": "Entrer dans la Vision",
       "stats": {
         "origin": "Cameroun",
+        "origin_label": "ORIGINE",
         "medium": "Art Numérique",
+        "medium_label": "MÉDIUM",
         "legacy": "Tradition",
+        "legacy_label": "HÉRITAGE",
+        "vision_label": "VISION",
         "vision": "Innovation"
       }
     }
   },
   "ProjectsPage": {
+    "hud": {
+      "waypoint": "POINT DE REPÈRE HOLOGRAPHIQUE",
+      "open_project": "EXPLORER LE PROJET",
+      "grid_mode_title": "Basculer vers la vue grille standard",
+      "grid_mode": "MODE GRILLE",
+      "help_title": "Commandes et aide",
+      "speed": "VITESSE",
+      "turn_left": "Tourner à gauche (flèche gauche ou A)",
+      "turn_right": "Tourner à droite (flèche droite ou D)",
+      "forward": "AVANCER",
+      "reverse": "RECULER",
+      "turbo": "TURBO",
+      "camera": {
+        "chase": "POURSUITE 3D",
+        "cockpit": "COCKPIT",
+        "orbit": "ORBITE 360",
+        "map": "SATELLITE"
+      }
+    },
+    "grid": {
+      "title_prefix": "PORTFOLIO",
+      "title_highlight": "PROJETS",
+      "description": "Galerie classique des projets récents",
+      "back_to_3d": "REPRENDRE LA CONDUITE 3D",
+      "project_label": "PROJET",
+      "explore_project": "EXPLORER LE PROJET"
+    },
+    "help": {
+      "forward_reverse": "AVANCER / RECULER",
+      "forward_reverse_keys": "W / S ou FLÈCHES HAUT / BAS",
+      "turn": "TOURNER À GAUCHE / DROITE",
+      "turn_keys": "A / D ou FLÈCHES GAUCHE / DROITE",
+      "boost": "TURBO NITRO",
+      "boost_key": "BARRE ESPACE",
+      "camera": "CHANGER L’ANGLE DE VUE",
+      "camera_key": "TOUCHE C",
+      "scroll": "POURSUIVRE LA NAVIGATION",
+      "scroll_key": "MOLETTE DE LA SOURIS",
+      "dismiss": "COMPRIS, EN ROUTE !"
+    },
+    "modal": {
+      "close": "Fermer le détail du projet",
+      "tech_used": "TECHNOLOGIES UTILISÉES",
+      "view_live": "VOIR LE PROJET EN LIGNE",
+      "github": "CODE SOURCE SUR GITHUB"
+    },
     "header": {
       "badge": "RÉPERTOIRE DE PROJETS 2026",
       "title_main": "SOLUTIONS",
@@ -110,6 +213,78 @@
     }
   },
   "AboutPage": {
+    "content": {
+      "portrait_alt": "Portrait de Thek1ng237",
+      "hero_title_prefix": "INGÉNIERIE LOGICIELLE &",
+      "hero_title_highlight": "VISION CRÉATIVE",
+      "hero_description": "Développeur full-stack, je conçois des applications web de bout en bout : interfaces soignées, API, bases de données et intégrations. J’allie architecture fiable, expérience utilisateur et expression culturelle.",
+      "engineering_title": "INGÉNIERIE FULL-STACK",
+      "engineering_description": "Next.js, Angular, Node.js, Express.js et Django, des interfaces aux API.",
+      "culture_title": "UX AFRO-FUTURISTE",
+      "culture_description": "Design d’interface fondé sur les mathématiques des motifs africains ancestraux.",
+      "download_cv": "TÉLÉCHARGER LE CV OFFICIEL (PDF)",
+      "expertise_title_prefix": "MON",
+      "expertise_title_highlight": "EXPERTISE",
+      "expertise_description": "Naviguez interactivement entre le volet Compétences et le volet Outils.",
+      "previous_expertise": "Volet précédent",
+      "next_expertise": "Volet suivant",
+      "go_to_expertise": "Aller au {title}",
+      "node": "NŒUD",
+      "certifications_all": "TOUS ({count})",
+      "certifications_openclassrooms": "OPENCLASSROOMS ({count})",
+      "certifications_udemy": "UDEMY ({count})",
+      "certifications_title_prefix": "CERTIFICATIONS &",
+      "certifications_title_highlight": "DIPLÔMES",
+      "certifications_description": "Formations certifiantes et diplômes obtenus sur OpenClassrooms et Udemy attestant d’une maîtrise technique rigoureuse.",
+      "pdf_format": "FORMAT : PDF VÉRIFIÉ",
+      "view_certificate": "VOIR LE DIPLÔME"
+    },
+    "expertise": {
+      "skills": {
+        "number": "VOLET 01",
+        "title": "MES COMPÉTENCES",
+        "description": "Compétences techniques et ingénierie logicielle pour la construction d’applications web modernes.",
+        "groups": {
+          "frontend": {
+            "step_label": "COMPÉTENCE 01",
+            "title": "FRONTEND",
+            "description": "Conception d’interfaces web fluides, performantes et accessibles avec Next.js, Angular et TypeScript."
+          },
+          "backend": {
+            "step_label": "COMPÉTENCE 02",
+            "title": "BACKEND & LANGAGES",
+            "description": "Création d’API REST performantes et de services backend sécurisés avec Node.js, Java, Express et Django."
+          },
+          "data": {
+            "step_label": "COMPÉTENCE 03",
+            "title": "DATA & WEB3",
+            "description": "Modélisation de données SQL et NoSQL et intégration de protocoles décentralisés Web3."
+          }
+        }
+      },
+      "tools": {
+        "number": "VOLET 02",
+        "title": "MES OUTILS",
+        "description": "Prototypage, création, versionnement et outils de développement collaboratif au quotidien.",
+        "groups": {
+          "design": {
+            "step_label": "OUTIL 01",
+            "title": "DESIGN & CRÉATION",
+            "description": "Design d’interfaces sur Figma et la suite Adobe, avec une organisation créative sur Milanote."
+          },
+          "environment": {
+            "step_label": "OUTIL 02",
+            "title": "ENVIRONNEMENT DE DÉVELOPPEMENT",
+            "description": "Développement avec VS Code, gestion de dépôts Git, GitHub et GitLab, tests Postman et déploiement Vercel."
+          },
+          "workflow": {
+            "step_label": "OUTIL 03",
+            "title": "ORGANISATION & FLUX DE TRAVAIL",
+            "description": "Planification agile sur Trello, intégration WordPress et suivi de projet collaboratif."
+          }
+        }
+      }
+    },
     "identity": {
       "id_label": "ID",
       "class_label": "CLASSE",
@@ -190,6 +365,91 @@
     }
   },
   "CulturePage": {
+    "content": {
+      "hero_title_prefix": "HÉRITAGE",
+      "hero_title_highlight": "AFRO-FUTURISTE",
+      "hero_description": "L’art traditionnel africain n’est pas un vestige du passé : c’est un langage visuel et algorithmique d’une modernité remarquable. Notre mission est d’en extraire la géométrie pour alimenter le Web de demain.",
+      "test_pattern": "Tester un motif",
+      "view_pillars": "Voir les piliers",
+      "pillars_title_prefix": "MOTIFS &",
+      "pillars_title_highlight": "SYMBOLES",
+      "pillars_disclaimer": "Les visuels ci-dessus sont des stylisations géométriques générées en code, inspirées du Ndop, des Adinkra, du Toghu, du Kente, du Bogolan et de la peinture Ndebele. Ils ne reproduisent pas les motifs originaux, dont chacun porte un nom et un sens précis.",
+      "lab_title_prefix": "LA GÉOMÉTRIE,",
+      "lab_title_highlight": "EN DIRECT",
+      "lab_description": "Changez le motif, la teinte et l’échelle : le rendu est calculé en temps réel, sans image.",
+      "process_title_prefix": "DU TEXTILE",
+      "process_title_highlight": "AU CODE",
+      "principle": "Principe : nommer l’origine, citer ses sources et ne jamais réduire un symbole à un simple décor.",
+      "cta_title_prefix": "VOUS SOUHAITEZ INCLURE UNE",
+      "cta_title_highlight": "DIMENSION CULTURELLE",
+      "cta_title_suffix": "À VOTRE PROJET ?",
+      "cta_description": "Nous concevons des identités visuelles et des interfaces numériques sur mesure qui résonnent avec élégance et authenticité.",
+      "cta_button": "DÉMARRER UN PROJET CULTUREL"
+    },
+    "labels": {
+      "origin": "Origine",
+      "symbolism": "Symbolique",
+      "web_implementation": "Implémentation web"
+    },
+    "pillars": {
+      "ndop": {
+        "title": "Tissu royal Ndop",
+        "origin": "Cameroun (Bamiléké, Bamoun)",
+        "symbolism": "Étoffe indigo teinte par réserve, associée aux chefferies : réseaux de losanges et lignes qui disent l’autorité et l’unité.",
+        "implementation": "Treillis de losanges répétés en SVG, calculés en code et recolorables."
+      },
+      "adinkra": {
+        "title": "Symboles Adinkra",
+        "origin": "Ghana / Côte d’Ivoire (Akan, Ashanti)",
+        "symbolism": "Symboles estampés en grille, chacun porteur d’un proverbe : Adinkrahene (leadership), Dwennimmen (humilité et force), Sankofa (apprendre du passé), Nkyinkyim (adaptabilité).",
+        "implementation": "Icônes vectorielles en grille de cellules, prêtes pour des micro-interactions sémantiques."
+      },
+      "toghu": {
+        "title": "Broderies Toghu",
+        "origin": "Cameroun (Grassfields)",
+        "symbolism": "Tenue de prestige des fêtes et cérémonies : bandes brodées de losanges, triangles et zigzags sur fond sombre.",
+        "implementation": "Bandes brodées reproduites en SVG, palettes HSL à fort contraste."
+      },
+      "kente": {
+        "title": "Tissage Kente",
+        "origin": "Ghana (Ashanti, Éwé)",
+        "symbolism": "Étoffe tissée en bandes assemblées : les couleurs et les motifs disent un rang, un proverbe ou une histoire.",
+        "implementation": "Bandes verticales et damiers générés en SVG, couleurs paramétrables."
+      },
+      "bogolan": {
+        "title": "Bogolan, tissu de boue",
+        "origin": "Mali (Bamanan)",
+        "symbolism": "Coton teint à la boue fermentée et aux plantes : lignes, croix et chevrons qui portent récits et protections.",
+        "implementation": "Lignes, croix et chevrons en SVG pour des fonds sobres et très contrastés."
+      },
+      "ndebele": {
+        "title": "Peinture murale Ndebele",
+        "origin": "Afrique du Sud (Ndebele)",
+        "symbolism": "Façades peintes par les femmes : contours noirs épais et aplats vifs, expression d’identité et de fierté.",
+        "implementation": "Aplats et contours épais : formes très lisibles pour des composants d’interface."
+      }
+    },
+    "lab": {
+      "preview": "Aperçu du motif {pattern}, teinte {hue} degrés, échelle {scale}",
+      "pattern": "Motif",
+      "hue": "Teinte",
+      "scale": "Échelle",
+      "generated_settings": "Paramètres générés"
+    },
+    "process": {
+      "observe": {
+        "title": "Observer",
+        "text": "Étudier un motif, son origine, son usage et ce qu’il raconte, à partir de sources fiables et citées."
+      },
+      "abstract": {
+        "title": "Abstraire",
+        "text": "Dégager les règles géométriques : répétition, rotation, symétrie, rythme des couleurs."
+      },
+      "implement": {
+        "title": "Implémenter",
+        "text": "Traduire ces règles en SVG, CSS ou Canvas, avec des palettes HSL et une interface accessible."
+      }
+    },
     "hero": {
       "badge": "INITIALISATION_SYSTÈME : COFFRE_DU_PATRIMOINE",
       "title_main": "ROOTS",
@@ -280,6 +540,14 @@
     }
   },
   "ContactPage": {
+    "content": {
+      "title_prefix": "PARLONS DE",
+      "title_highlight": "VOTRE PROJET",
+      "description": "Décrivez votre besoin, vos délais et votre budget. Plus le message est précis, plus le devis sera juste.",
+      "direct_title_prefix": "ÉCRIRE",
+      "direct_title_highlight": "DIRECTEMENT",
+      "location": "Douala, Littoral · Cameroun"
+    },
     "hero": {
       "protocol": "PROTOCOLE : INITIATION_PONT",
       "title_main": "ÉTABLISSONS",
@@ -304,9 +572,27 @@
       "security": "CONFIDENTIALITÉ GARANTIE",
       "mission_type_label": "Type de mission",
       "mission_type_placeholder": "Choisissez...",
+      "name_label": "Nom complet",
+      "name_placeholder": "Votre nom",
+      "email_label": "Email",
+      "email_placeholder": "vous@exemple.com",
       "phone_label": "Téléphone",
+      "phone_placeholder": "+237 …",
+      "optional": "facultatif",
+      "mission_label": "Type de mission",
+      "mission_placeholder": "Choisir une mission",
       "budget_label": "Budget",
+      "budget_placeholder": "Ex : 500 000 FCFA",
       "date_label": "Délais souhaité",
+      "message_label": "Message",
+      "message_placeholder": "Contexte, objectifs, public visé, fonctionnalités attendues…",
+      "submitting": "Envoi en cours…",
+      "submit": "Envoyer le message",
+      "consent": "En envoyant ce formulaire, vous acceptez d’être recontacté au sujet de votre demande.",
+      "success": "Message transmis avec succès. Merci !",
+      "invalid_request": "Requête invalide.",
+      "copy_channel": "Copier {channel}",
+      "copy_success": "{channel} copié dans le presse-papiers.",
       "consent_label": "J’accepte que mes données soient traitées dans le cadre de ma demande.",
       "mission_options": [
         "Site vitrine",
@@ -320,6 +606,82 @@
     }
   },
   "SolutionPage": {
+    "content": {
+      "hero_title_prefix": "SOLUTIONS",
+      "hero_title_highlight": "SUR MESURE",
+      "hero_description": "De la création d’interfaces web complexes aux audits ergonomiques et au design culturel afro-futuriste. Chaque offre est chiffrée sur devis, selon votre projet.",
+      "offers_title_prefix": "NOS",
+      "offers_title_highlight": "OFFRES",
+      "filter_offers": "Filtrer les offres",
+      "all_categories": "Toutes",
+      "process_title_prefix": "DE L’IDÉE",
+      "process_title_highlight": "AU DEVIS",
+      "custom_title_prefix": "VOTRE PROJET NE RENTRE DANS",
+      "custom_title_highlight": "AUCUNE CASE ?",
+      "custom_description": "Décrivez-le-nous : nous construisons l’offre autour de votre besoin, pas l’inverse.",
+      "custom_cta": "Parler de mon projet"
+    },
+    "categories": {
+      "engine": "Ingénierie web",
+      "protocol": "Design & UX",
+      "lab": "Design culturel"
+    },
+    "labels": {
+      "pricing": "Tarification"
+    },
+    "actions": {
+      "request_quote": "Demander un devis",
+      "view_details": "Voir le détail",
+      "close": "Fermer"
+    },
+    "process": {
+      "describe": {
+        "title": "Vous décrivez votre projet",
+        "description": "Objectifs, public, contraintes et délais souhaités, via le formulaire de contact."
+      },
+      "estimate": {
+        "title": "Nous chiffrons l’offre",
+        "description": "Périmètre, étapes, délais et budget détaillés dans un devis clair, ajusté avec vous."
+      },
+      "build": {
+        "title": "Nous construisons avec vous",
+        "description": "Développement par étapes, avec des points réguliers et des livrables que vous validez."
+      }
+    },
+    "modal": {
+      "benefits_title": "Bénéfices clés",
+      "included_title": "Inclus",
+      "audience_label": "Pour qui :"
+    },
+    "offers": {
+      "01": {
+        "title": "ARCHITECTURE WEB SUR MESURE",
+        "description": "Développement complet d’applications web Next.js et React réactives, évolutives et optimisées pour le SEO.",
+        "price": "Sur devis",
+        "features": ["Next.js 15 & React 19 full-stack", "Design responsive afro-futuriste", "Performance et SEO optimisés"],
+        "full_description": "Conception complète de votre plateforme web. De l’architecture frontend aux API REST et à la base de données, nous construisons une solution performante, moderne et adaptée à vos besoins.",
+        "benefits": ["Architecture moderne sans dette technique", "Affichage ultra-rapide", "Identité visuelle unique"],
+        "target_audience": "Startups, entreprises et projets ambitieux"
+      },
+      "02": {
+        "title": "AUDIT UX/UI & REFONTE GRAPHIQUE",
+        "description": "Analyse ergonomique approfondie, création d’un système de design et optimisation du parcours utilisateur.",
+        "price": "Sur devis",
+        "features": ["Audit ergonomique et recherche UX", "Création d’un système de design", "Prototypes Figma haute fidélité"],
+        "full_description": "Améliorez vos conversions et la satisfaction des utilisateurs grâce à une révision complète de votre expérience visuelle et interactive.",
+        "benefits": ["Engagement accru", "Cohérence visuelle sur toutes les pages", "Prototypes prêts à développer"],
+        "target_audience": "Applications existantes qui souhaitent moderniser leur interface"
+      },
+      "03": {
+        "title": "DESIGN CULTUREL AFRO-FUTURISTE",
+        "description": "Intégration d’art numérique, de géométrie sacrée et d’une identité culturelle forte dans vos projets web.",
+        "price": "Sur devis",
+        "features": ["Vectorisation de motifs ancestraux", "Animations et micro-interactions CSS", "Direction artistique et branding"],
+        "full_description": "Donnez une identité singulière à vos produits numériques en fusionnant les motifs visuels africains avec les standards du web moderne.",
+        "benefits": ["Différenciation concrète", "Valorisation du patrimoine", "Expérience immersive et mémorable"],
+        "target_audience": "Marques, institutions culturelles et créateurs"
+      }
+    },
     "hero": {
       "badge": "CATALOGUE_SOLUTIONS_2026",
       "title_main": "CONSTRUIRE",
@@ -417,6 +779,48 @@
       "base_location": "Localisation_Base",
       "location": "Douala, CM.AFR",
       "status": "SESSION_CHIFFRÉE_ACTIVE"
+    },
+    "back_to_top": "HAUT DE PAGE"
+  },
+  "Common": {
+    "audio": {
+      "enable": "Activer l’ambiance sonore",
+      "disable": "Désactiver l’ambiance sonore",
+      "off": "AUDIO_DÉSACTIVÉ",
+      "on": "AUDIO_ACTIVÉ"
+    }
+  },
+  "Testimonials": {
+    "title_prefix": "Avis",
+    "title_highlight": "Clients & partenaires",
+    "description": "Vous avez travaillé avec Thek1ng237 ? Laissez votre avis pour partager votre retour d’expérience sur nos réalisations web et applicatives.",
+    "actions": {
+      "leave_testimonial": "Laisser un témoignage",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "submitting": "Envoi…",
+      "submit": "Envoyer mon témoignage"
+    },
+    "form": {
+      "share_experience": "Partagez votre expérience",
+      "title": "Laisser un témoignage",
+      "name_label": "Votre nom / prénom",
+      "name_placeholder": "Ex. : Moustapha N.",
+      "role_label": "Votre poste / titre",
+      "role_placeholder": "Ex. : Fondateur / CEO",
+      "company_label": "Entreprise / organisation",
+      "company_placeholder": "Ex. : GSHI Incubator",
+      "rating_label": "Note d’évaluation",
+      "content_label": "Votre témoignage / avis",
+      "content_placeholder": "Décrivez votre expérience de travail avec Thek1ng237…"
+    },
+    "success": {
+      "title": "Merci pour votre retour !",
+      "description": "Votre témoignage a été transmis avec succès. Il sera publié sur le site après validation par l’administrateur."
+    },
+    "errors": {
+      "required_fields": "Veuillez renseigner votre nom et votre témoignage.",
+      "submit": "Erreur lors de l’envoi du témoignage."
     }
   },
   "NotFound": {

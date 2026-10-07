@@ -106,7 +106,7 @@ export default function Hero() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-7 py-4 bg-[#FF3B56]/15 border border-[#FF3B56]/50 hover:border-[#FF3B56] hover:bg-[#FF3B56] text-white hover:text-white font-achiko font-bold text-sm tracking-widest uppercase rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(255,59,86,0.2)]"
               >
-                <i className="pi pi-download text-base" /> TÉLÉCHARGER CV
+                <i className="pi pi-download text-base" /> {t("cta_cv")}
               </a>
             </motion.div>
 
@@ -132,7 +132,7 @@ export default function Hero() {
                 05+
               </span>
               <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
-                Expérience (Ans)
+                {t("stats.experience")}
               </span>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
@@ -140,7 +140,7 @@ export default function Hero() {
                 25+
               </span>
               <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
-                Projets Livrés
+                {t("stats.projects")}
               </span>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} className="space-y-0.5">
@@ -148,7 +148,7 @@ export default function Hero() {
                 100%
               </span>
               <span className="text-[10px] font-azurio text-gray-300 uppercase tracking-widest font-bold">
-                Satisfaction UX
+                {t("stats.satisfaction")}
               </span>
             </motion.div>
           </motion.div>

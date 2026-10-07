@@ -12,11 +12,8 @@ type SkillBarProps = {
 };
 
 type SkillGroupItem = {
+  id: string;
   step: string;
-  stepLabel: string;
-  title: string;
-  subtitle: string;
-  description: string;
   color: string;
   borderColor: string;
   icon: string;
@@ -26,9 +23,6 @@ type SkillGroupItem = {
 
 type VoletItem = {
   id: string;
-  voletNumber: string;
-  voletTitle: string;
-  voletDescription: string;
   color: string;
   groups: SkillGroupItem[];
 };
@@ -36,19 +30,11 @@ type VoletItem = {
 const voletsData: VoletItem[] = [
   {
     id: "skills",
-    voletNumber: "VOLET 01",
-    voletTitle: "MES SKILLS",
-    voletDescription:
-      "Compétences techniques et ingénierie logicielle pour la construction d'applications web modernes.",
     color: "#FFC82C",
     groups: [
       {
+        id: "frontend",
         step: "1",
-        stepLabel: "SKILL 01",
-        title: "FRONTEND",
-        subtitle: "Interfaces Réactives & UX",
-        description:
-          "Conception d'interfaces web fluides, performantes et accessibles avec Next.js, Angular et TypeScript.",
         color: "#FFC82C",
         borderColor: "rgba(255, 200, 44, 0.3)",
         icon: "pi pi-desktop",
@@ -64,12 +50,8 @@ const voletsData: VoletItem[] = [
         ],
       },
       {
+        id: "backend",
         step: "2",
-        stepLabel: "SKILL 02",
-        title: "BACKEND & LANGAGES",
-        subtitle: "Architecture Serveur & APIs RESTful",
-        description:
-          "Création d'APIs REST hautes performances et services backend sécurisés avec Node.js, Java, Express et Django.",
         color: "#FF3B56",
         borderColor: "rgba(255, 59, 86, 0.3)",
         icon: "pi pi-server",
@@ -83,12 +65,8 @@ const voletsData: VoletItem[] = [
         ],
       },
       {
+        id: "data",
         step: "3",
-        stepLabel: "SKILL 03",
-        title: "DATA & WEB3",
-        subtitle: "Bases de Données & Blockchain",
-        description:
-          "Modélisation de données (SQL & NoSQL) et intégration des protocoles décentralisés Web3.",
         color: "#10B981",
         borderColor: "rgba(16, 185, 129, 0.3)",
         icon: "pi pi-database",
@@ -104,20 +82,12 @@ const voletsData: VoletItem[] = [
     ],
   },
   {
-    id: "outils",
-    voletNumber: "VOLET 02",
-    voletTitle: "MES OUTILS",
-    voletDescription:
-      "Suite logicielle, prototypage design, versioning et outils de développement collaboratif au quotidien.",
+    id: "tools",
     color: "#FFE57F",
     groups: [
       {
+        id: "design",
         step: "4",
-        stepLabel: "OUTIL 01",
-        title: "DESIGN & CREATION",
-        subtitle: "Prototypage UI/UX & Canvas Visuel",
-        description:
-          "Design d'interfaces futuristes sur Figma, suite Adobe (Photoshop, Illustrator) et organisation créative sur Milanote.",
         color: "#FFE57F",
         borderColor: "rgba(255, 229, 127, 0.3)",
         icon: "pi pi-palette",
@@ -131,12 +101,8 @@ const voletsData: VoletItem[] = [
         ],
       },
       {
+        id: "environment",
         step: "5",
-        stepLabel: "OUTIL 02",
-        title: "DEV & ENVIRONMENT",
-        subtitle: "Éditeur, Versioning & Hosting",
-        description:
-          "Environnement de développement sur VS Code, gestion de dépôt Git, GitHub, GitLab, Postman et déploiement Vercel.",
         color: "#3B82F6",
         borderColor: "rgba(59, 130, 246, 0.3)",
         icon: "pi pi-code",
@@ -151,12 +117,8 @@ const voletsData: VoletItem[] = [
         ],
       },
       {
+        id: "workflow",
         step: "6",
-        stepLabel: "OUTIL 03",
-        title: "ORGANISATION & WORKFLOW",
-        subtitle: "Gestion de Projet & CMS",
-        description:
-          "Planification Agile sur Trello, intégration CMS sur WordPress et suivi de projet collaboratif.",
         color: "#A855F7",
         borderColor: "rgba(168, 85, 247, 0.3)",
         icon: "pi pi-sliders-h",
@@ -332,7 +294,7 @@ export default function About() {
               <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/15 bg-[#0B0D18]">
                 <img
                   src="/images/yann.jpg"
-                  alt="Thek1ng237"
+                  alt={t("content.portrait_alt")}
                   className="object-cover h-full w-full"
                 />
               </div>
@@ -347,8 +309,7 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="font-achiko text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-                INGÉNIERIE LOGICIELLE &amp;{" "}
-                <span className="text-[#FFC82C]">VISION CREATIVE</span>
+                {t("content.hero_title_prefix")} <span className="text-[#FFC82C]">{t("content.hero_title_highlight")}</span>
               </h1>
             </motion.div>
 
@@ -358,10 +319,7 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-azurio text-base md:text-lg text-gray-200 leading-relaxed font-light"
             >
-              Développeur full-stack, je conçois des applications web de bout en
-              bout : interfaces soignées, API, bases de données et intégrations.
-              J’allie architecture fiable, expérience utilisateur et expression
-              culturelle.
+              {t("content.hero_description")}
             </motion.p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
@@ -370,11 +328,10 @@ export default function About() {
                 className="glass-card p-6 rounded-2xl border border-white/15 font-azurio"
               >
                 <span className="font-achiko text-xl font-black text-[#FFC82C] block mb-2">
-                  FULL-STACK ENGINEERING
+                  {t("content.engineering_title")}
                 </span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  Next.js, Angular, Node.js, Express.js et Django, des
-                  interfaces aux API.
+                  {t("content.engineering_description")}
                 </p>
               </motion.div>
               <motion.div
@@ -382,11 +339,10 @@ export default function About() {
                 className="glass-card p-6 rounded-2xl border border-white/15 font-azurio"
               >
                 <span className="font-achiko text-xl font-black text-[#FF3B56] block mb-2">
-                  AFRO-FUTURISM UX
+                  {t("content.culture_title")}
                 </span>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
-                  Design d’interface fondé sur les mathématiques des motifs
-                  africains ancestraux.
+                  {t("content.culture_description")}
                 </p>
               </motion.div>
             </div>
@@ -406,7 +362,7 @@ export default function About() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#FF3B56] hover:bg-[#FF3B56]/90 text-white font-achiko font-bold text-xs sm:text-sm uppercase tracking-[0.2em] rounded-2xl shadow-[0_0_25px_rgba(255,59,86,0.35)] transition-all group cursor-pointer"
               >
                 <i className="pi pi-file-pdf text-lg group-hover:scale-110 transition-transform" />
-                TÉLÉCHARGER LE CV OFFICIEL (PDF)
+                {t("content.download_cv")}
               </a>
             </motion.div>
           </div>
@@ -424,13 +380,11 @@ export default function About() {
             className="lg:col-span-6"
           >
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              MON <span className="text-[#FFC82C]">EXPERTISE</span>
+              {t("content.expertise_title_prefix")} <span className="text-[#FFC82C]">{t("content.expertise_title_highlight")}</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              Naviguez interactivement entre le{" "}
-              <strong>Volet 1 : Mes Skills</strong> et le{" "}
-              <strong>Volet 2 : Mes Outils</strong> via le Swiper ci-dessous.
+              {t("content.expertise_description")}
             </p>
           </motion.div>
 
@@ -465,7 +419,7 @@ export default function About() {
                     >
                       0{idx + 1}
                     </span>
-                    {volet.voletTitle}
+                    {t(`expertise.${volet.id}.title`)}
                   </button>
                 );
               })}
@@ -475,14 +429,14 @@ export default function About() {
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrev}
-                aria-label="Volet précédent"
+                aria-label={t("content.previous_expertise")}
                 className="w-12 h-12 rounded-2xl glass-card border border-white/15 flex items-center justify-center text-white hover:border-[#FFC82C] hover:bg-[#FFC82C]/10 transition-all cursor-pointer group"
               >
                 <i className="pi pi-chevron-left text-lg group-hover:-translate-x-0.5 transition-transform" />
               </button>
               <button
                 onClick={handleNext}
-                aria-label="Volet suivant"
+                aria-label={t("content.next_expertise")}
                 className="w-12 h-12 rounded-2xl glass-card border border-white/15 flex items-center justify-center text-white hover:border-[#FFC82C] hover:bg-[#FFC82C]/10 transition-all cursor-pointer group"
               >
                 <i className="pi pi-chevron-right text-lg group-hover:translate-x-0.5 transition-transform" />
@@ -510,14 +464,14 @@ export default function About() {
                   className="px-4 py-2 rounded-xl text-xs font-achiko font-black uppercase text-black shadow-lg"
                   style={{ backgroundColor: activeVolet.color }}
                 >
-                  {activeVolet.voletNumber}
+                  {t(`expertise.${activeVolet.id}.number`)}
                 </div>
                 <div>
                   <h3 className="font-achiko text-2xl sm:text-4xl font-black uppercase text-white tracking-tight">
-                    {activeVolet.voletTitle}
+                    {t(`expertise.${activeVolet.id}.title`)}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 font-light mt-1">
-                    {activeVolet.voletDescription}
+                    {t(`expertise.${activeVolet.id}.description`)}
                   </p>
                 </div>
               </div>
@@ -574,7 +528,7 @@ export default function About() {
 
                     return (
                       <div
-                        key={group.title}
+                        key={group.id}
                         className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center ${
                           isEven ? "lg:flex-row" : "lg:flex-row-reverse"
                         }`}
@@ -589,13 +543,13 @@ export default function About() {
                           </div>
                           <div>
                             <span className="text-xs font-mono font-bold tracking-widest text-gray-400 block">
-                              {group.stepLabel} &bull; {activeVolet.voletTitle}
+                              {t(`expertise.${activeVolet.id}.groups.${group.id}.step_label`)} &bull; {t(`expertise.${activeVolet.id}.title`)}
                             </span>
                             <h4
                               className="font-achiko text-lg font-bold uppercase tracking-wider"
                               style={{ color: group.color }}
                             >
-                              {group.title}
+                              {t(`expertise.${activeVolet.id}.groups.${group.id}.title`)}
                             </h4>
                           </div>
                         </div>
@@ -625,10 +579,10 @@ export default function About() {
                                 </div>
                                 <div>
                                   <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-gray-400 block">
-                                    {group.stepLabel} &bull; {group.tag}
+                                    {t(`expertise.${activeVolet.id}.groups.${group.id}.step_label`)} &bull; {group.tag}
                                   </span>
                                   <h4 className="font-achiko text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
-                                    {group.title}
+                                    {t(`expertise.${activeVolet.id}.groups.${group.id}.title`)}
                                   </h4>
                                 </div>
                               </div>
@@ -639,7 +593,7 @@ export default function About() {
                             </div>
 
                             <p className="text-xs sm:text-sm text-gray-300 font-light mb-6 leading-relaxed">
-                              {group.description}
+                              {t(`expertise.${activeVolet.id}.groups.${group.id}.description`)}
                             </p>
 
                             {/* SKILLS / TOOLS GRID */}
@@ -702,7 +656,7 @@ export default function About() {
                                 {group.step}
                               </span>
                               <span className="text-[8px] font-bold tracking-tighter uppercase font-mono">
-                                NODE
+                                {t("content.node")}
                               </span>
                             </div>
                           </div>
@@ -724,7 +678,7 @@ export default function About() {
               <button
                 key={volet.id}
                 onClick={() => handleSelectVolet(idx)}
-                aria-label={`Aller au ${volet.voletTitle}`}
+                aria-label={t("content.go_to_expertise", { title: t(`expertise.${volet.id}.title`) })}
                 className={`h-3 rounded-full transition-all cursor-pointer ${
                   isActive
                     ? "w-10 bg-[#FFC82C] shadow-[0_0_15px_rgba(255,200,44,0.6)]"
@@ -747,23 +701,20 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <h2 className="font-achiko text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight leading-none">
-              CERTIFICATIONS &amp;{" "}
-              <span className="text-[#FFC82C]">DIPLÔMES</span>
+              {t("content.certifications_title_prefix")} <span className="text-[#FFC82C]">{t("content.certifications_title_highlight")}</span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-gray-300 font-light max-w-xl leading-relaxed">
-              Formations certifiantes et diplômes obtenus sur{" "}
-              <strong>OpenClassrooms</strong> et <strong>Udemy</strong>{" "}
-              attestant d&apos;une maîtrise technique rigoureuse.
+              {t("content.certifications_description")}
             </p>
           </motion.div>
 
           {/* FILTER TABS */}
           <div className="p-1.5 rounded-2xl glass-card border border-white/15 flex flex-wrap items-center gap-2 bg-[#121526] self-start md:self-auto">
             {[
-              { id: "ALL", label: "TOUS (10)" },
-              { id: "OPENCLASSROOMS", label: "OPENCLASSROOMS (6)" },
-              { id: "UDEMY", label: "UDEMY (4)" },
+              { id: "ALL", label: t("content.certifications_all", { count: certificationsData.length }) },
+              { id: "OPENCLASSROOMS", label: t("content.certifications_openclassrooms", { count: certificationsData.filter((cert) => cert.category === "OPENCLASSROOMS").length }) },
+              { id: "UDEMY", label: t("content.certifications_udemy", { count: certificationsData.filter((cert) => cert.category === "UDEMY").length }) },
             ].map((tab) => {
               const isActive = certifCategoryFilter === tab.id;
               return (
@@ -850,7 +801,7 @@ export default function About() {
                 {/* PDF Download Button */}
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-gray-400 font-bold uppercase">
-                    FORMAT: PDF VERIFIÉ
+                    {t("content.pdf_format")}
                   </span>
 
                   <a
@@ -860,7 +811,7 @@ export default function About() {
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#FFC82C] text-white hover:text-black font-achiko text-xs font-bold uppercase tracking-wider transition-all border border-white/15 hover:border-[#FFC82C] group/btn cursor-pointer"
                   >
                     <i className="pi pi-file-pdf text-sm" />
-                    <span>VOIR DIPLÔME</span>
+                    <span>{t("content.view_certificate")}</span>
                   </a>
                 </div>
               </motion.div>

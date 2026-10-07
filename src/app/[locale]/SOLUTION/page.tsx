@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import React, { useEffect, useId, useState } from "react";
-import { useLocale } from "next-intl";
+import React, { useEffect, useId, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
 
 /* -------------------------------------------------------------------------- */
@@ -14,6 +14,7 @@ type Category = "ENGINE" | "PROTOCOL" | "LAB";
 
 interface Solution {
   id: string;
+  key: "01" | "02" | "03";
   title: string;
   description: string;
   price: string;
@@ -28,42 +29,42 @@ interface Solution {
 const fallbackSolutions: Solution[] = [
   {
     id: "01",
+    key: "01",
     category: "ENGINE",
-    title: "ARCHITECTURE WEB SUR-MESURE",
-    description: "Développement complet d'applications web Next.js & React réactives, scalables et optimisées pour le SEO.",
-    price: "Sur Devis",
+    title: "",
+    description: "",
+    price: "",
     icon: "pi pi-box",
-    features: ["Next.js 15 & React 19 Full-Stack", "Design Responsive Afro-Futuriste", "Optimisation Performance & SEO 99+"],
-    fullDescription:
-      "Conception de bout en bout de votre plateforme web. De l'architecture front-end aux API RESTful et à la base de données, nous construisons une solution performante, moderne et totalement sur-mesure.",
-    benefits: ["Architecture moderne et zéro dette technique", "Performance d'affichage ultra-rapide", "Identité visuelle unique et captivante"],
-    targetAudience: "Startups, entreprises et projets ambitieux",
+    features: [],
+    fullDescription: "",
+    benefits: [],
+    targetAudience: "",
   },
   {
     id: "02",
+    key: "02",
     category: "PROTOCOL",
-    title: "AUDIT UX/UI & REFONTE GRAPHIQUE",
-    description: "Analyse ergonomique approfondie, création de système de design et optimisation du parcours utilisateur.",
-    price: "Sur Devis",
+    title: "",
+    description: "",
+    price: "",
     icon: "pi pi-shield",
-    features: ["Audit ergonomique & UX Research", "Création de design system complet", "Prototypes Figma haute-fidélité"],
-    fullDescription:
-      "Améliorez le taux de conversion et la satisfaction de vos utilisateurs grâce à une révision globale de votre expérience visuelle et interactive.",
-    benefits: ["Augmentation de l'engagement", "Cohérence visuelle sur toutes les pages", "Prototypes prêts pour dev"],
-    targetAudience: "Applications existantes souhaitant moderniser leur interface",
+    features: [],
+    fullDescription: "",
+    benefits: [],
+    targetAudience: "",
   },
   {
     id: "03",
+    key: "03",
     category: "LAB",
-    title: "DESIGN CULTUREL AFRO-FUTURISTE",
-    description: "Intégration d'art numérique, géométrie sacrée et identité culturelle forte dans vos projets web.",
-    price: "Sur Devis",
+    title: "",
+    description: "",
+    price: "",
     icon: "pi pi-microchip",
-    features: ["Vectorisation de motifs ancestraux", "Animations & micro-interactions CSS", "Direction artistique & branding"],
-    fullDescription:
-      "Donnez une âme unique à vos produits digitaux en fusionnant les motifs visuels africains ancestraux avec les standards du web moderne.",
-    benefits: ["Démarque concrète", "Valorisation du patrimoine", "Expérience immersive et mémorable"],
-    targetAudience: "Marques, institutions culturelles et créateurs passionnés",
+    features: [],
+    fullDescription: "",
+    benefits: [],
+    targetAudience: "",
   },
 ];
 
@@ -82,49 +83,46 @@ type SolutionApiItem = {
   icon?: string;
   features?: string[];
   featuresFr?: string[];
+  featuresEn?: string[];
   fullDescription?: string;
   fullDescriptionFr?: string;
   fullDescriptionEn?: string;
   benefits?: string[];
+  benefitsFr?: string[];
+  benefitsEn?: string[];
   targetAudience?: string;
+  targetAudienceFr?: string;
+  targetAudienceEn?: string;
   category?: Category | string;
 };
 
-const mapService = (item: SolutionApiItem): Solution => ({
+const mapService = (item: SolutionApiItem, locale: string): Solution => ({
   id: String(item.id ?? item.slug ?? "01"),
-  title: item.title ?? item.titleFr ?? item.titleEn ?? "Service",
-  description: item.description ?? item.descriptionFr ?? item.descriptionEn ?? "",
-  price: item.priceLabel ?? item.priceLabelFr ?? item.priceLabelEn ?? "Sur Devis",
+  key: "01",
+  title: (locale === "en" ? item.titleEn ?? item.titleFr : item.titleFr ?? item.titleEn) ?? item.title ?? "",
+  description: (locale === "en" ? item.descriptionEn ?? item.descriptionFr : item.descriptionFr ?? item.descriptionEn) ?? item.description ?? "",
+  price: (locale === "en" ? item.priceLabelEn ?? item.priceLabelFr : item.priceLabelFr ?? item.priceLabelEn) ?? item.priceLabel ?? "",
   icon: item.icon ?? "pi pi-box",
-  features: Array.isArray(item.features) ? item.features : Array.isArray(item.featuresFr) ? item.featuresFr : [],
-  fullDescription: item.fullDescription ?? item.fullDescriptionFr ?? item.fullDescriptionEn ?? "",
-  benefits: Array.isArray(item.benefits) ? item.benefits : ["Qualité", "Performance", "Évolution"],
-  targetAudience: item.targetAudience ?? "Entreprises & projets ambitieux",
+  features: locale === "en" ? item.featuresEn ?? item.featuresFr ?? item.features ?? [] : item.featuresFr ?? item.features ?? item.featuresEn ?? [],
+  fullDescription: (locale === "en" ? item.fullDescriptionEn ?? item.fullDescriptionFr : item.fullDescriptionFr ?? item.fullDescriptionEn) ?? item.fullDescription ?? "",
+  benefits: locale === "en" ? item.benefitsEn ?? item.benefitsFr ?? item.benefits ?? [] : item.benefitsFr ?? item.benefits ?? item.benefitsEn ?? [],
+  targetAudience: (locale === "en" ? item.targetAudienceEn ?? item.targetAudienceFr : item.targetAudienceFr ?? item.targetAudienceEn) ?? item.targetAudience ?? "",
   category: item.category === "ENGINE" || item.category === "PROTOCOL" || item.category === "LAB" ? item.category : "ENGINE",
 });
 
 /** Chaque catégorie a son tissu : structure (Ndop), système de signes (Adinkra), broderie de fête (Toghu). */
 type TextileKind = "NDOP" | "ADINKRA" | "TOGHU";
 
-const CATEGORY_META: Record<Category, { label: string; textile: TextileKind; color: string; hue: number }> = {
-  ENGINE: { label: "Ingénierie web", textile: "NDOP", color: "#FFC82C", hue: 46 },
-  PROTOCOL: { label: "Design & UX", textile: "ADINKRA", color: "#FF3B56", hue: 352 },
-  LAB: { label: "Design culturel", textile: "TOGHU", color: "#FFE57F", hue: 47 },
+const CATEGORY_META: Record<Category, { textile: TextileKind; color: string; hue: number }> = {
+  ENGINE: { textile: "NDOP", color: "#FFC82C", hue: 46 },
+  PROTOCOL: { textile: "ADINKRA", color: "#FF3B56", hue: 352 },
+  LAB: { textile: "TOGHU", color: "#FFE57F", hue: 47 },
 };
 
 const quoteSteps = [
-  {
-    title: "Vous décrivez votre projet",
-    text: "Objectifs, public, contraintes et délais souhaités, via le formulaire de contact.",
-  },
-  {
-    title: "Nous chiffrons l'offre",
-    text: "Périmètre, étapes, délais et budget détaillés dans un devis clair, ajusté avec vous.",
-  },
-  {
-    title: "Nous construisons avec vous",
-    text: "Développement par étapes, avec des points réguliers et des livrables que vous validez.",
-  },
+  { key: "describe" },
+  { key: "estimate" },
+  { key: "build" },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -394,6 +392,7 @@ function SolutionRow({
 }) {
   const meta = CATEGORY_META[solution.category];
   const reduce = useReducedMotion();
+  const t = useTranslations("SolutionPage");
 
   return (
     <motion.article
@@ -428,7 +427,7 @@ function SolutionRow({
       <div className="space-y-4 p-6 md:p-8">
         <div className="flex items-center gap-2 text-xs font-bold text-gray-300">
           <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: meta.color }} aria-hidden="true" />
-          {meta.label}
+          {t(`categories.${solution.category.toLowerCase()}`)}
         </div>
 
         <h3 className="font-achiko text-xl font-black uppercase text-white transition-colors group-hover:text-[var(--accent)] md:text-2xl">
@@ -450,7 +449,7 @@ function SolutionRow({
       {/* Tarification */}
       <div className="flex flex-col justify-between gap-6 border-t border-white/10 bg-black/20 p-6 md:border-l md:border-t-0 md:p-8">
         <div>
-          <span className="text-xs font-bold text-gray-400">Tarification</span>
+          <span className="text-xs font-bold text-gray-400">{t("labels.pricing")}</span>
           <p className="mt-1 font-achiko text-2xl font-black" style={{ color: meta.color }}>
             {solution.price}
           </p>
@@ -463,14 +462,14 @@ function SolutionRow({
             className="rounded-xl px-5 py-3 text-center font-achiko text-xs font-bold uppercase tracking-wider text-black transition-shadow hover:shadow-[0_0_24px_rgba(255,200,44,0.35)]"
             style={{ backgroundColor: meta.color }}
           >
-            Demander un devis
+            {t("actions.request_quote")}
           </Link>
           <button
             type="button"
             onClick={() => onOpen(solution)}
             className="rounded-xl border border-white/20 px-5 py-3 font-achiko text-xs font-bold uppercase tracking-wider text-white transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
           >
-            Voir le détail
+            {t("actions.view_details")}
           </button>
         </div>
       </div>
@@ -483,10 +482,24 @@ function SolutionRow({
 /* -------------------------------------------------------------------------- */
 
 export default function Solutions() {
-  const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
-  const [solutions, setSolutions] = useState<Solution[]>(fallbackSolutions);
-  const [filter, setFilter] = useState<"ALL" | Category>("ALL");
+  const t = useTranslations("SolutionPage");
   const locale = useLocale();
+  const localizedFallbackSolutions = useMemo(
+    () => fallbackSolutions.map((solution) => ({
+      ...solution,
+      title: t(`offers.${solution.key}.title`),
+      description: t(`offers.${solution.key}.description`),
+      price: t(`offers.${solution.key}.price`),
+      features: t.raw(`offers.${solution.key}.features`) as string[],
+      fullDescription: t(`offers.${solution.key}.full_description`),
+      benefits: t.raw(`offers.${solution.key}.benefits`) as string[],
+      targetAudience: t(`offers.${solution.key}.target_audience`),
+    })),
+    [t],
+  );
+  const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
+  const [solutions, setSolutions] = useState<Solution[]>(localizedFallbackSolutions);
+  const [filter, setFilter] = useState<"ALL" | Category>("ALL");
 
   useEffect(() => {
     let cancelled = false;
@@ -494,17 +507,17 @@ export default function Solutions() {
       try {
         const data = await apiFetch<{ items: SolutionApiItem[] }>("/public/services", { locale, method: "GET" });
         if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
-          setSolutions(data.items.map(mapService));
+          setSolutions(data.items.map((item) => mapService(item, locale)));
         }
       } catch {
-        if (!cancelled) setSolutions(fallbackSolutions);
+        if (!cancelled) setSolutions(localizedFallbackSolutions);
       }
     };
     void loadServices();
     return () => {
       cancelled = true;
     };
-  }, [locale]);
+  }, [locale, localizedFallbackSolutions]);
 
   // Fermeture au clavier et blocage du scroll quand la fenêtre de détail est ouverte
   useEffect(() => {
@@ -539,7 +552,7 @@ export default function Solutions() {
               transition={{ duration: 0.8 }}
               className="font-achiko text-4xl font-black uppercase leading-[0.95] tracking-tight text-white md:text-7xl"
             >
-              SOLUTIONS <span className="text-[#FFC82C]">SUR MESURE</span>
+              {t("content.hero_title_prefix")} <span className="text-[#FFC82C]">{t("content.hero_title_highlight")}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -547,8 +560,7 @@ export default function Solutions() {
               transition={{ delay: 0.2 }}
               className="max-w-xl border-l-4 border-[#FFC82C] pl-6 text-base font-light leading-relaxed text-gray-200"
             >
-              De la création d’interfaces web complexes aux audits ergonomiques et au design culturel Afro-Futuriste.
-              Chaque offre est chiffrée sur devis, selon votre projet.
+              {t("content.hero_description")}
             </motion.p>
           </div>
 
@@ -559,13 +571,13 @@ export default function Solutions() {
         <section className="space-y-8">
           <div className="flex flex-wrap items-end justify-between gap-6 border-b border-white/10 pb-6">
             <h2 className="font-achiko text-2xl font-black uppercase tracking-tight text-white md:text-4xl">
-              NOS <span className="text-[#FFC82C]">OFFRES</span>
+              {t("content.offers_title_prefix")} <span className="text-[#FFC82C]">{t("content.offers_title_highlight")}</span>
             </h2>
 
-            <div role="tablist" aria-label="Filtrer les offres" className="flex flex-wrap gap-2">
+            <div role="tablist" aria-label={t("content.filter_offers")} className="flex flex-wrap gap-2">
               {(["ALL", ...presentCategories] as Array<"ALL" | Category>).map((cat) => {
                 const active = filter === cat;
-                const label = cat === "ALL" ? "Toutes" : CATEGORY_META[cat].label;
+                const label = cat === "ALL" ? t("content.all_categories") : t(`categories.${cat.toLowerCase()}`);
                 return (
                   <button
                     key={cat}
@@ -606,7 +618,7 @@ export default function Solutions() {
         <section className="space-y-12 border-t border-white/10 pt-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-achiko text-2xl font-black uppercase tracking-tight text-white md:text-4xl">
-              DE L’IDÉE <span className="text-[#FFC82C]">AU DEVIS</span>
+              {t("content.process_title_prefix")} <span className="text-[#FFC82C]">{t("content.process_title_highlight")}</span>
             </h2>
           </motion.div>
 
@@ -617,7 +629,7 @@ export default function Solutions() {
             />
             {quoteSteps.map((step, i) => (
               <motion.li
-                key={step.title}
+                key={step.key}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -627,8 +639,8 @@ export default function Solutions() {
                 <span className="relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#FFC82C] bg-[#0B0D18] font-achiko text-lg font-black text-[#FFC82C]">
                   {i + 1}
                 </span>
-                <h3 className="font-achiko text-lg font-black uppercase text-white">{step.title}</h3>
-                <p className="max-w-xs text-sm font-light leading-relaxed text-gray-300">{step.text}</p>
+                <h3 className="font-achiko text-lg font-black uppercase text-white">{t(`process.${step.key}.title`)}</h3>
+                <p className="max-w-xs text-sm font-light leading-relaxed text-gray-300">{t(`process.${step.key}.description`)}</p>
               </motion.li>
             ))}
           </ol>
@@ -644,10 +656,10 @@ export default function Solutions() {
           <div className="relative grid items-center gap-8 p-10 md:grid-cols-[1.5fr_1fr] md:p-14">
             <div className="space-y-4">
               <h2 className="font-achiko text-2xl font-black uppercase tracking-tight text-white md:text-4xl">
-                VOTRE PROJET NE RENTRE DANS <span className="text-[#FFC82C]">AUCUNE CASE ?</span>
+                {t("content.custom_title_prefix")} <span className="text-[#FFC82C]">{t("content.custom_title_highlight")}</span>
               </h2>
               <p className="max-w-xl text-base font-light leading-relaxed text-gray-200">
-                Décrivez-le nous : nous construisons l’offre autour de votre besoin, pas l’inverse.
+                {t("content.custom_description")}
               </p>
             </div>
             <div className="md:justify-self-end">
@@ -656,7 +668,7 @@ export default function Solutions() {
                   href="/CONTACT"
                   className="inline-block rounded-xl bg-[#FFC82C] px-10 py-4 font-achiko text-sm font-bold uppercase tracking-widest text-black shadow-[0_0_30px_rgba(255,200,44,0.4)]"
                 >
-                  Parler de mon projet
+                  {t("content.custom_cta")}
                 </Link>
               </motion.div>
             </div>
@@ -690,7 +702,7 @@ export default function Solutions() {
                   <button
                     type="button"
                     onClick={() => setSelectedSolution(null)}
-                    aria-label="Fermer"
+                    aria-label={t("actions.close")}
                     className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#0B0D18]/80 text-gray-200 transition-colors hover:text-white"
                   >
                     <i className="pi pi-times" />
@@ -700,7 +712,7 @@ export default function Solutions() {
                 <div className="space-y-6 p-6 md:p-8">
                   <div className="space-y-2">
                     <span className="text-xs font-bold" style={{ color: selectedMeta.color }}>
-                      {selectedMeta.label}
+                      {t(`categories.${selectedSolution.category.toLowerCase()}`)}
                     </span>
                     <h3 id="solution-title" className="font-achiko text-2xl font-black uppercase text-white md:text-3xl">
                       {selectedSolution.title}
@@ -711,7 +723,7 @@ export default function Solutions() {
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-3">
                       <h4 className="text-xs font-bold uppercase" style={{ color: selectedMeta.color }}>
-                        Bénéfices clés
+                        {t("modal.benefits_title")}
                       </h4>
                       <ul className="space-y-2 text-sm text-gray-200">
                         {selectedSolution.benefits.map((benefit, idx) => (
@@ -725,7 +737,7 @@ export default function Solutions() {
 
                     <div className="space-y-3">
                       <h4 className="text-xs font-bold uppercase" style={{ color: selectedMeta.color }}>
-                        Inclus
+                        {t("modal.included_title")}
                       </h4>
                       <ul className="space-y-2 text-sm text-gray-200">
                         {selectedSolution.features.map((feature, idx) => (
@@ -739,7 +751,7 @@ export default function Solutions() {
                   </div>
 
                   <p className="rounded-xl border border-white/10 bg-black/30 p-4 text-sm font-light text-gray-300">
-                    <strong className="font-bold text-white">Pour qui :</strong> {selectedSolution.targetAudience}
+                    <strong className="font-bold text-white">{t("modal.audience_label")}</strong> {selectedSolution.targetAudience}
                   </p>
 
                   <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6">
@@ -751,7 +763,7 @@ export default function Solutions() {
                       className="rounded-xl px-6 py-3 font-achiko text-xs font-bold uppercase tracking-wider text-black hover:shadow-[0_0_20px_rgba(255,200,44,0.4)]"
                       style={{ backgroundColor: selectedMeta.color }}
                     >
-                      Demander un devis
+                      {t("actions.request_quote")}
                     </Link>
                   </div>
                 </div>

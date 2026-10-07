@@ -3,6 +3,7 @@
 import React, { useId, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 /* -------------------------------------------------------------------------- */
 /*  Données                                                                   */
@@ -18,10 +19,7 @@ type PatternKind =
 
 interface Pillar {
   code: PatternKind;
-  title: string;
-  origin: string;
-  symbolism: string;
-  techIntegration: string;
+  key: "ndop" | "adinkra" | "toghu" | "kente" | "bogolan" | "ndebele";
   color: string;
   hue: number;
 }
@@ -29,82 +27,46 @@ interface Pillar {
 const culturalPillars: Pillar[] = [
   {
     code: "NDOP_GEOMETRY",
-    title: "Tissu Royal Ndop",
-    origin: "Cameroun (Bamiléké, Bamoun)",
-    symbolism:
-      "Étoffe indigo teinte par réserve, associée aux chefferies : réseaux de losanges et lignes qui disent l'autorité et l'unité.",
-    techIntegration: "Treillis de losanges répétés en SVG, calculés en code et recolorables.",
+    key: "ndop",
     color: "#FFC82C",
     hue: 46,
   },
   {
     code: "ADINKRA_SYMBOLS",
-    title: "Symboles Adinkra",
-    origin: "Ghana / Côte d'Ivoire (Akan, Ashanti)",
-    symbolism:
-      "Symboles estampés en grille, chacun porteur d'un proverbe : Adinkrahene (leadership), Dwennimmen (humilité et force), Sankofa (apprendre du passé), Nkyinkyim (adaptabilité).",
-    techIntegration: "Icônes vectorielles en grille de cellules, prêtes pour des micro-interactions sémantiques.",
+    key: "adinkra",
     color: "#FF3B56",
     hue: 352,
   },
   {
     code: "TOGHU_CONTRAST",
-    title: "Broderies Toghu",
-    origin: "Cameroun (Grassfields)",
-    symbolism:
-      "Tenue de prestige des fêtes et cérémonies : bandes brodées de losanges, triangles et zigzags sur fond sombre.",
-    techIntegration: "Bandes brodées reproduites en SVG, palettes HSL à fort contraste.",
+    key: "toghu",
     color: "#FFE57F",
     hue: 47,
   },
   {
     code: "KENTE_WEAVE",
-    title: "Tissage Kente",
-    origin: "Ghana (Ashanti, Éwé)",
-    symbolism:
-      "Étoffe tissée en bandes assemblées : les couleurs et les motifs disent un rang, un proverbe ou une histoire.",
-    techIntegration: "Bandes verticales et damiers générés en SVG, couleurs paramétrables.",
+    key: "kente",
     color: "#FFB300",
     hue: 44,
   },
   {
     code: "BOGOLAN_MUDCLOTH",
-    title: "Bogolan, tissu de boue",
-    origin: "Mali (Bamanan)",
-    symbolism:
-      "Coton teint à la boue fermentée et aux plantes : lignes, croix et chevrons qui portent récits et protections.",
-    techIntegration: "Lignes, croix et chevrons en SVG pour des fonds sobres et très contrastés.",
+    key: "bogolan",
     color: "#D9A066",
     hue: 22,
   },
   {
     code: "NDEBELE_WALL",
-    title: "Peinture murale Ndebele",
-    origin: "Afrique du Sud (Ndebele)",
-    symbolism:
-      "Façades peintes par les femmes : contours noirs épais et aplats vifs, expression d'identité et de fierté.",
-    techIntegration: "Aplats et contours épais : formes très lisibles pour des composants d'interface.",
+    key: "ndebele",
     color: "#4FC3F7",
     hue: 199,
   },
 ];
 
 const processSteps = [
-  {
-    index: "01",
-    title: "Observer",
-    text: "Étudier un motif, son origine, son usage et ce qu'il raconte, à partir de sources fiables et citées.",
-  },
-  {
-    index: "02",
-    title: "Abstraire",
-    text: "Dégager les règles géométriques : répétition, rotation, symétrie, rythme des couleurs.",
-  },
-  {
-    index: "03",
-    title: "Implémenter",
-    text: "Traduire ces règles en SVG, CSS ou Canvas, avec des palettes HSL et une interface accessible.",
-  },
+  { index: "01", key: "observe" },
+  { index: "02", key: "abstract" },
+  { index: "03", key: "implement" },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -604,6 +566,7 @@ function HeroPattern() {
 
 function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
   const reduce = useReducedMotion();
+  const t = useTranslations("CulturePage");
 
   return (
     <motion.article
@@ -625,18 +588,18 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
         <span className="block font-azurio text-xs font-bold tracking-widest text-gray-300">{pillar.code}</span>
 
         <h3 className="font-achiko text-2xl font-black uppercase text-white transition-colors group-hover:text-[#FFC82C]">
-          {pillar.title}
+          {t(`pillars.${pillar.key}.title`)}
         </h3>
 
         <div className="inline-block rounded-lg bg-[#FFC82C]/15 px-3 py-1.5 font-azurio text-sm font-bold text-[#FFC82C]">
-          Origine : {pillar.origin}
+          {t("labels.origin")}: {t(`pillars.${pillar.key}.origin`)}
         </div>
 
         <p className="text-sm font-light leading-relaxed text-gray-200">
-          <strong className="font-bold text-white">Symbolique :</strong> {pillar.symbolism}
+          <strong className="font-bold text-white">{t("labels.symbolism")}:</strong> {t(`pillars.${pillar.key}.symbolism`)}
         </p>
         <p className="text-sm font-light leading-relaxed text-gray-300">
-          <strong className="font-bold text-white">Implémentation web :</strong> {pillar.techIntegration}
+          <strong className="font-bold text-white">{t("labels.web_implementation")}:</strong> {t(`pillars.${pillar.key}.implementation`)}
         </p>
       </div>
 
@@ -657,11 +620,13 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
 /* -------------------------------------------------------------------------- */
 
 function PatternLab() {
+  const t = useTranslations("CulturePage");
   const [kind, setKind] = useState<PatternKind>("NDOP_GEOMETRY");
   const [hue, setHue] = useState(46);
   const [scale, setScale] = useState(1);
 
   const color = `hsl(${hue} 100% 60%)`;
+  const activePillar = culturalPillars.find((pillar) => pillar.code === kind) ?? culturalPillars[0];
   const css = [
     `--motif: ${kind.toLowerCase()};`,
     `--motif-hue: ${hue};`,
@@ -674,14 +639,18 @@ function PatternLab() {
       <div
         className="min-h-[18rem] overflow-hidden rounded-3xl border border-[#FFC82C]/40 bg-black/40 shadow-2xl md:min-h-[26rem]"
         role="img"
-        aria-label={`Aperçu du motif ${kind}, teinte ${hue} degrés, échelle ${scale.toFixed(1)}`}
+        aria-label={t("lab.preview", {
+          pattern: t(`pillars.${activePillar.key}.title`),
+          hue,
+          scale: scale.toFixed(1),
+        })}
       >
         <Pattern kind={kind} color={color} hue={hue} scale={scale} />
       </div>
 
       <div className="glass-panel space-y-6 rounded-3xl border border-white/15 p-6 font-azurio md:p-8">
         <fieldset>
-          <legend className="mb-3 text-sm font-bold text-white">Motif</legend>
+          <legend className="mb-3 text-sm font-bold text-white">{t("lab.pattern")}</legend>
           <div className="flex flex-wrap gap-2">
             {culturalPillars.map((pillar) => (
               <button
@@ -698,7 +667,7 @@ function PatternLab() {
                     : "border-white/20 text-gray-200 hover:border-[#FFC82C]"
                 }`}
               >
-                {pillar.title}
+                {t(`pillars.${pillar.key}.title`)}
               </button>
             ))}
           </div>
@@ -706,7 +675,7 @@ function PatternLab() {
 
         <div>
           <label htmlFor="lab-hue" className="mb-2 flex justify-between text-sm font-bold text-white">
-            <span>Teinte</span>
+            <span>{t("lab.hue")}</span>
             <span className="font-light text-gray-300">{hue}°</span>
           </label>
           <input
@@ -722,7 +691,7 @@ function PatternLab() {
 
         <div>
           <label htmlFor="lab-scale" className="mb-2 flex justify-between text-sm font-bold text-white">
-            <span>Échelle</span>
+            <span>{t("lab.scale")}</span>
             <span className="font-light text-gray-300">×{scale.toFixed(1)}</span>
           </label>
           <input
@@ -738,7 +707,7 @@ function PatternLab() {
         </div>
 
         <div>
-          <p className="mb-2 text-sm font-bold text-white">Paramètres générés</p>
+          <p className="mb-2 text-sm font-bold text-white">{t("lab.generated_settings")}</p>
           <pre className="overflow-x-auto rounded-xl bg-black/50 p-4 text-xs leading-relaxed text-[#FFE57F]">
             <code>{css}</code>
           </pre>
@@ -753,6 +722,8 @@ function PatternLab() {
 /* -------------------------------------------------------------------------- */
 
 export default function Culture() {
+  const t = useTranslations("CulturePage");
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0B0D18] pb-24 pt-28 font-azurio text-[#F8F9FA]">
       <div className="relative z-10 mx-auto max-w-7xl space-y-28 px-6">
@@ -765,8 +736,8 @@ export default function Culture() {
               transition={{ duration: 0.8 }}
               className="font-achiko text-5xl font-black uppercase leading-[0.9] tracking-tight text-white md:text-8xl"
             >
-              HERITAGE <br />
-              <span className="text-[#FFC82C]">AFRO-FUTURISTE</span>
+              {t("content.hero_title_prefix")} <br />
+              <span className="text-[#FFC82C]">{t("content.hero_title_highlight")}</span>
             </motion.h1>
 
             <motion.p
@@ -775,8 +746,7 @@ export default function Culture() {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="max-w-3xl border-l-4 border-[#FFC82C] pl-6 font-azurio text-lg font-light leading-relaxed text-gray-200 md:text-xl"
             >
-              L’art traditionnel africain n’est pas un vestige du passé : c’est un langage visuel et algorithmique d’une
-              modernité remarquable. Notre mission est d’en extraire la géométrie pour alimenter le Web de demain.
+              {t("content.hero_description")}
             </motion.p>
 
             <motion.div
@@ -789,13 +759,13 @@ export default function Culture() {
                 href="#laboratoire"
                 className="rounded-xl bg-[#FFC82C] px-7 py-3 font-achiko text-sm font-bold uppercase tracking-widest text-black transition-transform hover:scale-105"
               >
-                Tester un motif
+                {t("content.test_pattern")}
               </a>
               <a
                 href="#motifs"
                 className="rounded-xl border border-white/30 px-7 py-3 font-achiko text-sm font-bold uppercase tracking-widest text-white transition-colors hover:border-[#FFC82C] hover:text-[#FFC82C]"
               >
-                Voir les piliers
+                {t("content.view_pillars")}
               </a>
             </motion.div>
           </div>
@@ -807,7 +777,7 @@ export default function Culture() {
         <section id="motifs" className="scroll-mt-28 space-y-12 border-t border-white/10 pt-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-achiko text-3xl font-black uppercase tracking-tight text-white md:text-5xl">
-              MOTIFS & <span className="text-[#FFC82C]">SYMBOLES</span>
+              {t("content.pillars_title_prefix")} <span className="text-[#FFC82C]">{t("content.pillars_title_highlight")}</span>
             </h2>
           </motion.div>
 
@@ -818,9 +788,7 @@ export default function Culture() {
           </div>
 
           <p className="max-w-3xl text-sm font-light leading-relaxed text-gray-300">
-            Les visuels ci-dessus sont des stylisations géométriques générées en code, inspirées du Ndop, des Adinkra,
-            du Toghu, du Kente, du Bogolan et de la peinture Ndebele. Ils ne reproduisent pas les motifs originaux, dont
-            chacun porte un nom et un sens précis.
+            {t("content.pillars_disclaimer")}
           </p>
         </section>
 
@@ -828,10 +796,10 @@ export default function Culture() {
         <section id="laboratoire" className="scroll-mt-28 space-y-12 border-t border-white/10 pt-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-achiko text-3xl font-black uppercase tracking-tight text-white md:text-5xl">
-              LA GÉOMÉTRIE, <span className="text-[#FFC82C]">EN DIRECT</span>
+              {t("content.lab_title_prefix")} <span className="text-[#FFC82C]">{t("content.lab_title_highlight")}</span>
             </h2>
             <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-gray-200">
-              Changez le motif, la teinte et l’échelle : le rendu est calculé en temps réel, sans image.
+              {t("content.lab_description")}
             </p>
           </motion.div>
 
@@ -842,7 +810,7 @@ export default function Culture() {
         <section className="space-y-12 border-t border-white/10 pt-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-achiko text-3xl font-black uppercase tracking-tight text-white md:text-5xl">
-              DU TEXTILE <span className="text-[#FFC82C]">AU CODE</span>
+              {t("content.process_title_prefix")} <span className="text-[#FFC82C]">{t("content.process_title_highlight")}</span>
             </h2>
           </motion.div>
 
@@ -857,25 +825,24 @@ export default function Culture() {
                 className="glass-card rounded-3xl border border-white/15 p-8"
               >
                 <span className="font-achiko text-5xl font-black text-[#FFC82C]/40">{step.index}</span>
-                <h3 className="mt-4 font-achiko text-xl font-black uppercase text-white">{step.title}</h3>
-                <p className="mt-3 text-sm font-light leading-relaxed text-gray-200">{step.text}</p>
+                <h3 className="mt-4 font-achiko text-xl font-black uppercase text-white">{t(`process.${step.key}.title`)}</h3>
+                <p className="mt-3 text-sm font-light leading-relaxed text-gray-200">{t(`process.${step.key}.text`)}</p>
               </motion.li>
             ))}
           </ol>
 
           <p className="max-w-3xl border-l-4 border-[#FFC82C]/60 pl-5 text-sm font-light leading-relaxed text-gray-300">
-            Principe : nommer l’origine, citer ses sources et ne jamais réduire un symbole à un simple décor.
+            {t("content.principle")}
           </p>
         </section>
 
         {/* CTA */}
         <section className="glass-panel space-y-6 rounded-3xl border border-[#FFC82C] p-12 text-center font-azurio shadow-2xl">
           <h2 className="font-achiko text-3xl font-black uppercase tracking-tight text-white md:text-5xl">
-            VOUS SOUHAITEZ INCLURE UNE <span className="text-[#FFC82C]">DIMENSION CULTURELLE</span> À VOTRE PROJET ?
+            {t("content.cta_title_prefix")} <span className="text-[#FFC82C]">{t("content.cta_title_highlight")}</span> {t("content.cta_title_suffix")}
           </h2>
           <p className="mx-auto max-w-2xl text-base font-light leading-relaxed text-gray-200">
-            Nous concevons des identités visuelles et des interfaces numériques sur mesure qui résonnent avec élégance et
-            authenticité.
+            {t("content.cta_description")}
           </p>
           <div className="pt-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
@@ -883,7 +850,7 @@ export default function Culture() {
                 href="/CONTACT"
                 className="inline-block rounded-xl bg-[#FFC82C] px-10 py-4 font-achiko text-sm font-bold uppercase tracking-widest text-black shadow-[0_0_30px_rgba(255,200,44,0.4)] transition-all"
               >
-                DÉMARRER UN PROJET CULTUREL
+                {t("content.cta_button")}
               </Link>
             </motion.div>
           </div>
