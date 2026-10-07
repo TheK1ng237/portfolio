@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { LOGO_PATHS, LOGO_VIEWBOX } from "./logo-paths";
 
 const GOLD = "#D5AF36"; // or exact du logo
@@ -66,6 +67,7 @@ function LogoMark() {
 }
 
 export default function LogoIntro() {
+  const t = useTranslations("Common");
   const [phase, setPhase] = useState<Phase>("play");
   const [reduce, setReduce] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -108,7 +110,7 @@ export default function LogoIntro() {
         style={{ backgroundColor: BG, opacity: leaving ? 0 : 1 }}
         aria-live="polite"
       >
-        <span className="sr-only">Thek1ng237 — chargement du portfolio</span>
+        <span className="sr-only">{t("logo_loading")}</span>
         <div className="relative" style={{ height: "min(46vh, 420px)", aspectRatio: "1659 / 1896" }}>
           <Image src="/logojaune.png" alt="Logo Thek1ng237" fill sizes="(max-width: 640px) 60vw, 360px" priority className="object-contain" />
         </div>
@@ -118,7 +120,7 @@ export default function LogoIntro() {
 
   return (
     <div className="fixed inset-0 z-[99999] select-none" aria-live="polite">
-      <span className="sr-only">Thek1ng237 — chargement du portfolio</span>
+      <span className="sr-only">{t("logo_loading")}</span>
 
       {/* Rideau en deux pans : il s'écarte sur la couture centrale */}
       <motion.div

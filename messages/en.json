@@ -1,4 +1,13 @@
 {
+  "Metadata": {
+    "title": "Thek1ng237 Portfolio | Full-Stack Developer",
+    "description": "Afrofuturist portfolio of Thek1ng237, a full-stack developer building web applications, APIs, databases, and immersive digital experiences.",
+    "social_description": "Immersive interfaces, modern web engineering, and cultural heritage.",
+    "twitter_description": "Full-stack developer passionate about immersive digital experiences.",
+    "image_alt": "Preview of Thek1ng237’s portfolio",
+    "person_description": "Creator of immersive digital experiences and cultural innovator.",
+    "keywords": ["Full-stack developer", "Next.js", "Angular", "Node.js", "Django", "Portfolio", "Thek1ng237", "Afrofuturism"]
+  },
   "Nav": {
     "about": "ABOUT",
     "projects": "PROJECTS",
@@ -779,6 +788,7 @@
     "back_to_top": "BACK TO TOP"
   },
   "Common": {
+    "logo_loading": "Thek1ng237 — loading portfolio",
     "audio": {
       "enable": "Enable ambient sound",
       "disable": "Disable ambient sound",
