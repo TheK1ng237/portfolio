@@ -218,18 +218,7 @@ export default function Home() {
                   </svg>
                 </div>
 
-                {/* Card Header Status */}
-                <div className="flex justify-between items-center mb-4 pt-2 z-10 font-azurio">
-                  <span className="text-xs text-[#FFC82C] font-mono font-bold tracking-wider">
-                    PROJET // {projet.id}
-                  </span>
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/15">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                    <span className="text-[9.5px] uppercase tracking-widest text-emerald-400 font-bold">
-                      {projet.isCompleted ? t("projects.status_ready") : t("projects.status_progress")}
-                    </span>
-                  </div>
-                </div>
+                
 
                 {/* Card Title (Dark bold title + Hover color) */}
                 <h3 className="font-achiko text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#FFC82C] transition-colors mb-4 text-center">
