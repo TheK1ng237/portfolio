@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import ProposalEditor from "./ProposalEditor";
 import { type ProposalDocumentData } from "./ProposalDocument";
 import { apiFetch } from "@/lib/api";
@@ -141,6 +142,7 @@ export default function ProposalStudioAdmin({
   clients: Client[];
   onSaved: () => void;
 }) {
+  const t = useTranslations("AdminPage.studio");
   const [template, setTemplate] = useState<"gshi" | "weglow" | "custom">("gshi");
   const [selectedClientId, setSelectedClientId] = useState<string>(clients[0]?.id || "");
   const [proposalData, setProposalData] = useState<ProposalDocumentData>(gshiTemplate);
@@ -160,7 +162,7 @@ export default function ProposalStudioAdmin({
 
   async function handleSaveToDatabase() {
     if (!selectedClientId) {
-      setSaveMessage("Erreur : Veuillez sélectionner un client destinataire avant d'enregistrer.");
+      setSaveMessage(t("errors.select_client"));
       return;
     }
 
@@ -190,12 +192,12 @@ export default function ProposalStudioAdmin({
         body: JSON.stringify(payload),
       });
 
-      setSaveMessage("✅ Devis enregistré avec succès dans la base de données ! Redirection vers la liste des devis...");
+      setSaveMessage(t("messages.saved"));
       setTimeout(() => {
         onSaved();
       }, 1200);
     } catch (error) {
-      setSaveMessage(error instanceof Error ? `❌ Erreur : ${error.message}` : "Impossible d'enregistrer le devis.");
+      setSaveMessage(error instanceof Error ? t("errors.save_with_detail", { error: error.message }) : t("errors.save_failed"));
     } finally {
       setSaving(false);
     }
@@ -208,7 +210,7 @@ export default function ProposalStudioAdmin({
         <div className="flex flex-wrap items-center gap-4">
           <div>
             <label htmlFor="studio-template" className="block text-[10px] font-bold uppercase tracking-wider text-amber-400">
-              Modèle de départ
+              {t("template_label")}
             </label>
             <select
               id="studio-template"
@@ -216,15 +218,15 @@ export default function ProposalStudioAdmin({
               value={template}
               onChange={(e) => setTemplate(e.target.value as "gshi" | "weglow" | "custom")}
             >
-              <option value="gshi">GSHI · Site Vitrine</option>
-              <option value="weglow">WeGlow · Plateforme Web Administrable</option>
-              <option value="custom">Personnalisé / Vierge</option>
+              <option value="gshi">{t("templates.gshi")}</option>
+              <option value="weglow">{t("templates.weglow")}</option>
+              <option value="custom">{t("templates.custom")}</option>
             </select>
           </div>
 
           <div>
             <label htmlFor="studio-client" className="block text-[10px] font-bold uppercase tracking-wider text-amber-400">
-              Client associé en base
+              {t("client_label")}
             </label>
             <select
               id="studio-client"
@@ -233,7 +235,7 @@ export default function ProposalStudioAdmin({
               onChange={(e) => setSelectedClientId(e.target.value)}
             >
               {clients.length === 0 ? (
-                <option value="">Aucun client en BDD (Ajoutez un client d&apos;abord)</option>
+                <option value="">{t("no_clients")}</option>
               ) : (
                 clients.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -252,7 +254,7 @@ export default function ProposalStudioAdmin({
           className="inline-flex items-center gap-2 rounded-lg border border-amber-400/50 bg-gradient-to-r from-amber-500 to-amber-400 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-black shadow-[0_0_15px_rgba(255,200,44,0.3)] transition hover:scale-105 disabled:opacity-50"
         >
           <i className={`pi ${saving ? "pi-spin pi-spinner" : "pi-save"} text-xs`} />
-          <span>{saving ? "Enregistrement..." : "Enregistrer Devis dans BDD"}</span>
+          <span>{saving ? t("saving") : t("save")}</span>
         </button>
       </div>
 
