@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { LOGO_PATHS, LOGO_VIEWBOX } from "./logo-paths";
 
-const WORD = "THEK1NG237";
 const GOLD = "#D5AF36"; // or exact du logo
 const BG = "#050508";
 const EASE = [0.76, 0, 0.24, 1] as const;
@@ -113,9 +112,6 @@ export default function LogoIntro() {
         <div className="relative" style={{ height: "min(46vh, 420px)", aspectRatio: "1659 / 1896" }}>
           <Image src="/logojaune.png" alt="Logo Thek1ng237" fill sizes="(max-width: 640px) 60vw, 360px" priority className="object-contain" />
         </div>
-        <p className="mt-8 font-achiko text-2xl font-black sm:text-4xl" style={{ color: GOLD }}>
-          {WORD}
-        </p>
       </div>
     );
   }
@@ -140,19 +136,6 @@ export default function LogoIntro() {
         transition={{ duration: 0.9, delay: leaving ? 0.25 : 0, ease: EASE }}
       />
 
-      {/* Filet d'horizon : apparait apres le dessin du logo */}
-      <motion.div
-        aria-hidden="true"
-        className="absolute left-0 right-0 top-1/2 h-px origin-center"
-        style={{ backgroundColor: GOLD }}
-        initial={{ scaleX: 0, opacity: 0.9 }}
-        animate={{ scaleX: 1, opacity: leaving ? 0 : 0.25 }}
-        transition={{
-          scaleX: { duration: 0.9, delay: leaving ? 0 : 3.1, ease: EASE },
-          opacity: { duration: leaving ? 0.3 : 1.2, delay: leaving ? 0 : 3.1 },
-        }}
-      />
-
       <motion.div
         className="absolute inset-0 flex flex-col items-center justify-center px-6"
         animate={leaving ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 }}
@@ -169,40 +152,7 @@ export default function LogoIntro() {
         />
 
         <LogoMark />
-
-        {/* Signature */}
-        <div className="mt-8 flex gap-[0.18em] font-achiko text-2xl font-black sm:text-4xl" style={{ color: GOLD }} role="img" aria-label="Thek1ng237">
-          {WORD.split("").map((ch, i) => (
-            <span key={i} aria-hidden="true" className="inline-block overflow-hidden">
-              <motion.span
-                className="inline-block"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.6, delay: 3.3 + i * 0.05, ease: EASE }}
-              >
-                {ch}
-              </motion.span>
-            </span>
-          ))}
-        </div>
-        <motion.p
-          className="mt-3 text-center font-azurio text-[11px] uppercase tracking-[0.3em] text-gray-300 sm:text-xs"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 4.0 }}
-        >
-          Ingénierie logicielle &amp; vision créative
-        </motion.p>
       </motion.div>
-
-      <button
-        type="button"
-        onClick={startExit}
-        className="absolute right-5 top-5 rounded-full border px-4 py-2 font-azurio text-xs uppercase tracking-widest text-gray-200 transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        style={{ borderColor: `${GOLD}66` }}
-      >
-        Passer
-      </button>
     </div>
   );
 }

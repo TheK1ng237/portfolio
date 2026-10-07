@@ -11,6 +11,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { getMessages } from "next-intl/server";
+import "primeicons/primeicons.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://Thek1ng237.vercel.app"),
