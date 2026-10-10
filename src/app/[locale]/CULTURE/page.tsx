@@ -2,7 +2,7 @@
 
 import React, { useId, useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 /* -------------------------------------------------------------------------- */
@@ -489,11 +489,23 @@ function Spin({
 
 function HeroPattern() {
   const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+  const rotate1 = useTransform(scrollY, [0, 1000], [0, 360]);
+  const rotate2 = useTransform(scrollY, [0, 1000], [180, 540]);
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-md">
-      <div className="absolute inset-0 rounded-full bg-[#FFC82C]/10 blur-3xl" aria-hidden="true" />
-      <svg viewBox="0 0 400 400" className="relative h-full w-full" aria-hidden="true" focusable="false">
+    <div className="fixed right-0 top-0 h-full w-1/2 pointer-events-none z-0 overflow-hidden">
+      {/* Effet de profondeur avec blur en arrière-plan */}
+      <div className="absolute inset-0 bg-gradient-to-l from-[#FFC82C]/5 to-transparent blur-3xl" aria-hidden="true" />
+
+      {/* SVG principal avec effet parallax au scroll */}
+      <motion.svg
+        viewBox="0 0 400 400"
+        className="absolute right-0 top-1/2 -translate-y-1/2 h-[120vh] w-auto opacity-60"
+        aria-hidden="true"
+        focusable="false"
+        style={{ rotate: reduce ? 0 : rotate1, x: "50%" }}
+      >
         {/* anneau de triangles (Toghu) */}
         <Spin duration={140} reduce={reduce}>
           {Array.from({ length: 24 }).map((_, i) => (
@@ -555,7 +567,43 @@ function HeroPattern() {
           <circle cx="200" cy="200" r="18" stroke="#FF3B56" />
         </g>
         <circle cx="200" cy="200" r="7" fill="#FFC82C" />
-      </svg>
+      </motion.svg>
+
+      {/* Deuxième couche pour effet de profondeur (plus grande et plus floue) */}
+      <motion.svg
+        viewBox="0 0 400 400"
+        className="absolute right-[-20%] top-1/2 -translate-y-1/2 h-[150vh] w-auto opacity-30 blur-xl"
+        aria-hidden="true"
+        focusable="false"
+        style={{ rotate: reduce ? 180 : rotate2, x: "50%" }}
+      >
+        {/* anneau de triangles (Toghu) */}
+        <Spin duration={160} reduce={reduce}>
+          {Array.from({ length: 24 }).map((_, i) => (
+            <polygon
+              key={`t-bg-${i}`}
+              points="200,10 208,30 192,30"
+              fill={i % 2 === 0 ? "#FFC82C" : "#FF3B56"}
+              transform={`rotate(${i * 15} 200 200)`}
+            />
+          ))}
+        </Spin>
+
+        {/* étoile à 8 pointes */}
+        <Spin duration={120} reduce={reduce}>
+          <rect x="130" y="130" width="140" height="140" fill="none" stroke="#FFC82C" strokeWidth="2" />
+          <rect
+            x="130"
+            y="130"
+            width="140"
+            height="140"
+            fill="none"
+            stroke="#FF3B56"
+            strokeWidth="2"
+            transform="rotate(45 200 200)"
+          />
+        </Spin>
+      </motion.svg>
     </div>
   );
 }
@@ -728,8 +776,9 @@ export default function Culture() {
     <div className="relative min-h-screen overflow-hidden bg-[#0B0D18] pb-24 pt-28 font-azurio text-[#F8F9FA]">
       <div className="relative z-10 mx-auto max-w-7xl space-y-28 px-6">
         {/* HERO */}
-        <section className="grid items-center gap-12 md:grid-cols-[1.25fr_1fr]">
-          <div className="space-y-6">
+        <section className="relative z-10">
+          <HeroPattern />
+          <div className="max-w-2xl space-y-6">
             <motion.h1
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
@@ -744,7 +793,7 @@ export default function Culture() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="max-w-3xl border-l-4 border-[#FFC82C] pl-6 font-azurio text-lg font-light leading-relaxed text-gray-200 md:text-xl"
+              className="max-w-3xl  font-azurio text-lg font-light leading-relaxed text-gray-200 md:text-xl"
             >
               {t("content.hero_description")}
             </motion.p>
@@ -769,8 +818,6 @@ export default function Culture() {
               </a>
             </motion.div>
           </div>
-
-          <HeroPattern />
         </section>
 
         {/* PILIERS */}

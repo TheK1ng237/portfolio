@@ -17,7 +17,7 @@ export default function Footer() {
       label: "LinkedIn",
     },
     { icon: "github", url: "https://github.com/TangB5", label: "GitHub" },
-    { icon: "whatsapp", url: "https://wa.me/237653539102", label: "WhatsApp" },
+    
     {
       icon: "instagram",
       url: "https://instagram.com/Thek1ng237337",

@@ -19,20 +19,19 @@
     "menu_toggle": "Ouvrir ou fermer le menu de navigation",
     "module_label": "MODULE"
   },
-  "Hero": {
-    "badge": "Disponible pour missions 2026",
-    "title_top": "ARCHITECTE",
-    "title_highlight": "NUMÉRIQUE",
-    "description": "Je construis des ponts numériques entre <culture>culture</culture> et <tech>technologie</tech>. Développeur Full-Stack, je conçois des applications complètes, de l’interface aux API et aux bases de données.",
-    "cta_projects": "Explorer mes projets",
-    "cta_contact": "Me contacter",
-    "scroll": "Défiler",
-    "alt_portrait": "Mascotte Thek1ng237 - Vision Tech",
-    "cta_cv": "TÉLÉCHARGER LE CV",
-    "stats": {
-      "experience": "EXPÉRIENCE (ANS)",
-      "projects": "PROJETS LIVRÉS",
-      "satisfaction": "SATISFACTION UX"
+   "Hero": {
+    "name": "Ndoh Yannick Tang, développeur full-stack au Cameroun",
+    "title": "Du motif au composant.",
+    "intro": "Je transforme des motifs textiles africains, comme le Ndop, en tokens de design, puis en interfaces Next.js et en API Node.",
+    "cta_projects": "Voir mes projets",
+    "cta_cv": "Télécharger mon CV",
+    "diagram_label": "Schéma isométrique de quatre couches empilées : un motif, des tokens, des composants et des données.",
+    "hint": "Survole une couche pour voir son rôle.",
+    "layers": {
+      "motif": { "name": "Motif", "desc": "Le point de départ : un motif d'inspiration Ndop." },
+      "tokens": { "name": "Tokens", "desc": "Couleurs, formes et rythmes extraits du motif." },
+      "components": { "name": "Composants", "desc": "Des interfaces React et Next.js construites avec ces tokens." },
+      "data": { "name": "Données", "desc": "Des API Node et Prisma qui font vivre le contenu." }
     }
   },
   "HomePage": {

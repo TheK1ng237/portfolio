@@ -34,12 +34,7 @@ const emptyForm: ContactFormState = {
 };
 
 const channels = [
-  {
-    icon: "whatsapp",
-    label: "WhatsApp",
-    value: "+237 653 53 91 02",
-    href: "https://wa.me/237653539102",
-  },
+ 
   {
     icon: "envelope",
     label: "Email",
