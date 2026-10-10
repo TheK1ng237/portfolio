@@ -545,6 +545,20 @@
     "cta": {
       "title": "Contribuer à l'Archive",
       "button": "Ouvrir le Protocole"
+    },
+     "nav_label": "Aller à un motif",
+    "labels": {
+      "medium_cloth": "Tissu",
+      "medium_wall": "Peinture murale"
+    },
+    "lab": {
+      "open_in_loom": "Le tisser dans le laboratoire",
+      "weave": "Tissage",
+      "export_title": "Exporter ce motif",
+      "copy_css": "Copier le CSS",
+      "download_svg": "Télécharger le SVG",
+      "copied": "CSS copié",
+      "preview_label": "Aperçu du motif {pattern}, échelle ×{scale}"
     }
   },
   "ContactPage": {
