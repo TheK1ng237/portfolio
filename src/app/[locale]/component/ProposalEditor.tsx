@@ -282,6 +282,7 @@ export default function ProposalEditor({
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [savedProposals, setSavedProposals] = useState<{ id: string; proposalNumber: string; title: string }[]>([]);
   const [selectedSavedProposal, setSelectedSavedProposal] = useState("");
   const importInput = useRef<HTMLInputElement>(null);
@@ -485,7 +486,7 @@ export default function ProposalEditor({
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-3 text-xs text-white/45">
           <span aria-live="polite">{notice || (savedAt ? t("messages.draft_saved_at", { time: savedAt }) : isLoaded ? t("messages.auto_saved") : t("messages.loading_draft"))}</span>
-          <a href="#proposal-preview" className="font-bold text-[#ffc82c] hover:text-white">{t("ui.go_to_preview")} ↓</a>
+          <button type="button" onClick={() => setIsPreviewOpen(true)} className="font-bold text-[#ffc82c] hover:text-white">{t("ui.go_to_preview")} →</button>
         </div>
       </section>
 
@@ -635,9 +636,17 @@ export default function ProposalEditor({
         </EditorSection>
       </div>
 
-      <div id="proposal-preview">
-        <ProposalDocument proposal={proposal} />
-      </div>
+      {isPreviewOpen && (
+        <div className="proposal-preview-overlay fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 backdrop-blur-md sm:p-8">
+          <div className="mx-auto mb-6 flex max-w-[210mm] justify-between rounded border border-white/15 bg-[#121622] p-4 text-white print:hidden">
+            <h2 className="font-achiko text-base font-bold text-[#ffc82c]">{t("ui.generator_title")}</h2>
+            <button type="button" onClick={() => setIsPreviewOpen(false)} className="border border-white/20 px-3 py-2 text-xs font-bold text-white/75 hover:bg-white/10 hover:text-white">
+              {t("ui.close_preview")}
+            </button>
+          </div>
+          <ProposalDocument proposal={proposal} />
+        </div>
+      )}
     </div>
   );
 }

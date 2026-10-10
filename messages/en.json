@@ -858,6 +858,7 @@
         "export_json": "Export JSON",
         "restore_template": "Restore template",
         "go_to_preview": "Go to preview",
+        "close_preview": "Close preview",
         "api_login_title": "Proposal management sign-in",
         "admin_email": "Admin account email",
         "password": "Password"

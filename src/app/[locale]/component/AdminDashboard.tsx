@@ -1648,7 +1648,7 @@ export default function AdminDashboard({ locale }: { locale: string }) {
 
       {/* FULL DOCUMENT PREVIEW MODAL */}
       {previewDocumentData && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 sm:p-8 backdrop-blur-md">
+        <div className="proposal-preview-overlay fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 sm:p-8 backdrop-blur-md">
           <div className="sticky top-4 z-50 mx-auto flex max-w-[210mm] justify-between rounded-xl border border-white/15 bg-[#121622] p-4 text-white shadow-2xl print:hidden">
             <div className="flex items-center gap-3">
               <span className="font-achiko text-base font-bold text-amber-400">

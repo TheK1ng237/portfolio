@@ -862,6 +862,7 @@
         "export_json": "Exporter JSON",
         "restore_template": "Restaurer le modèle",
         "go_to_preview": "Aller à l’aperçu",
+        "close_preview": "Fermer l’aperçu",
         "api_login_title": "Connexion à la gestion des devis",
         "admin_email": "Email du compte admin",
         "password": "Mot de passe"
