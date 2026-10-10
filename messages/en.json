@@ -19,20 +19,32 @@
     "menu_toggle": "Open or close the navigation menu",
     "module_label": "MODULE"
   },
+ 
   "Hero": {
-    "badge": "Open to Work 2026",
-    "title_top": "DIGITAL",
-    "title_highlight": "ARCHITECT",
-    "description": "I build digital bridges between <culture>culture</culture> and <tech>technology</tech>. Full-Stack Developer building complete applications, from user interfaces to APIs and databases.",
-    "cta_projects": "Explore my projects",
-    "cta_contact": "Contact me",
-    "scroll": "Scroll",
-    "alt_portrait": "Thek1ng237 Mascot - Tech Vision",
-    "cta_cv": "DOWNLOAD RÉSUMÉ",
-    "stats": {
-      "experience": "YEARS OF EXPERIENCE",
-      "projects": "PROJECTS DELIVERED",
-      "satisfaction": "UX SATISFACTION"
+    "name": "Ndoh Yannick Tang, full-stack developer in Cameroon",
+    "title": "From pattern to component.",
+    "intro": "I turn African textile patterns, like the Ndop, into design tokens, then into Next.js interfaces and Node APIs.",
+    "cta_projects": "See my projects",
+    "cta_cv": "Download my CV",
+    "diagram_label": "Isometric diagram of four stacked layers: a pattern, tokens, components and data.",
+    "hint": "Hover a layer to see its role.",
+    "layers": {
+      "motif": {
+        "name": "Pattern",
+        "desc": "The starting point: a pattern inspired by the Ndop."
+      },
+      "tokens": {
+        "name": "Tokens",
+        "desc": "Colors, shapes and rhythms drawn from the pattern."
+      },
+      "components": {
+        "name": "Components",
+        "desc": "React and Next.js interfaces built with those tokens."
+      },
+      "data": {
+        "name": "Data",
+        "desc": "Node and Prisma APIs that bring the content to life."
+      }
     }
   },
   "HomePage": {
@@ -858,6 +870,7 @@
         "export_json": "Export JSON",
         "restore_template": "Restore template",
         "go_to_preview": "Go to preview",
+        "close_preview": "Close preview",
         "api_login_title": "Proposal management sign-in",
         "admin_email": "Admin account email",
         "password": "Password"

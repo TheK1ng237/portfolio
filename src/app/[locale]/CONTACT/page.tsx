@@ -5,6 +5,12 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 
+/**
+ * Page Contact : « le bon de commande ».
+ * Le formulaire est une feuille de papier raphia épinglée, avec une bordure de Toghu tissée en haut
+ * et des champs écrits sur des lignes. Les coordonnées sont des étiquettes de tissu cousues et épinglées.
+ */
+
 /* -------------------------------------------------------------------------- */
 /*  Types & données                                                           */
 /* -------------------------------------------------------------------------- */
@@ -34,197 +40,96 @@ const emptyForm: ContactFormState = {
 };
 
 const channels = [
+  { label: "Email", value: "tangking237@gmail.com", href: "mailto:tangking237@gmail.com", external: false },
+  { label: "GitHub", value: "github.com/TangB5", href: "https://github.com/TangB5", external: true },
   {
-    icon: "whatsapp",
-    label: "WhatsApp",
-    value: "+237 653 53 91 02",
-    href: "https://wa.me/237653539102",
-  },
-  {
-    icon: "envelope",
-    label: "Email",
-    value: "tangking237@gmail.com",
-    href: "mailto:tangking237@gmail.com",
-  },
-  {
-    icon: "github",
-    label: "GitHub",
-    value: "github.com/TangB5",
-    href: "https://github.com/TangB5",
-  },
-  {
-    icon: "linkedin",
     label: "LinkedIn",
     value: "linkedin.com/in/ndoh-yannick-tang-5b004934a",
     href: "https://www.linkedin.com/in/ndoh-yannick-tang-5b004934a",
+    external: true,
   },
 ];
 
+/* Champs « écrits sur la ligne » : un simple trait dessous, pas de boîte */
 const fieldClass =
-  "w-full rounded-xl border border-white/15 bg-[#0B0D18]/80 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FFC82C] focus-visible:ring-2 focus-visible:ring-[#FFC82C]/40";
+  "w-full border-0 border-b-2 border-[#141A3F]/45 bg-transparent px-1 py-2 text-base text-[#141A3F] outline-none transition-colors placeholder:text-[#141A3F]/40 focus:border-[#2B3A8C] focus-visible:border-[#2B3A8C] focus-visible:border-b-4";
 
-const labelClass = "mb-1.5 block text-xs font-bold text-gray-200";
+const labelClass = "mb-1 block text-sm font-bold text-[#141A3F]";
+
+const STITCH = { outline: "2px dashed rgba(233,216,166,.75)", outlineOffset: "-5px" } as const;
+const TAG_BG =
+  "repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.1) 0 2px, transparent 2px 4px), #2B3A8C";
 
 /* -------------------------------------------------------------------------- */
-/*  Textiles : motifs SVG + texture de tissu                                  */
+/*  Bordure de Toghu tissée et épingle en bois                                */
 /* -------------------------------------------------------------------------- */
-
-type TextileKind = "NDOP" | "TOGHU";
 
 const hsl = (h: number, s = 100, l = 60) => `hsl(${((h % 360) + 360) % 360} ${s}% ${l}%)`;
 
-function buildTile(kind: TextileKind, color: string, hue: number): { w: number; h: number; node: React.ReactNode } {
+function toghuTile(color: string, hue: number) {
   const cream = "#F4EFE0";
-
-  if (kind === "NDOP") {
-    return {
-      w: 64,
-      h: 64,
-      node: (
-        <>
-          <rect width="64" height="64" fill="#0E1747" />
-          <polygon points="32,4 60,32 32,60 4,32" fill="none" stroke={color} strokeWidth="2" />
-          <polygon points="32,15 49,32 32,49 15,32" fill="none" stroke={cream} strokeWidth="1.5" />
-          <polygon points="32,26 38,32 32,38 26,32" fill={color} />
-          <path d="M32 4V15M60 32H49M32 60V49M4 32H15" stroke={cream} strokeWidth="1.5" fill="none" />
-          <path d="M0 12L12 0M52 0L64 12M64 52L52 64M12 64L0 52" stroke={color} strokeWidth="2" fill="none" />
-          {[
-            [32, 4],
-            [60, 32],
-            [32, 60],
-            [4, 32],
-          ].map(([x, y]) => (
-            <circle key={`v-${x}-${y}`} cx={x} cy={y} r="2.5" fill={cream} />
-          ))}
-          {[
-            [0, 0],
-            [64, 0],
-            [0, 64],
-            [64, 64],
-          ].map(([x, y]) => (
-            <circle key={`c-${x}-${y}`} cx={x} cy={y} r="3" fill={color} />
-          ))}
-        </>
-      ),
-    };
-  }
-
   const c2 = hsl(hue + 130);
   const c3 = hsl(hue + 250);
-  return {
-    w: 72,
-    h: 72,
-    node: (
-      <>
-        <rect width="72" height="72" fill="#14070A" />
-        {[12, 36, 60].map((cx) => (
-          <g key={`d-${cx}`}>
-            <polygon points={`${cx},2 ${cx + 12},12 ${cx},22 ${cx - 12},12`} fill="none" stroke={color} strokeWidth="2" />
-            <polygon points={`${cx},7 ${cx + 6},12 ${cx},17 ${cx - 6},12`} fill={c3} />
-          </g>
-        ))}
-        <path
-          d="M0 34L9 28L18 34L27 28L36 34L45 28L54 34L63 28L72 34"
-          fill="none"
-          stroke={c2}
-          strokeWidth="3"
-          strokeLinejoin="round"
-        />
-        {[0, 24, 48].map((x) => (
-          <polygon key={`u-${x}`} points={`${x},60 ${x + 12},42 ${x + 24},60`} fill={color} fillOpacity="0.9" />
-        ))}
-        {[-24, 0, 24, 48].map((x) => (
-          <polygon
-            key={`dn-${x}`}
-            points={`${x + 12},42 ${x + 36},42 ${x + 24},60`}
-            fill="none"
-            stroke={c3}
-            strokeWidth="1.5"
-          />
-        ))}
-        {Array.from({ length: 9 }).map((_, i) => (
-          <circle key={`p-${i}`} cx={4 + i * 8} cy="66" r="2" fill={cream} />
-        ))}
-      </>
-    ),
-  };
+  return (
+    `<rect width="72" height="72" fill="#14070A"/>` +
+    [12, 36, 60]
+      .map(
+        (cx) =>
+          `<polygon points="${cx},2 ${cx + 12},12 ${cx},22 ${cx - 12},12" fill="none" stroke="${color}" stroke-width="2"/>` +
+          `<polygon points="${cx},7 ${cx + 6},12 ${cx},17 ${cx - 6},12" fill="${c3}"/>`,
+      )
+      .join("") +
+    `<path d="M0 34L9 28L18 34L27 28L36 34L45 28L54 34L63 28L72 34" fill="none" stroke="${c2}" stroke-width="3" stroke-linejoin="round"/>` +
+    [0, 24, 48].map((x) => `<polygon points="${x},60 ${x + 12},42 ${x + 24},60" fill="${color}" fill-opacity="0.9"/>`).join("") +
+    [-24, 0, 24, 48].map((x) => `<polygon points="${x + 12},42 ${x + 36},42 ${x + 24},60" fill="none" stroke="${c3}" stroke-width="1.5"/>`).join("") +
+    Array.from({ length: 9 }, (_, i) => `<circle cx="${4 + i * 8}" cy="66" r="2" fill="${cream}"/>`).join("")
+  );
 }
 
-const TEXTURE: Record<TextileKind, { displace: number; thread: number; grain: number; thick: number }> = {
-  NDOP: { displace: 2.2, thread: 0.22, grain: 0.35, thick: 3 },
-  TOGHU: { displace: 1.2, thread: 0.3, grain: 0.3, thick: 2.5 },
-};
-
-function Textile({
-  kind,
-  color,
-  hue,
-  scale = 1,
-}: {
-  kind: TextileKind;
-  color: string;
-  hue: number;
-  scale?: number;
-}) {
+/** Bande de tissu : motif + tissage + grain (le filtre ne tourne que sur une petite tuile). */
+function ToghuBand({ scale = 0.6 }: { scale?: number }) {
   const uid = useId().replace(/:/g, "");
-  const id = `tx-${uid}`;
-  const weaveId = `weave-${uid}`;
-  const warpId = `warp-${uid}`;
-  const grainId = `grain-${uid}`;
-
-  const { w, h, node } = buildTile(kind, color, hue);
-  const t = TEXTURE[kind];
-  const half = t.thick / 2;
-
+  const thick = 2.5;
+  const thread = 0.3;
   return (
     <svg className="h-full w-full" aria-hidden="true" focusable="false">
       <defs>
-        <pattern id={id} width={w} height={h} patternUnits="userSpaceOnUse" patternTransform={`scale(${scale})`}>
-          {node}
+        <pattern id={`p-${uid}`} width="72" height="72" patternUnits="userSpaceOnUse" patternTransform={`scale(${scale})`}>
+          <g dangerouslySetInnerHTML={{ __html: toghuTile("#FFC82C", 46) }} />
         </pattern>
-
-        <pattern id={weaveId} width={t.thick * 2} height={t.thick * 2} patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width={t.thick} height={t.thick} fill="#000" fillOpacity={t.thread * 0.5} />
-          <rect x={t.thick} y={t.thick} width={t.thick} height={t.thick} fill="#000" fillOpacity={t.thread * 0.5} />
-          <path
-            d={`M0 ${half}H${t.thick * 2}M0 ${t.thick + half}H${t.thick * 2}`}
-            stroke="#000"
-            strokeOpacity={t.thread}
-            strokeWidth={t.thick * 0.3}
-            fill="none"
-          />
-          <path
-            d={`M${half} 0V${t.thick * 2}M${t.thick + half} 0V${t.thick * 2}`}
-            stroke="#FFF"
-            strokeOpacity={t.thread * 0.55}
-            strokeWidth={t.thick * 0.25}
-            fill="none"
-          />
+        <pattern id={`w-${uid}`} width={thick * 2} height={thick * 2} patternUnits="userSpaceOnUse">
+          <rect width={thick} height={thick} fill="#000" fillOpacity={thread * 0.5} />
+          <rect x={thick} y={thick} width={thick} height={thick} fill="#000" fillOpacity={thread * 0.5} />
         </pattern>
-
-        <filter id={warpId} filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale={t.displace} xChannelSelector="R" yChannelSelector="G" />
+        <filter id={`gf-${uid}`} filterUnits="userSpaceOnUse" x="0" y="0" width="160" height="160">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.65" numOctaves="3" seed="7" stitchTiles="stitch" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.7 0 0 0 -0.6" />
         </filter>
-
-        <filter id={grainId} filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.65" numOctaves="3" seed="7" result="g" />
-          <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.7 0 0 0 -0.6" />
-        </filter>
+        <pattern id={`g-${uid}`} width="160" height="160" patternUnits="userSpaceOnUse">
+          <rect width="160" height="160" fill="#000" filter={`url(#gf-${uid})`} />
+        </pattern>
       </defs>
+      <rect width="100%" height="100%" fill={`url(#p-${uid})`} />
+      <rect width="100%" height="100%" fill={`url(#w-${uid})`} />
+      <rect width="100%" height="100%" fill={`url(#g-${uid})`} opacity="0.18" style={{ mixBlendMode: "multiply" }} />
+    </svg>
+  );
+}
 
-      <g filter={`url(#${warpId})`}>
-        <rect x="-12" y="-12" width="120%" height="120%" fill={`url(#${id})`} />
-      </g>
-      <rect width="100%" height="100%" fill={`url(#${weaveId})`} />
-      <rect
-        width="100%"
-        height="100%"
-        fill="#000"
-        filter={`url(#${grainId})`}
-        opacity={t.grain}
-        style={{ mixBlendMode: "multiply" }}
-      />
+function Pin({ size = 24 }: { size?: number }) {
+  const uid = useId().replace(/:/g, "");
+  return (
+    <svg width={size} height={size} viewBox="0 0 28 28" aria-hidden="true" focusable="false" style={{ filter: "drop-shadow(2px 4px 2px rgba(0,0,0,.55))" }}>
+      <defs>
+        <radialGradient id={`pw-${uid}`} cx="35%" cy="30%" r="80%">
+          <stop offset="0" stopColor="#D9A867" />
+          <stop offset="0.6" stopColor="#A9743A" />
+          <stop offset="1" stopColor="#6A4120" />
+        </radialGradient>
+      </defs>
+      <circle cx="14" cy="14" r="12" fill={`url(#pw-${uid})`} stroke="#4A2C14" strokeWidth="1" />
+      <path d="M5 11C9 8 19 8 23 11M4.5 15C9 12 19 12 23.5 15M6 19.5C10 17 18 17 22 19.5" stroke="#5A3618" strokeOpacity="0.5" strokeWidth="1" fill="none" />
+      <ellipse cx="10" cy="9" rx="3.4" ry="2" fill="#fff" opacity="0.28" />
     </svg>
   );
 }
@@ -232,6 +137,8 @@ function Textile({
 /* -------------------------------------------------------------------------- */
 /*  Page                                                                      */
 /* -------------------------------------------------------------------------- */
+
+const TILT = [-2, 1.5, -1];
 
 export default function Contact() {
   const t = useTranslations("ContactPage");
@@ -290,9 +197,7 @@ export default function Contact() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
         throw new Error(
-          typeof payload === "object" && payload && "error" in payload
-            ? String(payload.error)
-            : t("form.api_error")
+          typeof payload === "object" && payload && "error" in payload ? String(payload.error) : t("form.api_error"),
         );
       }
 
@@ -317,100 +222,66 @@ export default function Contact() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0B0D18] px-4 pb-16 pt-28 font-azurio text-white selection:bg-[#FFC82C] selection:text-black sm:px-8">
-      <div className="relative z-10 mx-auto max-w-6xl space-y-10">
-        {/* TITRE */}
-        <header className="space-y-4">
-          <motion.h1
-            initial={{ opacity: 0, y: reduce ? 0 : -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-achiko text-3xl font-black uppercase leading-[0.95] tracking-tight text-white sm:text-5xl md:text-6xl"
-          >
-            {t("content.title_prefix")} <span className="text-[#FFC82C]">{t("content.title_highlight")}</span>
-          </motion.h1>
-          <p className="max-w-2xl border-l-4 border-[#FFC82C] pl-5 text-base font-light leading-relaxed text-gray-200">
-            {t("content.description")}
-          </p>
+    <main className="relative min-h-screen overflow-x-clip bg-[#0B0D18] px-4 pb-20 pt-28 font-azurio text-white selection:bg-[#FFC82C] selection:text-black sm:px-8">
+      <div className="mx-auto max-w-6xl space-y-14">
+        <header>
+          <h1 className="max-w-3xl font-achiko text-4xl font-black leading-[1.05] text-white md:text-6xl">
+            {t("content.title_prefix")} {t("content.title_highlight")}
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg font-light leading-relaxed text-gray-200">{t("content.description")}</p>
         </header>
 
-        <motion.section
-          initial={{ opacity: 0, y: reduce ? 0 : 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="overflow-hidden rounded-3xl border border-white/15 bg-[#121526] shadow-[0_28px_80px_rgba(0,0,0,0.45)]"
-        >
-          {/* bande de tissu */}
-          <div className="h-4 w-full" aria-hidden="true">
-            <Textile kind="NDOP" color="#FFC82C" hue={46} scale={0.45} />
-          </div>
+        <div className="grid items-start gap-14 lg:grid-cols-[1.4fr_1fr]">
+          {/* LE BON DE COMMANDE : la feuille se pose et s'épingle une fois */}
+          <motion.section
+            aria-labelledby="form-title"
+            initial={reduce ? false : { y: -26, rotate: -1.2, opacity: 0 }}
+            animate={{ y: 0, rotate: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 110, damping: 14 }}
+            className="relative bg-[#E9D8A6] text-[#141A3F] shadow-[0_24px_50px_rgba(0,0,0,.5)]"
+          >
+            <div className="h-7 overflow-hidden">
+              <ToghuBand />
+            </div>
+            <span className="absolute left-5 top-0 -translate-y-1/2">
+              <Pin size={26} />
+            </span>
+            <span className="absolute right-5 top-0 -translate-y-1/2">
+              <Pin size={26} />
+            </span>
 
-          <div className="grid lg:grid-cols-[1.15fr_1fr]">
-            {/* FORMULAIRE */}
-            <form onSubmit={handleSubmit} className="space-y-5 p-6 sm:p-10" noValidate={false}>
-              <div className="grid gap-5 sm:grid-cols-2">
+            <form onSubmit={handleSubmit} className="space-y-6 p-6 pb-8 sm:p-10" aria-busy={isSubmitting}>
+              <h2 id="form-title" className="sr-only">
+                {t("form.submit")}
+              </h2>
+
+              <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div>
                   <label htmlFor="contact-name" className={labelClass}>
-                    {t("form.name_label")} <span className="text-[#FFC82C]">*</span>
+                    {t("form.name_label")} <span className="text-[#B3263A]">*</span>
                   </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    autoComplete="name"
-                    placeholder={t("form.name_placeholder")}
-                    className={fieldClass}
-                  />
+                  <input id="contact-name" type="text" name="name" value={formData.name} onChange={handleChange} required autoComplete="name" placeholder={t("form.name_placeholder")} className={fieldClass} />
                 </div>
 
                 <div>
                   <label htmlFor="contact-email" className={labelClass}>
-                    {t("form.email_label")} <span className="text-[#FFC82C]">*</span>
+                    {t("form.email_label")} <span className="text-[#B3263A]">*</span>
                   </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    autoComplete="email"
-                    placeholder={t("form.email_placeholder")}
-                    className={fieldClass}
-                  />
+                  <input id="contact-email" type="email" name="email" value={formData.email} onChange={handleChange} required autoComplete="email" placeholder={t("form.email_placeholder")} className={fieldClass} />
                 </div>
 
                 <div>
                   <label htmlFor="contact-phone" className={labelClass}>
-                    {t("form.phone_label")} <span className="font-light text-gray-400">({t("form.optional")})</span>
+                    {t("form.phone_label")} <span className="font-normal opacity-70">({t("form.optional")})</span>
                   </label>
-                  <input
-                    id="contact-phone"
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    autoComplete="tel"
-                    placeholder={t("form.phone_placeholder")}
-                    className={fieldClass}
-                  />
+                  <input id="contact-phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} autoComplete="tel" placeholder={t("form.phone_placeholder")} className={fieldClass} />
                 </div>
 
                 <div>
                   <label htmlFor="contact-mission" className={labelClass}>
-                    {t("form.mission_label")} <span className="text-[#FFC82C]">*</span>
+                    {t("form.mission_label")} <span className="text-[#B3263A]">*</span>
                   </label>
-                  <select
-                    id="contact-mission"
-                    name="missionType"
-                    value={formData.missionType}
-                    onChange={handleChange}
-                    required
-                    className={`${fieldClass} bg-[#121526]`}
-                  >
+                  <select id="contact-mission" name="missionType" value={formData.missionType} onChange={handleChange} required className={fieldClass}>
                     <option value="">{t("form.mission_placeholder")}</option>
                     {missionOptions.map((opt) => (
                       <option key={opt} value={opt}>
@@ -422,38 +293,24 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="contact-budget" className={labelClass}>
-                    {t("form.budget_label")} <span className="font-light text-gray-400">({t("form.optional")})</span>
+                    {t("form.budget_label")} <span className="font-normal opacity-70">({t("form.optional")})</span>
                   </label>
-                  <input
-                    id="contact-budget"
-                    type="text"
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    placeholder={t("form.budget_placeholder")}
-                    className={fieldClass}
-                  />
+                  <input id="contact-budget" type="text" name="budget" value={formData.budget} onChange={handleChange} placeholder={t("form.budget_placeholder")} className={fieldClass} />
                 </div>
 
                 <div>
                   <label htmlFor="contact-date" className={labelClass}>
-                    {t("form.date_label")} <span className="font-light text-gray-400">({t("form.optional")})</span>
+                    {t("form.date_label")} <span className="font-normal opacity-70">({t("form.optional")})</span>
                   </label>
-                  <input
-                    id="contact-date"
-                    type="date"
-                    name="desiredDate"
-                    value={formData.desiredDate}
-                    onChange={handleChange}
-                    className={`${fieldClass} [color-scheme:dark]`}
-                  />
+                  <input id="contact-date" type="date" name="desiredDate" value={formData.desiredDate} onChange={handleChange} className={fieldClass} />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="contact-message" className={labelClass}>
-                  {t("form.message_label")} <span className="text-[#FFC82C]">*</span>
+                  {t("form.message_label")} <span className="text-[#B3263A]">*</span>
                 </label>
+                {/* lignes de papier réglé */}
                 <textarea
                   id="contact-message"
                   name="message"
@@ -462,7 +319,8 @@ export default function Contact() {
                   required
                   rows={5}
                   placeholder={t("form.message_placeholder")}
-                  className={`${fieldClass} resize-y`}
+                  className="w-full resize-y border-0 bg-transparent px-1 text-base leading-8 text-[#141A3F] outline-none placeholder:text-[#141A3F]/40 focus-visible:bg-[#141A3F]/5"
+                  style={{ backgroundImage: "repeating-linear-gradient(transparent 0 31px, rgba(20,26,63,.4) 31px 32px)", backgroundSize: "100% 32px" }}
                 />
               </div>
 
@@ -471,113 +329,83 @@ export default function Contact() {
                 <input name="website" value={formData.website} onChange={handleChange} tabIndex={-1} autoComplete="off" />
               </div>
 
-              <div className="space-y-3 pt-1">
-                <motion.button
-                  whileHover={reduce ? undefined : { scale: 1.02 }}
-                  whileTap={reduce ? undefined : { scale: 0.98 }}
+              <div className="space-y-3 pt-2">
+                <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#FFC82C] px-8 py-4 font-achiko text-sm font-bold uppercase tracking-widest text-[#0B0D18] shadow-[0_0_30px_rgba(255,200,44,0.25)] transition-colors hover:bg-[#FF3B56] hover:text-white disabled:cursor-wait disabled:opacity-60"
+                  className="w-full rounded-[3px] bg-[#2B3A8C] px-8 py-4 text-base font-bold text-[#F4EBD0] transition-colors hover:bg-[#3446A8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141A3F] disabled:cursor-wait disabled:opacity-60"
+                  style={STITCH}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <i className="pi pi-spinner animate-spin text-sm" /> {t("form.submitting")}
-                    </>
-                  ) : (
-                    t("form.submit")
-                  )}
-                </motion.button>
-
-                <p className="text-xs font-light leading-relaxed text-gray-400">
-                  {t("form.consent")}
-                </p>
+                  {isSubmitting ? t("form.submitting") : t("form.submit")}
+                </button>
+                <p className="text-sm leading-relaxed text-[#141A3F]/75">{t("form.consent")}</p>
               </div>
 
               {/* RETOURS */}
               <div aria-live="polite" role="status">
                 <AnimatePresence>
                   {submitStatus === "success" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="rounded-xl border border-emerald-500/40 bg-emerald-500/15 p-4 text-sm font-bold text-emerald-300"
-                    >
-                      <i className="pi pi-check mr-2" />
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="rounded-[3px] bg-[#1F5F3A] p-4 text-sm font-bold text-[#F4EBD0]">
                       {t("form.success")}
-                    </motion.div>
+                    </motion.p>
                   )}
                   {submitStatus === "error" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="rounded-xl border border-red-500/40 bg-red-500/15 p-4 text-sm font-bold text-red-300"
-                    >
-                      <i className="pi pi-exclamation-triangle mr-2" />
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="rounded-[3px] bg-[#9C2233] p-4 text-sm font-bold text-[#F4EBD0]">
                       {submitError || t("form.api_error")}
-                    </motion.div>
+                    </motion.p>
                   )}
                 </AnimatePresence>
               </div>
             </form>
+          </motion.section>
 
-            {/* PANNEAU TEXTILE + COORDONNÉES */}
-            <aside className="relative min-h-[420px] overflow-hidden border-t border-white/10 lg:border-l lg:border-t-0">
-              <div className="absolute inset-0">
-                <Textile kind="TOGHU" color="#FFC82C" hue={46} scale={1.25} />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D18] via-[#0B0D18]/55 to-[#0B0D18]/10" />
+          {/* COORDONNÉES : des étiquettes cousues, épinglées */}
+          <aside aria-labelledby="direct-title" className="space-y-10">
+            <h2 id="direct-title" className="font-achiko text-2xl font-black text-white md:text-3xl">
+              {t("content.direct_title_prefix")} {t("content.direct_title_highlight")}
+            </h2>
 
-              <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
-                <div className="space-y-4 rounded-2xl border border-white/15 bg-[#0B0D18]/85 p-5 backdrop-blur-md">
-                  <h2 className="font-achiko text-lg font-black uppercase text-white">
-                    {t("content.direct_title_prefix")} <span className="text-[#FFC82C]">{t("content.direct_title_highlight")}</span>
-                  </h2>
-
-                  <ul className="space-y-1">
-                    {channels.map((channel) => (
-                      <li key={channel.label} className="flex items-center gap-3 rounded-xl p-2 hover:bg-white/5">
-                        <a
-                          href={channel.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex min-w-0 flex-1 items-center gap-3"
-                        >
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#FFC82C]/30 bg-[#FFC82C]/10 text-[#FFC82C]">
-                            <i className={`pi pi-${channel.icon}`} />
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block text-xs font-bold text-gray-400">{channel.label}</span>
-                            <span className="block truncate text-sm text-white">{channel.value}</span>
-                          </span>
-                        </a>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard(channel.value, channel.label)}
-                          aria-label={t("form.copy_channel", { channel: channel.label })}
-                          title={t("form.copy_channel", { channel: channel.label })}
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-300 transition-colors hover:text-[#FFC82C]"
-                        >
-                          <i className="pi pi-copy" />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div aria-live="polite" className="min-h-[1.25rem] text-xs font-bold text-emerald-400">
-                    {copiedField ? t("form.copy_success", { channel: copiedField }) : ""}
+            <ul className="space-y-9">
+              {channels.map((channel, i) => (
+                <li key={channel.label} className="relative" style={{ transform: `rotate(${TILT[i % TILT.length]}deg)` }}>
+                  <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2">
+                    <Pin size={22} />
+                  </span>
+                  <div className="flex items-center gap-3 rounded-[3px] px-5 pb-4 pt-6 shadow-[0_10px_18px_rgba(0,0,0,.45)]" style={{ background: TAG_BG, ...STITCH }}>
+                    <a
+                      href={channel.href}
+                      {...(channel.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="min-w-0 flex-1 rounded-[2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FFC82C]"
+                    >
+                      <span className="block text-sm text-[#E9D8A6]/85">{channel.label}</span>
+                      <span className="mt-0.5 block break-all font-achiko text-base font-black leading-snug text-[#F4EBD0] underline decoration-[#E9D8A6]/50 underline-offset-4 sm:text-lg">
+                        {channel.value}
+                      </span>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(channel.value, channel.label)}
+                      aria-label={t("form.copy_channel", { channel: channel.label })}
+                      title={t("form.copy_channel", { channel: channel.label })}
+                      className="grid size-10 shrink-0 place-items-center rounded-[3px] text-[#F4EBD0] transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FFC82C]"
+                    >
+                      <i className="pi pi-copy" aria-hidden="true" />
+                    </button>
                   </div>
+                </li>
+              ))}
+            </ul>
 
-                  <div className="flex items-center gap-2 border-t border-white/10 pt-3 text-xs text-gray-300">
-                    <i className="pi pi-map-marker text-[#FFC82C]" />
-                    <span>{t("content.location")}</span>
-                  </div>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </motion.section>
+            <div aria-live="polite" className="min-h-[1.25rem] text-sm font-bold text-[#E9D8A6]">
+              {copiedField ? t("form.copy_success", { channel: copiedField }) : ""}
+            </div>
+
+            <p className="flex items-center gap-3 text-sm text-gray-300">
+              <Pin size={20} />
+              <span>{t("content.location")}</span>
+            </p>
+          </aside>
+        </div>
       </div>
     </main>
   );

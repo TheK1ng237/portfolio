@@ -199,6 +199,32 @@ body::after {
 }
 
 @media print {
+  .proposal-preview-overlay {
+    position: static !important;
+    inset: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #proposal-preview-document,
+  #proposal-preview-document * {
+    visibility: visible !important;
+  }
+
+  #proposal-preview-document {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 210mm !important;
+    max-width: none !important;
+  }
+
   aside,
   header,
   nav,
