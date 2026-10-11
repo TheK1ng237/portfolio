@@ -277,15 +277,17 @@ function Poster({ reduce }: { reduce: boolean | null }) {
       </svg>
 
       {/* portrait détouré (PNG sans fond), en noir et blanc, posé directement sur le fond de la page */}
-      <div className="absolute inset-x-[6%] bottom-0  z-[1]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/yann.png"
-          alt={t("content.portrait_alt")}
-          className="h-full w-full object-contain object-bottom grayscale contrast-[1.08] drop-shadow-[0_18px_30px_rgba(0,0,0,.6)]"
-        />
-        {/* fondu vers le fond de page en bas, pour que « I'm Yannick » reste lisible sur le costume */}
-        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#0B0D18] via-[#0B0D18]/60 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 top-[14%] z-[1] flex items-end justify-center pointer-events-none">
+        <div className="relative h-full w-full flex items-end justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/yann.png"
+            alt={t("content.portrait_alt")}
+            className="h-full w-auto max-w-full object-contain object-bottom grayscale contrast-[1.08] drop-shadow-[0_18px_30px_rgba(0,0,0,.6)]"
+          />
+          {/* fondu vers le fond de page en bas, pour que « I'm Yannick » reste lisible sur le costume */}
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#0B0D18] via-[#0B0D18]/60 to-transparent" />
+        </div>
       </div>
 
       {/* étiquettes cousues */}
