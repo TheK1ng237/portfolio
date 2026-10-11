@@ -247,6 +247,19 @@
       "pdf_format": "FORMAT : PDF VÉRIFIÉ",
       "view_certificate": "VOIR LE DIPLÔME"
     },
+    "poster": {
+      "hello": "BONJOUR",
+      "im": "JE SUIS YANNICK",
+      "tagline": "Découvrir le métier derrière le code",
+      "contact": "Parlons projet",
+      "tags": {
+        "fullstack": "FULLSTACK",
+        "design": "DESIGN",
+        "culture": "CULTURE",
+        "solutions": "SOLUTIONS",
+        "craft": "ARTISANAT"
+      }
+    },
     "expertise": {
       "skills": {
         "number": "VOLET 01",
