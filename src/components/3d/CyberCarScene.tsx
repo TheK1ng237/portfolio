@@ -15,7 +15,6 @@ export type CameraMode = "chase" | "cockpit" | "orbit" | "map";
 export interface CyberCarSceneRef {
   teleportToBiome: (index: number) => void;
   setCameraMode: (mode: CameraMode) => void;
-  toggleAudio: () => boolean;
   triggerBoost: () => void;
   setThrottle: (active: boolean) => void;
   setBrake: (active: boolean) => void;
@@ -960,7 +959,6 @@ const UP = new THREE.Vector3(0, 1, 0);
 export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
   ({ projects, onSelectProject, onBiomeChange, onSpeedChange, onNearProject }, ref) => {
     const mountRef = useRef<HTMLDivElement>(null);
-    const [audioMuted, setAudioMuted] = useState(true);
     const [cameraMode, setCameraModeState] = useState<CameraMode>("chase");
 
     // Les callbacks passent par une ref : plus de reconstruction de la scène si le parent recrée ses fonctions
@@ -979,10 +977,6 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
       boostTimer: number;
       nearProject: Project | null;
       activeBiomeIndex: number;
-      audioEnabled: boolean;
-      audioCtx: AudioContext | null;
-      engineOsc: OscillatorNode | null;
-      engineGain: GainNode | null;
       isAccelerating: boolean;
       isBraking: boolean;
       isSteeringLeft: boolean;
@@ -998,57 +992,11 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
       boostTimer: 0,
       nearProject: null,
       activeBiomeIndex: 0,
-      audioEnabled: false,
-      audioCtx: null,
-      engineOsc: null,
-      engineGain: null,
       isAccelerating: false,
       isBraking: false,
       isSteeringLeft: false,
       isSteeringRight: false,
     });
-
-    const toggleAudio = () => {
-      const state = sceneStateRef.current;
-      if (!state.audioCtx) {
-        try {
-          const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-          state.audioCtx = new AudioContextClass();
-
-          const osc = state.audioCtx.createOscillator();
-          const gain = state.audioCtx.createGain();
-
-          osc.type = "sawtooth";
-          osc.frequency.setValueAtTime(60, state.audioCtx.currentTime);
-          gain.gain.setValueAtTime(0.04, state.audioCtx.currentTime);
-
-          osc.connect(gain);
-          gain.connect(state.audioCtx.destination);
-          osc.start();
-
-          state.engineOsc = osc;
-          state.engineGain = gain;
-          state.audioEnabled = true;
-          setAudioMuted(false);
-          return true;
-        } catch {
-          return false;
-        }
-      } else {
-        if (state.audioCtx.state === "suspended") {
-          state.audioCtx.resume();
-          state.audioEnabled = true;
-          setAudioMuted(false);
-          return true;
-        } else if (state.audioCtx.state === "running") {
-          state.audioCtx.suspend();
-          state.audioEnabled = false;
-          setAudioMuted(true);
-          return false;
-        }
-      }
-      return false;
-    };
 
     const teleportToBiome = (biomeIndex: number) => {
       const clampedIndex = Math.max(0, Math.min(BIOMES.length - 1, biomeIndex));
@@ -1083,7 +1031,6 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
     useImperativeHandle(ref, () => ({
       teleportToBiome,
       setCameraMode,
-      toggleAudio,
       triggerBoost,
       setThrottle,
       setBrake,
@@ -2202,12 +2149,6 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
           camera.lookAt(finalCarPos);
         }
 
-        // Moteur audio
-        if (state.audioEnabled && state.audioCtx && state.engineOsc) {
-          const targetFreq = 45 + Math.abs(state.speed) * 0.9;
-          state.engineOsc.frequency.setTargetAtTime(targetFreq, state.audioCtx.currentTime, 0.1);
-        }
-
         // --- Rendu avec post-traitement ---
         speedPass.uniforms.uStrength.value = Math.pow(sf, 1.4) * (state.boostActive ? 1.6 : 1);
         speedPass.uniforms.uTime.value = time;
@@ -2224,15 +2165,6 @@ export const CyberCarScene = forwardRef<CyberCarSceneRef, CyberCarSceneProps>(
         window.removeEventListener("resize", handleResize);
         ro?.disconnect();
         container.removeEventListener("wheel", handleWheel);
-
-        const st = sceneStateRef.current;
-        if (st.audioCtx) {
-          st.audioCtx.close().catch(() => undefined);
-          st.audioCtx = null;
-          st.engineOsc = null;
-          st.engineGain = null;
-          st.audioEnabled = false;
-        }
 
         disposeObject(scene);
         glowTex.dispose();

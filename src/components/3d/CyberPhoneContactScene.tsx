@@ -11,7 +11,6 @@ import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 
 export interface CyberPhoneContactSceneRef {
   triggerSubmitAnimation: () => void;
-  toggleAudio: () => boolean;
 }
 
 interface CyberPhoneContactSceneProps {
@@ -35,7 +34,6 @@ export const CyberPhoneContactScene = forwardRef<CyberPhoneContactSceneRef, Cybe
         sceneStateRef.current.submitting = true;
         sceneStateRef.current.animProgress = 0;
       },
-      toggleAudio: () => true,
     }));
 
     useEffect(() => {
