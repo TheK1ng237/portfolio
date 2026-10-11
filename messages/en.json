@@ -260,6 +260,19 @@
       "pdf_format": "FORMAT: VERIFIED PDF",
       "view_certificate": "VIEW CERTIFICATE"
     },
+    "poster": {
+      "hello": "HELLO",
+      "im": "I'M YANNICK",
+      "tagline": "Discover the craft behind the code",
+      "contact": "Let’s talk",
+      "tags": {
+        "fullstack": "FULLSTACK",
+        "design": "DESIGN",
+        "culture": "CULTURE",
+        "solutions": "SOLUTIONS",
+        "craft": "CRAFT"
+      }
+    },
     "expertise": {
       "skills": {
         "number": "PANEL 01",

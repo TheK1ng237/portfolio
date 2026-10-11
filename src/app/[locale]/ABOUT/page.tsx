@@ -8,9 +8,11 @@ import { useTranslations } from "next-intl";
 
 /**
  * Page À propos : « la coupe du tronc ».
+ * Hero en affiche : « Hello » en arc au-dessus d'un portrait détouré en noir et blanc, cinq étiquettes cousues
+ * autour (comme des étiquettes de tailleur), « I'm Yannick » en grand, et une phrase d'accroche.
  * Les compétences sont les cernes d'un tronc d'avocatier : du cœur (ce qui porte tout)
  * jusqu'à l'écorce (les outils). Un seul contrôle : on choisit un cerne, le détail s'affiche.
- * Le portrait est cadré dans une arche bordée de Ndop. Les certificats sont un registre, pas des cartes.
+ * Les certificats sont un registre, pas des cartes.
  */
 
 /* -------------------------------------------------------------------------- */
@@ -100,6 +102,17 @@ const certificationsData = [
 const ISSUERS = [
   { id: "OPENCLASSROOMS", key: "certifications_openclassrooms" },
   { id: "UDEMY", key: "certifications_udemy" },
+] as const;
+
+/* Étiquettes autour du portrait. Positions en % de l'affiche (largeur x hauteur). */
+const FIRST_NAME = "Yannick";
+
+const POSTER_TAGS = [
+  { key: "fullstack", left: 70, top: 14, rotate: 2 },
+  { key: "design", left: 1, top: 35, rotate: -2 },
+  { key: "culture", left: 73, top: 52, rotate: 2 },
+  { key: "solutions", left: 0, top: 62, rotate: -2 },
+  { key: "craft", left: 62, top: 76, rotate: 1.5 },
 ] as const;
 
 /* -------------------------------------------------------------------------- */
@@ -211,38 +224,6 @@ function Trunk({ active, onPick, reduce }: { active: GroupId; onPick: (id: Group
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Textile (Ndop) pour la bordure du portrait                                */
-/* -------------------------------------------------------------------------- */
-
-function Ndop({ scale = 1 }: { scale?: number }) {
-  const uid = useId().replace(/:/g, "");
-  const gold = "#EDE6D0";
-  const cream = "#F4EFE0";
-  const body =
-    `<rect width="64" height="64" fill="#0E1747"/>` +
-    `<polygon points="32,4 60,32 32,60 4,32" fill="none" stroke="${gold}" stroke-width="2"/>` +
-    `<polygon points="32,15 49,32 32,49 15,32" fill="none" stroke="${cream}" stroke-width="1.5"/>` +
-    `<polygon points="32,26 38,32 32,38 26,32" fill="${gold}"/>` +
-    `<path d="M32 4V15M60 32H49M32 60V49M4 32H15" stroke="${cream}" stroke-width="1.5" fill="none"/>` +
-    `<path d="M0 12L12 0M52 0L64 12M64 52L52 64M12 64L0 52" stroke="${gold}" stroke-width="2" fill="none"/>`;
-  return (
-    <svg className="h-full w-full" aria-hidden="true" focusable="false">
-      <defs>
-        <pattern id={`n-${uid}`} width="64" height="64" patternUnits="userSpaceOnUse" patternTransform={`scale(${scale})`}>
-          <g dangerouslySetInnerHTML={{ __html: body }} />
-        </pattern>
-        <pattern id={`w-${uid}`} width="6" height="6" patternUnits="userSpaceOnUse">
-          <rect width="3" height="3" fill="#000" fillOpacity="0.1" />
-          <rect x="3" y="3" width="3" height="3" fill="#000" fillOpacity="0.1" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#n-${uid})`} />
-      <rect width="100%" height="100%" fill={`url(#w-${uid})`} />
-    </svg>
-  );
-}
-
 /** Épingle en bois (même que sur les pages Projets et Solutions). */
 function Pin({ size = 16 }: { size?: number }) {
   const uid = useId().replace(/:/g, "");
@@ -263,6 +244,93 @@ function Pin({ size = 16 }: { size?: number }) {
 
 const STITCH = { outline: "2px dashed rgba(233,216,166,.75)", outlineOffset: "-5px" } as const;
 
+/** Fond de tissu indigo tissé, utilisé par les étiquettes cousues. */
+const TAG_FABRIC =
+  "repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.1) 0 2px, transparent 2px 4px), #2B3A8C";
+
+/* -------------------------------------------------------------------------- */
+/*  L'affiche d'accueil                                                       */
+/*  Repère : 100 x 125 (rapport 4/5). Les % des étiquettes suivent ce repère. */
+/* -------------------------------------------------------------------------- */
+
+function Poster({ reduce }: { reduce: boolean | null }) {
+  const t = useTranslations("AboutPage");
+  const uid = useId().replace(/:/g, "");
+
+  return (
+    <div className="relative mx-auto aspect-[4/5] w-full max-w-[34rem]">
+      {/* fils décoratifs : deux arcs cousus, derrière le portrait */}
+      <svg viewBox="0 0 100 125" aria-hidden="true" focusable="false" className="absolute inset-0 h-full w-full overflow-visible">
+        <defs>
+          <path id={`hello-${uid}`} d="M 22 27 Q 50 -2 78 27" />
+        </defs>
+        <g fill="none" stroke="rgba(233,216,166,.75)" strokeWidth="0.5" strokeDasharray="1.4 1.6" strokeLinecap="round">
+          <path d="M 78 24 C 99 30 94 52 68 66" />
+          <path d="M 32 70 C 6 80 4 100 15 109" />
+          <path d="M 12 105 L 15 109.5 L 19.5 106.5" strokeDasharray="none" />
+        </g>
+        <text className="font-achiko font-black" fill="#F4EBD0" fontSize="15" letterSpacing="0.6" textAnchor="middle">
+          <textPath href={`#hello-${uid}`} startOffset="50%">
+            {t("poster.hello")}
+          </textPath>
+        </text>
+      </svg>
+
+      {/* portrait détouré (PNG sans fond), en noir et blanc, posé directement sur le fond de la page */}
+      <div className="absolute inset-x-[6%] bottom-0  z-[1]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/yann.png"
+          alt={t("content.portrait_alt")}
+          className="h-full w-full object-contain object-bottom grayscale contrast-[1.08] drop-shadow-[0_18px_30px_rgba(0,0,0,.6)]"
+        />
+        {/* fondu vers le fond de page en bas, pour que « I'm Yannick » reste lisible sur le costume */}
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#0B0D18] via-[#0B0D18]/60 to-transparent" />
+      </div>
+
+      {/* étiquettes cousues */}
+      <ul>
+        {POSTER_TAGS.map((tag, i) => (
+          <motion.li
+            key={tag.key}
+            className="absolute z-10 w-[29%] rounded-[3px] px-[2.5%] pb-[1.6%] pt-[2.4%] text-[clamp(.62rem,2.6vw,.9rem)] font-bold leading-tight text-[#F4EBD0] shadow-[0_8px_14px_rgba(0,0,0,.45)]"
+            style={{ left: `${tag.left}%`, top: `${tag.top}%`, rotate: tag.rotate, background: TAG_FABRIC, ...STITCH }}
+            initial={reduce ? false : { opacity: 0, scale: 0.85 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: reduce ? 0 : 0.2 + i * 0.12, ease: "easeOut" }}
+          >
+            <span aria-hidden="true" className="absolute -top-1.5 left-1/2 -translate-x-1/2">
+              <Pin size={12} />
+            </span>
+            {t(`poster.tags.${tag.key}`)}
+          </motion.li>
+        ))}
+      </ul>
+
+      {/* « I'm Yannick » : le vrai h1 de la page (« Hello » est lu en début de titre) */}
+      <h1 className="absolute bottom-[1%] left-[3%] z-20 font-achiko font-black leading-[0.88] drop-shadow-[0_6px_14px_rgba(0,0,0,.7)]">
+        <span className="sr-only">{t("poster.hello")} </span>
+        <span className="block text-[clamp(2.4rem,11vw,5rem)] text-white">
+          {t("poster.im")}
+        </span>
+        <span className="block text-[clamp(3rem,15vw,6.6rem)] text-[#FFC82C]">{FIRST_NAME}</span>
+      </h1>
+
+      {/* accroche + flèche */}
+      <Link
+        href="/PROJECT"
+        className="group absolute bottom-[4%] right-[2%] z-20 flex max-w-[34%] items-center gap-2 rounded-[3px] text-[clamp(.65rem,2.6vw,.95rem)] font-light leading-snug text-[#F4EBD0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FFC82C]"
+      >
+        <span>{t("poster.tagline")}</span>
+        <span aria-hidden="true" className="text-xl font-bold text-[#FFC82C] transition-transform motion-reduce:transition-none group-hover:translate-x-1">
+          →
+        </span>
+      </Link>
+    </div>
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Page                                                                      */
 /* -------------------------------------------------------------------------- */
@@ -276,40 +344,20 @@ export default function About() {
 
   return (
     <div className="relative min-h-screen overflow-x-clip bg-[#0B0D18] pb-24 pt-28 font-azurio text-[#F8F9FA]">
-      {/* PORTRAIT ET PRÉSENTATION */}
+      {/* AFFICHE ET PRÉSENTATION */}
       <section className="mx-auto grid max-w-6xl items-center gap-14 px-6 pb-24 pt-10 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <div
-            className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-t-[999px] shadow-[0_20px_40px_rgba(0,0,0,.5)]"
-            style={{ outline: "2px dashed rgba(233,216,166,.85)", outlineOffset: "-9px" }}
-          >
-            <div className="absolute inset-0">
-              <Ndop scale={0.9} />
-            </div>
-            <div className="absolute inset-4 overflow-hidden rounded-t-[999px] bg-[#0B0D18]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/yann.jpg" alt={t("content.portrait_alt")} className="h-full w-full object-cover" />
-            </div>
-          </div>
-          <div
-            className="relative z-10 mx-auto -mt-5 w-fit -rotate-2 rounded-[3px] px-6 pb-2.5 pt-4 shadow-[0_8px_14px_rgba(0,0,0,.45)]"
-            style={{
-              background:
-                "repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.1) 0 2px, transparent 2px 4px), #2B3A8C",
-              ...STITCH,
-            }}
-          >
-            <span aria-hidden="true" className="absolute left-1/2 top-1 -translate-x-1/2">
-              <Pin size={14} />
-            </span>
-            <span className="block font-achiko text-lg font-black text-[#F4EBD0]">Ndoh Yannick Tang</span>
-          </div>
+        <div className="lg:col-span-6">
+          <Poster reduce={reduce} />
         </div>
 
-        <div className="space-y-8 lg:col-span-7">
-          <h1 className="font-achiko text-4xl font-black leading-[1.05] text-white md:text-6xl">
+        <div className="space-y-8 lg:col-span-6">
+          <p className="inline-block -rotate-1 rounded-[3px] px-5 py-2 font-achiko text-base font-black text-[#F4EBD0]" style={{ background: TAG_FABRIC, ...STITCH }}>
+            Ndoh Yannick Tang
+          </p>
+
+          <h2 className="font-achiko text-3xl font-black leading-[1.05] text-white md:text-5xl">
             {t("content.hero_title_prefix")} {t("content.hero_title_highlight")}
-          </h1>
+          </h2>
           <p className="max-w-2xl text-base font-light leading-relaxed text-gray-200 md:text-lg">{t("content.hero_description")}</p>
 
           <dl className="grid gap-8 sm:grid-cols-2">
@@ -323,15 +371,23 @@ export default function About() {
             </div>
           </dl>
 
-          <a
-            href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-xl bg-[#FFC82C] px-8 py-4 text-sm font-bold text-[#141A3F] transition-colors hover:bg-[#ffd75e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            {t("content.download_cv")}
-          </a>
+          <div className="flex flex-wrap gap-4">
+            <a
+              href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-xl bg-[#FFC82C] px-8 py-4 text-sm font-bold text-[#141A3F] transition-colors hover:bg-[#ffd75e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {t("content.download_cv")}
+            </a>
+            <Link
+              href="/CONTACT"
+              className="inline-block rounded-xl border border-[#E9D8A6]/50 px-8 py-4 text-sm font-bold text-white transition-colors hover:border-[#E9D8A6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {t("poster.contact")}
+            </Link>
+          </div>
         </div>
       </section>
 
