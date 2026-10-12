@@ -833,7 +833,9 @@
       "close": "Close",
       "cancel": "Cancel",
       "submitting": "Sending…",
-      "submit": "Send testimonial"
+      "submit": "Send testimonial",
+      "pause_rotation": "Pause rotation",
+      "resume_rotation": "Resume rotation"
     },
     "form": {
       "share_experience": "Share your experience",

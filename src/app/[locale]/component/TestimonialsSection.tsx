@@ -169,6 +169,7 @@ export default function TestimonialsSection() {
   const reduced = !!useReducedMotion();
   const [testimonials, setTestimonials] = useState<Testimonial[]>(defaultTestimonials);
   const [index, setIndex] = useState(0);
+  const [rotationPaused, setRotationPaused] = useState(false);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -199,6 +200,16 @@ export default function TestimonialsSection() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (reduced || rotationPaused || showSubmitModal || testimonials.length < 2) return;
+
+    const interval = window.setInterval(() => {
+      setIndex((current) => (current + 1) % testimonials.length);
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, [reduced, rotationPaused, showSubmitModal, testimonials.length]);
 
   function openModal(el: HTMLElement) {
     lastFocus.current = el;
@@ -231,6 +242,7 @@ export default function TestimonialsSection() {
   function onTabKey(e: React.KeyboardEvent) {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
+    setRotationPaused(true);
     const next = (current + (e.key === "ArrowRight" ? 1 : -1) + testimonials.length) % testimonials.length;
     setIndex(next);
     tabs.current[next]?.focus();
@@ -345,40 +357,55 @@ export default function TestimonialsSection() {
 
         {/* Sélecteur : une rangée d'étiquettes */}
         {testimonials.length > 1 && (
-          <div role="tablist" aria-label={t("list_label")} onKeyDown={onTabKey} className="mt-14 flex gap-4 overflow-x-auto px-1 pb-3 pt-3">
-            {testimonials.map((it, i) => {
-              const active = i === current;
-              return (
-                <button
-                  key={it.id}
-                  id={`tab-${it.id}`}
-                  ref={(el) => {
-                    tabs.current[i] = el;
-                  }}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  aria-controls="testimonial-panel"
-                  tabIndex={active ? 0 : -1}
-                  onClick={() => setIndex(i)}
-                  className={`relative flex min-w-[240px] items-center gap-3 rounded-[3px] px-4 pb-3 pt-4 text-left transition-colors ${focusRing} ${
-                    active ? "bg-[#FFC82C] text-[#141A3F]" : "bg-[#2B3A8C] text-[#F4EBD0] hover:bg-[#3446A8]"
-                  }`}
-                  style={active ? { boxShadow: "0 8px 14px rgba(0,0,0,.45)" } : { backgroundImage: CLOTH, ...STITCH }}
-                >
-                  {active && (
-                    <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
-                      <Pin size={18} />
+          <div className="mt-14">
+            <div role="tablist" aria-label={t("list_label")} onKeyDown={onTabKey} className="flex gap-4 overflow-x-auto px-1 pb-3 pt-3">
+              {testimonials.map((it, i) => {
+                const active = i === current;
+                return (
+                  <button
+                    key={it.id}
+                    id={`tab-${it.id}`}
+                    ref={(el) => {
+                      tabs.current[i] = el;
+                    }}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    aria-controls="testimonial-panel"
+                    tabIndex={active ? 0 : -1}
+                    onClick={() => {
+                      setIndex(i);
+                      setRotationPaused(true);
+                    }}
+                    className={`relative flex min-w-[240px] items-center gap-3 rounded-[3px] px-4 pb-3 pt-4 text-left transition-colors ${focusRing} ${
+                      active ? "bg-[#FFC82C] text-[#141A3F]" : "bg-[#2B3A8C] text-[#F4EBD0] hover:bg-[#3446A8]"
+                    }`}
+                    style={active ? { boxShadow: "0 8px 14px rgba(0,0,0,.45)" } : { backgroundImage: CLOTH, ...STITCH }}
+                  >
+                    {active && (
+                      <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
+                        <Pin size={18} />
+                      </span>
+                    )}
+                    <MiniAvatar item={it} toneIndex={i} />
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-bold">{it.authorName}</span>
+                      <span className={`block truncate text-xs ${active ? "text-[#141A3F]/75" : "text-[#E9D8A6]/85"}`}>{it.company || it.authorRole}</span>
                     </span>
-                  )}
-                  <MiniAvatar item={it} toneIndex={i} />
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-bold">{it.authorName}</span>
-                    <span className={`block truncate text-xs ${active ? "text-[#141A3F]/75" : "text-[#E9D8A6]/85"}`}>{it.company || it.authorRole}</span>
-                  </span>
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
+            </div>
+            {!reduced && (
+              <button
+                type="button"
+                aria-pressed={rotationPaused}
+                onClick={() => setRotationPaused((paused) => !paused)}
+                className={`mt-3 rounded-[3px] bg-[#2B3A8C] px-4 py-2 text-sm font-bold text-[#F4EBD0] transition-colors hover:bg-[#3446A8] ${focusRing}`}
+              >
+                {rotationPaused ? t("actions.resume_rotation") : t("actions.pause_rotation")}
+              </button>
+            )}
           </div>
         )}
       </div>

@@ -838,7 +838,9 @@
       "close": "Fermer",
       "cancel": "Annuler",
       "submitting": "Envoi…",
-      "submit": "Envoyer mon témoignage"
+      "submit": "Envoyer mon témoignage",
+      "pause_rotation": "Mettre en pause",
+      "resume_rotation": "Reprendre le défilement"
     },
     "form": {
       "share_experience": "Partagez votre expérience",
