@@ -27,6 +27,8 @@
     "cta_cv": "Télécharger mon CV",
     "diagram_label": "Schéma isométrique de quatre couches empilées : un motif, des tokens, des composants et des données.",
     "hint": "Survole une couche pour voir son rôle.",
+    "pause_layers": "Mettre en pause",
+    "resume_layers": "Reprendre le défilement",
     "layers": {
       "motif": { "name": "Motif", "desc": "Le point de départ : un motif d'inspiration Ndop." },
       "tokens": { "name": "Tokens", "desc": "Couleurs, formes et rythmes extraits du motif." },

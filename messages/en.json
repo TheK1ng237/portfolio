@@ -28,6 +28,8 @@
     "cta_cv": "Download my CV",
     "diagram_label": "Isometric diagram of four stacked layers: a pattern, tokens, components and data.",
     "hint": "Hover a layer to see its role.",
+    "pause_layers": "Pause rotation",
+    "resume_layers": "Resume rotation",
     "layers": {
       "motif": {
         "name": "Pattern",
