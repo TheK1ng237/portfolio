@@ -825,6 +825,7 @@
     "title_prefix": "Client",
     "title_highlight": "& partner testimonials",
     "description": "Worked with Thek1ng237? Share your experience with our web and application projects.",
+    "list_label": "Testimonials list",
     "actions": {
       "leave_testimonial": "Leave a testimonial",
       "close": "Close",

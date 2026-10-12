@@ -830,6 +830,7 @@
     "title_prefix": "Avis",
     "title_highlight": "Clients & partenaires",
     "description": "Vous avez travaillé avec Thek1ng237 ? Laissez votre avis pour partager votre retour d’expérience sur nos réalisations web et applicatives.",
+    "list_label": "Liste des témoignages",
     "actions": {
       "leave_testimonial": "Laisser un témoignage",
       "close": "Fermer",
