@@ -302,19 +302,26 @@ function Poster({ reduce }: { reduce: boolean | null }) {
           <path d="M 78 24 C 99 30 94 52 68 66" />
 
 
-          <g transform="translate(-30, 30)">
+          <g className="md:hidden" transform="translate(-30, 56)">
             <path d="M 32 70 C 6 80 4 100 15 109" />
-
-
-
+            <g transform="rotate(-45 15 109)">
+              <path
+                d="M 10.8 104.5 L 15 109.5 L 20.2 106.3"
+                strokeDasharray="none"
+                strokeWidth="1.1"
+              />
+            </g>
           </g>
 
-          <g transform="translate(-30, 30) rotate(-45 15 109)">
-            <path
-              d="M 10.8 104.5 L 15 109.5 L 20.2 106.3"
-              strokeDasharray="none"
-              strokeWidth="1.1"
-            />
+          <g className="hidden md:block" transform="translate(-30, 30)">
+            <path d="M 32 70 C 6 80 4 100 15 109" />
+            <g transform="rotate(-45 15 109)">
+              <path
+                d="M 10.8 104.5 L 15 109.5 L 20.2 106.3"
+                strokeDasharray="none"
+                strokeWidth="1.1"
+              />
+            </g>
           </g>
         </g>
 
