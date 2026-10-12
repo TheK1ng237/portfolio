@@ -42,7 +42,7 @@ export async function generateMetadata({
       siteName: "Thek1ng237 Portfolio",
       images: [
         {
-          url: "/pixarMe.png",
+          url: "/images/pixarMe.png",
           width: 1200,
           height: 630,
           alt: t("image_alt"),
@@ -53,7 +53,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description: t("twitter_description"),
-      images: ["/pixarMe.png"],
+      images: ["/images/pixarMe.png"],
       creator: "@mfalme369",
     },
     icons: {
