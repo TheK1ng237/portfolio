@@ -262,7 +262,7 @@
     },
     "poster": {
       "hello": "HELLO",
-      "im": "I'M YANNICK",
+      "im": "I'M \n \t YANNICK",
       "tagline": "Discover the craft behind the code",
       "contact": "Let’s talk",
       "tags": {

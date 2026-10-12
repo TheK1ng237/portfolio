@@ -258,9 +258,10 @@ function Poster({ reduce }: { reduce: boolean | null }) {
   const uid = useId().replace(/:/g, "");
 
   return (
-    <div className="relative mx-auto aspect-[4/5] w-full max-w-[34rem]">
+    <div className="relative aspect-[4/5] w-full   ">
       {/* fils décoratifs : deux arcs cousus, derrière le portrait */}
-      <svg viewBox="0 0 100 125" aria-hidden="true" focusable="false" className="absolute inset-0 h-full w-full overflow-visible">
+      
+      {/* <svg viewBox="0 0 100 185" aria-hidden="true" focusable="false" className="absolute  h-full w-full overflow-visible">
         <defs>
           <path id={`hello-${uid}`} d="M 22 27 Q 50 -2 78 27" />
         </defs>
@@ -274,11 +275,67 @@ function Poster({ reduce }: { reduce: boolean | null }) {
             {t("poster.hello")}
           </textPath>
         </text>
-      </svg>
+      </svg> */}
 
-      {/* portrait détouré (PNG sans fond), en noir et blanc, posé directement sur le fond de la page */}
-      <div className="absolute inset-x-0 bottom-0 top-[14%] z-[1] flex items-end justify-center pointer-events-none">
-        <div className="relative h-full w-full flex items-end justify-center">
+
+{/* Fils décoratifs : arcs cousus et flèche dorée */}
+<svg
+  viewBox="0 0 100 185"
+  aria-hidden="true"
+  focusable="false"
+  className="absolute h-full w-full overflow-visible"
+>
+  <defs>
+    <path id={`hello-${uid}`} d="M 22 27 Q 50 -2 78 27" />
+  </defs>
+
+ 
+<g
+  fill="none"
+  stroke="rgba(233,216,166,0.95)"
+  strokeWidth="0.8"
+  strokeDasharray="1.8 1.4"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  {/* Courbe supérieure droite */}
+  <path d="M 78 24 C 99 30 94 52 68 66" />
+
+  
+  <g transform="translate(-30, 36)">
+    <path d="M 32 70 C 6 80 4 100 15 109" />
+
+    
+    
+  </g>
+
+  <g transform="translate(-30, 36) rotate(-45 15 109)">
+<path
+      d="M 10.8 104.5 L 15 109.5 L 20.2 106.3"
+      strokeDasharray="none"
+      strokeWidth="1.1"
+    />
+    </g>
+</g>
+
+
+
+  <text
+    className="font-achiko font-black"
+    fill="#F4EBD0"
+    fontSize="15"
+    letterSpacing="0.6"
+    textAnchor="middle"
+  >
+    <textPath href={`#hello-${uid}`} startOffset="50%">
+      {t("poster.hello")}
+    </textPath>
+  </text>
+</svg>
+
+
+      <div className="absolute inset-x-0  z-[1] flex items-end justify-center pointer-events-none top-[10%]">
+        <div className="relative h-[80%] w-[80%] flex items-end justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/yann.png"
@@ -311,24 +368,15 @@ function Poster({ reduce }: { reduce: boolean | null }) {
       </ul>
 
       {/* « I'm Yannick » : le vrai h1 de la page (« Hello » est lu en début de titre) */}
-      <h1 className="absolute bottom-[1%] left-[3%] z-20 font-achiko font-black leading-[0.88] drop-shadow-[0_6px_14px_rgba(0,0,0,.7)]">
+      <h1 className="absolute bottom-[0%] left-[3%] z-20 font-achiko font-black leading-[0.88] drop-shadow-[0_6px_14px_rgba(0,0,0,.7)]">
         <span className="sr-only">{t("poster.hello")} </span>
         <span className="block text-[clamp(2.4rem,11vw,5rem)] text-white">
           {t("poster.im")}
         </span>
-        <span className="block text-[clamp(3rem,15vw,6.6rem)] text-[#FFC82C]">{FIRST_NAME}</span>
+        
       </h1>
 
-      {/* accroche + flèche */}
-      <Link
-        href="/PROJECT"
-        className="group absolute bottom-[4%] right-[2%] z-20 flex max-w-[34%] items-center gap-2 rounded-[3px] text-[clamp(.65rem,2.6vw,.95rem)] font-light leading-snug text-[#F4EBD0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FFC82C]"
-      >
-        <span>{t("poster.tagline")}</span>
-        <span aria-hidden="true" className="text-xl font-bold text-[#FFC82C] transition-transform motion-reduce:transition-none group-hover:translate-x-1">
-          →
-        </span>
-      </Link>
+      
     </div>
   );
 }
@@ -345,17 +393,15 @@ export default function About() {
   const activeIndex = GROUPS.findIndex((g) => g.id === active);
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-[#0B0D18] pb-24 pt-28 font-azurio text-[#F8F9FA]">
+    <div className="relative min-h-screen  bg-[#0B0D18] pb-24 pt-28 font-azurio text-[#F8F9FA]">
       {/* AFFICHE ET PRÉSENTATION */}
-      <section className="mx-auto grid max-w-6xl items-center gap-14 px-6 pb-24 pt-10 lg:grid-cols-12">
-        <div className="lg:col-span-6">
+      <section className="mx-auto md:flex max-w-7xl items-center space-x-10 block">
+        <div className="w-1/2">
           <Poster reduce={reduce} />
         </div>
 
-        <div className="space-y-8 lg:col-span-6">
-          <p className="inline-block -rotate-1 rounded-[3px] px-5 py-2 font-achiko text-base font-black text-[#F4EBD0]" style={{ background: TAG_FABRIC, ...STITCH }}>
-            Ndoh Yannick Tang
-          </p>
+        <div className="w-1/2">
+          
 
           <h2 className="font-achiko text-3xl font-black leading-[1.05] text-white md:text-5xl">
             {t("content.hero_title_prefix")} {t("content.hero_title_highlight")}
