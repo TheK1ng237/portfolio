@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -396,18 +395,12 @@ export default function Hero() {
           <h1 className="font-achiko text-4xl font-black leading-[1.04] text-white md:text-5xl xl:text-6xl">{t("title")}</h1>
           <p className="font-azurio max-w-md text-base font-light leading-relaxed text-gray-200 md:text-lg">{t("intro")}</p>
           <div className="font-azurio flex flex-wrap items-center gap-4 pt-1">
-            <Link
-              href="/PROJECT"
-              className="inline-flex items-center rounded-xl bg-[#FFC82C] px-7 py-4 text-sm font-bold text-[#0B0D18] transition-colors hover:bg-[#ffd75e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {t("cta_projects")}
-            </Link>
             <a
               href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-xl border border-[#E9D8A6]/50 px-7 py-4 text-sm font-bold text-white transition-colors hover:border-[#E9D8A6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-flex items-center rounded-[3px] border-2 border-[#E9D8A6] bg-[#FFC82C] px-7 py-4 text-sm font-black tracking-wide text-[#141A3F] shadow-[0_5px_0_#8A6A12,0_10px_18px_rgba(0,0,0,.35)] transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-[#FFD75E] hover:shadow-[0_6px_0_#8A6A12,0_12px_22px_rgba(0,0,0,.4)] active:translate-y-1 active:shadow-[0_2px_0_#8A6A12,0_4px_8px_rgba(0,0,0,.3)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               {t("cta_cv")}
             </a>
