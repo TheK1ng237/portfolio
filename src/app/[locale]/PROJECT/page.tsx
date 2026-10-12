@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
@@ -8,9 +8,9 @@ import { Project } from "@/app/type";
 import { apiFetch } from "@/lib/api";
 
 /**
- * Page Projets : un mur de briques de terre non crépi, où chaque projet est une feuille
- * d'avocatier épinglée sur une ligne de joint. Le mur sert de grille : les joints horizontaux
- * sont les rails sur lesquels les feuilles s'accrochent.
+ * Page Projets : un mur de briques de terre non crépi. Une corde de raphia est tendue le long de chaque
+ * joint horizontal ; chaque projet est un pagne accroché à la corde par deux pinces en bois, avec la
+ * couverture du projet imprimée sur le tissu. Les joints du mur sont les rails : les cordes s'y posent.
  */
 
 const fallbackProjects: Project[] = [
@@ -116,14 +116,15 @@ const mapProject = (item: ProjectApiItem, locale: string): Project => ({
 /* ---------------------------------------------------------------------------
  * Le mur : briques de terre cuite, joints foncés visibles, grain.
  * Une rangée = 44 px (brique 40 + joint 4). La tuile fait 11 rangées : c'est aussi la hauteur
- * d'une ligne de feuilles, donc chaque épingle tombe sur un joint.
+ * d'une ligne de pagnes ; les cordes se posent sur un joint (toutes les 44 px).
  * ------------------------------------------------------------------------- */
 
 const COURSE = 44;
 const COURSES = 11;
 const TILE_W = 600;
 const TILE_H = COURSE * COURSES; // 484
-const PIN_Y = COURSE - 2; // un joint horizontal, à 42 px du haut d'une ligne
+const ROW = COURSE * 8; // 352 : hauteur d'une ligne de pagnes (multiple d'une rangée de briques)
+const ROPE_Y = COURSE - 2; // la corde se pose sur un joint, à 42 px du haut d'une ligne
 
 const BRICK_TONES = ["#B5573A", "#A94E34", "#BE6140", "#9F4A32", "#B85D3C", "#C26A45", "#A3472F"];
 
@@ -194,80 +195,55 @@ function Wall() {
 }
 
 /* ---------------------------------------------------------------------------
- * La feuille d'avocatier (200 x 440) : pétiole en haut, pointe en bas.
+ * Corde de raphia, pince à linge en bois, épingle en bois
  * ------------------------------------------------------------------------- */
 
-const BLADE =
-  "M100 44C142 62 182 130 176 230C171 320 132 396 100 438C68 396 29 320 24 230C18 130 58 62 100 44Z";
-
-function veins() {
-  const out: string[] = [];
-  for (let k = 0; k < 6; k++) {
-    const y = 96 + k * 52;
-    const t = (y - 44) / 394;
-    const hw = 78 * Math.pow(Math.sin(Math.PI * Math.min(1, t * 0.97 + 0.02)), 0.8);
-    for (const s of [-1, 1]) {
-      out.push(`M100 ${y}Q${100 + s * hw * 0.5} ${y - 4} ${100 + s * hw * 0.86} ${y - 30}`);
-    }
-  }
-  return out;
-}
-const VEINS = veins();
-
-function Leaf({ project }: { project: Project }) {
-  const id = `leaf-${project.id}`;
+function Rope() {
   return (
-    <svg viewBox="0 0 200 440" aria-hidden="true" className="block h-auto w-full">
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute -left-[100vw] -right-[100vw] z-0 block h-[7px] rounded-full"
+      style={{
+        top: ROPE_Y - 3,
+        background: "repeating-linear-gradient(115deg, #D8B87A 0 4px, #9C7A45 4px 8px)",
+        boxShadow: "0 6px 6px rgba(26,10,5,.5)",
+      }}
+    />
+  );
+}
+
+/** Pince à linge en bois : deux branches, un ressort en métal. */
+function Peg() {
+  const uid = useId().replace(/:/g, "");
+  return (
+    <svg width="14" height="38" viewBox="0 0 14 38" aria-hidden="true" focusable="false" style={{ filter: "drop-shadow(2px 4px 2px rgba(20,8,4,.55))" }}>
       <defs>
-        <clipPath id={`${id}-clip`}>
-          <path d={BLADE} />
-        </clipPath>
-        <linearGradient id={`${id}-green`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#4B7A3E" />
-          <stop offset="1" stopColor="#254A2B" />
-        </linearGradient>
-        <linearGradient id={`${id}-gloss`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#fff" stopOpacity="0.2" />
-          <stop offset="0.45" stopColor="#fff" stopOpacity="0" />
-          <stop offset="1" stopColor="#000" stopOpacity="0.18" />
+        <linearGradient id={`pg-${uid}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#D9A867" />
+          <stop offset="0.55" stopColor="#A9743A" />
+          <stop offset="1" stopColor="#7A4B22" />
         </linearGradient>
       </defs>
-      <path d="M100 8V50" stroke="#2D5A31" strokeWidth="5" strokeLinecap="round" />
-      <path d={BLADE} fill={`url(#${id}-green)`} />
-      <g clipPath={`url(#${id}-clip)`}>
-        {project.image && (
-          <image href={project.image} x="20" y="44" width="160" height="394" preserveAspectRatio="xMidYMid slice" />
-        )}
-        <rect x="0" y="0" width="200" height="440" fill="#2F6A3A" opacity="0.34" />
-        <rect x="0" y="0" width="200" height="440" fill={`url(#${id}-gloss)`} />
-        <path d="M100 46C101 160 99 300 100 436" stroke="#D5E3A6" strokeOpacity="0.7" strokeWidth="3" fill="none" strokeLinecap="round" />
-        {VEINS.map((d, i) => (
-          <path key={i} d={d} stroke="#D5E3A6" strokeOpacity="0.4" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-        ))}
-      </g>
-      <path d={BLADE} fill="none" stroke="#1B3A20" strokeWidth="2.2" />
+      <rect x="1" y="1" width="12" height="36" rx="3" fill={`url(#pg-${uid})`} stroke="#4A2C14" strokeWidth="1" />
+      <path d="M7 5V34" stroke="#5A3618" strokeOpacity="0.55" strokeWidth="1.2" />
+      <rect x="0" y="14" width="14" height="4" rx="1.5" fill="#7C838C" stroke="#4B5159" strokeWidth="0.8" />
     </svg>
   );
 }
 
 /** Épingle en bois : tête tournée, veinage, ombre portée sur le mur. */
 function Pin({ size = 28 }: { size?: number }) {
+  const uid = useId().replace(/:/g, "");
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 28 28"
-      aria-hidden="true"
-      style={{ filter: "drop-shadow(2px 4px 2px rgba(20,8,4,.55))" }}
-    >
+    <svg width={size} height={size} viewBox="0 0 28 28" aria-hidden="true" focusable="false" style={{ filter: "drop-shadow(2px 4px 2px rgba(20,8,4,.55))" }}>
       <defs>
-        <radialGradient id="pin-wood" cx="35%" cy="30%" r="80%">
+        <radialGradient id={`pw-${uid}`} cx="35%" cy="30%" r="80%">
           <stop offset="0" stopColor="#D9A867" />
           <stop offset="0.6" stopColor="#A9743A" />
           <stop offset="1" stopColor="#6A4120" />
         </radialGradient>
       </defs>
-      <circle cx="14" cy="14" r="12" fill="url(#pin-wood)" stroke="#4A2C14" strokeWidth="1" />
+      <circle cx="14" cy="14" r="12" fill={`url(#pw-${uid})`} stroke="#4A2C14" strokeWidth="1" />
       <path d="M5 11C9 8 19 8 23 11M4.5 15C9 12 19 12 23.5 15M6 19.5C10 17 18 17 22 19.5" stroke="#5A3618" strokeOpacity="0.5" strokeWidth="1" fill="none" />
       <ellipse cx="10" cy="9" rx="3.4" ry="2" fill="#fff" opacity="0.28" />
     </svg>
@@ -275,11 +251,18 @@ function Pin({ size = 28 }: { size?: number }) {
 }
 
 /* ---------------------------------------------------------------------------
- * Une feuille épinglée
+ * Un pagne accroché à la corde
  * ------------------------------------------------------------------------- */
 
-const REST = [-4, 3, -2, 5, -3];
-const SHIFT = [-36, 26, -16, 40, -28];
+const REST = [-1.2, 1, -0.8, 1.4, -1];
+const SHIFT = [-24, 18, -10, 26, -16];
+
+// lisière tissée : fines rayures, comme au bord d'un pagne
+const SELVEDGE =
+  "repeating-linear-gradient(90deg, #EDE6D0 0 2px, #0E1747 2px 5px, #FFC82C 5px 6px, #0E1747 6px 9px, #FF3B56 9px 10px, #0E1747 10px 14px)";
+// grain du tissu par-dessus l'impression
+const WEAVE =
+  "repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.1) 0 2px, transparent 2px 4px)";
 
 function Specimen({
   project,
@@ -298,18 +281,16 @@ function Specimen({
 }) {
   const rest = REST[order % REST.length];
   const dx = SHIFT[order % SHIFT.length];
-  const W = project.featured ? 196 : 176;
-  const H = W * 2.2;
-  const pinY = W * 0.07;
-  const gust = (order % 2 === 0 ? 1 : -1) * 9;
+  const gust = (order % 2 === 0 ? 1 : -1) * 3.5;
 
   return (
-    <li className="relative" style={{ height: TILE_H }}>
+    <li className="relative" style={{ height: ROW }}>
+      <Rope />
       <div
-        className="relative mx-auto"
+        className="relative z-10 mx-auto"
         style={{
-          width: W,
-          marginTop: PIN_Y - pinY,
+          width: "min(420px, 100%)",
+          marginTop: ROPE_Y + 4,
           transform: `translateX(${dx}px)`,
           opacity: dim ? 0.28 : 1,
           filter: dim ? "grayscale(0.85)" : undefined,
@@ -317,27 +298,36 @@ function Specimen({
         }}
       >
         <motion.div
-          style={{ transformOrigin: `50% ${(pinY / H) * 100}%`, height: H }}
+          style={{ transformOrigin: "50% 0%" }}
           initial={{ rotate: rest }}
           whileInView={
             reduced
               ? undefined
-              : { rotate: [rest, rest + gust, rest - gust * 0.6, rest + gust * 0.3, rest - gust * 0.1, rest], transition: { duration: 2.4, delay: 0.12 * order, ease: "easeOut" } }
+              : { rotate: [rest, rest + gust, rest - gust * 0.6, rest + gust * 0.3, rest - gust * 0.1, rest], transition: { duration: 2.6, delay: 0.12 * order, ease: "easeOut" } }
           }
           viewport={{ once: true, margin: "-8% 0px" }}
-          whileHover={reduced ? undefined : { rotate: rest + 3, y: -4, transition: { type: "spring", stiffness: 140, damping: 11 } }}
+          whileHover={reduced ? undefined : { rotate: rest + 1.5, y: -3, transition: { type: "spring", stiffness: 140, damping: 12 } }}
         >
           <button
             type="button"
             aria-label={ariaLabel}
             onClick={(e) => onOpen(project, e.currentTarget)}
-            className="relative block w-full cursor-pointer rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FFC82C]"
-            style={{ filter: "drop-shadow(10px 14px 10px rgba(26,10,5,.5))" }}
+            className="relative block aspect-[1.45/1] w-full cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FFC82C]"
+            style={{ filter: "drop-shadow(8px 12px 10px rgba(26,10,5,.5))" }}
           >
-            <Leaf project={project} />
+            {/* le tissu : couverture imprimée, grain, lisières et ourlets */}
+            <span className="absolute inset-0 block overflow-hidden rounded-[2px] bg-[#0E1747]">
+              <Image src={project.image} alt="" fill sizes="(min-width: 1024px) 420px, 92vw" className="object-cover" style={{ filter: "saturate(.92) contrast(.97)" }} />
+              <span aria-hidden="true" className="absolute inset-0" style={{ backgroundImage: WEAVE }} />
+              <span aria-hidden="true" className="absolute inset-y-0 left-0 w-3.5" style={{ background: SELVEDGE }} />
+              <span aria-hidden="true" className="absolute inset-y-0 right-0 w-3.5" style={{ background: SELVEDGE }} />
+              <span aria-hidden="true" className="absolute inset-x-3.5 top-0 h-3 border-b-2 border-dashed border-[#E9D8A6]/70 bg-[#141A3F]/80" />
+              <span aria-hidden="true" className="absolute inset-x-3.5 bottom-0 h-3 border-t-2 border-dashed border-[#E9D8A6]/70 bg-[#141A3F]/80" />
+            </span>
+
             {/* étiquette en tissu indigo, cousue à la raphia */}
             <span
-              className="absolute bottom-[7%] left-1/2 block w-[84%] -translate-x-1/2 rotate-[-2deg] rounded-[3px] px-3 pb-2 pt-3.5 text-left"
+              className="absolute -bottom-5 left-6 block w-[52%] min-w-[150px] -rotate-2 rounded-[3px] px-3 pb-2 pt-3.5 text-left"
               style={{
                 background:
                   "repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.1) 0 2px, transparent 2px 4px), #2B3A8C",
@@ -351,10 +341,15 @@ function Specimen({
               <span className="mt-0.5 block text-[11px] text-[#E9D8A6]/85">{project.version}</span>
             </span>
           </button>
+
+          {/* les deux pinces qui tiennent le pagne à la corde */}
+          <span aria-hidden="true" className="pointer-events-none absolute -top-3 left-[12%]">
+            <Peg />
+          </span>
+          <span aria-hidden="true" className="pointer-events-none absolute -top-3 right-[12%]">
+            <Peg />
+          </span>
         </motion.div>
-        <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ top: pinY }}>
-          <Pin />
-        </div>
       </div>
     </li>
   );
@@ -419,12 +414,18 @@ export default function ProjectsPage() {
     lastFocus.current?.focus();
   }
 
+  // Fiche ouverte : focus sur « fermer », Échap pour fermer, pas de défilement derrière
   useEffect(() => {
     if (!selected) return;
     closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previous;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
@@ -462,12 +463,12 @@ export default function ProjectsPage() {
         {matches === 0 && <p className="mt-6 text-sm text-gray-300">{t("filters.no_projects")}</p>}
       </header>
 
-      {/* Le mur */}
+      {/* Le mur et ses cordes */}
       <section>
         <div aria-hidden="true" className="h-5 bg-gradient-to-b from-[#6B4527] via-[#4A2E18] to-[#2A190C] shadow-[0_14px_22px_rgba(0,0,0,.55)]" />
         <div className="relative overflow-hidden bg-[#4A281C]">
           <Wall />
-          <ul className="relative mx-auto grid max-w-6xl grid-cols-1 px-6 pb-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="relative mx-auto grid max-w-6xl grid-cols-1 px-6 pb-6 lg:grid-cols-2">
             {projects.map((project, i) => (
               <Specimen
                 key={project.id}
@@ -491,7 +492,7 @@ export default function ProjectsPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 z-[99999] flex items-start justify-center overflow-y-auto overscroll-contain bg-black/80 p-3 backdrop-blur-md sm:items-center sm:p-6"
+            className="fixed inset-0 z-[99999] flex items-start justify-center overflow-y-auto overscroll-contain bg-black/80 p-3 sm:items-center sm:p-6"
           >
             <motion.div
               role="dialog"
@@ -522,7 +523,7 @@ export default function ProjectsPage() {
 
               <div className="grid gap-6 md:grid-cols-[1.15fr_0.85fr]">
                 <div className="relative h-52 w-full overflow-hidden rounded-[3px] border-2 border-[#141A3F]/70 bg-black sm:h-72">
-                  <Image src={selected.image} alt={selected.title} fill className="object-cover" />
+                  <Image src={selected.image} alt={selected.title} fill sizes="(min-width: 768px) 420px, 92vw" className="object-cover" />
                 </div>
 
                 <div className="flex flex-col justify-between gap-6">
