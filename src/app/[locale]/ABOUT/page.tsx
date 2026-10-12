@@ -260,7 +260,7 @@ function Poster({ reduce }: { reduce: boolean | null }) {
   return (
     <div className="relative aspect-[4/5] w-full   ">
       {/* fils décoratifs : deux arcs cousus, derrière le portrait */}
-      
+
       {/* <svg viewBox="0 0 100 185" aria-hidden="true" focusable="false" className="absolute  h-full w-full overflow-visible">
         <defs>
           <path id={`hello-${uid}`} d="M 22 27 Q 50 -2 78 27" />
@@ -278,60 +278,60 @@ function Poster({ reduce }: { reduce: boolean | null }) {
       </svg> */}
 
 
-{/* Fils décoratifs : arcs cousus et flèche dorée */}
-<svg
-  viewBox="0 0 100 185"
-  aria-hidden="true"
-  focusable="false"
-  className="absolute h-full w-full overflow-visible"
->
-  <defs>
-    <path id={`hello-${uid}`} d="M 22 27 Q 50 -2 78 27" />
-  </defs>
+      {/* Fils décoratifs : arcs cousus et flèche dorée */}
+      <svg
+        viewBox="0 0 100 185"
+        aria-hidden="true"
+        focusable="false"
+        className="absolute h-full w-full overflow-visible"
+      >
+        <defs>
+          <path id={`hello-${uid}`} d="M 22 27 Q 50 -2 78 27" />
+        </defs>
 
- 
-<g
-  fill="none"
-  stroke="rgba(233,216,166,0.95)"
-  strokeWidth="0.8"
-  strokeDasharray="1.8 1.4"
-  strokeLinecap="round"
-  strokeLinejoin="round"
->
-  {/* Courbe supérieure droite */}
-  <path d="M 78 24 C 99 30 94 52 68 66" />
 
-  
-  <g transform="translate(-30, 36)">
-    <path d="M 32 70 C 6 80 4 100 15 109" />
+        <g
+          fill="none"
+          stroke="rgba(233,216,166,0.95)"
+          strokeWidth="0.8"
+          strokeDasharray="1.8 1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {/* Courbe supérieure droite */}
+          <path d="M 78 24 C 99 30 94 52 68 66" />
 
-    
-    
-  </g>
 
-  <g transform="translate(-30, 36) rotate(-45 15 109)">
-<path
-      d="M 10.8 104.5 L 15 109.5 L 20.2 106.3"
-      strokeDasharray="none"
-      strokeWidth="1.1"
-    />
-    </g>
-</g>
+          <g transform="translate(-30, 30)">
+            <path d="M 32 70 C 6 80 4 100 15 109" />
 
 
 
-  <text
-    className="font-achiko font-black"
-    fill="#F4EBD0"
-    fontSize="15"
-    letterSpacing="0.6"
-    textAnchor="middle"
-  >
-    <textPath href={`#hello-${uid}`} startOffset="50%">
-      {t("poster.hello")}
-    </textPath>
-  </text>
-</svg>
+          </g>
+
+          <g transform="translate(-30, 30) rotate(-45 15 109)">
+            <path
+              d="M 10.8 104.5 L 15 109.5 L 20.2 106.3"
+              strokeDasharray="none"
+              strokeWidth="1.1"
+            />
+          </g>
+        </g>
+
+
+
+        <text
+          className="font-achiko font-black"
+          fill="#F4EBD0"
+          fontSize="15"
+          letterSpacing="0.6"
+          textAnchor="middle"
+        >
+          <textPath href={`#hello-${uid}`} startOffset="50%">
+            {t("poster.hello")}
+          </textPath>
+        </text>
+      </svg>
 
 
       <div className="absolute inset-x-0  z-[1] flex items-end justify-center pointer-events-none top-[10%]">
@@ -373,10 +373,10 @@ function Poster({ reduce }: { reduce: boolean | null }) {
         <span className="block text-[clamp(2.4rem,11vw,5rem)] text-white">
           {t("poster.im")}
         </span>
-        
+
       </h1>
 
-      
+
     </div>
   );
 }
@@ -395,20 +395,18 @@ export default function About() {
   return (
     <div className="relative min-h-screen  bg-[#0B0D18] pb-24 pt-28 font-azurio text-[#F8F9FA]">
       {/* AFFICHE ET PRÉSENTATION */}
-      <section className="mx-auto md:flex max-w-7xl items-center space-x-10 block">
-        <div className="w-1/2">
+      <section className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12 lg:gap-16 lg:px-8">
+        <div className="mx-auto w-full max-w-[32rem] md:max-w-none">
           <Poster reduce={reduce} />
         </div>
 
-        <div className="w-1/2">
-          
-
+        <div className="flex w-full flex-col gap-6">
           <h2 className="font-achiko text-3xl font-black leading-[1.05] text-white md:text-5xl">
             {t("content.hero_title_prefix")} {t("content.hero_title_highlight")}
           </h2>
           <p className="max-w-2xl text-base font-light leading-relaxed text-gray-200 md:text-lg">{t("content.hero_description")}</p>
 
-          <dl className="grid gap-8 sm:grid-cols-2">
+          <dl className="grid gap-6 sm:grid-cols-2 sm:gap-8">
             <div className="border-t-2 border-dashed border-[#E9D8A6]/50 pt-4">
               <dt className="font-achiko text-xl font-black text-[#FFC82C]">{t("content.engineering_title")}</dt>
               <dd className="mt-2 text-sm font-light leading-relaxed text-gray-300">{t("content.engineering_description")}</dd>
@@ -419,19 +417,19 @@ export default function About() {
             </div>
           </dl>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
             <a
               href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-xl bg-[#FFC82C] px-8 py-4 text-sm font-bold text-[#141A3F] transition-colors hover:bg-[#ffd75e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-block rounded-xl bg-[#FFC82C] px-6 py-3 text-center text-sm font-bold text-[#141A3F] transition-colors hover:bg-[#ffd75e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-8 sm:py-4"
             >
               {t("content.download_cv")}
             </a>
             <Link
               href="/CONTACT"
-              className="inline-block rounded-xl border border-[#E9D8A6]/50 px-8 py-4 text-sm font-bold text-white transition-colors hover:border-[#E9D8A6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-block rounded-xl border border-[#E9D8A6]/50 px-6 py-3 text-center text-sm font-bold text-white transition-colors hover:border-[#E9D8A6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-8 sm:py-4"
             >
               {t("poster.contact")}
             </Link>
@@ -461,9 +459,8 @@ export default function About() {
                           type="button"
                           aria-pressed={active === g.id}
                           onClick={() => setActive(g.id)}
-                          className={`flex items-center gap-2.5 rounded-[3px] px-4 py-2.5 text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C] ${
-                            active === g.id ? "bg-[#FFC82C] text-[#141A3F]" : "bg-[#2B3A8C] text-[#F4EBD0] hover:bg-[#3446A8]"
-                          }`}
+                          className={`flex items-center gap-2.5 rounded-[3px] px-4 py-2.5 text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C] ${active === g.id ? "bg-[#FFC82C] text-[#141A3F]" : "bg-[#2B3A8C] text-[#F4EBD0] hover:bg-[#3446A8]"
+                            }`}
                           style={active === g.id ? undefined : STITCH}
                         >
                           <span aria-hidden="true" className="size-3.5 rounded-full ring-2 ring-black/40" style={{ background: TONES[i] }} />
