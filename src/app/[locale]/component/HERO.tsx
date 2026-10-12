@@ -1,20 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 
-/**
- * Hero : reproduit la boucle de la vidéo de référence (6 s).
- *  0,0 - 0,5 s  empilé
- *  0,5 - 1,6 s  les plaques montent (verticalement, comme dans la vidéo) ; le disque sort après
- *  1,6 - 4,5 s  pause écartée
- *  4,5 - 5,5 s  tout redescend ; le disque se repose dans son trou
- * Les plaques sont opaques, la plaque du dessus est en L et percée : on voit les couches du dessous
- * par le trou, la fenêtre, la fente et l'angle manquant.
- * On dessine à plat dans le plan (u, v) ; la matrice ISO l'incline.
- */
+
 
 const N = 150; // côté d'une plaque
 const T = 9; // épaisseur
@@ -48,8 +38,7 @@ const FILL: Record<LayerId, string> = {
   motif: COL.indigo,
 };
 
-// Contour de chaque plaque (plan u, v). La plaque du dessus : en L, avec un trou rond,
-// une fenêtre et deux fentes (fill-rule evenodd => ce sont des trous).
+
 const OUTLINE: Record<LayerId, string> = {
   data: `M0 0H${N}V${N}H0Z`,
   components: `M0 0H${N}V${N}H0Z`,
@@ -299,9 +288,8 @@ function CodeCard() {
 export default function Hero() {
   const t = useTranslations("Hero");
   const reduced = !!useReducedMotion();
-  const [active, setActive] = useState<LayerId | null>(null); // survol / focus clavier
+  const [active, setActive] = useState<LayerId | null>(null); 
 
-  // La boucle de la vidéo tourne seule. Au survol (ou en mouvement réduit), les plaques restent écartées.
   const hold = reduced || active !== null;
 
   const GRID = Array.from({ length: 25 }, (_, i) => -480 + i * 40);
@@ -367,27 +355,7 @@ export default function Hero() {
             ))}
           </svg>
 
-          <ul className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {[...LAYERS].reverse().map((id) => (
-              <li key={id}>
-                <button
-                  type="button"
-                  onMouseEnter={() => setActive(id)}
-                  onMouseLeave={() => setActive(null)}
-                  onFocus={() => setActive(id)}
-                  onBlur={() => setActive(null)}
-                  className={`font-azurio w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FFC82C] ${
-                    active === id ? "border-[#FFC82C] text-white" : "border-white/15 text-gray-300 hover:border-white/40"
-                  }`}
-                >
-                  {t(`layers.${id}.name`)}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <p aria-live="polite" className="font-azurio mt-3 min-h-[3rem] max-w-md text-sm text-gray-300">
-            {active ? t(`layers.${active}.desc`) : t("hint")}
-          </p>
+          
         </div>
 
         {/* DROITE : texte */}
@@ -396,18 +364,12 @@ export default function Hero() {
           <h1 className="font-achiko text-4xl font-black leading-[1.04] text-white md:text-5xl xl:text-6xl">{t("title")}</h1>
           <p className="font-azurio max-w-md text-base font-light leading-relaxed text-gray-200 md:text-lg">{t("intro")}</p>
           <div className="font-azurio flex flex-wrap items-center gap-4 pt-1">
-            <Link
-              href="/PROJECT"
-              className="inline-flex items-center rounded-xl bg-[#FFC82C] px-7 py-4 text-sm font-bold text-[#0B0D18] transition-colors hover:bg-[#ffd75e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {t("cta_projects")}
-            </Link>
             <a
               href="/cv/NDOH YANNICK TANG - Full Stack Developer - CV.pdf"
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-xl border border-[#E9D8A6]/50 px-7 py-4 text-sm font-bold text-white transition-colors hover:border-[#E9D8A6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-flex items-center rounded-[3px] border-2 border-[#E9D8A6] bg-[#FFC82C] px-7 py-4 text-sm font-black tracking-wide text-[#141A3F] shadow-[0_5px_0_#8A6A12,0_10px_18px_rgba(0,0,0,.35)] transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-[#FFD75E] hover:shadow-[0_6px_0_#8A6A12,0_12px_22px_rgba(0,0,0,.4)] active:translate-y-1 active:shadow-[0_2px_0_#8A6A12,0_4px_8px_rgba(0,0,0,.3)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               {t("cta_cv")}
             </a>

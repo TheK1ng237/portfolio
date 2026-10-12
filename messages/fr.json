@@ -21,12 +21,14 @@
   },
    "Hero": {
     "name": "Ndoh Yannick Tang, développeur full-stack au Cameroun",
-    "title": "Du motif au composant.",
+    "title": "Des concepts africains aux composants du web moderne",
     "intro": "Je transforme des motifs textiles africains, comme le Ndop, en tokens de design, puis en interfaces Next.js et en API Node.",
     "cta_projects": "Voir mes projets",
     "cta_cv": "Télécharger mon CV",
     "diagram_label": "Schéma isométrique de quatre couches empilées : un motif, des tokens, des composants et des données.",
     "hint": "Survole une couche pour voir son rôle.",
+    "pause_layers": "Mettre en pause",
+    "resume_layers": "Reprendre le défilement",
     "layers": {
       "motif": { "name": "Motif", "desc": "Le point de départ : un motif d'inspiration Ndop." },
       "tokens": { "name": "Tokens", "desc": "Couleurs, formes et rythmes extraits du motif." },
@@ -830,12 +832,15 @@
     "title_prefix": "Avis",
     "title_highlight": "Clients & partenaires",
     "description": "Vous avez travaillé avec Thek1ng237 ? Laissez votre avis pour partager votre retour d’expérience sur nos réalisations web et applicatives.",
+    "list_label": "Liste des témoignages",
     "actions": {
       "leave_testimonial": "Laisser un témoignage",
       "close": "Fermer",
       "cancel": "Annuler",
       "submitting": "Envoi…",
-      "submit": "Envoyer mon témoignage"
+      "submit": "Envoyer mon témoignage",
+      "pause_rotation": "Mettre en pause",
+      "resume_rotation": "Reprendre le défilement"
     },
     "form": {
       "share_experience": "Partagez votre expérience",

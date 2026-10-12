@@ -22,12 +22,14 @@
  
   "Hero": {
     "name": "Ndoh Yannick Tang, full-stack developer in Cameroon",
-    "title": "From pattern to component.",
+    "title": "from African concepts to the components of  modern web",
     "intro": "I turn African textile patterns, like the Ndop, into design tokens, then into Next.js interfaces and Node APIs.",
     "cta_projects": "See my projects",
     "cta_cv": "Download my CV",
     "diagram_label": "Isometric diagram of four stacked layers: a pattern, tokens, components and data.",
     "hint": "Hover a layer to see its role.",
+    "pause_layers": "Pause rotation",
+    "resume_layers": "Resume rotation",
     "layers": {
       "motif": {
         "name": "Pattern",
@@ -825,12 +827,15 @@
     "title_prefix": "Client",
     "title_highlight": "& partner testimonials",
     "description": "Worked with Thek1ng237? Share your experience with our web and application projects.",
+    "list_label": "Testimonials list",
     "actions": {
       "leave_testimonial": "Leave a testimonial",
       "close": "Close",
       "cancel": "Cancel",
       "submitting": "Sending…",
-      "submit": "Send testimonial"
+      "submit": "Send testimonial",
+      "pause_rotation": "Pause rotation",
+      "resume_rotation": "Resume rotation"
     },
     "form": {
       "share_experience": "Share your experience",
