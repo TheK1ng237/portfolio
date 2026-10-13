@@ -10,12 +10,93 @@ import { apiFetch } from "@/lib/api";
 /**
  * Page Projets : un mur de briques de terre non crépi. Une corde de raphia est tendue le long de chaque
  * joint horizontal ; chaque projet est un pagne accroché à la corde par deux pinces en bois, avec la
- * couverture du projet imprimée sur le tissu. Les joints du mur sont les rails : les cordes s'y posent.
+ * couverture du projet imprimée sur le tissu. Quatre sections, chacune ouverte par une bannière de tissu :
+ * culture africaine, projets communautaires, challenges, open source.
+ * Tout ce qui est empilé sur le mur a une hauteur multiple d'une rangée de briques (44 px) : les cordes
+ * tombent donc toujours sur un joint.
  */
 
-const fallbackProjects: Project[] = [
+type GroupId = "culture" | "community" | "challenges" | "opensource";
+type Item = Project & { group: GroupId };
+
+/* ---------------------------------------------------------------------------
+ * Les quatre sections (textes FR / EN) et la bande tissée de chaque bannière
+ * ------------------------------------------------------------------------- */
+
+const GROUPS: {
+  id: GroupId;
+  band: string;
+  fr: { short: string; title: string; intro: string };
+  en: { short: string; title: string; intro: string };
+}[] = [
+  {
+    id: "culture",
+    band: "repeating-linear-gradient(90deg, #EDE6D0 0 3px, #0E1747 3px 8px, #FFC82C 8px 10px, #0E1747 10px 16px)",
+    fr: {
+      short: "Culture africaine",
+      title: "Promouvoir la culture africaine",
+      intro: "Des interfaces qui font vivre les motifs, les tissus et les récits d'Afrique.",
+    },
+    en: {
+      short: "African culture",
+      title: "Promoting African culture",
+      intro: "Interfaces that bring African patterns, textiles and stories to life.",
+    },
+  },
+  {
+    id: "community",
+    band: "repeating-linear-gradient(90deg, #FFC82C 0 3px, #14070A 3px 8px, #FF3B56 8px 10px, #14070A 10px 16px)",
+    fr: {
+      short: "Communautaires",
+      title: "Projets communautaires",
+      intro: "Les plateformes construites en bénévole avec Google Developer Groups Douala.",
+    },
+    en: {
+      short: "Community",
+      title: "Community projects",
+      intro: "Platforms built as a volunteer with Google Developer Groups Douala.",
+    },
+  },
+  {
+    id: "challenges",
+    band: "repeating-linear-gradient(90deg, #FF3B56 0 3px, #1A0F0C 3px 8px, #F4EFE0 8px 10px, #1A0F0C 10px 16px)",
+    fr: {
+      short: "Mes challenges",
+      title: "Mes challenges",
+      intro: "Des défis que je me suis donnés : une boutique, des cartes de vœux, des portfolios pour mes pairs.",
+    },
+    en: {
+      short: "My challenges",
+      title: "My challenges",
+      intro: "Challenges I set myself: a shop, greeting cards, portfolios for my peers.",
+    },
+  },
+  {
+    id: "opensource",
+    band: "repeating-linear-gradient(90deg, #FFB300 0 4px, #111111 4px 7px, #0E8F4F 7px 11px, #111111 11px 14px, #E4283E 14px 18px, #111111 18px 21px)",
+    fr: {
+      short: "Open source",
+      title: "Open source",
+      intro: "Un standard de design numérique ouvert, né du patrimoine textile africain.",
+    },
+    en: {
+      short: "Open source",
+      title: "Open source",
+      intro: "An open digital design standard, born from African textile heritage.",
+    },
+  },
+];
+
+/* ---------------------------------------------------------------------------
+ * Les projets
+ * Section « culture » : tes projets actuels (textes dans tes fichiers de traduction).
+ * Autres sections : textes ci-dessous, d'après ton CV. Images à déposer dans /public/projet/.
+ * ------------------------------------------------------------------------- */
+
+const fallbackProjects: Item[] = [
   {
     id: 1,
+    group: "culture",
     title: "",
     description: "",
     image: "/projet/culture-africaine.png",
@@ -29,6 +110,7 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 2,
+    group: "culture",
     title: "",
     description: "",
     image: "/images/projet2.png",
@@ -42,6 +124,7 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 3,
+    group: "culture",
     title: "",
     description: "",
     image: "/projet3.jpg",
@@ -55,6 +138,7 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 4,
+    group: "culture",
     title: "",
     description: "",
     image: "/projet1.jpg",
@@ -68,6 +152,7 @@ const fallbackProjects: Project[] = [
   },
   {
     id: 5,
+    group: "culture",
     title: "",
     description: "",
     image: "/images/mvp1.png",
@@ -81,8 +166,191 @@ const fallbackProjects: Project[] = [
   },
 ];
 
+type Copy = { title: string; description: string };
+
+const EXTRA_PROJECTS: (Item & { copy: { fr: Copy; en: Copy } })[] = [
+  /* --- Projets communautaires : Google Developer Groups, Douala --- */
+  {
+    id: 101,
+    group: "community",
+    title: "",
+    description: "",
+    image: "/projet/devfest2026.png",
+    link: "https://devfest.gdgdouala.org/",
+    github: "https://github.com/GDG-Douala/devfest2026",
+    tech: ["Angular"],
+    category: "web",
+    featured: true,
+    isCompleted: true,
+    version: "2026",
+    copy: {
+      fr: {
+        title: "GDG Event Platform 2026",
+        description:
+          "Page d'accueil complète (couches 00 à 05), landing page du thème, du manifeste et des chiffres clés, profils et annuaire des intervenants, agenda multi-salles filtrable et pages de session.",
+      },
+      en: {
+        title: "GDG Event Platform 2026",
+        description:
+          "Complete homepage experience (layers 00–05), landing page with the theme, manifesto and key figures, speaker profiles and directory, a filterable multi-room agenda and dedicated session pages.",
+      },
+    },
+  },
+  {
+    id: 102,
+    group: "community",
+    title: "",
+    description: "",
+    image: "/projet/devfest2025.png",
+    link: "https://devfest2025.gdgdouala.org/",
+    github: "https://github.com/GDG-Douala/devfest2025",
+    tech: ["Angular"],
+    category: "web",
+    featured: false,
+    isCompleted: true,
+    version: "2025",
+    copy: {
+      fr: {
+        title: "GDG Event Marketplace 2025",
+        description: "La marketplace de l'édition 2025 : un accès simplifié aux sessions et aux offres de l'événement.",
+      },
+      en: {
+        title: "GDG Event Marketplace 2025",
+        description: "The 2025 edition marketplace: easier access to the event's sessions and offers.",
+      },
+    },
+  },
+
+  /* --- Mes challenges --- */
+  {
+    id: 201,
+    group: "challenges",
+    title: "",
+    description: "",
+    image: "/projet/lingerie.png",
+    link: "https://lingerieluxe.vercel.app",
+    github: "https://github.com/TheK1ng237/projetlingerie",
+    tech: ["Next.js", "Tailwind CSS"],
+    category: "web",
+    featured: false,
+    isCompleted: true,
+    version: "v1.0",
+    copy: {
+      fr: {
+        title: "Lingerie Luxe",
+        description: "Interface e-commerce haut de gamme : mise en page responsive et parcours d'achat fluide.",
+      },
+      en: {
+        title: "Lingerie Luxe",
+        description: "A high-end e-commerce interface: responsive layout and a smooth shopping experience.",
+      },
+    },
+  },
+  {
+    id: 202,
+    group: "challenges",
+    title: "",
+    description: "",
+    image: "/projet/christmass.png",
+    link: "https://christmass-three.vercel.app",
+    github: "https://github.com/TheK1ng237/christmass",
+    tech: ["Next.js", "Supabase", "PostgreSQL"],
+    category: "web",
+    featured: false,
+    isCompleted: true,
+    version: "v1.0",
+    copy: {
+      fr: {
+        title: "Christmas Three",
+        description: "Plateforme de cartes de vœux full-stack : authentification sécurisée et interactions dynamiques avec la base de données.",
+      },
+      en: {
+        title: "Christmas Three",
+        description: "A full-stack greeting card platform with secure authentication and dynamic database interactions.",
+      },
+    },
+  },
+  {
+    id: 203,
+    group: "challenges",
+    title: "",
+    description: "",
+    image: "/projet/salem.png",
+    link: "https://salem-kaweina.vercel.app",
+    github: "https://github.com/TheK1ng237/porfoliosalem",
+    tech: ["Next.js"],
+    category: "web",
+    featured: false,
+    isCompleted: true,
+    version: "v1.0",
+    copy: {
+      fr: {
+        title: "Portfolio Salem Kaweina",
+        description: "Un portfolio sur mesure pour un pair, pour valoriser sa marque personnelle et ses réalisations.",
+      },
+      en: {
+        title: "Salem Kaweina's portfolio",
+        description: "A custom portfolio for a peer, to showcase their personal brand and achievements.",
+      },
+    },
+  },
+  {
+    id: 204,
+    group: "challenges",
+    title: "",
+    description: "",
+    image: "/projet/gustave.png",
+    link: "https://portofoliogustave.vercel.app",
+    github: "https://github.com/TheK1ng237/portofoliogustave",
+    tech: ["Next.js"],
+    category: "web",
+    featured: false,
+    isCompleted: true,
+    version: "v1.0",
+    copy: {
+      fr: {
+        title: "Portfolio Gustave",
+        description: "Un portfolio sur mesure pour un collègue, pour valoriser sa marque personnelle et ses réalisations.",
+      },
+      en: {
+        title: "Gustave's portfolio",
+        description: "A custom portfolio for a colleague, to showcase their personal brand and achievements.",
+      },
+    },
+  },
+
+  /* --- Open source : lien et dépôt à renseigner --- */
+  {
+    id: 301,
+    group: "opensource",
+    title: "",
+    description: "",
+    image: "/projet/buni.png",
+    link: "https://buni-avs.vercel.app/",
+    github: "",
+    tech: ["Next.js", "next-intl", "Framer Motion"],
+    category: "design",
+    featured: true,
+    isCompleted: false,
+    version: "BUNI",
+    copy: {
+      fr: {
+        title: "BUNI, le standard de design africain",
+        description:
+          "Le premier système de design natif du continent : les proportions du Ndop, du Kente et de l'Adinkra traduites en pixels, avec un manifeste et une documentation ouverts.",
+      },
+      en: {
+        title: "BUNI, the African design standard",
+        description:
+          "The continent's first native design system: the proportions of Ndop, Kente and Adinkra translated into pixels, with an open manifesto and documentation.",
+      },
+    },
+  },
+];
+
 type ProjectApiItem = {
   id?: number | string;
+  group?: string;
   title?: string;
   titleFr?: string;
   titleEn?: string;
@@ -99,8 +367,11 @@ type ProjectApiItem = {
   version?: string;
 };
 
-const mapProject = (item: ProjectApiItem, locale: string): Project => ({
+const isGroup = (v?: string): v is GroupId => v === "culture" || v === "community" || v === "challenges" || v === "opensource";
+
+const mapProject = (item: ProjectApiItem, locale: string): Item => ({
   id: Number(item.id ?? Math.random()),
+  group: isGroup(item.group) ? item.group : "culture",
   title: (locale === "en" ? item.titleEn ?? item.titleFr : item.titleFr ?? item.titleEn) ?? item.title ?? "",
   description: (locale === "en" ? item.descriptionEn ?? item.descriptionFr : item.descriptionFr ?? item.descriptionEn) ?? item.description ?? "",
   image: item.image ?? "/images/mvp1.png",
@@ -112,6 +383,10 @@ const mapProject = (item: ProjectApiItem, locale: string): Project => ({
   isCompleted: item.isCompleted ?? true,
   version: item.version ?? "v1.0",
 });
+
+/** Les projets locaux des sections que l'API ne fournit pas encore, dans la langue de la page. */
+const localExtras = (locale: string): Item[] =>
+  EXTRA_PROJECTS.map(({ copy, ...project }) => ({ ...project, ...(locale === "en" ? copy.en : copy.fr) }));
 
 /* ---------------------------------------------------------------------------
  * Le mur : briques de terre cuite, joints foncés visibles, grain.
@@ -263,40 +538,33 @@ const SELVEDGE =
 // grain du tissu par-dessus l'impression
 const WEAVE =
   "repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.1) 0 2px, transparent 2px 4px)";
+// tissu uni, tant que la couverture du projet n'est pas là
+const BLANK_CLOTH = "repeating-linear-gradient(45deg, #1B2358 0 10px, #141A3F 10px 20px)";
 
 function Specimen({
   project,
   order,
-  dim,
+  centered,
   reduced,
   onOpen,
   ariaLabel,
 }: {
-  project: Project;
+  project: Item;
   order: number;
-  dim: boolean;
+  centered: boolean;
   reduced: boolean;
-  onOpen: (p: Project, el: HTMLElement) => void;
+  onOpen: (p: Item, el: HTMLElement) => void;
   ariaLabel: string;
 }) {
   const rest = REST[order % REST.length];
   const dx = SHIFT[order % SHIFT.length];
   const gust = (order % 2 === 0 ? 1 : -1) * 3.5;
+  const [broken, setBroken] = useState(false);
 
   return (
-    <li className="relative" style={{ height: ROW }}>
+    <li className={`relative ${centered ? "lg:col-span-2" : ""}`} style={{ height: ROW }}>
       <Rope />
-      <div
-        className="relative z-10 mx-auto"
-        style={{
-          width: "min(420px, 100%)",
-          marginTop: ROPE_Y + 4,
-          transform: `translateX(${dx}px)`,
-          opacity: dim ? 0.28 : 1,
-          filter: dim ? "grayscale(0.85)" : undefined,
-          transition: "opacity .35s, filter .35s",
-        }}
-      >
+      <div className="relative z-10 mx-auto" style={{ width: "min(420px, 100%)", marginTop: ROPE_Y + 4, transform: `translateX(${dx}px)` }}>
         <motion.div
           style={{ transformOrigin: "50% 0%" }}
           initial={{ rotate: rest }}
@@ -317,7 +585,19 @@ function Specimen({
           >
             {/* le tissu : couverture imprimée, grain, lisières et ourlets */}
             <span className="absolute inset-0 block overflow-hidden rounded-[2px] bg-[#0E1747]">
-              <Image src={project.image} alt="" fill sizes="(min-width: 1024px) 420px, 92vw" className="object-cover" style={{ filter: "saturate(.92) contrast(.97)" }} />
+              {broken ? (
+                <span aria-hidden="true" className="absolute inset-0" style={{ background: BLANK_CLOTH }} />
+              ) : (
+                <Image
+                  src={project.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 420px, 92vw"
+                  className="object-cover"
+                  style={{ filter: "saturate(.92) contrast(.97)" }}
+                  onError={() => setBroken(true)}
+                />
+              )}
               <span aria-hidden="true" className="absolute inset-0" style={{ backgroundImage: WEAVE }} />
               <span aria-hidden="true" className="absolute inset-y-0 left-0 w-3.5" style={{ background: SELVEDGE }} />
               <span aria-hidden="true" className="absolute inset-y-0 right-0 w-3.5" style={{ background: SELVEDGE }} />
@@ -356,27 +636,64 @@ function Specimen({
 }
 
 /* ---------------------------------------------------------------------------
+ * Bannière de section : une bande de tissu épinglée au mur
+ * Hauteur fixe, multiple de 44 px (264 / 220 / 176) pour ne pas décaler les cordes.
+ * ------------------------------------------------------------------------- */
+
+function SectionBanner({ id, band, title, intro }: { id: GroupId; band: string; title: string; intro: string }) {
+  return (
+    <div id={`group-${id}`} className="relative h-[264px] scroll-mt-20 sm:h-[220px] lg:h-[176px]">
+      <div className="mx-auto max-w-6xl px-6 pt-8">
+        <div
+          className="relative rounded-[2px] shadow-[0_14px_24px_rgba(26,10,5,.55)]"
+          style={{
+            backgroundColor: "#141A3F",
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 2px, transparent 2px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 4px)",
+          }}
+        >
+          <span aria-hidden="true" className="block h-2.5" style={{ background: band }} />
+          <div className="px-6 py-5 sm:px-10">
+            <h2 id={`title-${id}`} className="font-achiko text-2xl font-black leading-tight text-[#F4EBD0] sm:text-3xl">{title}</h2>
+            <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-[#E9D8A6]/90">{intro}</p>
+          </div>
+          <span aria-hidden="true" className="block h-2.5" style={{ background: band }} />
+          <span aria-hidden="true" className="absolute left-5 top-0 -translate-y-1/2">
+            <Pin size={24} />
+          </span>
+          <span aria-hidden="true" className="absolute right-5 top-0 -translate-y-1/2">
+            <Pin size={24} />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
  * Page
  * ------------------------------------------------------------------------- */
 
 export default function ProjectsPage() {
   const t = useTranslations("ProjectsPage");
   const locale = useLocale();
+  const lang = locale === "en" ? "en" : "fr";
   const reduced = !!useReducedMotion();
 
-  const localizedFallbackProjects = useMemo(
-    () =>
-      fallbackProjects.map((project) => ({
+  const localizedFallbackProjects = useMemo<Item[]>(
+    () => [
+      ...fallbackProjects.map((project) => ({
         ...project,
         title: t(`items.${project.id}.title`),
         description: t(`items.${project.id}.description`),
       })),
-    [t],
+      ...localExtras(locale),
+    ],
+    [t, locale],
   );
 
-  const [filter, setFilter] = useState<string>("all");
-  const [projects, setProjects] = useState<Project[]>(localizedFallbackProjects);
-  const [selected, setSelected] = useState<Project | null>(null);
+  const [projects, setProjects] = useState<Item[]>(localizedFallbackProjects);
+  const [selected, setSelected] = useState<Item | null>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
@@ -387,7 +704,10 @@ export default function ProjectsPage() {
       try {
         const data = await apiFetch<{ items: ProjectApiItem[] }>("/public/projects", { locale, method: "GET" });
         if (!cancelled && Array.isArray(data.items) && data.items.length > 0) {
-          setProjects(data.items.map((item) => mapProject(item, locale)));
+          const fromApi = data.items.map((item) => mapProject(item, locale));
+          // les sections que l'API ne renseigne pas gardent leurs projets locaux
+          const have = new Set(fromApi.map((p) => p.group));
+          setProjects([...fromApi, ...localExtras(locale).filter((p) => !have.has(p.group))]);
         }
       } catch {
         if (!cancelled) setProjects(localizedFallbackProjects);
@@ -400,12 +720,12 @@ export default function ProjectsPage() {
     };
   }, [locale, localizedFallbackProjects]);
 
-  const matches = useMemo(
-    () => (filter === "all" ? projects.length : projects.filter((p) => p.category === filter).length),
-    [filter, projects],
+  const sections = useMemo(
+    () => GROUPS.map((g) => ({ ...g, items: projects.filter((p) => p.group === g.id) })).filter((g) => g.items.length > 0),
+    [projects],
   );
 
-  function open(project: Project, el: HTMLElement) {
+  function open(project: Item, el: HTMLElement) {
     lastFocus.current = el;
     setSelected(project);
   }
@@ -429,13 +749,6 @@ export default function ProjectsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
-  const filters = [
-    { id: "all", label: t("filters.all") },
-    { id: "web", label: t("filters.web") },
-    { id: "mobile", label: t("filters.mobile") },
-    { id: "design", label: t("filters.design") },
-  ];
-
   return (
     <div className="min-h-screen bg-[#0B0D18] font-azurio text-[#F8F9FA] selection:bg-[#FFC82C] selection:text-black">
       <header className="mx-auto max-w-6xl px-6 pb-10 pt-32">
@@ -444,23 +757,22 @@ export default function ProjectsPage() {
         </h1>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-gray-300">{t("grid.description")}</p>
 
-        <div className="mt-8 flex flex-wrap gap-3" role="group" aria-label={t("filters.all")}>
-          {filters.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              aria-pressed={filter === f.id}
-              onClick={() => setFilter(f.id)}
-              className={`rounded-[3px] px-5 py-2 text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C] ${
-                filter === f.id ? "bg-[#FFC82C] text-[#141A3F]" : "bg-[#2B3A8C] text-[#F4EBD0] hover:bg-[#3446A8]"
-              }`}
-              style={filter === f.id ? undefined : { outline: "2px dashed rgba(233,216,166,.7)", outlineOffset: "-4px" }}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-        {matches === 0 && <p className="mt-6 text-sm text-gray-300">{t("filters.no_projects")}</p>}
+        {/* aller à une section */}
+        <nav aria-label={t("grid.title_prefix")} className="mt-8">
+          <ul className="flex flex-wrap gap-3">
+            {sections.map((g) => (
+              <li key={g.id}>
+                <a
+                  href={`#group-${g.id}`}
+                  className="block rounded-[3px] bg-[#2B3A8C] px-5 py-2 text-sm font-bold text-[#F4EBD0] transition-colors hover:bg-[#3446A8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC82C]"
+                  style={{ outline: "2px dashed rgba(233,216,166,.7)", outlineOffset: "-4px" }}
+                >
+                  {g[lang].short}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </header>
 
       {/* Le mur et ses cordes */}
@@ -468,19 +780,26 @@ export default function ProjectsPage() {
         <div aria-hidden="true" className="h-5 bg-gradient-to-b from-[#6B4527] via-[#4A2E18] to-[#2A190C] shadow-[0_14px_22px_rgba(0,0,0,.55)]" />
         <div className="relative overflow-hidden bg-[#4A281C]">
           <Wall />
-          <ul className="relative mx-auto grid max-w-6xl grid-cols-1 px-6 pb-6 lg:grid-cols-2">
-            {projects.map((project, i) => (
-              <Specimen
-                key={project.id}
-                project={project}
-                order={i}
-                reduced={reduced}
-                dim={filter !== "all" && project.category !== filter}
-                onOpen={open}
-                ariaLabel={`${project.title}, ${t("grid.explore_project")}`}
-              />
+          <div className="relative pb-6">
+            {sections.map((g) => (
+              <section key={g.id} aria-labelledby={`title-${g.id}`}>
+                <SectionBanner id={g.id} band={g.band} title={g[lang].title} intro={g[lang].intro} />
+                <ul className="relative mx-auto grid max-w-6xl grid-cols-1 px-6 lg:grid-cols-2">
+                  {g.items.map((project, i) => (
+                    <Specimen
+                      key={project.id}
+                      project={project}
+                      order={i}
+                      centered={g.items.length % 2 === 1 && i === g.items.length - 1}
+                      reduced={reduced}
+                      onOpen={open}
+                      ariaLabel={`${project.title}, ${t("grid.explore_project")}`}
+                    />
+                  ))}
+                </ul>
+              </section>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
