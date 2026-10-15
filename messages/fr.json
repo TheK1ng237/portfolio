@@ -6,7 +6,16 @@
     "twitter_description": "Développeur full-stack passionné par les expériences numériques immersives.",
     "image_alt": "Aperçu du portfolio de Thek1ng237",
     "person_description": "Créateur d’expériences numériques immersives et innovateur culturel.",
-    "keywords": ["Développeur full-stack", "Next.js", "Angular", "Node.js", "Django", "Portfolio", "Thek1ng237", "Afro-futurisme"]
+    "keywords": [
+      "Développeur full-stack",
+      "Next.js",
+      "Angular",
+      "Node.js",
+      "Django",
+      "Portfolio",
+      "Thek1ng237",
+      "Afro-futurisme"
+    ]
   },
   "Nav": {
     "about": "À PROPOS",
@@ -19,148 +28,19 @@
     "menu_toggle": "Ouvrir ou fermer le menu de navigation",
     "module_label": "MODULE"
   },
-   "Hero": {
+  "Hero": {
     "name": "Ndoh Yannick Tang, développeur full-stack au Cameroun",
     "title": "Des concepts africains aux composants du web moderne",
     "intro": "Je transforme des motifs textiles africains, comme le Ndop, en tokens de design, puis en interfaces Next.js et en API Node.",
-    "cta_projects": "Voir mes projets",
     "cta_cv": "Télécharger mon CV",
-    "diagram_label": "Schéma isométrique de quatre couches empilées : un motif, des tokens, des composants et des données.",
-    "hint": "Survole une couche pour voir son rôle.",
-    "pause_layers": "Mettre en pause",
-    "resume_layers": "Reprendre le défilement",
-    "layers": {
-      "motif": { "name": "Motif", "desc": "Le point de départ : un motif d'inspiration Ndop." },
-      "tokens": { "name": "Tokens", "desc": "Couleurs, formes et rythmes extraits du motif." },
-      "components": { "name": "Composants", "desc": "Des interfaces React et Next.js construites avec ces tokens." },
-      "data": { "name": "Données", "desc": "Des API Node et Prisma qui font vivre le contenu." }
-    }
-  },
-  "HomePage": {
-    "skills": {
-      "title_prefix": "ARCHITECTURE &",
-      "title_highlight": "COMPÉTENCES",
-      "description": "Combinaison de rigueur technique logicielle et d’exploration créative pour concevoir des expériences numériques d’exception.",
-      "items": {
-        "frontend": {
-          "title": "Architecture frontend",
-          "description": "Architectures web réactives avec Next.js 15, React 19, TypeScript et Tailwind CSS v4.",
-          "technologies": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "REST/GraphQL"]
-        },
-        "design": {
-          "title": "UI/UX & systèmes de design",
-          "description": "Interfaces centrées sur l’utilisateur, prototypes haute fidélité et systèmes de design évolutifs.",
-          "technologies": ["Figma", "Systèmes de design", "Prototypage", "Ergonomie UX", "Accessibilité"]
-        },
-        "creative": {
-          "title": "Code créatif & motion design",
-          "description": "Micro-interactions fluides, animations 3D/Canvas et interfaces cybernétiques immersives.",
-          "technologies": ["Framer Motion", "HTML5 Canvas", "WebGL", "Web Audio API", "Shaders"]
-        },
-        "culture": {
-          "title": "Afro-futurisme & culture numérique",
-          "description": "Fusion algorithmique de la géométrie sacrée africaine (Ndop, Adinkra) et du Web moderne.",
-          "technologies": ["Géométrie Ndop", "Symboles Adinkra", "Ethno-design", "Préservation numérique"]
-        }
-      }
-    },
-    "projects": {
-      "label": "DÉPLOIEMENTS_ACTIFS",
-      "title_part1": "Travaux",
-      "title_part2": "Sélectionnés",
-      "intro": "Une sélection de projets mêlant ingénierie logicielle et esthétique culturelle.",
-      "status_ready": "Prêt",
-      "status_progress": "En cours",
-      "access_grant": "Exécuter_Accès",
-      "access_deny": "Accès_Refusé",
-      "view_archive": "Voir toute l'archive",
-      "filters": {
-        "all": "TOUS",
-        "web": "SYSTÈMES WEB",
-        "culture": "CULTURE",
-        "design": "DESIGN UI"
-      },
-      "quick_preview": "Aperçu rapide",
-      "modal_title": "DÉTAILS DU PROJET",
-      "metrics_label": "Indicateur",
-      "close": "Fermer",
-      "open_live": "Accéder au projet en ligne",
-      "metrics": {
-        "01": "Performance Lighthouse : 99/100",
-        "02": "Moteur interactif de connaissances culturelles",
-        "03": "Identité visuelle afro-futuriste complète"
-      },
-      "items": {
-        "01": {
-          "title": "MarketPlace Africaine",
-          "description": "Plateforme e-commerce mettant en avant l'artisanat local."
-        },
-        "02": {
-          "title": "Culture AFRICAINE",
-          "description": "Site éducatif sur les proverbes et la sagesse ancestrale."
-        },
-        "03": {
-          "title": "Visual Branding",
-          "description": "Identité visuelle pour une marque de mode panafricaine."
-        }
-      }
-    },
-    "fusion": {
-      "title": "Relier l'Héritage & le Futur Numérique",
-      "description": "Mon travail n'est pas qu'une question de code. C'est une mission : infuser l'âme de l'art africain dans les structures rigides du Web Moderne.",
-      "cta": "Entrer dans la Vision",
-      "stats": {
-        "origin": "Cameroun",
-        "origin_label": "ORIGINE",
-        "medium": "Art Numérique",
-        "medium_label": "MÉDIUM",
-        "legacy": "Tradition",
-        "legacy_label": "HÉRITAGE",
-        "vision_label": "VISION",
-        "vision": "Innovation"
-      }
-    }
+    "diagram_label": "Schéma isométrique de quatre couches empilées : un motif, des tokens, des composants et des données."
   },
   "ProjectsPage": {
-    "hud": {
-      "waypoint": "POINT DE REPÈRE HOLOGRAPHIQUE",
-      "open_project": "EXPLORER LE PROJET",
-      "grid_mode_title": "Basculer vers la vue grille standard",
-      "grid_mode": "MODE GRILLE",
-      "help_title": "Commandes et aide",
-      "speed": "VITESSE",
-      "turn_left": "Tourner à gauche (flèche gauche ou A)",
-      "turn_right": "Tourner à droite (flèche droite ou D)",
-      "forward": "AVANCER",
-      "reverse": "RECULER",
-      "turbo": "TURBO",
-      "camera": {
-        "chase": "POURSUITE 3D",
-        "cockpit": "COCKPIT",
-        "orbit": "ORBITE 360",
-        "map": "SATELLITE"
-      }
-    },
     "grid": {
       "title_prefix": "PORTFOLIO",
       "title_highlight": "PROJETS",
       "description": "Galerie classique des projets récents",
-      "back_to_3d": "REPRENDRE LA CONDUITE 3D",
-      "project_label": "PROJET",
       "explore_project": "EXPLORER LE PROJET"
-    },
-    "help": {
-      "forward_reverse": "AVANCER / RECULER",
-      "forward_reverse_keys": "W / S ou FLÈCHES HAUT / BAS",
-      "turn": "TOURNER À GAUCHE / DROITE",
-      "turn_keys": "A / D ou FLÈCHES GAUCHE / DROITE",
-      "boost": "TURBO NITRO",
-      "boost_key": "BARRE ESPACE",
-      "camera": "CHANGER L’ANGLE DE VUE",
-      "camera_key": "TOUCHE C",
-      "scroll": "POURSUIVRE LA NAVIGATION",
-      "scroll_key": "MOLETTE DE LA SOURIS",
-      "dismiss": "COMPRIS, EN ROUTE !"
     },
     "modal": {
       "close": "Fermer le détail du projet",
@@ -168,37 +48,10 @@
       "view_live": "VOIR LE PROJET EN LIGNE",
       "github": "CODE SOURCE SUR GITHUB"
     },
-    "header": {
-      "badge": "RÉPERTOIRE DE PROJETS 2026",
-      "title_main": "SOLUTIONS",
-      "title_sub": "INGÉNIÉES"
-    },
-    "filters": {
-      "all": "Tous les Modules",
-      "web": "Systèmes-Web",
-      "mobile": "App-Mobiles",
-      "design": "ID-Visuelle"
-    },
-    "dividers": {
-      "featured": "MODULES_VEDETTES",
-      "archives": "TOUTES_LES_ARCHIVES"
-    },
-    "status": {
-      "live": "EN LIGNE",
-      "dev": "EN DÉV",
-      "launch": "Lancer le Système",
-      "locked": "Système Verrouillé",
-      "access": "Accéder",
-      "restricted": "Accès Restreint"
-    },
-    "cta": {
-      "title": "Besoin d'un module sur mesure ?",
-      "button": "Initialiser le Brief"
-    },
     "items": {
-      "4": {
-        "title": "MarketPlace Africaine \"AfroShop\"",
-        "description": "Plateforme e-commerce mettant en avant l'artisanat local avec une interface moderne inspirée des textiles africains. Intègre un système de paiement adapté aux marchés africains."
+      "1": {
+        "title": "Mini-site \"Culture Africa\"",
+        "description": "Site interactif pour explorer et promouvoir la culture africaine à travers des animations et récits visuels. Intègre une carte interactive des traditions africaines."
       },
       "2": {
         "title": "Application \"Culture Cameroun\"",
@@ -208,9 +61,9 @@
         "title": "Identité Visuelle \"Ngano Fashion\"",
         "description": "Direction artistique complète pour une marque de mode africaine contemporaine. Logo, palette de couleurs, packaging et site web avec design inspiré des motifs Adinkra."
       },
-      "1": {
-        "title": "Mini-site \"Culture Africa\"",
-        "description": "Site interactif pour explorer et promouvoir la culture africaine à travers des animations et récits visuels. Intègre une carte interactive des traditions africaines."
+      "4": {
+        "title": "MarketPlace Africaine \"AfroShop\"",
+        "description": "Plateforme e-commerce mettant en avant l'artisanat local avec une interface moderne inspirée des textiles africains. Intègre un système de paiement adapté aux marchés africains."
       },
       "5": {
         "title": "Customizer de Visuels Africains",
@@ -252,7 +105,6 @@
     "poster": {
       "hello": "BONJOUR",
       "im": "JE SUIS \n YANNICK",
-      "tagline": "Découvrir le métier derrière le code",
       "contact": "Parlons projet",
       "tags": {
         "fullstack": "FULLSTACK",
@@ -308,83 +160,8 @@
         }
       }
     },
-    "identity": {
-      "id_label": "ID",
-      "class_label": "CLASSE",
-      "class_value": "ARCHITECTE",
-      "origin_label": "ORIGINE",
-      "origin_value": "CAMEROUN, AFRIQUE"
-    },
-    "header": {
-      "title_prefix": "QUI EST",
-      "name": "NDOH YANNICK TANG ?"
-    },
-    "bio": {
-      "quote": "Je ne code pas juste des sites web. Je construis des ponts digitaux entre la tradition ancestrale et l'innovation future.",
-      "p1": "Titulaire d'une licence en informatique (Systèmes & Réseaux), j'ai rapidement pivoté vers ma véritable passion : la création. Mon background technique rigoureux me permet de comprendre la machine, mais c'est mon âme d'artiste qui guide mes doigts.",
-      "p2": "Ma mission est claire : contrer l'uniformité du web occidental en injectant l'ADN visuel africain (motifs Adinkra, palettes chaudes, storytelling) dans des architectures React & Next.js ultra-performantes."
-    },
-    "timeline": {
-      "title": "JOURNAL D'ÉVOLUTION",
-      "subtitle": "CHRONOLOGIE DES MISES À JOUR DE COMPÉTENCES",
-      "items": {
-        "2025": {
-          "title": "EXPANSION FULLSTACK",
-          "subtitle": "Intégration Backend",
-          "desc": "Architecture de bases de données avec MongoDB et création d'API REST ExpressJS. Le chaînon manquant."
-        },
-        "2024": {
-          "title": "UI/UX CULTUREL",
-          "subtitle": "Design System",
-          "desc": "Définition de ma signature graphique : fusionner le minimalisme moderne avec la complexité des motifs africains."
-        },
-        "2023": {
-          "title": "SPÉCIALISTE FRONTEND",
-          "subtitle": "Maîtrise des Frameworks",
-          "desc": "Plongée profonde dans l'écosystème React, Next.js et TailwindCSS. Transition du code spaghetti vers l'architecture modulaire."
-        },
-        "2022": {
-          "title": "INIT SYSTÈME",
-          "subtitle": "Le Commencement",
-          "desc": "Première ligne de code. HTML, CSS, PHP. Comprendre comment le web respire."
-        }
-      }
-    },
-    "skills": {
-      "title": "DIAGNOSTICS SYSTÈME",
-      "efficiency": "EFFICACITÉ",
-      "items": {
-        "frontend": "ARCHITECTURE FRONTEND (Next.js/React)",
-        "styling": "MOTEUR DE STYLE (Tailwind/CSS)",
-        "logic": "LOGIQUE CRÉATIVE (JS/TS)",
-        "design": "DESIGN VISUEL (Ps/Canva/Figma)",
-        "backend": "OPS BACKEND (Node/Mongo)"
-      }
-    },
-    "values": {
-      "title": "PROTOCOLES DE BASE",
-      "items": {
-        "heritage": {
-          "title": "L'Héritage d'Abord",
-          "desc": "Le code est universel, mais l'identité est locale. Je code avec fierté."
-        },
-        "performance": {
-          "title": "Haute Performance",
-          "desc": "Un site beau qui est lent est inutile. J'optimise chaque pixel et chaque fonction."
-        },
-        "clean": {
-          "title": "Architecture Propre",
-          "desc": "Code maintenable, scalable et sécurisé. Pas de bricolage."
-        }
-      }
-    },
     "cta": {
-      "title": "PRÊT À COLLABORER ?",
-      "subtitle": "Initialiser le protocole de communication pour démarrer un projet unique.",
       "button": "Démarrer le Projet"
-    },
-    "ui": {
-      "section_break": "RUPTURE DE SECTION"
     }
   },
   "CulturePage": {
@@ -408,11 +185,6 @@
       "cta_title_suffix": "À VOTRE PROJET ?",
       "cta_description": "Nous concevons des identités visuelles et des interfaces numériques sur mesure qui résonnent avec élégance et authenticité.",
       "cta_button": "DÉMARRER UN PROJET CULTUREL"
-    },
-    "labels": {
-      "origin": "Origine",
-      "symbolism": "Symbolique",
-      "web_implementation": "Implémentation web"
     },
     "pillars": {
       "ndop": {
@@ -452,13 +224,6 @@
         "implementation": "Aplats et contours épais : formes très lisibles pour des composants d’interface."
       }
     },
-    "lab": {
-      "preview": "Aperçu du motif {pattern}, teinte {hue} degrés, échelle {scale}",
-      "pattern": "Motif",
-      "hue": "Teinte",
-      "scale": "Échelle",
-      "generated_settings": "Paramètres générés"
-    },
     "process": {
       "observe": {
         "title": "Observer",
@@ -473,100 +238,17 @@
         "text": "Traduire ces règles en SVG, CSS ou Canvas, avec des palettes HSL et une interface accessible."
       }
     },
-    "hero": {
-      "badge": "INITIALISATION_SYSTÈME : COFFRE_DU_PATRIMOINE",
-      "title_main": "ROOTS",
-      "title_sub": "& BYTES",
-      "description": "Je traite l'héritage visuel africain comme du code source. Chaque motif est un ensemble de données historiques, réinventé pour l'architecture digitale de demain."
-    },
-    "library": {
-      "title": "Bibliothèque de Motifs",
-      "subtitle": "Archives Numériques",
-      "status": {
-        "available": "DISPONIBLE",
-        "upcoming": "À VENIR",
-        "revision": "RÉVISION"
-      },
-      "motifs": {
-        "1": {
-          "title": "WAX_CORE",
-          "origin": "Afrique de l'Ouest",
-          "desc": "Réinterprétation vectorielle des flux de couleurs Wax pour les fonds de sites haute performance."
-        },
-        "2": {
-          "title": "ADINKRA_UI",
-          "origin": "Culture Akan",
-          "desc": "Symboles philosophiques convertis en icônes de navigation intelligentes."
-        },
-        "3": {
-          "title": "NDOP_GRID",
-          "origin": "Royaume Bamoun",
-          "desc": "Géométrie sacrée camerounaise adaptée aux systèmes de grilles CSS modernes."
-        },
-        "4": {
-          "title": "KENTE_STRIPE",
-          "origin": "Ashanti",
-          "desc": "Rythmes de tissage transformés en séparateurs de sections responsifs."
-        }
-      }
-    },
-    "philosophy": {
-      "logs": {
-        "0": {
-          "text": "Le savoir est comme un baobab ; les bras d'une seule personne ne peuvent l'embrasser.",
-          "ref": "Proverbe Africain",
-          "note": "// ESPRIT_OPEN_SOURCE"
-        },
-        "1": {
-          "text": "L'innovation naît des racines les plus profondes.",
-          "ref": "Thek1ng237",
-          "note": "// VALEUR_CLÉ_01"
-        },
-        "2": {
-          "text": "Si tu veux aller loin, voyageons ensemble.",
-          "ref": "Proverbe Africain",
-          "note": "// PROTOCOLE_COLLABORATION"
-        }
-      }
-    },
-    "specs": {
-      "title": "Spécifications",
-      "subtitle": "Tech x Culture",
-      "main_text": "L'uniformisation du web est une erreur système. Ma mission est de réinjecter de la diversité algorithmique en utilisant des structures visuelles africaines.",
-      "items": {
-        "adinkra": {
-          "title": "SYMBOLES ADINKRA",
-          "use": "Navigation métaphorique & Icônes"
-        },
-        "ndop": {
-          "title": "GÉOMÉTRIE NDOP",
-          "use": "Grilles & Layouts structurels"
-        },
-        "wax": {
-          "title": "TEXTURES WAX",
-          "use": "Fonds Dynamiques & Motion"
-        }
-      },
-      "framework": {
-        "title": "Framework Culturel v1.0",
-        "desc": "Prêt pour l'intégration dans les systèmes UX/UI modernes."
-      }
-    },
-    "modal": {
-      "encoding": "ENCODAGE :",
-      "origin": "ORIGINE :",
-      "button": "Demander l'accès à l'Asset"
-    },
-    "cta": {
-      "title": "Contribuer à l'Archive",
-      "button": "Ouvrir le Protocole"
-    },
-     "nav_label": "Aller à un motif",
+    "nav_label": "Aller à un motif",
     "labels": {
+      "origin": "Origine",
+      "symbolism": "Symbolique",
+      "web_implementation": "Implémentation web",
       "medium_cloth": "Tissu",
       "medium_wall": "Peinture murale"
     },
     "lab": {
+      "pattern": "Motif",
+      "scale": "Échelle",
       "open_in_loom": "Le tisser dans le laboratoire",
       "weave": "Tissage",
       "export_title": "Exporter ce motif",
@@ -585,34 +267,15 @@
       "direct_title_highlight": "DIRECTEMENT",
       "location": "Douala, Littoral · Cameroun"
     },
-    "hero": {
-      "protocol": "PROTOCOLE : INITIATION_PONT",
-      "title_main": "ÉTABLISSONS",
-      "title_highlight": "UNE CONNEXION",
-      "description": "Prêt à injecter de l'authenticité africaine dans votre prochain projet digital ? Établissons une connexion."
-    },
     "form": {
-      "title": "TERMINAL DE MESSAGERIE",
-      "subtitle": "FORMULAIRE HAUTE-PRIORITÉ // DIRECT TO INBOX",
-      "status": "STATUS: EN_LIGNE",
-      "type_label": "1. TYPE DE MISSION // PROJET",
-      "name_label": "2. VOTRE NOM // IDENTITÉ",
-      "name_placeholder": "ex: Alexandre Dupont",
-      "email_label": "3. VOTRE EMAIL // ADRESSE DE RÉPONSE",
-      "email_placeholder": "ex: alexandre@entreprise.com",
-      "message_label": "4. VOTRE MESSAGE // DESCRIPTION ET OBJECTIFS",
-      "message_placeholder": "Présentez votre projet, les fonctionnalités clés recherchées et les délais souhaités...",
-      "submit": "TRANSMETTRE LE MESSAGE",
-      "submitting": "TRANSMISSION EN COURS...",
-      "success_title": "TRANSMISSION EFFECTUÉE AVEC SUCCÈS",
-      "success_msg": "Votre message a été transmis à notre station. Nous reviendrons vers vous sous 24h.",
-      "security": "CONFIDENTIALITÉ GARANTIE",
-      "mission_type_label": "Type de mission",
-      "mission_type_placeholder": "Choisissez...",
       "name_label": "Nom complet",
       "name_placeholder": "Votre nom",
       "email_label": "Email",
       "email_placeholder": "vous@exemple.com",
+      "message_label": "Message",
+      "message_placeholder": "Contexte, objectifs, public visé, fonctionnalités attendues…",
+      "submit": "Envoyer le message",
+      "submitting": "Envoi en cours…",
       "phone_label": "Téléphone",
       "phone_placeholder": "+237 …",
       "optional": "facultatif",
@@ -621,25 +284,18 @@
       "budget_label": "Budget",
       "budget_placeholder": "Ex : 500 000 FCFA",
       "date_label": "Délais souhaité",
-      "message_label": "Message",
-      "message_placeholder": "Contexte, objectifs, public visé, fonctionnalités attendues…",
-      "submitting": "Envoi en cours…",
-      "submit": "Envoyer le message",
       "consent": "En envoyant ce formulaire, vous acceptez d’être recontacté au sujet de votre demande.",
       "success": "Message transmis avec succès. Merci !",
       "invalid_request": "Requête invalide.",
       "copy_channel": "Copier {channel}",
       "copy_success": "{channel} copié dans le presse-papiers.",
-      "consent_label": "J’accepte que mes données soient traitées dans le cadre de ma demande.",
       "mission_options": [
         "Site vitrine",
         "Application web",
         "Branding & design",
         "Consulting"
       ],
-      "api_error": "Le serveur n’a pas pu traiter votre demande.",
-      "field_error": "Merci de vérifier les champs obligatoires.",
-      "website_label": "Site web"
+      "api_error": "Le serveur n’a pas pu traiter votre demande."
     }
   },
   "SolutionPage": {
@@ -669,7 +325,7 @@
     "actions": {
       "request_quote": "Demander un devis",
       "view_details": "Voir le détail",
-      "close": "Fermer"
+      "hide_details": "Masquer les détails"
     },
     "process": {
       "describe": {
@@ -695,138 +351,66 @@
         "title": "ARCHITECTURE WEB SUR MESURE",
         "description": "Développement complet d’applications web Next.js et React réactives, évolutives et optimisées pour le SEO.",
         "price": "Sur devis",
-        "features": ["Next.js 15 & React 19 full-stack", "Design responsive afro-futuriste", "Performance et SEO optimisés"],
+        "features": [
+          "Next.js 15 & React 19 full-stack",
+          "Design responsive afro-futuriste",
+          "Performance et SEO optimisés"
+        ],
         "full_description": "Conception complète de votre plateforme web. De l’architecture frontend aux API REST et à la base de données, nous construisons une solution performante, moderne et adaptée à vos besoins.",
-        "benefits": ["Architecture moderne sans dette technique", "Affichage ultra-rapide", "Identité visuelle unique"],
+        "benefits": [
+          "Architecture moderne sans dette technique",
+          "Affichage ultra-rapide",
+          "Identité visuelle unique"
+        ],
         "target_audience": "Startups, entreprises et projets ambitieux"
       },
       "02": {
         "title": "AUDIT UX/UI & REFONTE GRAPHIQUE",
         "description": "Analyse ergonomique approfondie, création d’un système de design et optimisation du parcours utilisateur.",
         "price": "Sur devis",
-        "features": ["Audit ergonomique et recherche UX", "Création d’un système de design", "Prototypes Figma haute fidélité"],
+        "features": [
+          "Audit ergonomique et recherche UX",
+          "Création d’un système de design",
+          "Prototypes Figma haute fidélité"
+        ],
         "full_description": "Améliorez vos conversions et la satisfaction des utilisateurs grâce à une révision complète de votre expérience visuelle et interactive.",
-        "benefits": ["Engagement accru", "Cohérence visuelle sur toutes les pages", "Prototypes prêts à développer"],
+        "benefits": [
+          "Engagement accru",
+          "Cohérence visuelle sur toutes les pages",
+          "Prototypes prêts à développer"
+        ],
         "target_audience": "Applications existantes qui souhaitent moderniser leur interface"
       },
       "03": {
         "title": "DESIGN CULTUREL AFRO-FUTURISTE",
         "description": "Intégration d’art numérique, de géométrie sacrée et d’une identité culturelle forte dans vos projets web.",
         "price": "Sur devis",
-        "features": ["Vectorisation de motifs ancestraux", "Animations et micro-interactions CSS", "Direction artistique et branding"],
+        "features": [
+          "Vectorisation de motifs ancestraux",
+          "Animations et micro-interactions CSS",
+          "Direction artistique et branding"
+        ],
         "full_description": "Donnez une identité singulière à vos produits numériques en fusionnant les motifs visuels africains avec les standards du web moderne.",
-        "benefits": ["Différenciation concrète", "Valorisation du patrimoine", "Expérience immersive et mémorable"],
+        "benefits": [
+          "Différenciation concrète",
+          "Valorisation du patrimoine",
+          "Expérience immersive et mémorable"
+        ],
         "target_audience": "Marques, institutions culturelles et créateurs"
       }
-    },
-    "hero": {
-      "badge": "CATALOGUE_SOLUTIONS_2026",
-      "title_main": "CONSTRUIRE",
-      "title_highlight": "NOUVELLES NORMES"
-    },
-    "solutions": {
-      "0": {
-        "id": "SOL-001",
-        "category": "MOTEUR",
-        "title": "Moteur de Motifs Dynamiques",
-        "description": "Interface de génération visuelle fusionnant Ndop et Adinkra pour vos actifs digitaux.",
-        "features": [
-          "Génération vectorielle",
-          "Export HD (SVG/PNG)",
-          "Customisation de couleurs"
-        ],
-        "full_description": "Un moteur de rendu interactif conçu pour permettre aux créatifs de manipuler l'ADN visuel africain sans perte de sens. Idéal pour contrer l'uniformisation du design global.",
-        "benefits": [
-          "Identité forte",
-          "Prêt pour le Web",
-          "Respect des symboliques"
-        ],
-        "target_audience": "Designers & Créateurs de contenu",
-        "price": "GRATUIT / 10 000 FCFA"
-      },
-      "1": {
-        "id": "SOL-002",
-        "category": "PROTOCOLE",
-        "title": "Protocole Design Africain",
-        "description": "Le guide ultime (African UX/UI) pour construire des interfaces qui parlent au continent.",
-        "features": [
-          "Livre blanc UX",
-          "Composants UI (Figma)",
-          "Psychologie des couleurs"
-        ],
-        "full_description": "Bien plus qu'un guide, c'est un protocole de construction d'interfaces basé sur l'ergonomie locale et la philosophie visuelle ancestrale adaptée au mobile-first.",
-        "benefits": [
-          "Engagement utilisateur accru",
-          "Standardisation pro",
-          "Scalabilité culturelle"
-        ],
-        "target_audience": "Product Managers & Développeurs",
-        "price": "25 000 FCFA / An"
-      },
-      "2": {
-        "id": "SOL-003",
-        "category": "LAB",
-        "title": "Atelier Heritage & Tech",
-        "description": "Sessions immersives sur l'intégration de la culture dans les produits technologiques.",
-        "features": ["Ateliers en direct", "Études de cas", "Ressources PDF"],
-        "full_description": "Un laboratoire d'idées où nous décortiquons comment le patrimoine africain peut influencer les algorithmes et l'expérience utilisateur de demain.",
-        "benefits": [
-          "Accès réseau exclusif",
-          "Certificat de participation",
-          "Vision prospective"
-        ],
-        "target_audience": "Étudiants & Entreprises RSE",
-        "price": "5 000 FCFA (Don)"
-      }
-    },
-    "newsletter": {
-      "title": "Rejoins le Mouvement",
-      "description": "Recevez les protocoles de design directement dans votre boîte mail.",
-      "placeholder": "root@culture-innovation.io",
-      "button": "S'abonner"
-    },
-    "modal": {
-      "overview_title": "Aperçu_Solution",
-      "benefits_title": "Avantages_Clés",
-      "audience_title": "Public_Cible",
-      "investment_title": "Investissement",
-      "cta_button": "Initialiser l'Intégration"
     }
   },
   "Footer": {
     "brand": {
-      "tagline": "Ingénierie logicielle & héritage visuel. Bâtir des ponts entre les algorithmes modernes et la culture ancestrale.",
-      "open_channel": "Ouvrir_Canal"
-    },
-    "system_map": "CARTE_SYSTÈME",
-    "nav_items": {
-      "0": "ARCHIVES.À PROPOS",
-      "1": "REGISTRE.PROJETS",
-      "2": "NOYAU.CULTURE",
-      "3": "NŒUD.SOLUTIONS",
-      "4": "INIT.CONTACT"
+      "tagline": "Ingénierie logicielle & héritage visuel. Bâtir des ponts entre les algorithmes modernes et la culture ancestrale."
     },
     "external_links": "LIENS_EXTERNES",
-    "data_subscription": "ABONNEMENT_DONNÉES",
-    "newsletter_placeholder": "IDENTIFIANT_ACCÈS@RÉSEAU.COM",
-    "newsletter_button": "Connecter_au_Flux",
     "metadata": {
-      "protocol_year": "Année_Protocole",
-      "global_registry": "Registre_Global",
-      "base_location": "Localisation_Base",
-      "location": "Douala, CM.AFR",
-      "status": "SESSION_CHIFFRÉE_ACTIVE"
-    },
-    "back_to_top": "HAUT DE PAGE"
+      "location": "Douala, CM.AFR"
+    }
   },
   "Common": {
-    "logo_loading": "Thek1ng237 — chargement du portfolio",
-    "audio": {
-      "enable": "Activer l’ambiance sonore",
-      "disable": "Désactiver l’ambiance sonore",
-      "off": "AUDIO_DÉSACTIVÉ",
-      "on": "AUDIO_ACTIVÉ"
-    }
+    "logo_loading": "Thek1ng237 — chargement du portfolio"
   },
   "Testimonials": {
     "title_prefix": "Avis",
@@ -869,7 +453,6 @@
     "subtitle": "PAGE_NON_TROUVÉE",
     "description": "Le chemin que vous recherchez n'existe pas dans notre réseau. Il a peut-être été déplacé, archivé ou caché derrière un pare-feu numérique.",
     "error_code": "CODE_ERREUR",
-    "code": "404_RÉFÉRENCE_VIDE",
     "suggestions": "PROTOCOLES_DÉPANNAGE",
     "suggestion_1": "Vérifiez l'URL pour les erreurs de saisie",
     "suggestion_2": "Retournez à la page d'accueil",
@@ -877,7 +460,6 @@
     "suggestion_4": "Contactez le support pour obtenir de l'aide",
     "cta_home": "RETOUR_ACCUEIL",
     "cta_projects": "EXPLORER_ARCHIVE",
-    "cta_contact": "APPELER_SUPPORT",
     "back_message": "Retour en sécurité...",
     "quote": "\"En code, comme dans la vie : chaque erreur est juste un message en attente de compréhension.\""
   },
@@ -893,10 +475,7 @@
         "export_json": "Exporter JSON",
         "restore_template": "Restaurer le modèle",
         "go_to_preview": "Aller à l’aperçu",
-        "close_preview": "Fermer l’aperçu",
-        "api_login_title": "Connexion à la gestion des devis",
-        "admin_email": "Email du compte admin",
-        "password": "Mot de passe"
+        "close_preview": "Fermer l’aperçu"
       },
       "sections": {
         "identity_title": "Identité & client",
@@ -917,7 +496,6 @@
         "client_phone": "Téléphone du client",
         "brand": "Marque",
         "full_name": "Nom complet",
-        "email": "Email",
         "phone": "Téléphone",
         "proposal_reference": "Référence du devis",
         "issue_date": "Date d’émission",
@@ -954,6 +532,8 @@
         "budget_intro": "Présentation du budget",
         "budget_lines": "Lignes budgétaires",
         "phase": "Phase",
+        "number": "Numéro",
+        "title": "Titre",
         "amount_currency": "Montant ({currency})",
         "included_deliverables": "Livrables inclus",
         "payment_schedule_title": "Titre de l’échéancier",
@@ -1088,7 +668,8 @@
       "save_testimonial": "Enregistrement du témoignage impossible.",
       "update": "Modification impossible.",
       "load_proposal": "Erreur de chargement du devis.",
-      "load_document": "Erreur de chargement du document."
+      "load_document": "Erreur de chargement du document.",
+      "session": "Session expirée ou non autorisée."
     },
     "ui": {
       "checking_session": "Vérification de la session admin…",
@@ -1204,40 +785,11 @@
       "view_details": "Voir les détails",
       "print_preview": "Imprimer / aperçu du document PDF A4",
       "mark_sent": "Marquer comme envoyé",
-      "cancel_action": "Annuler",
       "accept": "Accepter",
       "reject": "Refuser",
       "loading_proposals": "Chargement des devis…",
       "no_proposals": "Aucun devis à afficher."
     },
-    "badge": "ADMIN",
-    "title": "Back-office Thek1ng237",
-    "loading": "Chargement...",
-    "logout": "Déconnexion",
-    "recent": "Demandes récentes",
-    "inquiries": "Demandes",
-    "quickAccess": "Accès rapide",
-    "empty": "Aucune donnée récente.",
-    "cards": {
-      "inquiries": "Nouvelles demandes",
-      "quotes": "Devis en traitement",
-      "pending": "Devis en attente",
-      "clients": "Clients"
-    },
-    "form": {
-      "email": "Email",
-      "password": "Mot de passe",
-      "submit": "Se connecter",
-      "submitting": "Connexion..."
-    },
-    "errors": {
-      "login": "Identifiants invalides.",
-      "session": "Session expirée ou non autorisée."
-    },
-    "resources": {
-      "projects": "Projets",
-      "services": "Services",
-      "inquiries": "Demandes"
-    }
+    "logout": "Déconnexion"
   }
 }

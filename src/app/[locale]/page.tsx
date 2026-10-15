@@ -4,7 +4,6 @@ import React, { useEffect, useId, useState } from "react";
 
 import Hero from "./component/HERO";
 import TestimonialsSection from "./component/TestimonialsSection";
-import { useTranslations } from "next-intl";
 
 /* -------------------------------------------------------------------------- */
 /*  Données                                                                   */
@@ -22,9 +21,6 @@ const TEXTILE_COLORS: Record<TextileKind, { color: string; hue: number }> = {
 
 
 export default function Home() {
-  const t = useTranslations("HomePage");
-  
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0B0D18] font-azurio text-[#F8F9FA]">
       {/* 1. HERO */}

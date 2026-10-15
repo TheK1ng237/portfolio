@@ -6,7 +6,16 @@
     "twitter_description": "Full-stack developer passionate about immersive digital experiences.",
     "image_alt": "Preview of Thek1ng237’s portfolio",
     "person_description": "Creator of immersive digital experiences and cultural innovator.",
-    "keywords": ["Full-stack developer", "Next.js", "Angular", "Node.js", "Django", "Portfolio", "Thek1ng237", "Afrofuturism"]
+    "keywords": [
+      "Full-stack developer",
+      "Next.js",
+      "Angular",
+      "Node.js",
+      "Django",
+      "Portfolio",
+      "Thek1ng237",
+      "Afrofuturism"
+    ]
   },
   "Nav": {
     "about": "ABOUT",
@@ -19,161 +28,19 @@
     "menu_toggle": "Open or close the navigation menu",
     "module_label": "MODULE"
   },
- 
   "Hero": {
     "name": "Ndoh Yannick Tang, full-stack developer in Cameroon",
     "title": "from African concepts to the components of  modern web",
     "intro": "I turn African textile patterns, like the Ndop, into design tokens, then into Next.js interfaces and Node APIs.",
-    "cta_projects": "See my projects",
     "cta_cv": "Download my CV",
-    "diagram_label": "Isometric diagram of four stacked layers: a pattern, tokens, components and data.",
-    "hint": "Hover a layer to see its role.",
-    "pause_layers": "Pause rotation",
-    "resume_layers": "Resume rotation",
-    "layers": {
-      "motif": {
-        "name": "Pattern",
-        "desc": "The starting point: a pattern inspired by the Ndop."
-      },
-      "tokens": {
-        "name": "Tokens",
-        "desc": "Colors, shapes and rhythms drawn from the pattern."
-      },
-      "components": {
-        "name": "Components",
-        "desc": "React and Next.js interfaces built with those tokens."
-      },
-      "data": {
-        "name": "Data",
-        "desc": "Node and Prisma APIs that bring the content to life."
-      }
-    }
-  },
-  "HomePage": {
-    "skills": {
-      "title_prefix": "ARCHITECTURE &",
-      "title_highlight": "SKILLS",
-      "description": "Combining software engineering rigor with creative exploration to build exceptional digital experiences.",
-      "items": {
-        "frontend": {
-          "title": "Frontend architecture",
-          "description": "Responsive web architectures with Next.js 15, React 19, TypeScript, and Tailwind CSS v4.",
-          "technologies": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "REST/GraphQL"]
-        },
-        "design": {
-          "title": "UI/UX & design systems",
-          "description": "User-centered interfaces, high-fidelity prototypes, and scalable design systems.",
-          "technologies": ["Figma", "Design systems", "Prototyping", "UX design", "Accessibility"]
-        },
-        "creative": {
-          "title": "Creative coding & motion",
-          "description": "Fluid micro-interactions, 3D/Canvas animations, and immersive cybernetic interfaces.",
-          "technologies": ["Framer Motion", "HTML5 Canvas", "WebGL", "Web Audio API", "Shaders"]
-        },
-        "culture": {
-          "title": "Afrofuturism & culture tech",
-          "description": "Algorithmic fusion of African sacred geometry (Ndop, Adinkra) with the modern web.",
-          "technologies": ["Ndop geometry", "Adinkra symbols", "Ethno-design", "Digital preservation"]
-        }
-      }
-    },
-    "projects": {
-      "label": "ACTIVE_DEPLOYMENTS",
-      "title_part1": "Selected",
-      "title_part2": "Works",
-      "intro": "A selection of projects blending software engineering and cultural aesthetics.",
-      "status_ready": "Ready",
-      "status_progress": "In_Progress",
-      "access_grant": "Execute_Access",
-      "access_deny": "Access_Denied",
-      "view_archive": "View full archive",
-      "filters": {
-        "all": "ALL",
-        "web": "WEB SYSTEMS",
-        "culture": "CULTURE",
-        "design": "UI DESIGN"
-      },
-      "quick_preview": "Quick preview",
-      "modal_title": "PROJECT DETAILS",
-      "metrics_label": "Metric",
-      "close": "Close",
-      "open_live": "Open live project",
-      "metrics": {
-        "01": "Lighthouse performance: 99/100",
-        "02": "Interactive cultural knowledge engine",
-        "03": "Complete Afro-futuristic visual identity"
-      },
-      "items": {
-        "01": {
-          "title": "African MarketPlace",
-          "description": "E-commerce platform showcasing local craftsmanship."
-        },
-        "02": {
-          "title": "AFRICAN Culture",
-          "description": "Educational site about proverbs and ancestral wisdom."
-        },
-        "03": {
-          "title": "Visual Branding",
-          "description": "Visual identity for a pan-African fashion brand."
-        }
-      }
-    },
-    "fusion": {
-      "title": "Bridging Heritage & Digital Future",
-      "description": "My work isn't just about code. It's a mission: infusing the soul of African art into the rigid structures of the Modern Web.",
-      "cta": "Enter the Vision",
-      "stats": {
-        "origin": "Cameroon",
-        "origin_label": "ORIGIN",
-        "medium": "Digital Art",
-        "medium_label": "MEDIUM",
-        "legacy": "Legacy",
-        "legacy_label": "HERITAGE",
-        "vision_label": "VISION",
-        "vision": "Innovation"
-      }
-    }
+    "diagram_label": "Isometric diagram of four stacked layers: a pattern, tokens, components and data."
   },
   "ProjectsPage": {
-    "hud": {
-      "waypoint": "HOLOGRAPHIC WAYPOINT",
-      "open_project": "EXPLORE PROJECT",
-      "grid_mode_title": "Switch to standard grid view",
-      "grid_mode": "GRID VIEW",
-      "help_title": "Controls and help",
-      "speed": "SPEED",
-      "turn_left": "Turn left (left arrow or A)",
-      "turn_right": "Turn right (right arrow or D)",
-      "forward": "FORWARD",
-      "reverse": "REVERSE",
-      "turbo": "TURBO",
-      "camera": {
-        "chase": "CHASE 3D",
-        "cockpit": "COCKPIT",
-        "orbit": "ORBIT 360",
-        "map": "SATELLITE"
-      }
-    },
     "grid": {
       "title_prefix": "PORTFOLIO",
       "title_highlight": "PROJECTS",
       "description": "Classic gallery of recent projects",
-      "back_to_3d": "RETURN TO 3D DRIVING",
-      "project_label": "PROJECT",
       "explore_project": "EXPLORE PROJECT"
-    },
-    "help": {
-      "forward_reverse": "FORWARD / REVERSE",
-      "forward_reverse_keys": "W / S or UP / DOWN ARROWS",
-      "turn": "TURN LEFT / RIGHT",
-      "turn_keys": "A / D or LEFT / RIGHT ARROWS",
-      "boost": "NITRO BOOST",
-      "boost_key": "SPACEBAR",
-      "camera": "CHANGE CAMERA VIEW",
-      "camera_key": "C KEY",
-      "scroll": "CONTINUE NAVIGATING",
-      "scroll_key": "MOUSE WHEEL",
-      "dismiss": "GOT IT, LET’S GO!"
     },
     "modal": {
       "close": "Close project details",
@@ -181,37 +48,10 @@
       "view_live": "VIEW LIVE PROJECT",
       "github": "GITHUB SOURCE CODE"
     },
-    "header": {
-      "badge": "PROJECT REPOSITORY 2026",
-      "title_main": "ENGINEERED",
-      "title_sub": "SOLUTIONS"
-    },
-    "filters": {
-      "all": "All Modules",
-      "web": "Web-Systems",
-      "mobile": "Mobile-Apps",
-      "design": "Visual-ID"
-    },
-    "dividers": {
-      "featured": "FEATURED_MODULES",
-      "archives": "ALL_ARCHIVES"
-    },
-    "status": {
-      "live": "LIVE",
-      "dev": "IN_DEV",
-      "launch": "Launch System",
-      "locked": "System Locked",
-      "access": "Access",
-      "restricted": "Restricted"
-    },
-    "cta": {
-      "title": "Need a custom module?",
-      "button": "Initialize Brief"
-    },
     "items": {
-      "4": {
-        "title": "African MarketPlace \"AfroShop\"",
-        "description": "E-commerce platform showcasing local craftsmanship with a modern interface inspired by African textiles. Includes a payment system tailored for African markets."
+      "1": {
+        "title": "Mini-site \"Culture Africa\"",
+        "description": "Interactive site to explore and promote African culture through animations and visual storytelling. Includes an interactive map of African traditions."
       },
       "2": {
         "title": "Application \"Cameroon Culture\"",
@@ -221,9 +61,9 @@
         "title": "Visual Identity \"Ngano Fashion\"",
         "description": "Full artistic direction for a contemporary African fashion brand. Logo, color palette, packaging, and website design inspired by Adinkra patterns."
       },
-      "1": {
-        "title": "Mini-site \"Culture Africa\"",
-        "description": "Interactive site to explore and promote African culture through animations and visual storytelling. Includes an interactive map of African traditions."
+      "4": {
+        "title": "African MarketPlace \"AfroShop\"",
+        "description": "E-commerce platform showcasing local craftsmanship with a modern interface inspired by African textiles. Includes a payment system tailored for African markets."
       },
       "5": {
         "title": "African Visual Customizer",
@@ -265,7 +105,6 @@
     "poster": {
       "hello": "HELLO",
       "im": "I'M \n \t YANNICK",
-      "tagline": "Discover the craft behind the code",
       "contact": "Let’s talk",
       "tags": {
         "fullstack": "FULLSTACK",
@@ -321,83 +160,8 @@
         }
       }
     },
-    "identity": {
-      "id_label": "ID",
-      "class_label": "CLASS",
-      "class_value": "ARCHITECT",
-      "origin_label": "ORIGIN",
-      "origin_value": "CAMEROON, AFRICA"
-    },
-    "header": {
-      "title_prefix": "WHO IS",
-      "name": "NDOH YANNICK TANG?"
-    },
-    "bio": {
-      "quote": "I don't just code websites. I build digital bridges between ancestral tradition and future innovation.",
-      "p1": "With a degree in Computer Science (Systems & Networks), I quickly pivoted to my true passion: creation. My rigorous technical background allows me to understand the machine, but my artist's soul guides my fingers.",
-      "p2": "My mission is clear: to counter the uniformity of the Western web by injecting African visual DNA (Adinkra patterns, warm palettes, storytelling) into ultra-high-performance React & Next.js architectures."
-    },
-    "timeline": {
-      "title": "EVOLUTION LOG",
-      "subtitle": "SKILL UPDATE CHRONOLOGY",
-      "items": {
-        "2025": {
-          "title": "FULLSTACK EXPANSION",
-          "subtitle": "Backend Integration",
-          "desc": "Database architecture with MongoDB and REST ExpressJS API creation. The missing link."
-        },
-        "2024": {
-          "title": "CULTURAL UI/UX",
-          "subtitle": "Design System",
-          "desc": "Defining my graphic signature: merging modern minimalism with the complexity of African patterns."
-        },
-        "2023": {
-          "title": "FRONTEND SPECIALIST",
-          "subtitle": "Framework Mastery",
-          "desc": "Deep dive into the React, Next.js, and TailwindCSS ecosystem. Transitioning from spaghetti code to modular architecture."
-        },
-        "2022": {
-          "title": "SYSTEM INIT",
-          "subtitle": "The Beginning",
-          "desc": "First line of code. HTML, CSS, PHP. Understanding how the web breathes."
-        }
-      }
-    },
-    "skills": {
-      "title": "SYSTEM DIAGNOSTICS",
-      "efficiency": "EFFICIENCY",
-      "items": {
-        "frontend": "FRONTEND ARCHITECTURE (Next.js/React)",
-        "styling": "STYLING ENGINE (Tailwind/CSS)",
-        "logic": "CREATIVE LOGIC (JS/TS)",
-        "design": "VISUAL DESIGN (Ps/Canva/Figma)",
-        "backend": "BACKEND OPS (Node/Mongo)"
-      }
-    },
-    "values": {
-      "title": "CORE PROTOCOLS",
-      "items": {
-        "heritage": {
-          "title": "Heritage First",
-          "desc": "Code is universal, but identity is local. I code with pride."
-        },
-        "performance": {
-          "title": "High Performance",
-          "desc": "A beautiful site that is slow is useless. I optimize every pixel and every function."
-        },
-        "clean": {
-          "title": "Clean Architecture",
-          "desc": "Maintainable, scalable, and secure code. No shortcuts."
-        }
-      }
-    },
     "cta": {
-      "title": "READY TO COLLABORATE?",
-      "subtitle": "Initialize communication protocol to start a unique project.",
       "button": "Start Project"
-    },
-    "ui": {
-      "section_break": "SECTION BREAK"
     }
   },
   "CulturePage": {
@@ -425,7 +189,9 @@
     "labels": {
       "origin": "Origin",
       "symbolism": "Symbolism",
-      "web_implementation": "Web implementation"
+      "web_implementation": "Web implementation",
+      "medium_cloth": "Cloth",
+      "medium_wall": "Mural painting"
     },
     "pillars": {
       "ndop": {
@@ -466,11 +232,15 @@
       }
     },
     "lab": {
-      "preview": "Preview of {pattern}, hue {hue} degrees, scale {scale}",
       "pattern": "Pattern",
-      "hue": "Hue",
       "scale": "Scale",
-      "generated_settings": "Generated settings"
+      "open_in_loom": "Weave it in the lab",
+      "weave": "Weave",
+      "export_title": "Export this pattern",
+      "copy_css": "Copy CSS",
+      "download_svg": "Download SVG",
+      "copied": "CSS copied",
+      "preview_label": "Preview of {pattern}, scale ×{scale}"
     },
     "process": {
       "observe": {
@@ -486,94 +256,7 @@
         "text": "Translate those rules into SVG, CSS, or Canvas with HSL palettes and an accessible interface."
       }
     },
-    "hero": {
-      "badge": "SYSTEM_INIT: CULTURAL_HERITAGE_VAULT",
-      "title_main": "ROOTS",
-      "title_sub": "& BYTES",
-      "description": "I treat African visual heritage as source code. Every pattern is a data-set of history, reinvented for the digital architecture of tomorrow."
-    },
-    "library": {
-      "title": "Pattern Library",
-      "subtitle": "Digital Archives",
-      "status": {
-        "available": "AVAILABLE",
-        "upcoming": "UPCOMING",
-        "revision": "REVISION"
-      },
-      "motifs": {
-        "1": {
-          "title": "WAX_CORE",
-          "origin": "West Africa",
-          "desc": "Vector reinterpretation of Wax color flows for high-performance site backgrounds."
-        },
-        "2": {
-          "title": "ADINKRA_UI",
-          "origin": "Akan Culture",
-          "desc": "Philosophical symbols converted into intelligent navigation icons."
-        },
-        "3": {
-          "title": "NDOP_GRID",
-          "origin": "Bamoun Kingdom",
-          "desc": "Cameroonian sacred geometry adapted for modern CSS grid systems."
-        },
-        "4": {
-          "title": "KENTE_STRIPE",
-          "origin": "Ashanti",
-          "desc": "Weaving rhythms transformed into responsive section dividers."
-        }
-      }
-    },
-    "philosophy": {
-      "logs": {
-        "0": {
-          "text": "Knowledge is like a Baobab tree; one person's arms cannot embrace it.",
-          "ref": "African Proverb",
-          "note": "// OPEN_SOURCE_MINDSET"
-        },
-        "1": {
-          "text": "Innovation is born from the deepest roots.",
-          "ref": "Thek1ng237",
-          "note": "// CORE_VALUE_01"
-        },
-        "2": {
-          "text": "If you want to go far, go together.",
-          "ref": "African Proverb",
-          "note": "// COLLABORATION_PROTOCOL"
-        }
-      }
-    },
-    "specs": {
-      "title": "Specifications",
-      "subtitle": "Tech x Culture",
-      "main_text": "Web uniformity is a system error. My mission is to reinject algorithmic diversity using African visual structures.",
-      "items": {
-        "adinkra": {
-          "title": "ADINKRA SYMBOLS",
-          "use": "Metaphoric Navigation & Icons"
-        },
-        "ndop": {
-          "title": "NDOP GEOMETRY",
-          "use": "Grids & Structural Layouts"
-        },
-        "wax": {
-          "title": "WAX TEXTURES",
-          "use": "Dynamic Backgrounds & Motion"
-        }
-      },
-      "framework": {
-        "title": "Cultural Framework v1.0",
-        "desc": "Ready for integration in modern UX/UI systems."
-      }
-    },
-    "modal": {
-      "encoding": "ENCODING:",
-      "origin": "ORIGIN:",
-      "button": "Request Asset Access"
-    },
-    "cta": {
-      "title": "Contribute to the Archive",
-      "button": "Open Protocol"
-    }
+    "nav_label": "Navigate to a pattern"
   },
   "ContactPage": {
     "content": {
@@ -584,34 +267,15 @@
       "direct_title_highlight": "TOUCH",
       "location": "Douala, Littoral · Cameroon"
     },
-    "hero": {
-      "protocol": "PROTOCOL: BRIDGE_INITIATION",
-      "title_main": "LET'S",
-      "title_highlight": "CONNECT",
-      "description": "Ready to inject African authenticity into your next digital project? Let's establish a connection."
-    },
     "form": {
-      "title": "MESSAGING TERMINAL",
-      "subtitle": "HIGH-PRIORITY FORM // DIRECT TO INBOX",
-      "status": "STATUS: ONLINE",
-      "type_label": "1. MISSION TYPE // PROJECT",
-      "name_label": "2. YOUR NAME // IDENTITY",
-      "name_placeholder": "ex: Alexander Smith",
-      "email_label": "3. YOUR EMAIL // RESPONSE ADDRESS",
-      "email_placeholder": "ex: alexander@company.com",
-      "message_label": "4. YOUR MESSAGE // SPECS & GOALS",
-      "message_placeholder": "Present your project, key features required, and desired deadlines...",
-      "submit": "TRANSMIT MESSAGE",
-      "submitting": "TRANSMISSION IN PROGRESS...",
-      "success_title": "TRANSMISSION COMPLETED SUCCESSFULLY",
-      "success_msg": "Your message has been transmitted to our station. We will get back to you within 24 hours.",
-      "security": "GUARANTEED CONFIDENTIALITY",
-      "mission_type_label": "Mission type",
-      "mission_type_placeholder": "Choose a mission",
       "name_label": "Full name",
       "name_placeholder": "Your name",
       "email_label": "Email",
       "email_placeholder": "you@example.com",
+      "message_label": "Message",
+      "message_placeholder": "Context, goals, target audience, and required features…",
+      "submit": "Send message",
+      "submitting": "Sending…",
       "phone_label": "Phone",
       "phone_placeholder": "+237 …",
       "optional": "optional",
@@ -620,25 +284,18 @@
       "budget_label": "Budget",
       "budget_placeholder": "e.g. 500,000 XAF",
       "date_label": "Preferred timeline",
-      "message_label": "Message",
-      "message_placeholder": "Context, goals, target audience, and required features…",
-      "submitting": "Sending…",
-      "submit": "Send message",
       "consent": "By submitting this form, you agree to be contacted about your request.",
       "success": "Message sent successfully. Thank you!",
       "invalid_request": "Invalid request.",
       "copy_channel": "Copy {channel}",
       "copy_success": "{channel} copied to the clipboard.",
-      "consent_label": "I agree that my data may be processed for this request.",
       "mission_options": [
         "Landing page",
         "Web application",
         "Branding & design",
         "Consulting"
       ],
-      "api_error": "The server could not process your request.",
-      "field_error": "Please check the required fields.",
-      "website_label": "Website"
+      "api_error": "The server could not process your request."
     }
   },
   "SolutionPage": {
@@ -668,7 +325,7 @@
     "actions": {
       "request_quote": "Request a quote",
       "view_details": "View details",
-      "close": "Close"
+      "hide_details": "Hide details"
     },
     "process": {
       "describe": {
@@ -694,134 +351,66 @@
         "title": "CUSTOM WEB ARCHITECTURE",
         "description": "End-to-end development of responsive, scalable Next.js and React applications optimized for SEO.",
         "price": "Custom quote",
-        "features": ["Next.js 15 & React 19 full-stack", "Afrofuturist responsive design", "Performance and SEO optimization"],
+        "features": [
+          "Next.js 15 & React 19 full-stack",
+          "Afrofuturist responsive design",
+          "Performance and SEO optimization"
+        ],
         "full_description": "End-to-end design and development for your web platform. From frontend architecture to REST APIs and databases, we build a modern, high-performance solution tailored to your needs.",
-        "benefits": ["Modern architecture without technical debt", "Fast page rendering", "Distinctive visual identity"],
+        "benefits": [
+          "Modern architecture without technical debt",
+          "Fast page rendering",
+          "Distinctive visual identity"
+        ],
         "target_audience": "Startups, businesses, and ambitious projects"
       },
       "02": {
         "title": "UX/UI AUDIT & VISUAL REDESIGN",
         "description": "In-depth usability analysis, design system creation, and user journey optimization.",
         "price": "Custom quote",
-        "features": ["Usability audit and UX research", "Complete design system", "High-fidelity Figma prototypes"],
+        "features": [
+          "Usability audit and UX research",
+          "Complete design system",
+          "High-fidelity Figma prototypes"
+        ],
         "full_description": "Improve conversions and user satisfaction through a complete review of your visual and interactive experience.",
-        "benefits": ["Higher engagement", "Consistent visuals across pages", "Development-ready prototypes"],
+        "benefits": [
+          "Higher engagement",
+          "Consistent visuals across pages",
+          "Development-ready prototypes"
+        ],
         "target_audience": "Existing products looking to modernize their interface"
       },
       "03": {
         "title": "AFROFUTURIST CULTURAL DESIGN",
         "description": "Digital art, sacred geometry, and a strong cultural identity integrated into your web projects.",
         "price": "Custom quote",
-        "features": ["Vectorization of ancestral patterns", "CSS animations and micro-interactions", "Art direction and branding"],
+        "features": [
+          "Vectorization of ancestral patterns",
+          "CSS animations and micro-interactions",
+          "Art direction and branding"
+        ],
         "full_description": "Give your digital products a distinctive identity by blending African visual patterns with modern web standards.",
-        "benefits": ["Meaningful differentiation", "Cultural heritage promotion", "Immersive, memorable experiences"],
+        "benefits": [
+          "Meaningful differentiation",
+          "Cultural heritage promotion",
+          "Immersive, memorable experiences"
+        ],
         "target_audience": "Brands, cultural institutions, and independent creators"
       }
-    },
-    "hero": {
-      "badge": "SOLUTIONS_CATALOG_2026",
-      "title_main": "BUILDING",
-      "title_highlight": "NEW STANDARDS"
-    },
-    "solutions": {
-      "0": {
-        "id": "SOL-001",
-        "category": "ENGINE",
-        "title": "Dynamic Pattern Engine",
-        "description": "Visual generation interface merging Ndop and Adinkra for your digital assets.",
-        "features": [
-          "Vector generation",
-          "HD Export (SVG/PNG)",
-          "Color customization"
-        ],
-        "full_description": "An interactive rendering engine designed to allow creatives to manipulate African visual DNA without loss of meaning. Ideal for countering global design uniformity.",
-        "benefits": ["Strong identity", "Web-ready", "Symbolic respect"],
-        "target_audience": "Designers & Content Creators",
-        "price": "FREE / 10,000 FCFA"
-      },
-      "1": {
-        "id": "SOL-002",
-        "category": "PROTOCOL",
-        "title": "African Design Protocol",
-        "description": "The ultimate guide (African UX/UI) to build interfaces that speak to the continent.",
-        "features": [
-          "UX White Paper",
-          "UI Components (Figma)",
-          "Color Psychology"
-        ],
-        "full_description": "Much more than a guide, it's a protocol for building interfaces based on local ergonomics and ancestral visual philosophy adapted to mobile-first.",
-        "benefits": [
-          "Increased user engagement",
-          "Professional standardization",
-          "Cultural scalability"
-        ],
-        "target_audience": "Product Managers & Developers",
-        "price": "25,000 FCFA / Year"
-      },
-      "2": {
-        "id": "SOL-003",
-        "category": "LAB",
-        "title": "Heritage & Tech Workshop",
-        "description": "Immersive sessions on integrating culture into technology products.",
-        "features": ["Live Workshops", "Case Studies", "PDF Resources"],
-        "full_description": "An idea lab where we break down how African heritage can influence tomorrow's algorithms and user experience.",
-        "benefits": [
-          "Exclusive network access",
-          "Participation certificate",
-          "Prospective vision"
-        ],
-        "target_audience": "Students & CSR Companies",
-        "price": "5,000 FCFA (Donation)"
-      }
-    },
-    "newsletter": {
-      "title": "Join the Movement",
-      "description": "Receive design protocols directly in your inbox.",
-      "placeholder": "root@culture-innovation.io",
-      "button": "Subscribe"
-    },
-    "modal": {
-      "overview_title": "Solution_Overview",
-      "benefits_title": "Core_Benefits",
-      "audience_title": "Target_Audience",
-      "investment_title": "Investment",
-      "cta_button": "Initialize Integration"
     }
   },
   "Footer": {
     "brand": {
-      "tagline": "Software engineering & visual heritage. Building bridges between modern algorithms and ancestral culture.",
-      "open_channel": "Open_Channel"
-    },
-    "system_map": "SYSTEM_MAP",
-    "nav_items": {
-      "0": "ARCHIVES.ABOUT",
-      "1": "REGISTRY.PROJECTS",
-      "2": "CORE.CULTURE",
-      "3": "NODE.SOLUTIONS",
-      "4": "INIT.CONTACT"
+      "tagline": "Software engineering & visual heritage. Building bridges between modern algorithms and ancestral culture."
     },
     "external_links": "EXTERNAL_LINKS",
-    "data_subscription": "DATA_SUBSCRIPTION",
-    "newsletter_placeholder": "ACCESS_ID@NETWORK.COM",
-    "newsletter_button": "Connect_to_Feed",
     "metadata": {
-      "protocol_year": "Protocol_Year",
-      "global_registry": "Global_Registry",
-      "base_location": "Base_Location",
-      "location": "Douala, CM.AFR",
-      "status": "ENCRYPTED_SESSION_ACTIVE"
-    },
-    "back_to_top": "BACK TO TOP"
+      "location": "Douala, CM.AFR"
+    }
   },
   "Common": {
-    "logo_loading": "Thek1ng237 — loading portfolio",
-    "audio": {
-      "enable": "Enable ambient sound",
-      "disable": "Disable ambient sound",
-      "off": "AUDIO_OFF",
-      "on": "AUDIO_ON"
-    }
+    "logo_loading": "Thek1ng237 — loading portfolio"
   },
   "Testimonials": {
     "title_prefix": "Client",
@@ -864,7 +453,6 @@
     "subtitle": "PAGE_NOT_FOUND",
     "description": "The path you're searching for doesn't exist in our network. It might have been relocated, archived, or hidden behind a digital firewall.",
     "error_code": "ERROR_CODE",
-    "code": "404_VOID_REFERENCE",
     "suggestions": "TROUBLESHOOTING_PROTOCOLS",
     "suggestion_1": "Double-check the URL for typos",
     "suggestion_2": "Navigate back to the home page",
@@ -872,7 +460,6 @@
     "suggestion_4": "Contact support for assistance",
     "cta_home": "RETURN_HOME",
     "cta_projects": "EXPLORE_ARCHIVE",
-    "cta_contact": "CALL_SUPPORT",
     "back_message": "Going back to safety...",
     "quote": "\"In code, as in life: every error is just a message waiting to be understood.\""
   },
@@ -888,10 +475,7 @@
         "export_json": "Export JSON",
         "restore_template": "Restore template",
         "go_to_preview": "Go to preview",
-        "close_preview": "Close preview",
-        "api_login_title": "Proposal management sign-in",
-        "admin_email": "Admin account email",
-        "password": "Password"
+        "close_preview": "Close preview"
       },
       "sections": {
         "identity_title": "Identity & client",
@@ -912,7 +496,6 @@
         "client_phone": "Client phone",
         "brand": "Brand",
         "full_name": "Full name",
-        "email": "Email",
         "phone": "Phone",
         "proposal_reference": "Proposal reference",
         "issue_date": "Issue date",
@@ -949,6 +532,8 @@
         "budget_intro": "Budget introduction",
         "budget_lines": "Budget line items",
         "phase": "Phase",
+        "number": "Number",
+        "title": "Title",
         "amount_currency": "Amount ({currency})",
         "included_deliverables": "Included deliverables",
         "payment_schedule_title": "Payment schedule title",
@@ -1083,7 +668,8 @@
       "save_testimonial": "Could not save the testimonial.",
       "update": "Could not make this change.",
       "load_proposal": "Could not load the proposal.",
-      "load_document": "Could not load the document."
+      "load_document": "Could not load the document.",
+      "session": "Session expired or not authorized."
     },
     "ui": {
       "checking_session": "Checking admin session…",
@@ -1199,40 +785,11 @@
       "view_details": "View details",
       "print_preview": "Print / preview A4 PDF",
       "mark_sent": "Mark as sent",
-      "cancel_action": "Cancel",
       "accept": "Accept",
       "reject": "Reject",
       "loading_proposals": "Loading proposals…",
       "no_proposals": "No proposals to display."
     },
-    "badge": "ADMIN",
-    "title": "Back-office Thek1ng237",
-    "loading": "Loading...",
-    "logout": "Logout",
-    "recent": "Recent requests",
-    "inquiries": "Inquiries",
-    "quickAccess": "Quick access",
-    "empty": "No recent data.",
-    "cards": {
-      "inquiries": "New requests",
-      "quotes": "Quotes to process",
-      "pending": "Pending quotes",
-      "clients": "Clients"
-    },
-    "form": {
-      "email": "Email",
-      "password": "Password",
-      "submit": "Sign in",
-      "submitting": "Signing in..."
-    },
-    "errors": {
-      "login": "Invalid credentials.",
-      "session": "Session expired or not authorized."
-    },
-    "resources": {
-      "projects": "Projects",
-      "services": "Services",
-      "inquiries": "Inquiries"
-    }
+    "logout": "Logout"
   }
 }
